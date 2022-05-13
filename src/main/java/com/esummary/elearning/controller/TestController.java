@@ -46,8 +46,8 @@ public class TestController {
 	
 	//Vue 페이지 테스트 
 	@RequestMapping("/vue")
-	public String vue() { 
+	public String vue() {
 			return "/vue/index";
 	}
-	
+	      
 }
