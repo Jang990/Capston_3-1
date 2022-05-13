@@ -41,11 +41,13 @@ public class TestController {
 	@RequestMapping("/testJPA")
 	public String JPATest(HttpServletRequest request, Model model) { 
 		UserInfo user = (UserInfo)request.getSession().getAttribute("userInfo");
-		user = userRepository.findWithUserSubjectsByStudentNumber(user.getStudentNumber()).get(0);
-		for (UserSubject us : user.getUserSubjects()) {
-			System.out.println(us.getSubjectId());
-		}
 		return "/test";
+	}
+	
+	//Vue 페이지 테스트 
+	@RequestMapping("/vue")
+	public String vue() { 
+			return "/vue/index";
 	}
 	
 }

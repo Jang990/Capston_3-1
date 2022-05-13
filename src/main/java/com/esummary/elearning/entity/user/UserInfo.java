@@ -11,10 +11,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedEntityGraphs;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import org.jsoup.nodes.Document;
+import org.springframework.data.jpa.repository.EntityGraph;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
 
@@ -24,6 +26,17 @@ import lombok.Data;
 			name = "user-own-subject",
 			attributeNodes = {
 					@NamedAttributeNode("userSubjects")
+			}
+	),
+	@NamedEntityGraph(
+			name = "user-own-subject-Detail",
+			attributeNodes = {
+					@NamedAttributeNode(value = "userSubjects", subgraph = "subject-detail")
+			},
+			subgraphs = { @NamedSubgraph(
+					name = "subject-detail",
+					attributeNodes = { @NamedAttributeNode("subjectInfo") } 
+				)
 			}
 	)
 })
