@@ -1,0 +1,13 @@
+package com.esummary.elearning.service.subject;
+
+import java.util.List;
+
+import com.esummary.elearning.entity.subject.SubjectInfo;
+import com.esummary.elearning.entity.user.UserInfo;
+
+public interface ELearningService {
+
+//	UserInfo login(String id, String password);
+
+	List<SubjectInfo> summary(UserInfo user);
+}

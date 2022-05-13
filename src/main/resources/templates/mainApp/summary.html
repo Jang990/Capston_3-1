@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- <link rel="stylesheet" th:href="@{/css/style.css}"> -->
+<style>
+	td{
+		min-width: 50px;
+	}
+	td.idx {
+		width:65px;
+		text-align: center;
+	}
+	table{
+		margin-bottom: 10px;
+	}
+</style>
+</head>
+<body>
+	<div>
+		<h1><span th:text="|${name}님 반갑습니다.|"></span><br></h1>
+		<h1><span th:text="|학번: ${id}|"></span></h1>
+	</div>
+	
+	<div>
+		<table border="1" th:each="subject : ${subjectList}" th:if="${#lists.size(subjectList) > 0}">
+			<tr>
+				<td th:text="${subject.subjectName}" colspan="3"></td>
+			</tr>
+			<div th:each="lectures : ${subject.lectureList}" th:if="${#lists.size(subject.lectureList) > 0}">
+				<tr>
+					<td class="idx">학습주차</td>
+					<td th:text="${lectures.title}" colspan="2"></td>
+				</tr>
+				<tr th:each="lecture : ${lectures.lectures}" th:if="${#lists.size(lectures.lectures) > 0}">
+					<td></td>
+					<td class="idx">학습</td>
+					<td th:text="${lecture.title}" colspan="2"></td>
+				</tr>
+			</div>
+			<tr th:unless="${#lists.size(subject.lectureList) > 0}">
+				<td colspan="3">조회된 학습이 없습니다.</td>
+			</tr>
+			<tr>
+				<td colspan="3">구분========================</td>
+			</tr>
+			<tr th:each="task : ${subject.taskList}" th:if="${#lists.size(subject.taskList) > 0}">
+				<td class="idx">과제</td>
+				<td th:text="${task.title}" colspan="2"></td>
+			</tr>
+			<tr th:unless="${#lists.size(subject.taskList) > 0}">
+				<td colspan="3">조회된 과제가 없습니다.</td>
+			</tr>
+			<tr>
+				<td colspan="3">구분========================</td>
+			</tr>
+			<tr th:each="notice: ${subject.noticeList}" th:if="${#lists.size(subject.noticeList) > 0}">
+				<td class="idx">공지</td>
+				<td th:text="${notice.title}" colspan="2"></td>
+			</tr>
+			<tr th:unless="${#lists.size(subject.noticeList) > 0}">
+				<td colspan="3">조회된 공지가 없습니다.</td>
+			</tr>
+		</table>
+	</div>
+	 
+	<!-- <table class="board_list">
+		<colgroup>
+			<col width="15%" />
+			<col width="*%" />
+			<col width="15%" />
+			<col width="20%" />
+		</colgroup>
+		<thead>
+			<th scope="col">글 번호</th>
+			<th scope="col">제목</th>
+			<th scope="col">조회수</th>
+			<th scope="col">작성일</th>
+		</thead>
+		<tbody>
+			<tr th:if="${#lists.size(subjectInfo) > 0}" th:each="vo : ${subjectInfo}">
+				<td th:text="${vo.boardIdx}"></td>
+				<td class="title"><a href="/board/boardDetail?boardIdx="
+					th:attrappend="href=${vo.boardIdx}" th:text="${vo.title}"></a></td>
+				<td th:text="${vo.hitCnt}"></td>
+				<td th:text="${vo.createDateTime}"></td>
+			</tr>
+			<tr th:unless="${#lists.size(list) > 0}">
+				<td colspan="4">조회된 결과가 없습니다.</td>
+			</tr>
+		</tbody>
+	</table> -->
+
+</body>
+</html>
