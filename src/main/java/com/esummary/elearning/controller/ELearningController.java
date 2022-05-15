@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.esummary.elearning.dto.InitalPageData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.user.UserInfo;
 import com.esummary.elearning.service.login.LoginService;
@@ -66,8 +67,9 @@ public class ELearningController {
 			HttpSession session = request.getSession();
 			session.setAttribute("userInfo", user);
 //			return "redirect:/test"; // 단위 테스트용 url
-			return "redirect:/mainApp/summary"; 
-		}
+			return "redirect:/vue"; // vue url
+//			return "redirect:/mainApp/summary"; // 크롤링 데이터가 잘 오는지 확인 url 
+		} 
 	}
 	
 	@RequestMapping("/mainApp/summary")

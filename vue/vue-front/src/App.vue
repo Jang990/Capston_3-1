@@ -1,5 +1,10 @@
 <template>
   <div id="app">
+    <template v-if="!loginCheck">
+      <login-component @checkUser="checkUser"></login-component>
+    </template>
+    <!--라우터 없이 만들음. 라우터 공부하고 템플릿없애고 다시 만들기.-->
+    <template v-else>
     <h1>안녕하세요!</h1>
     <div>
       <h1>{{studentName}}님 반갑습니다.</h1>
@@ -24,18 +29,22 @@
       </v-container>
     </template>
     <div v-else>조회된 과목이 없습니다!</div>
+  </template> 
   </div>
 </template>
 
 <script>
 import axios from "axios"
 import SubjectCard from "./SubjectCard";
+import LoginComponent from "./Login";
+
 
 export default {
   name: 'App',
-  components: {SubjectCard,},
+  components: {SubjectCard, LoginComponent,},
   data() {
     return {
+      loginCheck: false,
       studentName: '',
       studentNumber: '',
       subjectCardData: [],
@@ -59,9 +68,12 @@ export default {
         .then(function () {
           // always executed
         });
+    },
+    checkUser(check) {
+      console.log("체크유저작동!");
+      this.loginCheck = check;
     }
   },
-  
 }
 </script>
 
