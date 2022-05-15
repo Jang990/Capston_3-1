@@ -36,14 +36,14 @@ public class TestController {
 		model.addAttribute("id", user.getStudentNumber());
 		model.addAttribute("subjectList", subjectList);
 		return "/mainApp/summary";
-	}
-	
+	}    
+	    
 	@RequestMapping("/testJPA")
 	public String JPATest(HttpServletRequest request, Model model) { 
 		UserInfo user = (UserInfo)request.getSession().getAttribute("userInfo");
 		return "/test";
 	}
-	
+	   
 	//Vue 페이지 테스트 
 	@RequestMapping("/vue")
 	public String vue() {

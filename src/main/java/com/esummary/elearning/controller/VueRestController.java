@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.esummary.elearning.dto.InitalPageData;
+import com.esummary.elearning.dto.SubjectCardData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.user.UserInfo;
 import com.esummary.elearning.entity.user.UserSubject;
@@ -43,14 +44,17 @@ public class VueRestController {
 		String studentNumber = "201845096";
 		
 		UserInfo user = userRepository.findWithUserSubjectsByStudentNumber(studentNumber);
-		List<String> subjectNames = new ArrayList<>();
+		List<SubjectCardData> cardList = new ArrayList<>();
 		for (UserSubject userSubject : user.getUserSubjects()) {
-			subjectNames.add(userSubject.getSubjectInfo().getSubjectName());
+			SubjectInfo subject = userSubject.getSubjectInfo();
+			SubjectCardData card = new SubjectCardData(
+					subject.getSubjectId(), subject.getSubjectName(), subject.getSubjectOwnerName());
+			cardList.add(card);
 		}
 		
-		if(subjectNames.size() <= 0) 
-			subjectNames = null;
-		initPageData = new InitalPageData(name, studentNumber, subjectNames);
+		if(cardList.size() <= 0) 
+			cardList = null;
+		initPageData = new InitalPageData(name, studentNumber, cardList);
 		
 		return initPageData;
 	}

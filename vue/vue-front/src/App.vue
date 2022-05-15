@@ -6,9 +6,22 @@
       <h1>학번: {{studentNumber}}</h1>
     </div>
     <!-- axios 테스트를 위한 버튼-->
-    <button @click="dbSearch">201845096 과목 검색</button>
-    <template v-if="subjectName.length > 0">
-      <subject-card v-for="name in subjectName" :key="name" v-bind:title="name"></subject-card>
+    <v-btn @click="dbSearch">201845096 과목 검색</v-btn><br>
+    <template v-if="subjectCardData.length > 0" center>
+      <!-- <subject-card v-for="(card, i) in subjectCardData" 
+        :key="i" v-bind:card="card">
+      </subject-card> -->
+      <v-container>
+        <v-row dense>
+          <v-col
+            v-for="(card, i) in subjectCardData"
+            :key="i"
+            cols="12"
+          >
+            <subject-card v-bind:card="card"></subject-card>
+          </v-col>
+        </v-row>
+      </v-container>
     </template>
     <div v-else>조회된 과목이 없습니다!</div>
   </div>
@@ -25,7 +38,7 @@ export default {
     return {
       studentName: '',
       studentNumber: '',
-      subjectName: [],
+      subjectCardData: [],
     }
   },
   methods: {
@@ -36,7 +49,8 @@ export default {
           console.log(response); 
           this.studentName = response.data.name;
           this.studentNumber = response.data.studentNumber;
-          this.subjectName = response.data.subjectName;
+          this.subjectCardData = response.data.subjectCardData;
+          console.log(this.subjectCardData);
         })
         .catch(function (error) {
           // handle error
