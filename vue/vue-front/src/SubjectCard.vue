@@ -19,11 +19,27 @@
 
       <v-card-actions>
         <v-btn
-        color="orange lighten-2"
+        color="success"
         text
+        @click="searchLecture"
         >
-        
+          강의 조회
         </v-btn>
+        <v-btn
+        color="warning"
+        text
+        @click="searchNotice"
+        >
+          공지 조회
+        </v-btn>
+        <v-btn
+        color="error"
+        text
+        @click="searchTask"
+        >
+          과제 조회
+        </v-btn>
+        <!-- color="orange lighten-2" -->
         <v-spacer></v-spacer> 
         <!-- spacer뒤에 btn을 하면 오른쪽아래 아이콘처럼 작게 붙힌다. -->
         <v-btn
@@ -49,6 +65,7 @@
 
 <script>
 import axios from "axios"
+const mainAxios = axios.create({baseURL: 'http://localhost:38080'});
 
 export default {
   name: 'SubjectCard',
@@ -74,7 +91,29 @@ export default {
         .then(function () {
           // always executed
         });
-    }
+    },
+
+    searchLecture() {
+      mainAxios.post('/lectureDB', null, {params: {
+        subjectId: this.card.subjectId
+      }}).then((response) => {
+        console.log(response); 
+      });
+    },
+    searchNotice() {
+      mainAxios.post('/noticeDB', null, {params: {
+        subjectId: this.card.subjectId
+      }}).then((response) => {
+        console.log(response); 
+      });
+    },
+    searchTask() {
+      mainAxios.post('/taskDB', null, {params: {
+        subjectId: this.card.subjectId
+      }}).then((response) => {
+        console.log(response); 
+      });
+    },
   },
   
 }

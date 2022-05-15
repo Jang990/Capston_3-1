@@ -38,5 +38,10 @@ public class VueServiceImpl implements VueService {
 		
 		return cardList;
 	}
+	
+	private String getNoticeData(String studentNumber) {
+		
+		return null;
+	}
 
 }

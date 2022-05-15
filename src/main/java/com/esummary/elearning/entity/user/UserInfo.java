@@ -21,13 +21,8 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 
 import lombok.Data;
+
 @NamedEntityGraphs({
-	@NamedEntityGraph(
-			name = "user-own-subject",
-			attributeNodes = {
-					@NamedAttributeNode("userSubjects")
-			}
-	),
 	@NamedEntityGraph(
 			name = "user-own-subject-Detail",
 			attributeNodes = {

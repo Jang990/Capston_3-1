@@ -44,10 +44,10 @@ public class VueRestController {
 			session.setAttribute("userInfo", user);
 			return true;  
 		}
-	}
+	} 
 	
 	//수강과목 정보 검색
-	@RequestMapping("/getInitSubject") 
+	@RequestMapping("/getInitSubject")   
 	public InitalPageData getInitData(HttpServletRequest request) {
 		InitalPageData initPageData = new InitalPageData();
 		UserInfo user = (UserInfo)request.getSession().getAttribute("userInfo");
@@ -62,19 +62,27 @@ public class VueRestController {
 		return initPageData; 
 	}
 	
-	//과제 검색 
-	@RequestMapping("/taskDB")
-	public Object taskSearch() {
-		return null;
-	}
-	//공지 검색
-	@RequestMapping("/noticeDB")
-	public Object noticeSearch() {
-		return null;
-	}
 	//강의검색
 	@RequestMapping("/lectureDB")
-	public Object lectureSearch() {
+	public Object lectureSearch(@RequestParam String subjectId) {
+		System.out.println("과목 조회");
+		
 		return null;
 	}
+	
+	//과제 검색 
+	@RequestMapping("/taskDB")
+	public Object taskSearch(@RequestParam String subjectId) {
+		System.out.println("과제 조회");
+		
+		return null; 
+	}
+	
+	//공지 검색
+	@RequestMapping("/noticeDB")
+	public Object noticeSearch(@RequestParam String subjectId) {
+		System.out.println("공지 조회");
+		return null;
+	}
+	
 }
