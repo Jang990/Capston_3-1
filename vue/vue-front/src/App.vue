@@ -5,13 +5,11 @@
     </template>
     <!--라우터 없이 만들음. 라우터 공부하고 템플릿없애고 다시 만들기.-->
     <template v-else>
-    <h1>안녕하세요!</h1>
     <div>
-      <h1>{{studentName}}님 반갑습니다.</h1>
-      <h1>학번: {{studentNumber}}</h1>
+      <h1 left>{{studentName}}님 반갑습니다.</h1>
+      <h1 left>학번: {{studentNumber}}</h1>
     </div>
-    <!-- axios 테스트를 위한 버튼-->
-    <v-btn @click="dbSearch">201845096 과목 검색</v-btn><br>
+
     <template v-if="subjectCardData.length > 0" center>
       <!-- <subject-card v-for="(card, i) in subjectCardData" 
         :key="i" v-bind:card="card">
@@ -37,7 +35,7 @@
 import axios from "axios"
 import SubjectCard from "./SubjectCard";
 import LoginComponent from "./Login";
-
+const mainAxios = axios.create({baseURL: 'http://localhost:38080'});
 
 export default {
   name: 'App',
@@ -51,28 +49,22 @@ export default {
     }
   },
   methods: {
-    dbSearch() {
-      axios.get('http://localhost:38080/vueDB')
-        .then((response) => {
-          //주의하라 (response) => {} 이렇게 화살표 함수를 사용해야 this를 사용할때 원하는 값이 나온다. 스코프를 이해해라.
+    checkUser(check) {
+      this.loginCheck = check;
+      if(check) {
+        mainAxios.get('/getInitSubject').then((response) => {
           console.log(response); 
+          //주의하라 (response) => {} 이렇게 화살표 함수를 사용해야 this를 사용할때 원하는 값이 나온다. 스코프를 이해해라.
           this.studentName = response.data.name;
           this.studentNumber = response.data.studentNumber;
           this.subjectCardData = response.data.subjectCardData;
           console.log(this.subjectCardData);
         })
         .catch(function (error) {
-          // handle error
           console.log(error);
-        })
-        .then(function () {
-          // always executed
         });
+      }
     },
-    checkUser(check) {
-      console.log("체크유저작동!");
-      this.loginCheck = check;
-    }
   },
 }
 </script>

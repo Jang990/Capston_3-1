@@ -35,14 +35,31 @@ public class VueRestController {
 	@RequestMapping("/vueLoginCheck") 
 	public boolean loginCheck(@RequestParam String id, @RequestParam String password, HttpServletRequest request) {
 		UserInfo user = eLearningLoginService.login(id, password);
-		if(user != null) {
-			return false; 
+		
+		if(user == null) {
+			return false;  
 		}   
 		else {
 			HttpSession session = request.getSession();
 			session.setAttribute("userInfo", user);
-			return true; 
+			return true;  
 		}
+	}
+	
+	//수강과목 정보 검색
+	@RequestMapping("/getInitSubject") 
+	public InitalPageData getInitData(HttpServletRequest request) {
+		InitalPageData initPageData = new InitalPageData();
+		UserInfo user = (UserInfo)request.getSession().getAttribute("userInfo");
+		String name = user.getUserName();
+		String studentNumber = user.getStudentNumber();
+		
+		//분기가 필요하다. 기존 db에 데이터가 있는 유저거나, db에 데이터가 없는 유저거나.
+		initPageData.setName(name);
+		initPageData.setStudentNumber(studentNumber);
+		initPageData.setSubjectCardData(vueService.getInitCardData(studentNumber));
+		
+		return initPageData; 
 	}
 	
 	//과제 검색 

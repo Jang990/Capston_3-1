@@ -9,6 +9,12 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 Vue.use(Vuetify);
 
+// import 'material-design-icons-iconfont/dist/material-design-icons.css' // vuetify prepend-icon 안나올 때  npm install material-design-icons-iconfont 설치후 이 코드 추가
+// Vue.use(Vuetify, {
+//   iconfont: 'fa',
+//   icons: { iconfont: 'md', }, // vuetify prepend-icon 안나올 때 이것 추가
+// })
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

@@ -18,25 +18,8 @@ public class HomePageController {
 	
 	//Vue 페이지 테스트 
 	@RequestMapping("/vue")
-	public String vue(HttpServletRequest request, Model model) {
-		  
+	public String vue() {
 		return "/vue/index";   
-	}
-	/*
-	@RequestMapping("/vue")
-	public String vue(HttpServletRequest request, Model model) {
-		InitalPageData initPageData = new InitalPageData();
-		UserInfo user = (UserInfo)request.getSession().getAttribute("userInfo");
-		String name = user.getUserName();
-		String studentNumber = user.getStudentNumber();
-		
-		//분기가 필요하다. 기존 db에 데이터가 있는 유저거나, db에 데이터가 없는 유저거나.
-		initPageData.setName(name);
-		initPageData.setStudentNumber(studentNumber);
-		initPageData.setSubjectCardData(vueService.getInitCardData(studentNumber));
-		
-		model.addAttribute(initPageData); 
-		
-		return "/vue/index";
-	}*/
+	} 
+
 }
