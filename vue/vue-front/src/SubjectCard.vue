@@ -69,10 +69,17 @@
         </div>
         <div v-else-if="showNotice">
           <v-divider></v-divider>
-
-          <v-card-text>
-            공지 내용에 대한 것들...
+          
+          <v-card-text 
+            v-if="noticeData == null"
+          >
+            조회된 공지 데이터가 없습니다.
           </v-card-text>
+          <notice-table 
+            v-else
+            :noticeData="noticeData"
+          >
+          </notice-table>
         </div>
         <div v-else-if="showTask">
           <v-divider></v-divider>
@@ -94,18 +101,21 @@
 
 <script>
 import axios from "axios"
+import NoticeTable from "./NoticeTable"
 const mainAxios = axios.create({baseURL: 'http://localhost:38080'});
 const delayFlag = 350;
 let timeouts = [];
 
 export default {
   name: 'SubjectCard',
+  components: {NoticeTable,},
   data() {
     return {
       show: false,
       showLectureWeek: false,
       showNotice: false,
       showTask: false,
+      noticeData: [],
     }
   },
   props:{
@@ -137,7 +147,11 @@ export default {
         subjectId: this.card.subjectId
       }}).then((response) => {
         console.log(response);
-
+        if(!response.data.length)
+          this.noticeData = null;
+        else
+          this.noticeData = response.data;
+          
         if(this.showLectureWeek || this.showTask) {
           timeouts[1] = setTimeout(()=>{
             this.showNotice = !this.showNotice;
@@ -177,18 +191,4 @@ export default {
 </script>
 
 <style>
-/* #subjectCard{
-  border: 1px solid green;
-  width: 200px;
-  height: 50px;
-  border-radius: 7px;
-  margin-left: 20%;
-
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 10px;
-} */
 </style>

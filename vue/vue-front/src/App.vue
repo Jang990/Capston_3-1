@@ -10,7 +10,7 @@
       <h1 left>학번: {{studentNumber}}</h1>
     </div>
 
-    <template v-if="subjectCardData.length > 0" center>
+    <template v-if="subjectCardData.length > 0">
       <!-- <subject-card v-for="(card, i) in subjectCardData" 
         :key="i" v-bind:card="card">
       </subject-card> -->
@@ -21,7 +21,7 @@
             :key="i"
             cols="12"
           >
-            <subject-card v-bind:card="card" v-bind:studentNumber="studentNumber"></subject-card>
+            <subject-card v-bind:card="card" v-bind:studentNumber="studentNumber" style="margin: auto"></subject-card>
           </v-col>
         </v-row>
       </v-container>
