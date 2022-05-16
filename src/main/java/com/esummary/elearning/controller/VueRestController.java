@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.esummary.elearning.dto.InitalPageData;
+import com.esummary.elearning.dto.LectureWeekData;
 import com.esummary.elearning.dto.NoticeData;
 import com.esummary.elearning.dto.SubjectCardData;
+import com.esummary.elearning.dto.TaskData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.user.UserInfo;
 import com.esummary.elearning.entity.user.UserSubject;
@@ -63,27 +65,29 @@ public class VueRestController {
 		return initPageData; 
 	}
 	
-	//강의검색
+	//강의 주차 검색
 	@RequestMapping("/lectureDB")
-	public Object lectureSearch(@RequestParam String subjectId) {
-		System.out.println("과목 조회");
-		
-		return null;
+	public List<LectureWeekData> lectureSearch(@RequestParam String subjectId, @RequestParam String studentNumber) {
+		System.out.println("과목 주차 조회");
+		List<LectureWeekData> lectureWeekList = vueService.getLectureeData(subjectId, studentNumber); 
+		return lectureWeekList;
 	}
 	
 	//과제 검색 
 	@RequestMapping("/taskDB")
-	public Object taskSearch(@RequestParam String subjectId) {
-		System.out.println("과제 조회");
-		
-		return null; 
+	public List<TaskData> taskSearch(@RequestParam String subjectId, @RequestParam String studentNumber) {
+		System.out.println("과제 조회"); 
+		List<TaskData> taskList = vueService.getTaskData(subjectId, studentNumber);
+		return taskList; 
 	}
 	
 	//공지 검색
 	@RequestMapping("/noticeDB")
-	public Object noticeSearch(@RequestParam String subjectId) {
+	public List<NoticeData> noticeSearch(@RequestParam String subjectId) {
 		System.out.println("공지 조회");
 		List<NoticeData> notices = vueService.getNoticeData(subjectId);
+		if(notices == null) return null;
+		
 		for (NoticeData noticeData : notices) {
 			System.out.println(noticeData.getTitle());
 		}

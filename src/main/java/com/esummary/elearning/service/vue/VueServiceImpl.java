@@ -1,22 +1,26 @@
 package com.esummary.elearning.service.vue;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.esummary.elearning.dto.InitalPageData;
+import com.esummary.elearning.dto.LectureWeekData;
 import com.esummary.elearning.dto.NoticeData;
 import com.esummary.elearning.dto.SubjectCardData;
+import com.esummary.elearning.dto.TaskData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
+import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
 import com.esummary.elearning.entity.subject.SubjectNoticeInfo;
+import com.esummary.elearning.entity.subject.SubjectTaskInfo;
 import com.esummary.elearning.entity.user.UserInfo;
 import com.esummary.elearning.entity.user.UserSubject;
+import com.esummary.elearning.entity.user.UserTask;
 import com.esummary.elearning.repository.UserSubjectRepository;
 import com.esummary.elearning.repository.subject.SubjectNoticeRepository;
 import com.esummary.elearning.repository.user.UserRepository;
-import com.esummary.elearning.service.test.TestService;
+import com.ibm.icu.util.Calendar.WeekData;
 
 @Service
 public class VueServiceImpl implements VueService {
@@ -26,6 +30,8 @@ public class VueServiceImpl implements VueService {
 	
 	@Autowired
 	SubjectNoticeRepository subjectNoticeRepository;
+	@Autowired
+	UserSubjectRepository userSubjectRepository;
 	
 	@Override
 	public List<SubjectCardData> getInitCardData(String studentNumber) {
@@ -39,25 +45,65 @@ public class VueServiceImpl implements VueService {
 			cardList.add(card);
 		}
 		
-		if(cardList.size() <= 0) 
-			return null;
-		
-		return cardList;
+		if(cardList.size() > 0) return cardList;
+		else return null;
 	}
 	
 	public List<NoticeData> getNoticeData(String subjectId) {
-		//이게 오류 원인이다. 검색을하려면 꼭 객체가 있어야하나?
 		List<SubjectNoticeInfo> noticeInfo = subjectNoticeRepository.findBySubjectInfo_SubjectId(subjectId);
-		
-		
-		List<NoticeData> noticeData = new ArrayList<>();
+		List<NoticeData> noticeDTO = new ArrayList<>();
 		for (SubjectNoticeInfo subjectNoticeInfo : noticeInfo) {
 			NoticeData notice = new NoticeData(subjectNoticeInfo.getTitle(), subjectNoticeInfo.getDescription());
-			noticeData.add(notice);
+			noticeDTO.add(notice);
 		}
-		if(noticeData.size() <= 0) return null;
 		
-		return noticeData;
+		if(noticeDTO.size() > 0) return noticeDTO;
+		else return null;
 	}
 
+	@Override
+	public List<TaskData> getTaskData(String subjectId, String studentNumber) {
+		UserSubject us = userSubjectRepository.
+				findWithUserTaskBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, studentNumber);
+		if(us == null) return null;
+		
+		List<TaskData> taskDTO = new ArrayList<TaskData>(); 
+		List<UserTask> ut = us.getUserTask();
+		for (UserTask userTask : ut) {
+			taskDTO.add(craeteTaskData(userTask));
+		}
+		
+		return taskDTO;
+	}
+
+	private TaskData craeteTaskData(UserTask userTask) {
+		SubjectTaskInfo task = userTask.getSubjectTaskInfo();
+		return new TaskData(
+				task.getTaskId(), task.getTitle(), task.getDescription(), 
+				task.getStartDate(), task.getEndDate(), task.getSubmissionNum(), 
+				task.getNotSubmittedNum(), task.getTotalNum(), task.getSubmitYN()
+			);
+	}
+
+	@Override
+	public List<LectureWeekData> getLectureeData(String subjectId, String studentNumber) {
+		UserSubject us = userSubjectRepository.
+				findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, studentNumber);
+		if(us == null) return null;
+		
+		List<LectureWeekData> weekDTO = new ArrayList<LectureWeekData>(); 
+		List<SubjectLectureWeekInfo> weekList = us.getSubjectInfo().getLectureList();
+		for (SubjectLectureWeekInfo weekInfo : weekList) {
+			weekDTO.add(createWeekData(weekInfo));
+		}
+		return weekDTO;
+	}
+
+	private LectureWeekData createWeekData(SubjectLectureWeekInfo weekInfo) {
+		return new LectureWeekData(
+				weekInfo.getLectureWeekId(), weekInfo.getTitle(), 
+				weekInfo.getStartDate(), weekInfo.getEndDate()
+		);
+	}
+	
 }

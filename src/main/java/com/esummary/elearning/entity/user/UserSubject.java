@@ -7,6 +7,10 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
@@ -14,20 +18,33 @@ import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
 
 import lombok.Data;
 
+@NamedEntityGraphs({
+	@NamedEntityGraph(
+			name = "user-own-task",
+			attributeNodes = {
+					@NamedAttributeNode(value = "userTask", subgraph = "task-detail")
+			},
+			subgraphs = { @NamedSubgraph(
+					name = "task-detail",
+					attributeNodes = { @NamedAttributeNode("subjectTaskInfo") } 
+				)
+			}
+	),
+	@NamedEntityGraph(
+			name = "user-lecture-week",
+			attributeNodes = {
+					@NamedAttributeNode(value = "subjectInfo", subgraph = "week-detail")
+			},
+			subgraphs = { @NamedSubgraph(
+					name = "week-detail",
+					attributeNodes = { @NamedAttributeNode("lectureList") } 
+				)
+			}
+	)
+})
 @Data
 @Entity
 public class UserSubject {
-	/*
-	@EmbeddedId
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
-    	@JoinColumn(name = "STUDENT_NUMBER", referencedColumnName = "STUDENT_NUMBER"),
-    	@JoinColumn(name = "SUBJECT_ID", referencedColumnName = "SUBJECT_ID")
-//            @JoinColumn(name = "STUDENT_NUMBER"),
-//            @JoinColumn(name = "SUBJECT_ID")
-    })
-	UserSubject_Id id;
-	*/
 	@Id
 	int usId; // 시퀸스 사용할 것
 	
@@ -35,7 +52,6 @@ public class UserSubject {
 	@JoinColumn(name="STUDENT_NUMBER")
 	private UserInfo userInfo;
 
-//	@JoinColumn(name = "school_id", referencedColumnName = "school_id")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="SUBJECT_ID")
 	private SubjectInfo subjectInfo;

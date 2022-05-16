@@ -1,6 +1,5 @@
 package com.esummary.elearning.entity.user;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,9 +13,6 @@ import javax.persistence.NamedEntityGraphs;
 import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
-
-import org.jsoup.nodes.Document;
-import org.springframework.data.jpa.repository.EntityGraph;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
 
