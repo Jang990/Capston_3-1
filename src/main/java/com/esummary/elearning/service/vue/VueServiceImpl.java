@@ -31,7 +31,7 @@ public class VueServiceImpl implements VueService {
 	@Autowired
 	SubjectNoticeRepository subjectNoticeRepository;
 	@Autowired
-	UserSubjectRepository userSubjectRepository;
+	UserSubjectRepository userSubjectRepository; 
 	
 	@Override
 	public List<SubjectCardData> getInitCardData(String studentNumber) {

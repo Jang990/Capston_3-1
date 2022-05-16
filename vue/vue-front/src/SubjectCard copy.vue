@@ -18,37 +18,37 @@
       </v-card-subtitle> -->
 
       <v-card-actions>
-        <v-btn-toggle
-          v-model="toggle_exclusive"
-          color="primary"
-          dense
-          group
+        
+        <v-btn
+        color="success"
+        text
+        @click="searchLecture"
         >
-          <v-btn
-            text
-            @click="searchLecture"
-            :value="1"
-          >
-            강의 조회
-          </v-btn>
-          <v-btn
-            text
-            :value="2"
-            @click="searchNotice"
-          >
-            공지 조회
-          </v-btn>
-          <v-btn
-            :value="3"
-            text
-            @click="searchTask"
-          >
-            과제 조회
-          </v-btn>
-        </v-btn-toggle>
-        
-        
-        
+          강의 조회
+          <v-icon>
+              $expand
+          </v-icon>
+        </v-btn>
+        <v-btn
+        color="warning"
+        text
+        @click="searchNotice"
+        >
+          공지 조회
+          <v-icon>
+              $expand
+          </v-icon>
+        </v-btn>
+        <v-btn
+        color="error"
+        text
+        @click="searchTask"
+        >
+          과제 조회
+          <v-icon>
+              $expand
+          </v-icon>
+        </v-btn>
         <!-- color="orange lighten-2" -->
         <v-spacer></v-spacer> 
         <!-- spacer뒤에 btn을 하면 오른쪽아래 아이콘처럼 작게 붙힌다. -->

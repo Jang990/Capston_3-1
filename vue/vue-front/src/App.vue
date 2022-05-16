@@ -21,7 +21,7 @@
             :key="i"
             cols="12"
           >
-            <subject-card v-bind:card="card"></subject-card>
+            <subject-card v-bind:card="card" v-bind:studentNumber="studentNumber"></subject-card>
           </v-col>
         </v-row>
       </v-container>
