@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.esummary.elearning.dto.InitalPageData;
+import com.esummary.elearning.dto.NoticeData;
 import com.esummary.elearning.dto.SubjectCardData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.user.UserInfo;
@@ -82,7 +83,11 @@ public class VueRestController {
 	@RequestMapping("/noticeDB")
 	public Object noticeSearch(@RequestParam String subjectId) {
 		System.out.println("공지 조회");
-		return null;
+		List<NoticeData> notices = vueService.getNoticeData(subjectId);
+		for (NoticeData noticeData : notices) {
+			System.out.println(noticeData.getTitle());
+		}
+		return notices;
 	}
 	
 }

@@ -60,7 +60,6 @@ export default {
         id: this.id,
         password: this.password
       }}).then((response) => {
-        console.log(response); 
         this.$emit('checkUser', response.data);
       });
     }

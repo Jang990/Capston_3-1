@@ -53,12 +53,10 @@ export default {
       this.loginCheck = check;
       if(check) {
         mainAxios.get('/getInitSubject').then((response) => {
-          console.log(response); 
           //주의하라 (response) => {} 이렇게 화살표 함수를 사용해야 this를 사용할때 원하는 값이 나온다. 스코프를 이해해라.
           this.studentName = response.data.name;
           this.studentNumber = response.data.studentNumber;
           this.subjectCardData = response.data.subjectCardData;
-          console.log(this.subjectCardData);
         })
         .catch(function (error) {
           console.log(error);

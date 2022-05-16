@@ -7,11 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.esummary.elearning.dto.InitalPageData;
+import com.esummary.elearning.dto.NoticeData;
 import com.esummary.elearning.dto.SubjectCardData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
+import com.esummary.elearning.entity.subject.SubjectNoticeInfo;
 import com.esummary.elearning.entity.user.UserInfo;
 import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.repository.UserSubjectRepository;
+import com.esummary.elearning.repository.subject.SubjectNoticeRepository;
 import com.esummary.elearning.repository.user.UserRepository;
 import com.esummary.elearning.service.test.TestService;
 
@@ -20,6 +23,9 @@ public class VueServiceImpl implements VueService {
 	
 	@Autowired 
 	UserRepository userRepository;
+	
+	@Autowired
+	SubjectNoticeRepository subjectNoticeRepository;
 	
 	@Override
 	public List<SubjectCardData> getInitCardData(String studentNumber) {
@@ -39,9 +45,19 @@ public class VueServiceImpl implements VueService {
 		return cardList;
 	}
 	
-	private String getNoticeData(String studentNumber) {
+	public List<NoticeData> getNoticeData(String subjectId) {
+		//이게 오류 원인이다. 검색을하려면 꼭 객체가 있어야하나?
+		List<SubjectNoticeInfo> noticeInfo = subjectNoticeRepository.findBySubjectInfo_SubjectId(subjectId);
 		
-		return null;
+		
+		List<NoticeData> noticeData = new ArrayList<>();
+		for (SubjectNoticeInfo subjectNoticeInfo : noticeInfo) {
+			NoticeData notice = new NoticeData(subjectNoticeInfo.getTitle(), subjectNoticeInfo.getDescription());
+			noticeData.add(notice);
+		}
+		if(noticeData.size() <= 0) return null;
+		
+		return noticeData;
 	}
 
 }

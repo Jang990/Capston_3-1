@@ -5,10 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class SubjectCardData {
-	private String subjectId;
-	private String subjectName;
-	private String owner;
+@NoArgsConstructor
+public class NoticeData {
+	String title;
+	String description;
 }
