@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NoticeData {
-	String title;
-	String description;
+	private String noticeId;
+	private String title;
+	private String description;
+	private String author;
+	private String createDate;
 }

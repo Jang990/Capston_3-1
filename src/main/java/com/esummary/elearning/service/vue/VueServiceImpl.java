@@ -53,12 +53,18 @@ public class VueServiceImpl implements VueService {
 		List<SubjectNoticeInfo> noticeInfo = subjectNoticeRepository.findBySubjectInfo_SubjectId(subjectId);
 		List<NoticeData> noticeDTO = new ArrayList<>();
 		for (SubjectNoticeInfo subjectNoticeInfo : noticeInfo) {
-			NoticeData notice = new NoticeData(subjectNoticeInfo.getTitle(), subjectNoticeInfo.getDescription());
-			noticeDTO.add(notice);
-		}
+			NoticeData notice = new NoticeData(
+					subjectNoticeInfo.getNoticeId(),
+					subjectNoticeInfo.getTitle(), 
+					subjectNoticeInfo.getDescription(),
+					subjectNoticeInfo.getAuthor(), 
+					subjectNoticeInfo.getCreateDate()
+				);
+			noticeDTO.add(notice); 
+		} 
 		
 		if(noticeDTO.size() > 0) return noticeDTO;
-		else return null;
+		else return null; 
 	}
 
 	@Override

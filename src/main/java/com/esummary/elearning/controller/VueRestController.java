@@ -88,9 +88,6 @@ public class VueRestController {
 		List<NoticeData> notices = vueService.getNoticeData(subjectId);
 		if(notices == null) return null;
 		
-		for (NoticeData noticeData : notices) {
-			System.out.println(noticeData.getTitle());
-		}
 		return notices;
 	}
 	
