@@ -61,10 +61,10 @@ public class VueServiceImpl implements VueService {
 					subjectNoticeInfo.getCreateDate()
 				);
 			noticeDTO.add(notice); 
-		} 
+		}
 		
 		if(noticeDTO.size() > 0) return noticeDTO;
-		else return null; 
+		else return null;    
 	}
 
 	@Override
