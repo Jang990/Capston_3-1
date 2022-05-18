@@ -20,7 +20,6 @@ import com.esummary.elearning.entity.user.UserTask;
 import com.esummary.elearning.repository.UserSubjectRepository;
 import com.esummary.elearning.repository.subject.SubjectNoticeRepository;
 import com.esummary.elearning.repository.user.UserRepository;
-import com.ibm.icu.util.Calendar.WeekData;
 
 @Service
 public class VueServiceImpl implements VueService {
@@ -59,7 +58,7 @@ public class VueServiceImpl implements VueService {
 					subjectNoticeInfo.getDescription(),
 					subjectNoticeInfo.getAuthor(), 
 					subjectNoticeInfo.getCreateDate()
-				);
+				);  
 			noticeDTO.add(notice); 
 		}
 		
@@ -89,7 +88,7 @@ public class VueServiceImpl implements VueService {
 				task.getStartDate(), task.getEndDate(), task.getSubmissionNum(), 
 				task.getNotSubmittedNum(), task.getTotalNum(), task.getSubmitYN()
 			);
-	}
+	}        
 
 	@Override
 	public List<LectureWeekData> getLectureeData(String subjectId, String studentNumber) {
