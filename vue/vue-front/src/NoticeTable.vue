@@ -1,6 +1,5 @@
 <template>
-  <v-container>
-    <v-data-table
+  <v-data-table
       :headers="headers"
       :items="noticeData"
       :items-per-page="5"
@@ -17,25 +16,24 @@
           <v-spacer></v-spacer>
           <v-switch
             v-model="singleExpand"
-            label="하나의 내용만 보기"
+            label="Single View"
             class="mt-2"
           ></v-switch>
         </v-toolbar>
       </template>
       <template v-slot:expanded-item="{ headers, item }">
-        <td :colspan="headers.length">
-          {{ item.description }}
+        <td :colspan="headers.length" class="td-for-card">
+          <description-card :description="item.description"></description-card>
         </td>
       </template>
     </v-data-table>
-  </v-container>
-
 </template>
 
 <script>
-
+import DescriptionCard from './DescriptionCard';
 export default {
   name: 'NoticeTable',
+  components: {DescriptionCard},
   data() {
     return {
       tableTitle: '공지사항',
@@ -74,4 +72,7 @@ export default {
 </script>
 
 <style>
+.td-for-card{
+  padding: 0 !important;
+}
 </style>

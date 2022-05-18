@@ -88,7 +88,7 @@ public class VueServiceImpl implements VueService {
 				task.getStartDate(), task.getEndDate(), task.getSubmissionNum(), 
 				task.getNotSubmittedNum(), task.getTotalNum(), task.getSubmitYN()
 			);
-	}        
+	}                   
 
 	@Override
 	public List<LectureWeekData> getLectureeData(String subjectId, String studentNumber) {
