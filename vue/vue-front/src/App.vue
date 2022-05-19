@@ -35,13 +35,15 @@
 </template>
 
 <script>
-import axios from "axios"
+import store from './store';
+import axios from "axios";
 import SubjectCard from "./SubjectCard";
 import LoginComponent from "./Login";
 const mainAxios = axios.create({baseURL: 'http://localhost:38080'});
 
 export default {
   name: 'App',
+  store,
   components: {SubjectCard, LoginComponent,},
   data() {
     return {

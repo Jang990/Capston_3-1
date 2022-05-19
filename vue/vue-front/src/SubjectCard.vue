@@ -18,7 +18,7 @@
           {{card.subjectName}} - {{card.owner}}
         </v-card-subtitle> -->
 
-        <v-card-actions :single-expand="singleExpand">
+        <v-card-actions>
           <v-btn-toggle
             v-model="toggle_exclusive"
             color="primary"

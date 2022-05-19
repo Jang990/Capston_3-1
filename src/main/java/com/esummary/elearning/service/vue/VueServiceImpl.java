@@ -63,8 +63,8 @@ public class VueServiceImpl implements VueService {
 		}
 		
 		if(noticeDTO.size() > 0) return noticeDTO;
-		else return null;    
-	}
+		else return null;     
+	}        
 
 	@Override
 	public List<TaskData> getTaskData(String subjectId, String studentNumber) {
@@ -73,8 +73,8 @@ public class VueServiceImpl implements VueService {
 		if(us == null) return null;
 		
 		List<TaskData> taskDTO = new ArrayList<TaskData>(); 
-		List<UserTask> ut = us.getUserTask();
-		for (UserTask userTask : ut) {
+		List<UserTask> ut = us.getUserTask();  
+		for (UserTask userTask : ut) {           
 			taskDTO.add(craeteTaskData(userTask));
 		}
 		
