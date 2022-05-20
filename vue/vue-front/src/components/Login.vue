@@ -6,8 +6,14 @@
               <v-flex xs12 sm8 md4>
                   <v-card class="elevation-12">
                     <v-toolbar dark color="primary">
-                        <v-toolbar-title>ESummary 로그인</v-toolbar-title>
+                      <v-toolbar-title>Esummary 로그인</v-toolbar-title>
                     </v-toolbar>
+                    <v-progress-linear
+                        color="deep-purple"
+                        height="10"
+                        :indeterminate="loading"
+                        :active="loading"
+                    ></v-progress-linear>
                     <v-card-text>
                         <v-form>
                           <v-text-field
@@ -52,6 +58,7 @@ export default {
     return {
       id: '',
       password: '',
+      loading: false,
     };
   },
   props: {
@@ -61,6 +68,7 @@ export default {
   },
   methods: {
     async checkLog(){
+      this.loading = true;
       let successLogin = false;
       await api.post('/vueLoginCheck', null, {params: {
         id: this.id,
@@ -85,9 +93,10 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
-
+        this.loading = false;
         this.$store.commit(SET_LOGIN_CHECK, true);
       }
+      this.loading = false;
     }
   },
 };
