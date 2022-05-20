@@ -40,8 +40,11 @@
 </template>
 
 <script>
+import {SET_LOGIN_CHECK, SET_INITIAL_DATA} from './store'
+import { mapState } from 'vuex';
 import axios from "axios"
 const api = axios.create({baseURL: 'http://localhost:38080'});
+
 
 export default {
   name: 'Login',
@@ -54,14 +57,34 @@ export default {
   props: {
       source: String,
   },
+  computed: {
+  },
   methods: {
-    checkLog(){
-      api.post('/vueLoginCheck', null, {params: {
+    async checkLog(){
+      await api.post('/vueLoginCheck', null, {params: {
         id: this.id,
         password: this.password
       }}).then((response) => {
-        this.$emit('checkUser', response.data);
+        this.$store.commit(SET_LOGIN_CHECK, response.data);
+        // this.$emit('checkUser', response.data);
       });
+
+      if(this.$store.state.loginCheck) {
+        await api.get('/getInitSubject').then((response) => {
+          //주의하라 (response) => {} 이렇게 화살표 함수를 사용해야 this를 사용할때 원하는 값이 나온다. 스코프를 이해해라.
+          this.$store.commit(
+            SET_INITIAL_DATA, 
+            {
+              studentName: response.data.name, 
+              studentNumber: response.data.studentNumber, 
+              subjectCardData: response.data.subjectCardData
+            }
+          );
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      }
     }
   },
 };

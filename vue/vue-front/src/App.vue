@@ -2,7 +2,8 @@
   <div id="app">
     <v-app>
       <template v-if="!loginCheck">
-        <login-component @checkUser="checkUser"></login-component>
+        <!-- <login-component @checkUser="checkUser"></login-component> -->
+        <login-component></login-component>
       </template>
       <!--라우터 없이 만들음. 라우터 공부하고 템플릿없애고 다시 만들기.-->
       <template v-else>
@@ -35,39 +36,28 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import store from './store';
 import axios from "axios";
 import SubjectCard from "./SubjectCard";
 import LoginComponent from "./Login";
-const mainAxios = axios.create({baseURL: 'http://localhost:38080'});
 
 export default {
   name: 'App',
   store,
   components: {SubjectCard, LoginComponent,},
+  computed: {
+    ...mapState(['loginCheck', 'studentName', 'studentNumber', 'subjectCardData']),
+  },
   data() {
     return {
-      loginCheck: false,
-      studentName: '',
-      studentNumber: '',
-      subjectCardData: [],
+      // loginCheck: false,
+      // studentName: '',
+      // studentNumber: '',
+      // subjectCardData: [],
     }
   },
   methods: {
-    checkUser(check) {
-      this.loginCheck = check;
-      if(check) {
-        mainAxios.get('/getInitSubject').then((response) => {
-          //주의하라 (response) => {} 이렇게 화살표 함수를 사용해야 this를 사용할때 원하는 값이 나온다. 스코프를 이해해라.
-          this.studentName = response.data.name;
-          this.studentNumber = response.data.studentNumber;
-          this.subjectCardData = response.data.subjectCardData;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-      }
-    },
   },
 }
 </script>

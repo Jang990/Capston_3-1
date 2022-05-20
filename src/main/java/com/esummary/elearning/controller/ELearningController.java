@@ -29,12 +29,12 @@ public class ELearningController {
 	public String index() {
 		return "index";
 	}
-	
+	                     
 	
 	@RequestMapping("/login")
 	public String login(Model model) { 
 		
-		/*
+		/*  
 			Document doc3;
 			try {
 				doc3 = Jsoup.connect("https://cyber.inhatc.ac.kr/Main.do?cmd=viewHome")

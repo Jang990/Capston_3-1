@@ -1,11 +1,17 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import axios from "axios"
 Vue.use(Vuex);
 
 export const SET_WINNER = 'SET_WINNER';
+export const SET_LOGIN_CHECK = 'SET_LOGIN_CHECK';
+export const SET_INITIAL_DATA = 'SET_INITIAL_DATA';
 export default new Vuex.Store({
     state: {
-        turn: 'O',
+        loginCheck: false,
+        studentName: '',
+        studentNumber: '',
+        subjectCardData: [],
     }, //Vue에 data와 비슷
     getters: {
 
@@ -15,6 +21,15 @@ export default new Vuex.Store({
         [SET_WINNER](state, winner) {
             state.winner = winner;
         },
+        [SET_LOGIN_CHECK](state, loginCheck) {
+            state.loginCheck = loginCheck;
+        },
+        [SET_INITIAL_DATA](state, {studentName: name, studentNumber: number, subjectCardData: cardData}) {
+            state.studentName = name;
+            state.studentNumber = number;
+            state.subjectCardData = cardData;
+        },
+        
     }, //state를 동기적으로 수정할 때 사용
     //state를 바꿀때 바로 바꾸지말고 mutations를 통해 바꾸길 권장
     actions: {
