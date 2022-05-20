@@ -39,8 +39,8 @@
 import { mapState } from 'vuex';
 import store from './store';
 import axios from "axios";
-import SubjectCard from "./SubjectCard";
-import LoginComponent from "./Login";
+import SubjectCard from "./components/subjectCards/SubjectCard";
+import LoginComponent from "./components/Login";
 
 export default {
   name: 'App',

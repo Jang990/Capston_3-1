@@ -67,7 +67,7 @@
 
 <script>
 import axios from "axios"
-import SubjectCard from "./SubjectCard";
+import SubjectCard from "./subjectCards/SubjectCard";
 
 export default {
   name: 'App',
