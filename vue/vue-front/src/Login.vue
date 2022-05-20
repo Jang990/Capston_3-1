@@ -6,7 +6,7 @@
               <v-flex xs12 sm8 md4>
                   <v-card class="elevation-12">
                     <v-toolbar dark color="primary">
-                        <v-toolbar-title>Login form</v-toolbar-title>
+                        <v-toolbar-title>ESummary 로그인</v-toolbar-title>
                     </v-toolbar>
                     <v-card-text>
                         <v-form>
@@ -41,6 +41,7 @@
 
 <script>
 import axios from "axios"
+const api = axios.create({baseURL: 'http://localhost:38080'});
 
 export default {
   name: 'Login',
@@ -55,7 +56,6 @@ export default {
   },
   methods: {
     checkLog(){
-      const api = axios.create({baseURL: 'http://localhost:38080'});
       api.post('/vueLoginCheck', null, {params: {
         id: this.id,
         password: this.password
