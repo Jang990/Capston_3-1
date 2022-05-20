@@ -1,36 +1,101 @@
 <template>
   <div id="app">
-    <v-app>
-      <template v-if="!loginCheck">
-        <!-- <login-component @checkUser="checkUser"></login-component> -->
+    <template v-if="!loginCheck">
         <login-component></login-component>
-      </template>
-      <!--라우터 없이 만들음. 라우터 공부하고 템플릿없애고 다시 만들기.-->
-      <template v-else>
-      <div>
-        <h1 left>{{studentName}}님 반갑습니다.</h1>
-        <h1 left>학번: {{studentNumber}}</h1>
-      </div>
+    </template>
+    <!-- 라우터 공부후 템플릿 ifelse를 대체하기. -->
+    <v-app id="inspire" v-else>
+      <v-app-bar
+        app
+        color="white"
+        flat
+      >
+        <v-avatar
+          :color="$vuetify.breakpoint.smAndDown ? 'grey darken-1' : 'transparent'"
+          size="32"
+        ></v-avatar>
 
-      <template v-if="subjectCardData.length > 0">
-        <!-- <subject-card v-for="(card, i) in subjectCardData" 
-          :key="i" v-bind:card="card">
-        </subject-card> -->
+        <v-tabs
+          centered
+          class="ml-n9"
+          color="grey darken-1"
+        >
+          <v-tab
+            v-for="link in links"
+            :key="link"
+          >
+            {{ link }}
+          </v-tab>
+        </v-tabs>
+
+        <v-avatar
+          class="hidden-sm-and-down"
+          color="grey darken-1 shrink"
+          size="32"
+        ></v-avatar>
+      </v-app-bar>
+
+      <v-main class="grey lighten-3">
         <v-container>
-          <v-row dense>
+          <v-row>
             <v-col
-              v-for="(card, i) in subjectCardData"
-              :key="i"
               cols="12"
-              class="mx-auto"
+              sm="2"
             >
-              <subject-card v-bind:card="card" v-bind:studentNumber="studentNumber"></subject-card>
+              <v-sheet
+                rounded="lg"
+                min-height="268"
+              >
+                <h3 left>{{studentName}}님 반갑습니다.</h3>
+                <h3 left>학번: {{studentNumber}}</h3>
+              </v-sheet>
+            </v-col>
+
+            <v-col
+              cols="12"
+              sm="8"
+            >
+              <v-sheet
+                min-height="70vh"
+                rounded="lg"
+              >
+                <!--  -->
+                <template v-if="subjectCardData.length > 0">
+                  <!-- <subject-card v-for="(card, i) in subjectCardData" 
+                    :key="i" v-bind:card="card">
+                  </subject-card> -->
+                  <v-container>
+                    <v-row dense>
+                      <v-col
+                        v-for="(card, i) in subjectCardData"
+                        :key="i"
+                        cols="12"
+                        class="mx-auto"
+                      >
+                        <subject-card v-bind:card="card" v-bind:studentNumber="studentNumber"></subject-card>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </template>
+                <div v-else>조회된 과목이 없습니다!</div>
+              </v-sheet>
+            </v-col>
+
+            <v-col
+              cols="12"
+              sm="2"
+            >
+              <v-sheet
+                rounded="lg"
+                min-height="268"
+              >
+                <!--  -->
+                여기에는 할일 그래프 만들기
+              </v-sheet>
             </v-col>
           </v-row>
         </v-container>
-      </template>
-      <div v-else>조회된 과목이 없습니다!</div>
-    </template> 
+      </v-main>
     </v-app>
   </div>
 </template>
@@ -51,10 +116,12 @@ export default {
   },
   data() {
     return {
-      // loginCheck: false,
-      // studentName: '',
-      // studentNumber: '',
-      // subjectCardData: [],
+      links: [
+        'Dashboard',
+        'Messages',
+        'Profile',
+        'Updates',
+      ],
     }
   },
   methods: {

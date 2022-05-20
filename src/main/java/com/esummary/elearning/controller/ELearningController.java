@@ -28,7 +28,7 @@ public class ELearningController {
 	@RequestMapping("/")
 	public String index() {
 		return "index";
-	}  
+	}        
 	
 	
 	@RequestMapping("/login")
