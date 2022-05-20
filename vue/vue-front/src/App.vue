@@ -46,8 +46,9 @@
                 rounded="lg"
                 min-height="268"
               >
-                <h3 left>{{studentName}}님 반갑습니다.</h3>
-                <h3 left>학번: {{studentNumber}}</h3>
+                <profile-component></profile-component>
+                <!-- <h3 left>{{studentName}}님 반갑습니다.</h3> -->
+                <!-- <h3 left>학번: {{studentNumber}}</h3> -->
               </v-sheet>
             </v-col>
 
@@ -106,11 +107,12 @@ import store from './store';
 import axios from "axios";
 import SubjectCard from "./components/subjectCards/SubjectCard";
 import LoginComponent from "./components/Login";
+import ProfileComponent from './components/ProfileComponent';
 
 export default {
   name: 'App',
   store,
-  components: {SubjectCard, LoginComponent,},
+  components: {SubjectCard, LoginComponent,ProfileComponent},
   computed: {
     ...mapState(['loginCheck', 'studentName', 'studentNumber', 'subjectCardData']),
   },
