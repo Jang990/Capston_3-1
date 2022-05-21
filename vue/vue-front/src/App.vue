@@ -107,7 +107,7 @@ import store from './store';
 import axios from "axios";
 import SubjectCard from "./components/subjectCards/SubjectCard";
 import LoginComponent from "./components/Login";
-import ProfileComponent from './components/ProfileComponent';
+import ProfileComponent from './components/profile/ProfileComponent';
 
 export default {
   name: 'App',

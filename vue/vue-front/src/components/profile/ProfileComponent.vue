@@ -3,10 +3,10 @@
     class="mx-auto"
     max-width="374"
   >
-    <v-card-text class="align center" prepend-icon="mdi-lock">
-      <h2>{{this.$store.state.studentName}}</h2>
+    <v-card-text class="align center">
+      <h2><v-icon class="ml-1">mdi-face-man</v-icon> {{this.$store.state.studentName}}</h2>
     </v-card-text>
-    <v-card-text class="align center" prepend-icon="material-icons">
+    <v-card-text class="align center">
       <h2>{{this.$store.state.studentNumber}}</h2>
     </v-card-text>
 
@@ -14,9 +14,8 @@
 
     <v-card-title>과업</v-card-title>
 
-    <v-card-text>
-      미완료 / 완료 / 합
-    </v-card-text>
+    
+    <task-summary></task-summary>
 
     <v-card-actions>
       <v-btn
@@ -31,8 +30,10 @@
 </template>
 
 <script>
+import TaskSummary from './TaskSummary';
 export default {
   name: 'ProfileComponent',
+  components: {TaskSummary},
   data() {
     return {
       
