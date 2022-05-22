@@ -63,6 +63,19 @@ public class SubjectUtil_Inhatc implements SubjectUtil{
 		return user.getSubjectList();
 	}
 	
+	@Override
+	public List<SubjectInfo> crawlBasicSubject(UserInfo user) {
+		List<SubjectInfo> subjectList = this.getInitialSubjectData(user.getInitialCookies());
+		user.setSubjectList(subjectList); //DB연동없이 하는것이기때문에 오류가 있을 수 있음?
+		return subjectList;
+	}
+	
+	@Override
+	public void saveBasicSubject(UserInfo user, List<SubjectInfo> subjectList) {
+		List<UserSubject> usList = this.createAndSaveUserSubject(user,subjectList);
+		user.setUserSubjects(usList); //DB연동없이 하는것이기때문에 오류가 있을 수 있음?
+	}
+	
 	private List<SubjectInfo> getInitialSubjectData(Map<String, String> loginCookie) {
 		
 		List<SubjectInfo> subjectList = new ArrayList<SubjectInfo>();

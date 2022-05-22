@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.esummary.elearning.dto.SubjectCardData;
+import com.esummary.elearning.dto.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.user.UserInfo;
 import com.esummary.elearning.service.subject.util.crawling.SubjectUtil;
@@ -41,6 +43,29 @@ public class ELearningServiceImpl implements ELearningService {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	@Override
+	public List<SubjectCardData> crawlBasicSubjectData(UserData user) {
+		UserInfo userInfo = new UserInfo();
+		userInfo.setStudentNumber(user.getStudentNumber());
+		userInfo.setUserName(user.getUserName());
+		userInfo.setInitialCookies(user.getInitialCookies());
+		//크롤링
+		List<SubjectInfo> subjects = subjectUtil_Crawl.crawlBasicSubject(userInfo);
+		//db에 내용 저장
+		subjectUtil_Crawl.saveBasicSubject(userInfo, subjects);
+		List<SubjectCardData> subjectCards = new ArrayList<SubjectCardData>();
+		for (SubjectInfo subjectInfo : subjects) {
+			subjectCards.add(new SubjectCardData(
+					subjectInfo.getSubjectId(), 
+					subjectInfo.getSubjectName(), 
+					subjectInfo.getSubjectOwnerName()
+				)
+			);
+		}
+	
+		return subjectCards;
 	}
 	
 }

@@ -13,5 +13,6 @@ public interface VueService {
 	List<NoticeData> getNoticeData(String subjectId);
 	List<TaskData> getTaskData(String subjectId, String studentNumber);
 	List<LectureWeekData> getLectureeData(String subjectId, String studentNumber);
+	boolean saveUser(UserData user);
 	boolean isExistUserSubjectInDB(String studentNumber);
 }

@@ -120,4 +120,17 @@ public class VueServiceImpl implements VueService {
 		return check;
 	}
 	
+	@Override
+	public boolean saveUser(UserData user) {
+		if(userRepository.findByStudentNumber(user.getStudentNumber()) == null) {
+			UserInfo userInfo = new UserInfo();
+			userInfo.setStudentNumber(user.getStudentNumber());
+			userInfo.setUserName(user.getUserName());
+			userRepository.save(userInfo); 
+			return true;
+		}
+		else
+			return false;
+	}
+	
 }

@@ -14,4 +14,8 @@ public interface SubjectUtil {
 //	List<SubjectInfo> InitSubjectData(UserInfo user);
 //	void getSubjectDetail(UserInfo user);
 //	void settingUserSubject(UserInfo user, List<SubjectInfo> subjectList);
+
+	List<SubjectInfo> crawlBasicSubject(UserInfo user);
+
+	void saveBasicSubject(UserInfo user, List<SubjectInfo> subjectList);
 }

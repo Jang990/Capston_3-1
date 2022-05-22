@@ -66,19 +66,24 @@ public class VueRestController {
 		String name = user.getUserName();
 		String studentNumber = user.getStudentNumber();
 		
+		initPageData.setName(name);
+		initPageData.setStudentNumber(studentNumber);
+		
 		//분기가 필요하다. 기존 db에 데이터가 있는 유저거나, db에 데이터가 없는 유저거나.
 		if(vueService.isExistUserSubjectInDB(studentNumber)) {
-			//가져오기.
-			initPageData.setName(name);
-			initPageData.setStudentNumber(studentNumber);		
+			//가져오기.			
 			initPageData.setSubjectCardData(vueService.getInitCardData(studentNumber));
-			return initPageData; 
 		}
 		else {
-			//크롤링.
-			System.out.println("유저체크 크롤링");
-			return null;
+			//유저 저장
+			//크롤링, 크롤링 정보저장, 크롤링한정보 반환
+			//정보 불러오기
+			vueService.saveUser(user);
+			eLearningService.crawlBasicSubjectData(user);
+			initPageData.setSubjectCardData(eLearningService.crawlBasicSubjectData(user));
+			System.out.println("크롤링가동");
 		}
+		return initPageData;
 		
 		
 		
