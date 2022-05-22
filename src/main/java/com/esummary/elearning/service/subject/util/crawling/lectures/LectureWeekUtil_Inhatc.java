@@ -1,5 +1,6 @@
 package com.esummary.elearning.service.subject.util.crawling.lectures;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -64,6 +66,8 @@ public class LectureWeekUtil_Inhatc implements LectureWeekUtil {
 		
 		return weekList;
 	}
+	
+	
 	
 	private SubjectLectureWeekInfo getWeekInfo(Element element, SubjectInfo subjectInfo) {
 		Elements lectureElements = crawlLectureBox(element);
@@ -147,5 +151,36 @@ public class LectureWeekUtil_Inhatc implements LectureWeekUtil {
 				title += splitData[i] + " ";
 		}
 		return title.trim();
+	}
+
+	@Override
+	public List<SubjectLectureWeekInfo> getSubjectLectureWeekInfo(UserSubject userSubject,
+			Map<String, String> initialCookies) {
+		this.userSubject = userSubject;
+		List<SubjectLectureWeekInfo> weekList = new ArrayList<SubjectLectureWeekInfo>();
+		String studyHome = SubjectUtil_Inhatc.createStudyHomeUrl(userSubject.getSubjectId());
+		Document docStudyHome = null;
+		try {
+			docStudyHome = Jsoup.connect(studyHome).cookies(initialCookies).get();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		//StudyHome에서 과제 내용이 적혀있는 섹션에 css Selector
+		final String lecturePageSelector = "#0  > ul > li.last > a";
+		final String lectureBoxSelector = ".listContent";
+		
+		Document docNoticePage = ELearningServiceImpl.gotoHrefPageFromHomePage(
+				initialCookies, docStudyHome, lecturePageSelector);
+		Elements lectures = docNoticePage.select(lectureBoxSelector);
+		
+		for (Element element : lectures) {
+			SubjectLectureWeekInfo week = getWeekInfo(element, userSubject.getSubjectInfo());
+			if(week != null) {
+				weekList.add(week);
+			}
+		}
+		
+		return weekList;
 	}
 }

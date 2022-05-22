@@ -86,6 +86,8 @@ public class LectureUtil_Inhatc implements LectureUtil {
 			lecture.setTitle(title);
 			lecture.setFullTime(fullTime);
 			lecture.setSubjectLectureWeekInfo(weekInfo);
+			lecture.setStatus(status);
+			lecture.setLearningTime(learningTime);
 			subjectLectureRepository.save(lecture);
 			lectures.add(lecture);
 			

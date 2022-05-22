@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,11 @@ public class SubjectLecture {
 	String title;
 	String fullTime;
 //	String jsCode;
+	
+	@Transient
+	String status; // 0 or 1 //학습 완료: 1, 학습 미완료: 0 
+	@Transient
+	String learningTime;
 	
 	@ManyToOne
 	@JoinColumn(name = "LECTURE_WEEK_ID")
@@ -79,6 +85,22 @@ public class SubjectLecture {
 
 	public void setSubjectLectureWeekInfo(SubjectLectureWeekInfo subjectLectureWeekInfo) {
 		this.subjectLectureWeekInfo = subjectLectureWeekInfo;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getLearningTime() {
+		return learningTime;
+	}
+
+	public void setLearningTime(String learningTime) {
+		this.learningTime = learningTime;
 	}
 	
 	

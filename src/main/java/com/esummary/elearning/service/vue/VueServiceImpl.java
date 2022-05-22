@@ -6,12 +6,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.esummary.elearning.dto.LectureData;
 import com.esummary.elearning.dto.LectureWeekData;
 import com.esummary.elearning.dto.NoticeData;
 import com.esummary.elearning.dto.SubjectCardData;
 import com.esummary.elearning.dto.TaskData;
 import com.esummary.elearning.dto.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
+import com.esummary.elearning.entity.subject.SubjectLecture;
 import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
 import com.esummary.elearning.entity.subject.SubjectNoticeInfo;
 import com.esummary.elearning.entity.subject.SubjectTaskInfo;
@@ -21,6 +23,8 @@ import com.esummary.elearning.entity.user.UserTask;
 import com.esummary.elearning.repository.UserSubjectRepository;
 import com.esummary.elearning.repository.subject.SubjectNoticeRepository;
 import com.esummary.elearning.repository.user.UserRepository;
+import com.esummary.elearning.service.subject.util.crawling.lectures.LectureWeekUtil;
+import com.esummary.elearning.service.subject.util.crawling.lectures.lecture.LectureUtil;
 import com.esummary.elearning.service.subject.util.crawling.notice.NoticeUtil;
 import com.esummary.elearning.service.subject.util.crawling.task.TaskUtil;
 
@@ -39,6 +43,8 @@ public class VueServiceImpl implements VueService {
 	NoticeUtil noticeUtil;
 	@Autowired
 	TaskUtil taskUtil;
+	@Autowired
+	LectureWeekUtil lectureWeekUtil;
 	
 	@Override
 	public List<SubjectCardData> getInitCardData(String studentNumber) {
@@ -116,9 +122,10 @@ public class VueServiceImpl implements VueService {
 	}
 
 	private LectureWeekData createWeekData(SubjectLectureWeekInfo weekInfo) {
+		//여기 null 고쳐야한다.
 		return new LectureWeekData(
 				weekInfo.getLectureWeekId(), weekInfo.getTitle(), 
-				weekInfo.getStartDate(), weekInfo.getEndDate()
+				weekInfo.getStartDate(), weekInfo.getEndDate(), null
 		);
 	}
 
@@ -181,6 +188,42 @@ public class VueServiceImpl implements VueService {
 			);
 		}
 		return taskDTO;
+	}
+
+	@Override
+	public List<LectureWeekData> crawlLecture(UserData user, String subjectId) {
+		UserSubject userSubject = userSubjectRepository
+				.findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, user.getStudentNumber());
+		List<SubjectLectureWeekInfo> lectures = lectureWeekUtil.getSubjectLectureWeekInfo(userSubject, user.getInitialCookies());
+		List<LectureWeekData> lecturesDTO = new ArrayList<LectureWeekData>();
+		for (SubjectLectureWeekInfo subjectLectureWeekInfo : lectures) {
+			List<SubjectLecture> lectureDetail = subjectLectureWeekInfo.getLectures();
+			List<LectureData> lectureDetailDTO = new ArrayList<LectureData>();
+			for (SubjectLecture detail : lectureDetail) {
+				lectureDetailDTO.add( new LectureData(
+						detail.getLectureId(), 
+						detail.getLectureVideoId(), 
+						detail.getType(), 
+						detail.getIdx(), 
+						detail.getTitle(), 
+						detail.getFullTime(), 
+						detail.getStatus(), 
+						detail.getLearningTime()
+					)
+				);
+			}
+					
+			lecturesDTO.add(new LectureWeekData(
+					subjectLectureWeekInfo.getLectureWeekId(), 
+					subjectLectureWeekInfo.getTitle(), 
+					subjectLectureWeekInfo.getStartDate(),
+					subjectLectureWeekInfo.getEndDate(),
+					lectureDetailDTO
+				)
+			);
+		}
+		
+		return lecturesDTO;
 	}
 	
 }

@@ -8,6 +8,7 @@ export const SET_LOGIN_CHECK = 'SET_LOGIN_CHECK';
 export const SET_INITIAL_DATA = 'SET_INITIAL_DATA';
 export const SET_NOTICE_DATA = 'SET_NOTICE_DATA';
 export const SET_TASK_DATA = 'SET_TASK_DATA';
+export const SET_LECTURES_DATA = 'SET_LECTURES_DATA';
 export const CRAWL_SUBJECT = 'crawlSubject';
 
 const api = axios.create({baseURL: 'http://localhost:38080'});
@@ -43,8 +44,26 @@ export default new Vuex.Store({
                 element['notice'] = [];
                 element['task'] = [];
             }
-            console.log(objs);
+            // console.log(objs);
             state.subjectCardData = objs;
+        },
+        [SET_LECTURES_DATA](state, {cardIndex: index, lecturesData: data}) {
+            if(data.length != 0) {
+                for(let i = 0; i < data.length; i++) {
+                    state.subjectCardData[index].lectures[i] = { 
+                        lectureWeekId: data[i].lectureWeekId, 
+                        title: data[i].title, 
+                        endDate: data[i].endDate, 
+                        startDate: data[i].startDate, 
+                        lectures: data[i].lectures, 
+                    };
+                }
+            }
+            else {
+                state.subjectCardData[index].lectures = null;
+            }
+            Vue.set(state.subjectCardData[index].isCrawling, 0, false);
+            // console.log(state.subjectCardData[index].lectures);
         },
         [SET_NOTICE_DATA](state, {cardIndex: index, noticeData: data}) {
             if(data.length != 0) {
@@ -83,13 +102,19 @@ export default new Vuex.Store({
                 state.subjectCardData[index].task = null;
             }
             Vue.set(state.subjectCardData[index].isCrawling, 2, false);
-            console.log(state.subjectCardData[index].task);
+            // console.log(state.subjectCardData[index].task);
         },
     }, //state를 동기적으로 수정할 때 사용
     //state를 바꿀때 바로 바꾸지말고 mutations를 통해 바꾸길 권장
     actions: {
         async crawlSubject(context) {
             for(let i = 0; i < this.state.subjectCardData.length; i++) {
+                await api.post('/crawlLecture', null, {params: {
+                    subjectId: this.state.subjectCardData[i].subjectId,
+                }}).then((response) => {
+                    // console.log(response.data);
+                    context.commit([SET_LECTURES_DATA], {cardIndex: i, lecturesData: response.data});
+                });
                 await api.post('/crawlNotice', null, {params: {
                     subjectId: this.state.subjectCardData[i].subjectId,
                 }}).then((response) => {
@@ -102,6 +127,7 @@ export default new Vuex.Store({
                     // console.log(response.data);
                     context.commit([SET_TASK_DATA], {cardIndex: i, taskData: response.data});
                 });
+
             }
         }
     }, // 비동기를 사용할 때, 또는 여러 뮤테이션을 연달아 실행할 때

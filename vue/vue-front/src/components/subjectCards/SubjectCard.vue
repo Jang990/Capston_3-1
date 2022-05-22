@@ -62,32 +62,39 @@
           <div v-if="showLectureWeek">
             <v-divider></v-divider>
             <v-progress-linear
-                        color="deep-purple"
-                        height="10"
-                        :indeterminate="isLectureSearch"
-                        :active="isLectureSearch"
+              color="deep-purple"
+              height="10"
+              :indeterminate="subjectCardData[index].isCrawling[0]"
+              :active="subjectCardData[index].isCrawling[0]"
             ></v-progress-linear>
             <v-card-text 
-              v-if="isLectureSearch"
+              v-if="subjectCardData[index].isCrawling[0]"
             >
               강의 데이터를 조회중입니다...
             </v-card-text>
             <v-card-text 
-              v-else-if="noticeData == null"
+              v-else-if="subjectCardData[index].lectures == null"
             >
               조회된 강의가 없습니다.
             </v-card-text>
             <v-card-text v-else>
               강의 주차 내용에 대한 것들...
             </v-card-text>
+            <!-- 
+            <task-table 
+              v-else
+              :lecturesData="subjectCardData[index].lectures"
+            >
+            </task-table>
+            -->
           </div>
           <div v-else-if="showNotice">
             <v-divider></v-divider>
             <v-progress-linear
-                        color="deep-purple"
-                        height="10"
-                        :indeterminate="subjectCardData[index].isCrawling[1]"
-                        :active="subjectCardData[index].isCrawling[1]"
+              color="deep-purple"
+              height="10"
+              :indeterminate="subjectCardData[index].isCrawling[1]"
+              :active="subjectCardData[index].isCrawling[1]"
             ></v-progress-linear>
             <v-card-text 
               v-if="subjectCardData[index].isCrawling[1]"
@@ -108,10 +115,10 @@
           <div v-else-if="showTask">
             <v-divider></v-divider>
             <v-progress-linear
-                        color="deep-purple"
-                        height="10"
-                        :indeterminate="subjectCardData[index].isCrawling[2]"
-                        :active="subjectCardData[index].isCrawling[2]"
+              color="deep-purple"
+              height="10"
+              :indeterminate="subjectCardData[index].isCrawling[2]"
+              :active="subjectCardData[index].isCrawling[2]"
             ></v-progress-linear>
             <v-card-text 
               v-if="subjectCardData[index].isCrawling[2]"
@@ -129,7 +136,7 @@
             <!-- 
             <task-table 
               v-else
-              :noticeData="subjectCardData[index].task"
+              :taskData="subjectCardData[index].task"
             >
             </task-table>
             -->

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.esummary.elearning.dto.InitalPageData;
+import com.esummary.elearning.dto.LectureData;
 import com.esummary.elearning.dto.LectureWeekData;
 import com.esummary.elearning.dto.NoticeData;
 import com.esummary.elearning.dto.SubjectCardData;
@@ -90,9 +91,10 @@ public class VueRestController {
 		return "아이디: " + subjectId + ", 학번: " + user.getStudentNumber();
 	}
 	@RequestMapping("/crawlLecture")
-	public String crawlLecture(HttpServletRequest request, @RequestParam String subjectId) {
+	public List<LectureWeekData> crawlLecture(HttpServletRequest request, @RequestParam String subjectId) {
 		UserData user = (UserData)request.getSession().getAttribute("userData");
-		return "아이디: " + subjectId + ", 학번: " + user.getStudentNumber();
+		List<LectureWeekData> lectures = vueService.crawlLecture(user, subjectId);
+		return lectures;
 	}
 	@RequestMapping("/crawlNotice")
 	public List<NoticeData> crawlNotice(HttpServletRequest request, @RequestParam String subjectId) {

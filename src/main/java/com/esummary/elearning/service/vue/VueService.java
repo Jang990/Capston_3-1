@@ -1,7 +1,8 @@
 package com.esummary.elearning.service.vue;
 
-import java.util.List; 
+import java.util.List;
 
+import com.esummary.elearning.dto.LectureData;
 import com.esummary.elearning.dto.LectureWeekData;
 import com.esummary.elearning.dto.NoticeData;
 import com.esummary.elearning.dto.SubjectCardData;
@@ -18,4 +19,7 @@ public interface VueService {
 	
 	List<NoticeData> crawlNotice(UserData user, String subjectId);
 	List<TaskData> crawlTask(UserData user, String subjectId);
+	List<LectureWeekData> crawlLecture(UserData user, String subjectId);
+	
+	
 }
