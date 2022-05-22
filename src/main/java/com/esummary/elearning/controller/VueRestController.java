@@ -94,7 +94,7 @@ public class VueRestController {
 	public String summary(HttpServletRequest request, Model model) {
 		UserInfo user = (UserInfo)request.getSession().getAttribute("userInfo");
 		
-		List<SubjectInfo> subjectList = eLearningService.summary(user);
+		List<SubjectInfo> subjectList = eLearningService.summary(user); 
 		
 		model.addAttribute("name", user.getUserName());
 		model.addAttribute("id", user.getStudentNumber());

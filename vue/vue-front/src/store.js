@@ -32,7 +32,11 @@ export default new Vuex.Store({
             for (let i = 0; i < objs.length; i++) {
                 const element = objs[i];
                 element['isCrawling'] = true;
+                element['lectures'] = [];
+                element['notice'] = [];
+                element['task'] = [];
             }
+            console.log(objs);
             state.subjectCardData = objs;
         },
         

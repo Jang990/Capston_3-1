@@ -164,6 +164,8 @@ export default {
   },
   methods: {
     searchLecture() {
+      console.log('학번' + this.studentNumber+ ', 과목번호: ' + this.card.subjectId);
+
       const lecture = new Promise((resolve, reject) => {
         mainAxios.post('/lectureDB', null, {params: {
           studentNumber: this.studentNumber,
@@ -270,9 +272,9 @@ export default {
     clearTimeout(timeouts);
   },
   created() {
-    this.searchNotice();
-    this.searchLecture();
-    this.searchTask();
+    // this.searchNotice();
+    // this.searchLecture();
+    // this.searchTask();
   }
 }
 </script>

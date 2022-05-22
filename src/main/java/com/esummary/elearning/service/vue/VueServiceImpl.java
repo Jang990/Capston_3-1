@@ -97,12 +97,14 @@ public class VueServiceImpl implements VueService {
 	public List<LectureWeekData> getLectureeData(String subjectId, String studentNumber) {
 		UserSubject us = userSubjectRepository.
 				findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, studentNumber);
-		if(us == null) return null;
+		if(us == null) {
+			return null;
+		}
 		
 		List<LectureWeekData> weekDTO = new ArrayList<LectureWeekData>(); 
 		List<SubjectLectureWeekInfo> weekList = us.getSubjectInfo().getLectureList();
 		for (SubjectLectureWeekInfo weekInfo : weekList) {
-			weekDTO.add(createWeekData(weekInfo));
+			weekDTO.add(createWeekData(weekInfo));   
 		}
 		return weekDTO;
 	}
