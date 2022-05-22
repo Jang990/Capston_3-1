@@ -101,9 +101,10 @@ public class VueRestController {
 		return notice;
 	}
 	@RequestMapping("/crawlTask")
-	public String crawlTask(HttpServletRequest request, @RequestParam String subjectId) {
+	public List<TaskData> crawlTask(HttpServletRequest request, @RequestParam String subjectId) {
 		UserData user = (UserData)request.getSession().getAttribute("userData");
-		return "아이디: " + subjectId + ", 학번: " + user.getStudentNumber();
+		List<TaskData> task = vueService.crawlTask(user, subjectId);  
+		return task;
 	}
 	
 	

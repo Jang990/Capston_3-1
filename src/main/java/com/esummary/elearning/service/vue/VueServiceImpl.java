@@ -22,6 +22,7 @@ import com.esummary.elearning.repository.UserSubjectRepository;
 import com.esummary.elearning.repository.subject.SubjectNoticeRepository;
 import com.esummary.elearning.repository.user.UserRepository;
 import com.esummary.elearning.service.subject.util.crawling.notice.NoticeUtil;
+import com.esummary.elearning.service.subject.util.crawling.task.TaskUtil;
 
 @Service
 public class VueServiceImpl implements VueService {
@@ -36,6 +37,8 @@ public class VueServiceImpl implements VueService {
 	
 	@Autowired
 	NoticeUtil noticeUtil;
+	@Autowired
+	TaskUtil taskUtil;
 	
 	@Override
 	public List<SubjectCardData> getInitCardData(String studentNumber) {
@@ -155,6 +158,29 @@ public class VueServiceImpl implements VueService {
 		}
 		
 		return noticeDTO;
+	}
+
+	@Override
+	public List<TaskData> crawlTask(UserData user, String subjectId) {
+		UserSubject userSubject = userSubjectRepository
+				.findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, user.getStudentNumber());
+		List<SubjectTaskInfo> task = taskUtil.getSubjectNoticeInfo(userSubject, user.getInitialCookies());
+		List<TaskData> taskDTO = new ArrayList<TaskData>();
+		for (SubjectTaskInfo subjectTaskInfo : task) {
+			taskDTO.add(new TaskData(
+					subjectTaskInfo.getTaskId(),
+					subjectTaskInfo.getTitle(),
+					subjectTaskInfo.getDescription(),
+					subjectTaskInfo.getStartDate(),
+					subjectTaskInfo.getEndDate(),
+					subjectTaskInfo.getSubmissionNum(),
+					subjectTaskInfo.getNotSubmittedNum(),
+					subjectTaskInfo.getTotalNum(),
+					subjectTaskInfo.getSubmitYN()
+				)
+			);
+		}
+		return taskDTO;
 	}
 	
 }

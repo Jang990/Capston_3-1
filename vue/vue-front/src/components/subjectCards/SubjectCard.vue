@@ -110,22 +110,29 @@
             <v-progress-linear
                         color="deep-purple"
                         height="10"
-                        :indeterminate="isTaskSearch"
-                        :active="isTaskSearch"
+                        :indeterminate="subjectCardData[index].isCrawling[2]"
+                        :active="subjectCardData[index].isCrawling[2]"
             ></v-progress-linear>
             <v-card-text 
-              v-if="isTaskSearch"
+              v-if="subjectCardData[index].isCrawling[2]"
             >
               과제 데이터를 조회중입니다...
             </v-card-text>
             <v-card-text 
-              v-else-if="noticeData == null"
+              v-else-if="subjectCardData[index].task == null"
             >
               조회된 과제가 없습니다.
             </v-card-text>
             <v-card-text v-else>
               과제 내용에 대한 것들...
             </v-card-text>
+            <!-- 
+            <task-table 
+              v-else
+              :noticeData="subjectCardData[index].task"
+            >
+            </task-table>
+            -->
           </div>
         </v-expand-transition>
       </v-card>

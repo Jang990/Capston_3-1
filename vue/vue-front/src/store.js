@@ -7,6 +7,7 @@ export const SET_WINNER = 'SET_WINNER';
 export const SET_LOGIN_CHECK = 'SET_LOGIN_CHECK';
 export const SET_INITIAL_DATA = 'SET_INITIAL_DATA';
 export const SET_NOTICE_DATA = 'SET_NOTICE_DATA';
+export const SET_TASK_DATA = 'SET_TASK_DATA';
 export const CRAWL_SUBJECT = 'crawlSubject';
 
 const api = axios.create({baseURL: 'http://localhost:38080'});
@@ -62,6 +63,28 @@ export default new Vuex.Store({
             }
             Vue.set(state.subjectCardData[index].isCrawling, 1, false);
         },
+        [SET_TASK_DATA](state, {cardIndex: index, taskData: data}) {
+            if(data.length != 0) {
+                for(let i = 0; i < data.length; i++) {
+                    state.subjectCardData[index].task[i] = { 
+                        taskId: data[i].taskId, 
+                        title: data[i].title, 
+                        description: data[i].description, 
+                        startDate: data[i].startDate, 
+                        endDate: data[i].endDate, 
+                        notSubmittedNum: data[i].notSubmittedNum, 
+                        submissionNum: data[i].submissionNum, 
+                        totalNum: data[i].totalNum, 
+                        submitYN: data[i].submitYN, 
+                    };
+                }
+            }
+            else {
+                state.subjectCardData[index].task = null;
+            }
+            Vue.set(state.subjectCardData[index].isCrawling, 2, false);
+            console.log(state.subjectCardData[index].task);
+        },
     }, //state를 동기적으로 수정할 때 사용
     //state를 바꿀때 바로 바꾸지말고 mutations를 통해 바꾸길 권장
     actions: {
@@ -72,6 +95,12 @@ export default new Vuex.Store({
                 }}).then((response) => {
                     // console.log(response.data);
                     context.commit([SET_NOTICE_DATA], {cardIndex: i, noticeData: response.data});
+                });
+                await api.post('/crawlTask', null, {params: {
+                    subjectId: this.state.subjectCardData[i].subjectId,
+                }}).then((response) => {
+                    // console.log(response.data);
+                    context.commit([SET_TASK_DATA], {cardIndex: i, taskData: response.data});
                 });
             }
         }

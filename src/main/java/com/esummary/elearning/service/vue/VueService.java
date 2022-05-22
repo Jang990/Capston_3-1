@@ -17,4 +17,5 @@ public interface VueService {
 	boolean isExistUserSubjectInDB(String studentNumber);
 	
 	List<NoticeData> crawlNotice(UserData user, String subjectId);
+	List<TaskData> crawlTask(UserData user, String subjectId);
 }
