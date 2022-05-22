@@ -36,12 +36,13 @@ public class VueRestController {
 	
 	@Autowired
 	private LoginService eLearningLoginService;
+	@Autowired
+	private ELearningService eLearningService;
 	
 	//로그인 체크
 	@RequestMapping("/vueLoginCheck") 
 	public boolean loginCheck(@RequestParam String id, @RequestParam String password, HttpServletRequest request) {
 		UserInfo user = eLearningLoginService.login(id, password);
-		
 		if(user == null) {
 			return false;  
 		}   
@@ -66,13 +67,36 @@ public class VueRestController {
 		String studentNumber = user.getStudentNumber();
 		
 		//분기가 필요하다. 기존 db에 데이터가 있는 유저거나, db에 데이터가 없는 유저거나.
-		initPageData.setName(name);
-		initPageData.setStudentNumber(studentNumber);
-		initPageData.setSubjectCardData(vueService.getInitCardData(studentNumber));
+		if(vueService.isExistUserSubjectInDB(studentNumber)) {
+			//가져오기.
+			initPageData.setName(name);
+			initPageData.setStudentNumber(studentNumber);		
+			initPageData.setSubjectCardData(vueService.getInitCardData(studentNumber));
+			return initPageData; 
+		}
+		else {
+			//크롤링.
+			System.out.println("유저체크 크롤링");
+			return null;
+		}
 		
-		return initPageData; 
+		
+		
 	}
 	
+	//
+	@RequestMapping("/mainApp/summaryTest")
+	public String summary(HttpServletRequest request, Model model) {
+		UserInfo user = (UserInfo)request.getSession().getAttribute("userInfo");
+		
+		List<SubjectInfo> subjectList = eLearningService.summary(user);
+		
+		model.addAttribute("name", user.getUserName());
+		model.addAttribute("id", user.getStudentNumber());
+		model.addAttribute("subjectList", subjectList);
+		model.addAttribute("subject", subjectList.get(7));
+		return "/mainApp/summary";
+	}
 	
 	//강의 주차 검색
 	@RequestMapping("/lectureDB")

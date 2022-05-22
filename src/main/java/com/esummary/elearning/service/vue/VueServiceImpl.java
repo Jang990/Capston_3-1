@@ -10,6 +10,7 @@ import com.esummary.elearning.dto.LectureWeekData;
 import com.esummary.elearning.dto.NoticeData;
 import com.esummary.elearning.dto.SubjectCardData;
 import com.esummary.elearning.dto.TaskData;
+import com.esummary.elearning.dto.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
 import com.esummary.elearning.entity.subject.SubjectNoticeInfo;
@@ -31,6 +32,8 @@ public class VueServiceImpl implements VueService {
 	SubjectNoticeRepository subjectNoticeRepository;
 	@Autowired
 	UserSubjectRepository userSubjectRepository; 
+	
+	
 	
 	@Override
 	public List<SubjectCardData> getInitCardData(String studentNumber) {
@@ -109,6 +112,13 @@ public class VueServiceImpl implements VueService {
 				weekInfo.getLectureWeekId(), weekInfo.getTitle(), 
 				weekInfo.getStartDate(), weekInfo.getEndDate()
 		);
+	}
+
+	@Override
+	public boolean isExistUserSubjectInDB(String studentNumber) {
+		boolean check =(userSubjectRepository.findByUserInfo_StudentNumber(studentNumber).isEmpty()) ? false : true;
+		System.out.println("유저체크: "+ check);
+		return check;
 	}
 	
 }

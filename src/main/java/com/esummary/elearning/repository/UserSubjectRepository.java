@@ -18,4 +18,6 @@ public interface UserSubjectRepository extends CrudRepository<UserSubject, Strin
 	
 	@EntityGraph(value = "user-lecture-week") 
 	UserSubject findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(String subjectId, String studentNumber);
+	
+	List<UserSubject> findByUserInfo_StudentNumber(String studentNumber);
 }
