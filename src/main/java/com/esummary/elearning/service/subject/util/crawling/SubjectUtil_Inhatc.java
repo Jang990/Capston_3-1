@@ -53,7 +53,7 @@ public class SubjectUtil_Inhatc implements SubjectUtil{
 	private UserSubjectRepository userSubjectRepository;
 	
 	public List<SubjectInfo> getSubjectList(UserInfo user) {
-		List<SubjectInfo> subjectList = this.getInitialSubjectData(user);
+		List<SubjectInfo> subjectList = this.getInitialSubjectData(user.getInitialCookies());
 		user.setSubjectList(subjectList); //DB연동없이 하는것이기때문에 오류가 있을 수 있음?
 		
 		List<UserSubject> usList = this.createAndSaveUserSubject(user, subjectList);
@@ -63,11 +63,11 @@ public class SubjectUtil_Inhatc implements SubjectUtil{
 		return user.getSubjectList();
 	}
 	
-	private List<SubjectInfo> getInitialSubjectData(UserInfo user) {
+	private List<SubjectInfo> getInitialSubjectData(Map<String, String> loginCookie) {
 		
 		List<SubjectInfo> subjectList = new ArrayList<SubjectInfo>();
 		String subjectSelector = ".default option";
-		Document loginPage = loginUtil.conLoginPage(user.getInitialCookies());
+		Document loginPage = loginUtil.conLoginPage(loginCookie);
 		Elements subjectElements = loginPage.select(subjectSelector);
 //		Elements subjectElements = loginPage.select(".default option");
 		
