@@ -47,8 +47,6 @@
                 min-height="268"
               >
                 <profile-component></profile-component>
-                <!-- <h3 left>{{studentName}}님 반갑습니다.</h3> -->
-                <!-- <h3 left>학번: {{studentNumber}}</h3> -->
               </v-sheet>
             </v-col>
 
@@ -91,7 +89,7 @@
                 min-height="268"
               >
                 <!--  -->
-                여기에는 할일 그래프 만들기
+                요약 그래프 위치
               </v-sheet>
             </v-col>
           </v-row>
