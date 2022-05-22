@@ -27,7 +27,13 @@ export default new Vuex.Store({
         [SET_INITIAL_DATA](state, {studentName: name, studentNumber: number, subjectCardData: cardData}) {
             state.studentName = name;
             state.studentNumber = number;
-            state.subjectCardData = cardData;
+            // state.subjectCardData = cardData;
+            let objs = cardData;
+            for (let i = 0; i < objs.length; i++) {
+                const element = objs[i];
+                element['isCrawling'] = true;
+            }
+            state.subjectCardData = objs;
         },
         
     }, //state를 동기적으로 수정할 때 사용

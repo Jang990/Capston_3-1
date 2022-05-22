@@ -60,6 +60,7 @@ public class ELearningController {
 //		System.out.println("로그인시간(m) : "+secDiffTime);
 		
 		UserInfo user = eLearningLoginService.login(id, password);
+		
 		if(user == null) {
 			return "redirect:/login";
 		}

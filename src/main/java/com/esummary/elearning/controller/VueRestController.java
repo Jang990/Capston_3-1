@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,12 +17,14 @@ import com.esummary.elearning.dto.LectureWeekData;
 import com.esummary.elearning.dto.NoticeData;
 import com.esummary.elearning.dto.SubjectCardData;
 import com.esummary.elearning.dto.TaskData;
+import com.esummary.elearning.dto.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.user.UserInfo;
 import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.repository.UserSubjectRepository;
 import com.esummary.elearning.repository.user.UserRepository;
 import com.esummary.elearning.service.login.LoginService;
+import com.esummary.elearning.service.subject.ELearningService;
 import com.esummary.elearning.service.test.TestService;
 import com.esummary.elearning.service.vue.VueService;
 
@@ -43,17 +46,22 @@ public class VueRestController {
 			return false;  
 		}   
 		else {
+			UserData userData = new UserData(
+						user.getStudentNumber(), 
+						user.getUserName(), 
+						user.getInitialCookies()
+					);
 			HttpSession session = request.getSession();
-			session.setAttribute("userInfo", user);
+			session.setAttribute("userData", userData);
 			return true;  
 		}
 	} 
 	
-	//수강과목 정보 검색
+	//수강과목 정보 검색 vueLoginCheck이후 로그인이 완료되어 있다면 실행
 	@RequestMapping("/getInitSubject")   
 	public InitalPageData getInitData(HttpServletRequest request) {
 		InitalPageData initPageData = new InitalPageData();
-		UserInfo user = (UserInfo)request.getSession().getAttribute("userInfo");
+		UserData user = (UserData)request.getSession().getAttribute("userData");
 		String name = user.getUserName();
 		String studentNumber = user.getStudentNumber();
 		
@@ -64,6 +72,7 @@ public class VueRestController {
 		
 		return initPageData; 
 	}
+	
 	
 	//강의 주차 검색
 	@RequestMapping("/lectureDB")
