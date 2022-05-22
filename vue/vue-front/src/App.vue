@@ -71,7 +71,7 @@
                         cols="12"
                         class="mx-auto"
                       >
-                        <subject-card v-bind:card="card" v-bind:studentNumber="studentNumber"></subject-card>
+                        <subject-card v-bind:index="i" v-bind:card="card" v-bind:studentNumber="studentNumber"></subject-card>
                       </v-col>
                     </v-row>
                   </v-container>

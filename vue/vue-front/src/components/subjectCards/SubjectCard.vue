@@ -11,6 +11,7 @@
         ></v-img> -->
 
         <v-card-title>
+          <!-- {{card.subjectName}} - {{card.owner}} -->
           {{card.subjectName}} - {{card.owner}}
         </v-card-title>
 
@@ -85,22 +86,22 @@
             <v-progress-linear
                         color="deep-purple"
                         height="10"
-                        :indeterminate="isNoticeSearch"
-                        :active="isNoticeSearch"
+                        :indeterminate="subjectCardData[index].isCrawling[1]"
+                        :active="subjectCardData[index].isCrawling[1]"
             ></v-progress-linear>
             <v-card-text 
-              v-if="isNoticeSearch"
+              v-if="subjectCardData[index].isCrawling[1]"
             >
               공지 데이터를 조회중입니다...
             </v-card-text>
             <v-card-text 
-              v-else-if="noticeData == null"
+              v-else-if="subjectCardData[index].notice == null"
             >
               조회된 공지가 없습니다.
             </v-card-text>
             <notice-table 
               v-else
-              :noticeData="noticeData"
+              :noticeData="subjectCardData[index].notice"
             >
             </notice-table>
           </div>
@@ -134,6 +135,7 @@
 <script>
 import axios from "axios"
 import NoticeTable from "./NoticeTable"
+import { mapState } from 'vuex';
 const mainAxios = axios.create({baseURL: 'http://localhost:38080'});
 const delayTime = 350;
 let timeouts = [];
@@ -144,6 +146,14 @@ const taskNum = 2;
 export default {
   name: 'SubjectCard',
   components: {NoticeTable,},
+  computed: {
+    ...mapState({
+      subjectCardData: state=> state.subjectCardData,
+      // noticeData(state) {
+      //   return state.subjectCardData[this.index].notice;
+      // },
+    }),
+  },
   data() {
     return {
       show: false,
