@@ -81,12 +81,8 @@ public class VueRestController {
 			vueService.saveUser(user);
 			eLearningService.crawlBasicSubjectData(user);
 			initPageData.setSubjectCardData(eLearningService.crawlBasicSubjectData(user));
-			System.out.println("크롤링가동");
 		}
 		return initPageData;
-		
-		
-		
 	}
 	
 	//
@@ -102,6 +98,12 @@ public class VueRestController {
 		model.addAttribute("subject", subjectList.get(7));
 		return "/mainApp/summary";
 	}
+	
+	@RequestMapping("/crawlSubject")
+	public String crawlSubject(HttpServletRequest request, @RequestParam String subjectId, @RequestParam String studentNumber) {
+		return "아이디: " + subjectId + ", 학번: " + studentNumber;
+	}
+	
 	
 	//강의 주차 검색
 	@RequestMapping("/lectureDB")

@@ -6,9 +6,15 @@ Vue.use(Vuex);
 export const SET_WINNER = 'SET_WINNER';
 export const SET_LOGIN_CHECK = 'SET_LOGIN_CHECK';
 export const SET_INITIAL_DATA = 'SET_INITIAL_DATA';
+export const SET_NOTICE_DATA = 'SET_NOTICE_DATA';
+export const CRAWL_SUBJECT = 'crawlSubject';
+
+const api = axios.create({baseURL: 'http://localhost:38080'});
+
 export default new Vuex.Store({
     state: {
         loginCheck: false,
+        loginLoading: false,
         studentName: '',
         studentNumber: '',
         subjectCardData: [],
@@ -31,7 +37,7 @@ export default new Vuex.Store({
             let objs = cardData;
             for (let i = 0; i < objs.length; i++) {
                 const element = objs[i];
-                element['isCrawling'] = true;
+                element['isCrawling'] = [true, true, true];
                 element['lectures'] = [];
                 element['notice'] = [];
                 element['task'] = [];
@@ -39,10 +45,21 @@ export default new Vuex.Store({
             console.log(objs);
             state.subjectCardData = objs;
         },
-        
+        [SET_NOTICE_DATA](state, noticeData) {
+            state.loginCheck = noticeData;
+        },
     }, //state를 동기적으로 수정할 때 사용
     //state를 바꿀때 바로 바꾸지말고 mutations를 통해 바꾸길 권장
     actions: {
-
+        async crawlSubject(content) {
+            for(let i = 0; i < this.state.subjectCardData.length; i++) {
+                await api.post('/crawlSubject', null, {params: {
+                    subjectId: this.state.subjectCardData[i].subjectId,
+                    studentNumber: this.state.studentNumber
+                }}).then((response) => {
+                    console.log(response);
+                });
+            }
+        }
     }, // 비동기를 사용할 때, 또는 여러 뮤테이션을 연달아 실행할 때
 });

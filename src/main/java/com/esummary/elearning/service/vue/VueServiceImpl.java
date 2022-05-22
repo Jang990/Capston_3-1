@@ -97,6 +97,7 @@ public class VueServiceImpl implements VueService {
 	public List<LectureWeekData> getLectureeData(String subjectId, String studentNumber) {
 		UserSubject us = userSubjectRepository.
 				findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, studentNumber);
+		//조인할 데이터가 아예 없어서 여기 아래로 내려가질 못함. 크롤링을 db구성이 끝나고 해야함 
 		if(us == null) {
 			return null;
 		}
