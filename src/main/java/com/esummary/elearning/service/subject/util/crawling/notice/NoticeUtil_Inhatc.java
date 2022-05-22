@@ -1,9 +1,11 @@
 package com.esummary.elearning.service.subject.util.crawling.notice;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -110,5 +112,32 @@ public class NoticeUtil_Inhatc implements NoticeUtil{
 		String idJSCode = element.select(idSelector).attr("onclick");
 		String id = SubjectUtil_Inhatc.extractDataFromJsCode(idJSCode)[0];
 		return id;
+	}
+
+	@Override
+	public List<SubjectNoticeInfo> getSubjectNoticeInfo(UserSubject userSubject, Map<String, String> initialCookies) {
+		List<SubjectNoticeInfo> noticeList = new ArrayList<SubjectNoticeInfo>();
+		String studyHome = SubjectUtil_Inhatc.createStudyHomeUrl(userSubject.getSubjectId());
+		Document docStudyHome = null;
+		try {
+			docStudyHome = Jsoup.connect(studyHome).cookies(initialCookies).get();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		//StudyHome에서 과제 내용이 적혀있는 섹션에 css Selector
+		final String noticePageSelector = "#1 > ul > li:nth-child(1) > a";
+		final String noticeBoxSelector = "#listBox > div:not(.paginator_pages):not(.paginator)";
+		Document docNoticePage = ELearningServiceImpl.gotoHrefPageFromHomePage(initialCookies, docStudyHome, noticePageSelector);
+		Elements notices = docNoticePage.select(noticeBoxSelector);
+		
+		for (Element element : notices) {
+			SubjectNoticeInfo notice = createNotice(element, userSubject.getSubjectInfo());
+			if(notice != null) {
+				noticeList.add(notice);
+			}
+		}
+		
+		return noticeList;
 	}
 }

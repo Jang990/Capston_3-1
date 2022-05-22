@@ -21,6 +21,7 @@ import com.esummary.elearning.entity.user.UserTask;
 import com.esummary.elearning.repository.UserSubjectRepository;
 import com.esummary.elearning.repository.subject.SubjectNoticeRepository;
 import com.esummary.elearning.repository.user.UserRepository;
+import com.esummary.elearning.service.subject.util.crawling.notice.NoticeUtil;
 
 @Service
 public class VueServiceImpl implements VueService {
@@ -33,7 +34,8 @@ public class VueServiceImpl implements VueService {
 	@Autowired
 	UserSubjectRepository userSubjectRepository; 
 	
-	
+	@Autowired
+	NoticeUtil noticeUtil;
 	
 	@Override
 	public List<SubjectCardData> getInitCardData(String studentNumber) {
@@ -134,6 +136,25 @@ public class VueServiceImpl implements VueService {
 		}
 		else
 			return false;
+	}
+
+	@Override
+	public List<NoticeData> crawlNotice(UserData user, String subjectId) {
+		UserSubject userSubject = userSubjectRepository
+				.findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, user.getStudentNumber());
+		List<SubjectNoticeInfo> notices = noticeUtil.getSubjectNoticeInfo(userSubject, user.getInitialCookies());
+		List<NoticeData> noticeDTO = new ArrayList<NoticeData>();
+		for (SubjectNoticeInfo subjectNoticeInfo : notices) {
+			noticeDTO.add(new NoticeData(
+					subjectNoticeInfo.getNoticeId(), 
+					subjectNoticeInfo.getTitle(), 
+					subjectNoticeInfo.getDescription(), 
+					subjectNoticeInfo.getAuthor(), 
+					subjectNoticeInfo.getCreateDate())
+			);
+		}
+		
+		return noticeDTO;
 	}
 	
 }

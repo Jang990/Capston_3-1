@@ -15,4 +15,5 @@ import com.esummary.elearning.service.subject.ELearningServiceImpl;
 
 public interface NoticeUtil {
 	List<SubjectNoticeInfo> getSubjectNoticeInfo(UserSubject userSubject, Document docStudyHome, Map<String, String> initialCookies);
+	List<SubjectNoticeInfo> getSubjectNoticeInfo(UserSubject userSubject, Map<String, String> initialCookies);
 }

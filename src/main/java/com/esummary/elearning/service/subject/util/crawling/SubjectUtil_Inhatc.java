@@ -163,7 +163,7 @@ public class SubjectUtil_Inhatc implements SubjectUtil{
 		
 	}
 	
-	private String createStudyHomeUrl(String subjectId) { 
+	public static String createStudyHomeUrl(String subjectId) { 
 //		final String MOBILE_STUDY_HOME_URL1 = ELearningServiceImpl_test.MAIN_URL + "/MCourse.do?cmd=viewStudyHome&courseDTO.courseId=";
 		final String DESKTOP_STUDY_HOME_URL1 = ELearningServiceImpl.MAIN_URL + "/Course.do?cmd=viewStudyHome&courseDTO.courseId=";
 		final String STUDY_HOME_URL2 = "&boardInfoDTO.boardInfoGubun=study_home&boardGubun=study_course&gubun=study_course";

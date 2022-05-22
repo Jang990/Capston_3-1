@@ -79,29 +79,31 @@ public class VueRestController {
 			//크롤링, 크롤링 정보저장, 크롤링한정보 반환
 			//정보 불러오기
 			vueService.saveUser(user);
-			eLearningService.crawlBasicSubjectData(user);
 			initPageData.setSubjectCardData(eLearningService.crawlBasicSubjectData(user));
 		}
 		return initPageData;
 	}
 	
-	//
-	@RequestMapping("/mainApp/summaryTest")
-	public String summary(HttpServletRequest request, Model model) {
-		UserInfo user = (UserInfo)request.getSession().getAttribute("userInfo");
-		
-		List<SubjectInfo> subjectList = eLearningService.summary(user); 
-		
-		model.addAttribute("name", user.getUserName());
-		model.addAttribute("id", user.getStudentNumber());
-		model.addAttribute("subjectList", subjectList);
-		model.addAttribute("subject", subjectList.get(7));
-		return "/mainApp/summary";
-	}
-	
 	@RequestMapping("/crawlSubject")
-	public String crawlSubject(HttpServletRequest request, @RequestParam String subjectId, @RequestParam String studentNumber) {
-		return "아이디: " + subjectId + ", 학번: " + studentNumber;
+	public String crawlSubject(HttpServletRequest request, @RequestParam String subjectId) {
+		UserData user = (UserData)request.getSession().getAttribute("userData");
+		return "아이디: " + subjectId + ", 학번: " + user.getStudentNumber();
+	}
+	@RequestMapping("/crawlLecture")
+	public String crawlLecture(HttpServletRequest request, @RequestParam String subjectId) {
+		UserData user = (UserData)request.getSession().getAttribute("userData");
+		return "아이디: " + subjectId + ", 학번: " + user.getStudentNumber();
+	}
+	@RequestMapping("/crawlNotice")
+	public List<NoticeData> crawlNotice(HttpServletRequest request, @RequestParam String subjectId) {
+		UserData user = (UserData)request.getSession().getAttribute("userData");
+		List<NoticeData> notice = vueService.crawlNotice(user, subjectId);
+		return notice;
+	}
+	@RequestMapping("/crawlTask")
+	public String crawlTask(HttpServletRequest request, @RequestParam String subjectId) {
+		UserData user = (UserData)request.getSession().getAttribute("userData");
+		return "아이디: " + subjectId + ", 학번: " + user.getStudentNumber();
 	}
 	
 	

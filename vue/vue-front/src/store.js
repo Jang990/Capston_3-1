@@ -45,19 +45,29 @@ export default new Vuex.Store({
             console.log(objs);
             state.subjectCardData = objs;
         },
-        [SET_NOTICE_DATA](state, noticeData) {
-            state.loginCheck = noticeData;
+        [SET_NOTICE_DATA](state, {cardIndex: index, data: data}) {
+            if(data.length != 0) {
+                state.subjectCardData[index].notice['noticeId'] = data.noticeId;
+                state.subjectCardData[index].notice['title'] = data.title;
+                state.subjectCardData[index].notice['description'] = data.description;
+                state.subjectCardData[index].notice['author'] = data.author;
+                state.subjectCardData[index].notice['createDate'] = data.createDate;
+            }
+            else {
+                state.subjectCardData[index].notice = null;
+            }
+            state.subjectCardData[index].isCrawling[1] = false;
         },
     }, //state를 동기적으로 수정할 때 사용
     //state를 바꿀때 바로 바꾸지말고 mutations를 통해 바꾸길 권장
     actions: {
-        async crawlSubject(content) {
+        async crawlSubject(context) {
             for(let i = 0; i < this.state.subjectCardData.length; i++) {
-                await api.post('/crawlSubject', null, {params: {
+                await api.post('/crawlNotice', null, {params: {
                     subjectId: this.state.subjectCardData[i].subjectId,
-                    studentNumber: this.state.studentNumber
                 }}).then((response) => {
-                    console.log(response);
+                    console.log(response.data);
+                    context.commit([SET_NOTICE_DATA], {cardIndex: i, data: response.data});
                 });
             }
         }
