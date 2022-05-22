@@ -63,7 +63,7 @@ public class ELearningServiceImpl implements ELearningService {
 					subjectInfo.getSubjectOwnerName()
 				)
 			);
-		}
+		} 
 	
 		return subjectCards;
 	}
