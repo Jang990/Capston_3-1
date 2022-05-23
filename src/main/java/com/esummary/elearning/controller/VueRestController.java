@@ -84,12 +84,13 @@ public class VueRestController {
 		}
 		return initPageData;
 	}
-	
+	/*
 	@RequestMapping("/crawlSubject")
 	public String crawlSubject(HttpServletRequest request, @RequestParam String subjectId) {
 		UserData user = (UserData)request.getSession().getAttribute("userData");
 		return "아이디: " + subjectId + ", 학번: " + user.getStudentNumber();
 	}
+	*/
 	@RequestMapping("/crawlLecture")
 	public List<LectureWeekData> crawlLecture(HttpServletRequest request, @RequestParam String subjectId) {
 		UserData user = (UserData)request.getSession().getAttribute("userData");

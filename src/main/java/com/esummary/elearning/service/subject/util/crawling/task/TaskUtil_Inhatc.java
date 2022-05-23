@@ -58,7 +58,7 @@ public class TaskUtil_Inhatc implements TaskUtil{
 	}
 	
 	@Override
-	public List<SubjectTaskInfo> getSubjectNoticeInfo(UserSubject userSubject, Map<String, String> initialCookies) {
+	public List<SubjectTaskInfo> getSubjectTaskInfo(UserSubject userSubject, Map<String, String> initialCookies) {
 		List<SubjectTaskInfo> taskList = new ArrayList<SubjectTaskInfo>();
 		//StudyHome에서 과제 내용이 적혀있는 섹션에 css Selector
 		final String taskPageSelector = "#3  > ul > li:nth-child(2) > a";
@@ -121,7 +121,7 @@ public class TaskUtil_Inhatc implements TaskUtil{
 		return SubjectUtil_Inhatc.extractDataFromJsCode(idAndStatus_JS);
 	}
 
-	private String crawlDescription(Element element) {
+	private String crawlDescription(Element element) {          
 		final String descriptionSelector = "div > dl > dd:nth-child(4) > div";
 		return element.select(descriptionSelector).text().trim();
 	}

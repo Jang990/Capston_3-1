@@ -9,6 +9,8 @@ export const SET_INITIAL_DATA = 'SET_INITIAL_DATA';
 export const SET_NOTICE_DATA = 'SET_NOTICE_DATA';
 export const SET_TASK_DATA = 'SET_TASK_DATA';
 export const SET_LECTURES_DATA = 'SET_LECTURES_DATA';
+export const INCREASE_COMPLETED_TASK = 'INCREASE_COMPLETED_TASK';
+export const INCREASE_INCOMPLETED_TASK = 'INCREASE_INCOMPLETED_TASK';
 export const CRAWL_SUBJECT = 'crawlSubject';
 
 const api = axios.create({baseURL: 'http://localhost:38080'});
@@ -20,9 +22,13 @@ export default new Vuex.Store({
         studentName: '',
         studentNumber: '',
         subjectCardData: [],
+        completedTask: 0,
+        incompletedTask: 0,
     }, //Vue에 data와 비슷
     getters: {
-
+        totalTask(state) {
+            return state.incompletedTask + state.completedTask;
+        },
     },//Vue의 computed와 비슷 
     //완전히 같은게 아니라 비슷하다는 것 명심
     mutations: {
@@ -46,6 +52,12 @@ export default new Vuex.Store({
             }
             // console.log(objs);
             state.subjectCardData = objs;
+        },
+        [INCREASE_INCOMPLETED_TASK](state) {
+            state.incompletedTask += 1;
+        },
+        [INCREASE_COMPLETED_TASK](state) {
+            state.completedTask += 1;
         },
         [SET_LECTURES_DATA](state, {cardIndex: index, lecturesData: data}) {
             if(data.length != 0) {
@@ -96,6 +108,11 @@ export default new Vuex.Store({
                         totalNum: data[i].totalNum, 
                         submitYN: data[i].submitYN, 
                     };
+                    if(state.subjectCardData[index].task[i].submitYN == 'Y') {
+                        state.incompletedTask += 1;
+                    } else if(state.subjectCardData[index].task[i].submitYN == 'N') {
+                        state.completedTask += 1;
+                    }
                 }
             }
             else {

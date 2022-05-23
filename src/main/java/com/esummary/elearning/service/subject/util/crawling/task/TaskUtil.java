@@ -16,5 +16,5 @@ public interface TaskUtil {
 //	List<SubjectTaskInfo> getSubjectTaskInfo(UserSubject userSubject, Document docStudyHome, SubjectInfo subjectInfo);
 	List<SubjectTaskInfo> getSubjectTaskInfo(UserSubject userSubject, Document docStudyHome, Map<String, String> initialCookies);
 
-	List<SubjectTaskInfo> getSubjectNoticeInfo(UserSubject userSubject, Map<String, String> initialCookies);
+	List<SubjectTaskInfo> getSubjectTaskInfo(UserSubject userSubject, Map<String, String> initialCookies);
 }

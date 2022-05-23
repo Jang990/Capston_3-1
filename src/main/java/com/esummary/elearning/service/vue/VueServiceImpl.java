@@ -171,7 +171,7 @@ public class VueServiceImpl implements VueService {
 	public List<TaskData> crawlTask(UserData user, String subjectId) {
 		UserSubject userSubject = userSubjectRepository
 				.findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, user.getStudentNumber());
-		List<SubjectTaskInfo> task = taskUtil.getSubjectNoticeInfo(userSubject, user.getInitialCookies());
+		List<SubjectTaskInfo> task = taskUtil.getSubjectTaskInfo(userSubject, user.getInitialCookies());
 		List<TaskData> taskDTO = new ArrayList<TaskData>();
 		for (SubjectTaskInfo subjectTaskInfo : task) {
 			taskDTO.add(new TaskData(
