@@ -111,6 +111,9 @@ export default new Vuex.Store({
                         submissionNum: data[i].submissionNum, 
                         totalNum: data[i].totalNum, 
                         submitYN: data[i].submitYN, 
+                        
+                        //여기는 TaskTable에 제출현황을 보여주기위해 추가함
+                        submittedState: data[i].submissionNum / data[i].totalNum* 100,
                     };
                     if(state.subjectCardData[index].task[i].submitYN == 'Y') {
                         state.incompletedTask += 1;

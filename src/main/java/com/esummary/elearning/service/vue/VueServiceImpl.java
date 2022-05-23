@@ -230,7 +230,7 @@ public class VueServiceImpl implements VueService {
 			}
 					
 			lecturesDTO.add(new LectureWeekData(
-					subjectLectureWeekInfo.getLectureWeekId(),                
+					subjectLectureWeekInfo.getLectureWeekId(),    
 					subjectLectureWeekInfo.getTitle(), 
 					subjectLectureWeekInfo.getStartDate(),
 					subjectLectureWeekInfo.getEndDate(),
