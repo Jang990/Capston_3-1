@@ -12,6 +12,7 @@ export const SET_LECTURES_DATA = 'SET_LECTURES_DATA';
 export const INCREASE_COMPLETED_TASK = 'INCREASE_COMPLETED_TASK';
 export const INCREASE_INCOMPLETED_TASK = 'INCREASE_INCOMPLETED_TASK';
 export const CRAWL_SUBJECT = 'crawlSubject';
+export const LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER = 'LoginCheckANDcalculateToDoNumber';
 
 const api = axios.create({baseURL: 'http://localhost:38080'});
 
@@ -24,10 +25,12 @@ export default new Vuex.Store({
         subjectCardData: [],
         completedTask: 0,
         incompletedTask: 0,
+        showCompleted: 0,
+        showIncompleted: 0,
     }, //Vue에 data와 비슷
     getters: {
-        totalTask(state) {
-            return state.incompletedTask + state.completedTask;
+        showTotalTask(state) {
+            return state.showCompleted + state.showIncompleted;
         },
     },//Vue의 computed와 비슷 
     //완전히 같은게 아니라 비슷하다는 것 명심
@@ -124,7 +127,7 @@ export default new Vuex.Store({
     }, //state를 동기적으로 수정할 때 사용
     //state를 바꿀때 바로 바꾸지말고 mutations를 통해 바꾸길 권장
     actions: {
-        async crawlSubject(context) {
+        async [CRAWL_SUBJECT](context) {
             for(let i = 0; i < this.state.subjectCardData.length; i++) {
                 await api.post('/crawlLecture', null, {params: {
                     subjectId: this.state.subjectCardData[i].subjectId,
@@ -146,6 +149,19 @@ export default new Vuex.Store({
                 });
 
             }
+        },
+        [LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER](context) {
+            context.commit(SET_LOGIN_CHECK, true);
+            let timer = setInterval(()=>{
+                if(this.state.completedTask != this.state.showCompleted) this.state.showCompleted += 1;
+                if(this.state.incompletedTask != this.state.showIncompleted) this.state.showIncompleted += 1;
+                // console.log('완료과제 : ' + this.state.completedTask+' == '+ this.state.showCompleted + ', 미완료과제: ' + this.state.incompletedTask+' == '+ this.state.showIncompleted + ', ' + this.state.subjectCardData[this.state.subjectCardData.length-1].isCrawling[2]);
+                if(!this.state.subjectCardData[this.state.subjectCardData.length-1].isCrawling[2] && 
+                    this.state.completedTask == this.state.showCompleted && 
+                    this.state.incompletedTask == this.state.showIncompleted) {
+                    clearInterval(timer);
+                }
+            }, 100);
         }
     }, // 비동기를 사용할 때, 또는 여러 뮤테이션을 연달아 실행할 때
 });

@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import {SET_LOGIN_CHECK, SET_INITIAL_DATA, CRAWL_SUBJECT} from '../store'
+import {SET_INITIAL_DATA, CRAWL_SUBJECT, LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER} from '../store'
 import { mapState } from 'vuex';
 import axios from "axios"
 const api = axios.create({baseURL: 'http://localhost:38080'});
@@ -94,7 +94,8 @@ export default {
           console.log(error);
         });
         this.loading = false;
-        this.$store.commit(SET_LOGIN_CHECK, true);
+        this.$store.dispatch(LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER);
+        // this.$store.commit(SET_LOGIN_CHECK, true);
         this.$store.dispatch(CRAWL_SUBJECT);
       }
       this.loading = false;
