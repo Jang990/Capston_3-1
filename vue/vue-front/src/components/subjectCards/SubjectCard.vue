@@ -12,7 +12,7 @@
 
         <v-card-title>
           <!-- {{card.subjectName}} - {{card.owner}} -->
-          {{card.subjectName}} - {{card.owner}}
+          {{subjectCardData[index].subjectName}} - {{subjectCardData[index].owner}}
         </v-card-title>
 
         <v-card-actions>

@@ -71,7 +71,7 @@
                         cols="12"
                         class="mx-auto"
                       >
-                        <subject-card v-bind:index="i" v-bind:card="card" v-bind:studentNumber="studentNumber"></subject-card>
+                        <subject-card v-bind:index="i"></subject-card>
                       </v-col>
                     </v-row>
                   </v-container>
@@ -112,7 +112,7 @@ export default {
   store,
   components: {SubjectCard, LoginComponent,ProfileComponent},
   computed: {
-    ...mapState(['loginCheck', 'studentName', 'studentNumber', 'subjectCardData']),
+    ...mapState(['loginCheck', 'subjectCardData']),
   },
   data() {
     return {
