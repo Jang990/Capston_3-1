@@ -8,8 +8,8 @@
     id="main-card"
   >
     <v-card-text>
-      <p>공지 내용</p>
-      <div class="text--primary">
+      <p class="body-1">공지 내용</p>
+      <div class="text-justify">
         {{showDescription()}}
       </div>
     </v-card-text>

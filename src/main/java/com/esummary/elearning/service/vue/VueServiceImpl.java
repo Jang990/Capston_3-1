@@ -1,6 +1,8 @@
 package com.esummary.elearning.service.vue;
 
-import java.util.ArrayList; 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,9 +99,11 @@ public class VueServiceImpl implements VueService {
 
 	private TaskData craeteTaskData(UserTask userTask) {
 		SubjectTaskInfo task = userTask.getSubjectTaskInfo();
+		String startDate =makeDateString(task.getStartDate());
+		String endDate =makeDateString(task.getEndDate());
 		return new TaskData(
 				task.getTaskId(), task.getTitle(), task.getDescription(), 
-				task.getStartDate(), task.getEndDate(), task.getSubmissionNum(), 
+				startDate, endDate, task.getSubmissionNum(), 
 				task.getNotSubmittedNum(), task.getTotalNum(), task.getSubmitYN()
 			);
 	}                   
@@ -173,13 +177,17 @@ public class VueServiceImpl implements VueService {
 				.findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, user.getStudentNumber());
 		List<SubjectTaskInfo> task = taskUtil.getSubjectTaskInfo(userSubject, user.getInitialCookies());
 		List<TaskData> taskDTO = new ArrayList<TaskData>();
+		
 		for (SubjectTaskInfo subjectTaskInfo : task) {
+			String startDate =makeDateString(subjectTaskInfo.getStartDate());
+			String endDate =makeDateString(subjectTaskInfo.getEndDate());
+			
 			taskDTO.add(new TaskData(
 					subjectTaskInfo.getTaskId(),
 					subjectTaskInfo.getTitle(),
 					subjectTaskInfo.getDescription(),
-					subjectTaskInfo.getStartDate(),
-					subjectTaskInfo.getEndDate(),
+					startDate,
+					endDate,
 					subjectTaskInfo.getSubmissionNum(),
 					subjectTaskInfo.getNotSubmittedNum(),
 					subjectTaskInfo.getTotalNum(),
@@ -189,6 +197,14 @@ public class VueServiceImpl implements VueService {
 		}
 		return taskDTO;
 	}
+	
+	private String makeDateString(Date startDate) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(startDate);
+		return calendar.get(Calendar.YEAR) + "/" + (calendar.get(Calendar.MONTH)+1) + "/" + calendar.get(Calendar.DATE)
+		+ " " + calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE);
+	}
+
 
 	@Override
 	public List<LectureWeekData> crawlLecture(UserData user, String subjectId) {
@@ -214,7 +230,7 @@ public class VueServiceImpl implements VueService {
 			}
 					
 			lecturesDTO.add(new LectureWeekData(
-					subjectLectureWeekInfo.getLectureWeekId(), 
+					subjectLectureWeekInfo.getLectureWeekId(),                
 					subjectLectureWeekInfo.getTitle(), 
 					subjectLectureWeekInfo.getStartDate(),
 					subjectLectureWeekInfo.getEndDate(),

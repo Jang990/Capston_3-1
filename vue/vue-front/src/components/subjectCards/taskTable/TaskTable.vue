@@ -1,11 +1,12 @@
 <template>
   <v-data-table
       :headers="headers"
-      :items="noticeData"
+      :items="taskData"
       :items-per-page="5"
       :single-expand="singleExpand"
       :expanded.sync="expanded"
-      item-key="noticeId"
+      item-key="taskId"
+      :item-class="submitCheck"
       show-expand
       class="elevation-1"
     >
@@ -21,22 +22,23 @@
           ></v-switch>
         </v-toolbar>
       </template>
+
       <template v-slot:expanded-item="{ headers, item }">
         <td :colspan="headers.length" class="td-for-card">
-          <description-card :description="item.description"></description-card>
+          <task-description-card :description="item.description"></task-description-card>
         </td>
       </template>
     </v-data-table>
 </template>
 
 <script>
-import DescriptionCard from './DescriptionCard';
+import TaskDescriptionCard from './TaskDescriptionCard';
 export default {
-  name: 'NoticeTable',
-  components: {DescriptionCard},
+  name: 'TaskTable',
+  components: {TaskDescriptionCard},
   data() {
     return {
-      tableTitle: '공지사항',
+      tableTitle: '과제',
       expanded: [],
       singleExpand: true,
       headers: [
@@ -45,26 +47,28 @@ export default {
             align: 'center',
             sortable: false,
             value: 'title',
-            width: '55%',
+            width: '45%',
             class: "blue lighten-5",
             //primary
           },
-          { text: '작성자', value: 'author', width: '20%', class: "blue lighten-5"},
-          { text: '작성일', value: 'createDate', width: '20%', class: "blue lighten-5" },
+          { text: '기한일', value: 'endDate', width: '20%', class: "blue lighten-5"},
+          { text: '미제출', value: 'submitYN', width: '5%', class: "blue lighten-5" },
           { text: '', value: 'data-table-expand', width:'5%', class: "blue lighten-5" },
           // { text: '내용', value: 'description' },
       ],
     }
   },
   props:{
-    noticeData: Object,
+    taskData: Object,
   },
   methods: {
-    showDescription(value) {
-      console.log(value);
-    }
+    submitCheck(item) {
+      return item.submitYN == 'Y' ? 'red accent-2' : 'light-green accent-2';
+    },
   },
-  created() {},
+  updated() {
+    console.log(this.taskData);
+  },
   destoryed() {
     clearTimeout(timeouts);
   },

@@ -130,16 +130,11 @@
             >
               조회된 과제가 없습니다.
             </v-card-text>
-            <v-card-text v-else>
-              과제 내용에 대한 것들...
-            </v-card-text>
-            <!-- 
             <task-table 
               v-else
               :taskData="subjectCardData[index].task"
             >
             </task-table>
-            -->
           </div>
         </v-expand-transition>
       </v-card>
@@ -148,7 +143,8 @@
 
 <script>
 import axios from "axios"
-import NoticeTable from "./NoticeTable"
+import NoticeTable from "./noticeTable/NoticeTable"
+import TaskTable from "./taskTable/TaskTable"
 import { mapState } from 'vuex';
 const mainAxios = axios.create({baseURL: 'http://localhost:38080'});
 const delayTime = 350;
@@ -159,10 +155,11 @@ const taskNum = 2;
 
 export default {
   name: 'SubjectCard',
-  components: {NoticeTable,},
+  components: {NoticeTable, TaskTable},
   computed: {
     ...mapState({
       subjectCardData: state=> state.subjectCardData,
+      studentNumber: state => state.studentNumber,
       // noticeData(state) {
       //   return state.subjectCardData[this.index].notice;
       // },
@@ -183,8 +180,6 @@ export default {
     }
   },
   props:{
-    card: Object,
-    studentNumber: String,
     index: Number,
   },
   methods: {
@@ -192,7 +187,7 @@ export default {
       const lecture = new Promise((resolve, reject) => {
         mainAxios.post('/lectureDB', null, {params: {
           studentNumber: this.studentNumber,
-          subjectId: this.card.subjectId
+          subjectId: this.subjectCardData[this.index].subjectId
         }}).then((response) => {
           // console.log(response);
           
@@ -211,7 +206,7 @@ export default {
     searchNotice() {
       const notice = new Promise((resolve, reject) => {
         mainAxios.post('/noticeDB', null, {params: {
-          subjectId: this.card.subjectId
+          subjectId: this.subjectCardData[this.index].subjectId
         }}).then((response) => {
           // console.log(response);
 
@@ -235,7 +230,7 @@ export default {
       const task = new Promise((resolve, reject) => {
         mainAxios.post('/taskDB', null, {params: {
           studentNumber: this.studentNumber,
-          subjectId: this.card.subjectId
+          subjectId: this.subjectCardData[this.index].subjectId
         }}).then((response) => {
           // console.log(response);
           

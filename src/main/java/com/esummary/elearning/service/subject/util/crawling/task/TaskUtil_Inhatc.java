@@ -121,7 +121,7 @@ public class TaskUtil_Inhatc implements TaskUtil{
 		return SubjectUtil_Inhatc.extractDataFromJsCode(idAndStatus_JS);
 	}
 
-	private String crawlDescription(Element element) {    
+	private String crawlDescription(Element element) {                
 		final String descriptionSelector = "div > dl > dd:nth-child(4) > div";
 		return element.select(descriptionSelector).text().trim();
 	}

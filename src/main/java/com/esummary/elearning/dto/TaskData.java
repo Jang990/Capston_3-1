@@ -23,8 +23,8 @@ public class TaskData {
 	private String taskId;
 	private String title;
 	private String description;
-	private Date startDate;
-	private Date endDate;
+	private String startDate;
+	private String endDate;
 	private int submissionNum;
 	private int notSubmittedNum;
 	private int totalNum;

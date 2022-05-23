@@ -100,12 +100,13 @@ export default new Vuex.Store({
         [SET_TASK_DATA](state, {cardIndex: index, taskData: data}) {
             if(data.length != 0) {
                 for(let i = 0; i < data.length; i++) {
+                    console.log(data[i]);
                     state.subjectCardData[index].task[i] = { 
                         taskId: data[i].taskId, 
                         title: data[i].title, 
                         description: data[i].description, 
                         startDate: data[i].startDate, 
-                        endDate: data[i].endDate, 
+                        endDate: data[i].endDate.toString(), 
                         notSubmittedNum: data[i].notSubmittedNum, 
                         submissionNum: data[i].submissionNum, 
                         totalNum: data[i].totalNum, 
