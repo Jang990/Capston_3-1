@@ -3,19 +3,20 @@
     class="mx-auto"
     max-width="374"
   >
-    <v-card-text class="align center">
+    <v-card-text class="text-center">
       <h2><v-icon class="ml-1">mdi-face-man</v-icon> {{this.$store.state.studentName}}</h2>
     </v-card-text>
-    <v-card-text class="align center">
+    <v-card-text class="text-center">
       <h2>{{this.$store.state.studentNumber}}</h2>
     </v-card-text>
 
     <v-divider class="mx-4"></v-divider>
-
-    <v-card-title>과업</v-card-title>
-
-    
-    <task-summary></task-summary>
+    <summary-component 
+      :title="taskTitle" 
+      :completed="completedTask" 
+      :Incompleted="showIncompleted"
+    >
+    </summary-component>
 
     <v-card-actions>
       <v-btn
@@ -23,20 +24,21 @@
         text
         @click="reserve"
       >
-        일단은 놔둔다.
+        세부사항
       </v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
-import TaskSummary from './TaskSummary';
+import { mapState } from 'vuex';
+import SummaryComponent from './SummaryComponent';
 export default {
   name: 'ProfileComponent',
-  components: {TaskSummary},
+  components: {SummaryComponent},
   data() {
     return {
-      
+      taskTitle: '과제'
     }
   },
   props:{
@@ -45,6 +47,13 @@ export default {
   methods: {
     
   },
+  computed: {
+    ...mapState({
+      completedTask: 'completedTask',
+      showCompleted: 'showCompleted', 
+      showIncompleted: 'showIncompleted',
+    }),
+  }
 }
 </script>
 

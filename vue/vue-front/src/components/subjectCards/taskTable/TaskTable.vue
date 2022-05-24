@@ -63,6 +63,7 @@ export default {
       expanded: [],
       singleExpand: true,
       headers: [
+          { text: ' ', value: 'submitYN', width: '5%', class: "blue lighten-5" },//제출여부
           {
             text: '제목',
             align: 'center',
@@ -74,7 +75,6 @@ export default {
           },
           { text: '잔여일', value: 'endDate', width: '20%', class: "blue lighten-5"},
           { text: '제출/총원', value: 'submittedState', width: '25%', class: "blue lighten-5"},
-          { text: ' ', value: 'submitYN', width: '5%', class: "blue lighten-5" },//제출여부
           { text: '', value: 'data-table-expand', width:'5%', class: "blue lighten-5" },
           // { text: '내용', value: 'description' },
       ],

@@ -1,20 +1,21 @@
 <template>
   <v-container>
+    <div class="mx-4  text-subtitle-1 text-left">{{title}}</div>
     <v-row class="text-align center" no-gutters>
       <v-col class="font-weight-medium subtitle-1 
         red--text text--darken-1">
-        {{showIncompleted}}
+        <span>{{Incompleted}}</span>
       </v-col>
       <v-col class="font-weight-medium subtitle-1
         green--text text--darken-1">
-        {{showCompleted}}
+        <span>{{completed}}</span>
       </v-col>
       <v-col class="font-weight-medium subtitle-1 
         blue--text text--darken-1">
-        {{showTotalTask}}
+        <span>{{total}}</span>
       </v-col>
     </v-row>
-    <v-row class="text-align center" no-gutters>
+    <v-row class="text-align center" no-gutters style="cursor: default;">
       <v-col class="text--disabled text-caption">
         미완료
       </v-col>
@@ -29,7 +30,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 export default {
   name: 'TaskSummary',
   data() {
@@ -37,20 +37,17 @@ export default {
     }
   },
   props:{
-    
+    title: String,
+    completed: Number,
+    Incompleted: Number,
   },
   methods: {
     
   },
   computed: {
-    ...mapState({
-      completedTask: 'completedTask',
-      showCompleted: 'showCompleted', 
-      showIncompleted: 'showIncompleted',
-    }),
-    showTotalTask() {
-      return this.$store.getters.showTotalTask;
-    },
+    total() {
+      return this.completed + this.Incompleted;
+    }
   },
   updated() {
     
@@ -60,5 +57,21 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.subtitle-1 > span{
+  cursor: pointer;
+  -ms-user-select: none; 
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.text-caption .text-subtitle-1 {
+  cursor: default;
+  -ms-user-select: none; 
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
 </style>

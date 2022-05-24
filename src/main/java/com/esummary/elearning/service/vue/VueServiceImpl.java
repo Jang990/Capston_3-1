@@ -250,7 +250,7 @@ public class VueServiceImpl implements VueService {
 					subjectInfo.getSubjectName(), 
 					subjectInfo.getSubjectOwnerName()
 				)
-			); 
+			);
 		}
 	
 		return subjectCards;
