@@ -94,7 +94,7 @@ public class VueRestController {
 		return initPageData;
 	}
 	private List<SubjectInfo> getNeedStoredSubjectData(List<UserSubject> dbUserSubject,
-			List<SubjectInfo> crawlingSubjects) {
+			List<SubjectInfo> crawlingSubjects) {   
 		List<SubjectInfo> needStoredSubjects = new ArrayList<SubjectInfo>();
 		
 		String[] dbSubjectId = new String[dbUserSubject.size()];
@@ -159,22 +159,24 @@ public class VueRestController {
 	
 	//강의 주차 검색
 	@RequestMapping("/lectureDB")
-	public List<LectureWeekData> lectureSearch(@RequestParam String subjectId, @RequestParam String studentNumber) {
+	public List<LectureWeekData> lectureSearch(HttpServletRequest request, @RequestParam String subjectId) {
 		System.out.println("과목 주차 조회");
-		List<LectureWeekData> lectureWeekList = vueService.getLectureeData(subjectId, studentNumber); 
+		UserData user = (UserData)request.getSession().getAttribute("userData");
+		List<LectureWeekData> lectureWeekList = vueService.getLectureeData(subjectId, user.getStudentNumber()); 
 		return lectureWeekList;
 	}
 	
 	//과제 검색 
 	@RequestMapping("/taskDB")
-	public List<TaskData> taskSearch(@RequestParam String subjectId, @RequestParam String studentNumber) {
-		System.out.println("과제 조회"); 
-		List<TaskData> taskList = vueService.getTaskData(subjectId, studentNumber);
+	public List<TaskData> taskSearch(HttpServletRequest request, @RequestParam String subjectId) {
+		System.out.println("과제 조회");
+		UserData user = (UserData)request.getSession().getAttribute("userData");
+		List<TaskData> taskList = vueService.getTaskData(subjectId, user.getStudentNumber());
 		return taskList; 
 	}
 	
 	//공지 검색
-	@RequestMapping("/noticeDB")
+	@RequestMapping("/noticeDB")    
 	public List<NoticeData> noticeSearch(@RequestParam String subjectId) {
 		System.out.println("공지 조회");
 		List<NoticeData> notices = vueService.getNoticeData(subjectId);

@@ -99,31 +99,14 @@ public class VueServiceImpl implements VueService {
 
 	private TaskData craeteTaskData(UserTask userTask) {
 		SubjectTaskInfo task = userTask.getSubjectTaskInfo();
-		String startDate =makeDateString(task.getStartDate());
-		String endDate =makeDateString(task.getEndDate());
+		String startDate = makeDateString(task.getStartDate());
+		String endDate = makeDateString(task.getEndDate());
 		return new TaskData(
 				task.getTaskId(), task.getTitle(), task.getDescription(), 
 				startDate, endDate, task.getSubmissionNum(), 
 				task.getNotSubmittedNum(), task.getTotalNum(), task.getSubmitYN()
 			);
 	}                   
-
-	@Override
-	public List<LectureWeekData> getLectureeData(String subjectId, String studentNumber) {
-		UserSubject us = userSubjectRepository.
-				findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, studentNumber);
-		//조인할 데이터가 아예 없어서 여기 아래로 내려가질 못함. 크롤링을 db구성이 끝나고 해야함 
-		if(us == null) {
-			return null;
-		}
-		
-		List<LectureWeekData> weekDTO = new ArrayList<LectureWeekData>(); 
-		List<SubjectLectureWeekInfo> weekList = us.getSubjectInfo().getLectureList();
-		for (SubjectLectureWeekInfo weekInfo : weekList) {
-			weekDTO.add(createWeekData(weekInfo));   
-		}
-		return weekDTO;
-	}
 
 	private LectureWeekData createWeekData(SubjectLectureWeekInfo weekInfo) {
 		//여기 null 고쳐야한다.
@@ -242,6 +225,23 @@ public class VueServiceImpl implements VueService {
 	}
 	
 	@Override
+	public List<LectureWeekData> getLectureeData(String subjectId, String studentNumber) {
+		UserSubject us = userSubjectRepository.
+				findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, studentNumber);
+		//조인할 데이터가 아예 없어서 여기 아래로 내려가질 못함. 크롤링을 db구성이 끝나고 해야함 
+		if(us == null) {
+			return null;
+		}
+		
+		List<LectureWeekData> weekDTO = new ArrayList<LectureWeekData>(); 
+		List<SubjectLectureWeekInfo> weekList = us.getSubjectInfo().getLectureList();
+		for (SubjectLectureWeekInfo weekInfo : weekList) {
+			weekDTO.add(createWeekData(weekInfo));   
+		}
+		return weekDTO;
+	}
+	
+	@Override
 	public List<SubjectCardData> getSubjectDTO(List<SubjectInfo> subjects) {
 		List<SubjectCardData> subjectCards = new ArrayList<SubjectCardData>();
 		for (SubjectInfo subjectInfo : subjects) {
@@ -250,7 +250,7 @@ public class VueServiceImpl implements VueService {
 					subjectInfo.getSubjectName(), 
 					subjectInfo.getSubjectOwnerName()
 				)
-			);
+			); 
 		}
 	
 		return subjectCards;

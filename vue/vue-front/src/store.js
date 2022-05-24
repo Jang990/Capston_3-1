@@ -6,12 +6,16 @@ Vue.use(Vuex);
 export const SET_WINNER = 'SET_WINNER';
 export const SET_LOGIN_CHECK = 'SET_LOGIN_CHECK';
 export const SET_INITIAL_DATA = 'SET_INITIAL_DATA';
-export const SET_NOTICE_DATA = 'SET_NOTICE_DATA';
-export const SET_TASK_DATA = 'SET_TASK_DATA';
-export const SET_LECTURES_DATA = 'SET_LECTURES_DATA';
+export const SET_CRAWL_NOTICE_DATA = 'SET_CRAWL_NOTICE_DATA';
+export const SET_CRAWL_TASK_DATA = 'SET_CRAWL_TASK_DATA';
+export const SET_CRAWL_LECTURES_DATA = 'SET_CRAWL_LECTURES_DATA';
+export const SET_DB_NOTICE_DATA = 'SET_DB_NOTICE_DATA';
+export const SET_DB_TASK_DATA = 'SET_DB_TASK_DATA';
+export const SET_DB_LECTURES_DATA = 'SET_DB_LECTURES_DATA';
 export const INCREASE_COMPLETED_TASK = 'INCREASE_COMPLETED_TASK';
 export const INCREASE_INCOMPLETED_TASK = 'INCREASE_INCOMPLETED_TASK';
 export const CRAWL_SUBJECT = 'crawlSubject';
+export const LOAD_DB_SUBJECT = 'loadDBSubject';
 export const LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER = 'LoginCheckANDcalculateToDoNumber';
 
 const api = axios.create({baseURL: 'http://localhost:38080'});
@@ -62,7 +66,7 @@ export default new Vuex.Store({
         [INCREASE_COMPLETED_TASK](state) {
             state.completedTask += 1;
         },
-        [SET_LECTURES_DATA](state, {cardIndex: index, lecturesData: data}) {
+        [SET_CRAWL_LECTURES_DATA](state, {cardIndex: index, lecturesData: data}) {
             if(data.length != 0) {
                 for(let i = 0; i < data.length; i++) {
                     state.subjectCardData[index].lectures[i] = { 
@@ -80,7 +84,9 @@ export default new Vuex.Store({
             Vue.set(state.subjectCardData[index].isCrawling, 0, false);
             // console.log(state.subjectCardData[index].lectures);
         },
-        [SET_NOTICE_DATA](state, {cardIndex: index, noticeData: data}) {
+        [SET_CRAWL_NOTICE_DATA](state, {cardIndex: index, noticeData: data}) {
+            console.log('90!');
+            console.log(data);
             if(data.length != 0) {
                 for(let i = 0; i < data.length; i++) {
                     state.subjectCardData[index].notice[i] = { 
@@ -97,7 +103,7 @@ export default new Vuex.Store({
             }
             Vue.set(state.subjectCardData[index].isCrawling, 1, false);
         },
-        [SET_TASK_DATA](state, {cardIndex: index, taskData: data}) {
+        [SET_CRAWL_TASK_DATA](state, {cardIndex: index, taskData: data}) {
             if(data.length != 0) {
                 for(let i = 0; i < data.length; i++) {
                     console.log(data[i]);
@@ -107,6 +113,74 @@ export default new Vuex.Store({
                         description: data[i].description, 
                         startDate: data[i].startDate, 
                         endDate: data[i].endDate.toString(), 
+                        notSubmittedNum: data[i].notSubmittedNum, 
+                        submissionNum: data[i].submissionNum, 
+                        totalNum: data[i].totalNum, 
+                        submitYN: data[i].submitYN, 
+                        
+                        //여기는 TaskTable에 제출현황을 보여주기위해 추가함
+                        submittedState: data[i].submissionNum / data[i].totalNum* 100,
+                    };
+                    
+                    if(state.subjectCardData[index].task[i].submitYN == 'Y') {
+                        state.incompletedTask += 1;
+                    } else if(state.subjectCardData[index].task[i].submitYN == 'N') {
+                        state.completedTask += 1;
+                    }
+                }
+            }
+            else {
+                state.subjectCardData[index].task = null;
+            }
+            Vue.set(state.subjectCardData[index].isCrawling, 2, false);
+            // console.log(state.subjectCardData[index].task);
+        },
+        //여기부터 다시짓는중
+        [SET_DB_LECTURES_DATA](state, {cardIndex: index, lecturesData: data}) {
+            if(data.length != 0) {
+                for(let i = 0; i < data.length; i++) {
+                    state.subjectCardData[index].lectures[i] = { 
+                        lectureWeekId: data[i].lectureWeekId, 
+                        title: data[i].title, 
+                        endDate: data[i].endDate, 
+                        startDate: data[i].startDate, 
+                        lectures: data[i].lectures, 
+                    };
+                }
+            }
+            else {
+                state.subjectCardData[index].lectures = null;
+            }
+            Vue.set(state.subjectCardData[index].isCrawling, 0, false);
+            // console.log(state.subjectCardData[index].lectures);
+        },
+        [SET_DB_NOTICE_DATA](state, {cardIndex: index, noticeData: data}) {
+            if(data.length != 0) {
+                for(let i = 0; i < data.length; i++) {
+                    state.subjectCardData[index].notice[i] = { 
+                        noticeId: data[i].noticeId, 
+                        title: data[i].title, 
+                        description: data[i].description, 
+                        author: data[i].author, 
+                        createDate: data[i].createDate
+                    };
+                }
+            }
+            else {
+                state.subjectCardData[index].notice = null;
+            }
+            Vue.set(state.subjectCardData[index].isCrawling, 1, false);
+        },
+        [SET_DB_TASK_DATA](state, {cardIndex: index, taskData: data}) {
+            if(data.length != 0) {
+                for(let i = 0; i < data.length; i++) {
+                    console.log(data[i]);
+                    state.subjectCardData[index].task[i] = { 
+                        taskId: data[i].taskId, 
+                        title: data[i].title, 
+                        description: data[i].description, 
+                        startDate: data[i].startDate, 
+                        endDate: data[i].endDate, 
                         notSubmittedNum: data[i].notSubmittedNum, 
                         submissionNum: data[i].submissionNum, 
                         totalNum: data[i].totalNum, 
@@ -131,30 +205,56 @@ export default new Vuex.Store({
     }, //state를 동기적으로 수정할 때 사용
     //state를 바꿀때 바로 바꾸지말고 mutations를 통해 바꾸길 권장
     actions: {
+        async [LOAD_DB_SUBJECT](context) {
+            //각 과목들에 대한 db데이터 불러오기
+            for(let i = 0; i < this.state.subjectCardData.length; i++) {
+                await api.post('/lectureDB', null, {params: {
+                    subjectId: this.state.subjectCardData[i].subjectId,
+                }}).then((response) => {
+                    console.log(response.data);
+                    context.commit([SET_DB_LECTURES_DATA], {cardIndex: i, lecturesData: response.data});
+                });
+                await api.post('/taskDB', null, {params: {
+                    subjectId: this.state.subjectCardData[i].subjectId,
+                }}).then((response) => {
+                    console.log(response.data);
+                    context.commit([SET_DB_NOTICE_DATA], {cardIndex: i, noticeData: response.data});
+                });
+                await api.post('/noticeDB', null, {params: {
+                    subjectId: this.state.subjectCardData[i].subjectId,
+                }}).then((response) => {
+                    console.log(response.data);
+                    context.commit([SET_DB_TASK_DATA], {cardIndex: i, taskData: response.data});
+                });
+
+            }
+        },
         async [CRAWL_SUBJECT](context) {
+            //각 과목들에 대한 크롤링 진행
             for(let i = 0; i < this.state.subjectCardData.length; i++) {
                 await api.post('/crawlLecture', null, {params: {
                     subjectId: this.state.subjectCardData[i].subjectId,
                 }}).then((response) => {
                     // console.log(response.data);
-                    context.commit([SET_LECTURES_DATA], {cardIndex: i, lecturesData: response.data});
+                    context.commit([SET_CRAWL_LECTURES_DATA], {cardIndex: i, lecturesData: response.data});
                 });
                 await api.post('/crawlNotice', null, {params: {
                     subjectId: this.state.subjectCardData[i].subjectId,
                 }}).then((response) => {
                     // console.log(response.data);
-                    context.commit([SET_NOTICE_DATA], {cardIndex: i, noticeData: response.data});
+                    context.commit([SET_CRAWL_NOTICE_DATA], {cardIndex: i, noticeData: response.data});
                 });
                 await api.post('/crawlTask', null, {params: {
                     subjectId: this.state.subjectCardData[i].subjectId,
                 }}).then((response) => {
                     // console.log(response.data);
-                    context.commit([SET_TASK_DATA], {cardIndex: i, taskData: response.data});
+                    context.commit([SET_CRAWL_TASK_DATA], {cardIndex: i, taskData: response.data});
                 });
 
             }
         },
         [LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER](context) {
+            //로그인 후 프로필에 해야할 일 최신화.
             context.commit(SET_LOGIN_CHECK, true);
             let timer = setInterval(()=>{
                 if(this.state.completedTask != this.state.showCompleted) this.state.showCompleted += 1;
