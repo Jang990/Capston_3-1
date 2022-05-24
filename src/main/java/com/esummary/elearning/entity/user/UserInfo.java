@@ -16,7 +16,9 @@ import javax.persistence.Transient;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @NamedEntityGraphs({
 	@NamedEntityGraph(
@@ -33,6 +35,8 @@ import lombok.Data;
 })
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserInfo {
 	@Id
 	private String studentNumber;

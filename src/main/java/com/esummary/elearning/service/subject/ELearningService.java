@@ -13,5 +13,9 @@ public interface ELearningService {
 
 	List<SubjectInfo> summary(UserInfo user);
 
-	List<SubjectCardData> crawlBasicSubjectData(UserData user);
+	List<SubjectInfo> crawlBasicSubjectData(UserData user);
+	boolean saveBasicSubjectData(UserData user, List<SubjectInfo> subjects);
+	List<SubjectCardData> getSubjectDTO(List<SubjectInfo> subjects);
+
+
 }

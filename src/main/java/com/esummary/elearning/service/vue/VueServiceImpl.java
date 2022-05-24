@@ -134,9 +134,8 @@ public class VueServiceImpl implements VueService {
 	}
 
 	@Override
-	public boolean isExistUserSubjectInDB(String studentNumber) {
-		boolean check =(userSubjectRepository.findByUserInfo_StudentNumber(studentNumber).isEmpty()) ? false : true;
-		return check;
+	public List<UserSubject> searchUserSubject(String studentNumber) {
+		return userSubjectRepository.findByUserInfo_StudentNumber(studentNumber);
 	}
 	
 	@Override

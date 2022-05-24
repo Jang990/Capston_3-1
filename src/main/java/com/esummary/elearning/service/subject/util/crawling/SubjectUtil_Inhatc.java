@@ -71,9 +71,15 @@ public class SubjectUtil_Inhatc implements SubjectUtil{
 	}
 	
 	@Override
-	public void saveBasicSubject(UserInfo user, List<SubjectInfo> subjectList) {
+	public boolean saveBasicSubject(UserInfo user, List<SubjectInfo> subjectList) {
 		List<UserSubject> usList = this.createAndSaveUserSubject(user,subjectList);
-		user.setUserSubjects(usList); //DB연동없이 하는것이기때문에 오류가 있을 수 있음?
+		if(usList.isEmpty()) {
+			return false;
+		}
+		else {
+			user.setUserSubjects(usList); //DB연동없이 하는것이기때문에 오류가 있을 수 있음?
+			return true;
+		}
 	}
 	
 	private List<SubjectInfo> getInitialSubjectData(Map<String, String> loginCookie) {

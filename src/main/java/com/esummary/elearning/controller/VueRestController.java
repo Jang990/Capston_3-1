@@ -59,7 +59,10 @@ public class VueRestController {
 		}
 	} 
 	
-	//수강과목 정보 검색 vueLoginCheck이후 로그인이 완료되어 있다면 실행
+	/* 
+	 *  수강과목 정보 검색
+	 * vueLoginCheck이후 로그인이 완료되어 있다면 실행
+	 */
 	@RequestMapping("/getInitSubject")   
 	public InitalPageData getInitData(HttpServletRequest request) {
 		InitalPageData initPageData = new InitalPageData();
@@ -70,18 +73,19 @@ public class VueRestController {
 		initPageData.setName(name);
 		initPageData.setStudentNumber(studentNumber);
 		
+		List<SubjectInfo> subjects = eLearningService.crawlBasicSubjectData(user); //크롤링 정보 가져오기
+		List<UserSubject> userUS = vueService.searchUserSubject(studentNumber);
 		//분기가 필요하다. 기존 db에 데이터가 있는 유저거나, db에 데이터가 없는 유저거나.
-		if(vueService.isExistUserSubjectInDB(studentNumber)) {
+		if(userUS.isEmpty()) {
+			vueService.saveUser(user); //User테이블에 정보가 없으면 저장
+			eLearningService.saveBasicSubjectData(user, subjects); //크롤링 정보 저장
+			initPageData.setSubjectCardData(eLearningService.getSubjectDTO(subjects));
+		}
+		else {
 			//가져오기.			
 			initPageData.setSubjectCardData(vueService.getInitCardData(studentNumber));
 		}
-		else {
-			//유저 저장
-			//크롤링, 크롤링 정보저장, 크롤링한정보 반환
-			//정보 불러오기
-			vueService.saveUser(user);
-			initPageData.setSubjectCardData(eLearningService.crawlBasicSubjectData(user));
-		}
+		
 		return initPageData;
 	}
 	/*

@@ -17,5 +17,5 @@ public interface SubjectUtil {
 
 	List<SubjectInfo> crawlBasicSubject(UserInfo user);
 
-	void saveBasicSubject(UserInfo user, List<SubjectInfo> subjectList);
+	boolean saveBasicSubject(UserInfo user, List<SubjectInfo> subjectList);
 }

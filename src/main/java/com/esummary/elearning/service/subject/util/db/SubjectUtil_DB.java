@@ -103,9 +103,8 @@ public class SubjectUtil_DB implements SubjectUtil{
 	}
 
 	@Override
-	public void saveBasicSubject(UserInfo user, List<SubjectInfo> subjectList) {
-		// TODO Auto-generated method stub
-		
+	public boolean saveBasicSubject(UserInfo user, List<SubjectInfo> subjectList) {
+		return false;
 	}
 
 
