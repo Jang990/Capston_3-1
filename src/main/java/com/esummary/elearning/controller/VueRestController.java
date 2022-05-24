@@ -74,26 +74,22 @@ public class VueRestController {
 		initPageData.setName(user.getUserName());
 		initPageData.setStudentNumber(studentNumber);
 		
-		List<SubjectInfo> crawlingSubjects = eLearningService.crawlBasicSubjectData(user); //크롤링 정보 가져오기
-		List<UserSubject> dbUserSubject = vueService.searchUserSubject(studentNumber);
-		List<SubjectInfo> needStoredSubjects = getNeedStoredSubjectData(dbUserSubject, crawlingSubjects);
-		
-		
+		List<SubjectInfo> crawlingSubjects = eLearningService.crawlAndSaveBasicSubjectData(user); //크롤링 정보 가져오기
+		List<UserSubject> dbUserSubject = vueService.searchUserSubject(studentNumber); //기존에 있던 과목정보
+		vueService.saveUser(user); //User테이블에 정보가 없으면 저장
 		
 		//분기가 필요하다. 기존 db에 데이터가 있는 유저거나, db에 데이터가 없는 유저거나.
 		if(dbUserSubject.isEmpty()) {
 			//DB에 저장된 데이터가 전혀 없을때 전부 크롤링해서 db에 저장함
-			vueService.saveUser(user); //User테이블에 정보가 없으면 저장
-			eLearningService.saveBasicSubjectData(user, needStoredSubjects); //크롤링 정보 저장
-			
-			initPageData.setSubjectCardData(eLearningService.getSubjectDTO(crawlingSubjects));
-			return initPageData;
+			eLearningService.saveBasicSubjectData(user, crawlingSubjects); //크롤링 정보 저장
+		}
+		else {
+			List<SubjectInfo> needStoredSubjects = getNeedStoredSubjectData(dbUserSubject, crawlingSubjects);
+			eLearningService.saveBasicSubjectData(user, needStoredSubjects); //필요한 사용자의 과목정보 정보 저장
 		}
 		
-		
-		
-		
-		initPageData.setSubjectCardData(vueService.getInitCardData(studentNumber));
+		initPageData.setSubjectCardData(vueService.getSubjectDTO(crawlingSubjects));
+//		initPageData.setSubjectCardData(vueService.getInitCardData(studentNumber));
 				
 		return initPageData;
 	}
@@ -116,19 +112,20 @@ public class VueRestController {
 			i++;
 		}
 		
-		for (int j = 0; j < dbSubjectId.length; j++) {
-			if(Arrays.asList(dbSubjectId).contains(crawlingSubjectId[j])) 
+		for (int j = 0; j < crawlingSubjectId.length; j++) {
+			if(Arrays.asList(dbSubjectId).contains(crawlingSubjectId[j])) {
 				continue;
-			else 
+			}
+			else { 
 				needStoredSubjects.add(crawlingSubjects.get(j));
+			}
 		}
 		
 		if(needStoredSubjects.size() == 0) {
 			return null;
 		}
 		else {
-			System.out.println("테스트ㅌ");
-			System.out.println(needStoredSubjects);
+			System.out.println(needStoredSubjects.toString());
 			return needStoredSubjects;
 		}
 	}

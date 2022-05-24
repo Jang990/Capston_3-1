@@ -8,10 +8,11 @@ import com.esummary.elearning.dto.NoticeData;
 import com.esummary.elearning.dto.SubjectCardData;
 import com.esummary.elearning.dto.TaskData;
 import com.esummary.elearning.dto.UserData;
+import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.user.UserSubject;
 
 public interface VueService {
-	List<SubjectCardData> getInitCardData(String studentNumber);
+//	List<SubjectCardData> getInitCardData(String studentNumber);getInitCardDatagetInitCardData
 	List<NoticeData> getNoticeData(String subjectId);
 	List<TaskData> getTaskData(String subjectId, String studentNumber);
 	List<LectureWeekData> getLectureeData(String subjectId, String studentNumber);
@@ -20,6 +21,7 @@ public interface VueService {
 	List<NoticeData> crawlNotice(UserData user, String subjectId);
 	List<TaskData> crawlTask(UserData user, String subjectId);
 	List<LectureWeekData> crawlLecture(UserData user, String subjectId);
+	List<SubjectCardData> getSubjectDTO(List<SubjectInfo> subjects);
 	List<UserSubject> searchUserSubject(String studentNumber);
 	
 	

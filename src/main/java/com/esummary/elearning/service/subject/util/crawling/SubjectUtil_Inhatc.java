@@ -54,6 +54,7 @@ public class SubjectUtil_Inhatc implements SubjectUtil{
 	
 	public List<SubjectInfo> getSubjectList(UserInfo user) {
 		List<SubjectInfo> subjectList = this.getInitialSubjectData(user.getInitialCookies());
+		subjectRepository.saveAll(subjectList);		//DB 저장
 		user.setSubjectList(subjectList); //DB연동없이 하는것이기때문에 오류가 있을 수 있음?
 		
 		List<UserSubject> usList = this.createAndSaveUserSubject(user, subjectList);
@@ -64,8 +65,9 @@ public class SubjectUtil_Inhatc implements SubjectUtil{
 	}
 	
 	@Override
-	public List<SubjectInfo> crawlBasicSubject(UserInfo user) {
+	public List<SubjectInfo> crawlAndSaveBasicSubjectData(UserInfo user) {
 		List<SubjectInfo> subjectList = this.getInitialSubjectData(user.getInitialCookies());
+		subjectRepository.saveAll(subjectList);		//DB 저장
 		user.setSubjectList(subjectList); //DB연동없이 하는것이기때문에 오류가 있을 수 있음?
 		return subjectList;
 	}
@@ -105,8 +107,7 @@ public class SubjectUtil_Inhatc implements SubjectUtil{
 			subject.setSubjectId(subjectStringValues[ID_IDX].trim());
 			subject.setSubjectOwnerName(subjectStringValues[OWNER_NAME_IDX].trim());
 			subject.setOpenType(subjectStringValues[OPEN_TYPE_IDX].trim());
-
-			subjectRepository.save(subject);		//DB 저장
+//			subjectRepository.save(subject);		//DB 저장
 			subjectList.add(subject);
 		}
 		
@@ -122,10 +123,11 @@ public class SubjectUtil_Inhatc implements SubjectUtil{
 			us.setSubjectInfo(subject);
 			us.setUserInfo(user);
 			usList.add(us);
-			if(userSubjectRepository.
-					findBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subject.getSubjectId(), user.getStudentNumber()) != null)
-				userSubjectRepository.save(us); //이거말고 usersubject리스트에서 찾아도 될듯 이건 쿼리를 계속보낸다 ;;
+//			if(userSubjectRepository.
+//					findBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subject.getSubjectId(), user.getStudentNumber()) != null)
+//			userSubjectRepository.save(us);
 		}
+		userSubjectRepository.saveAll(usList);
 		return usList;
 	}
 	

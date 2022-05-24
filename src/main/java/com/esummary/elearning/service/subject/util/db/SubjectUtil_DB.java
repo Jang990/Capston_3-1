@@ -97,7 +97,7 @@ public class SubjectUtil_DB implements SubjectUtil{
 	 * 아래는 쓰레기들
 	 */
 	@Override
-	public List<SubjectInfo> crawlBasicSubject(UserInfo user) {
+	public List<SubjectInfo> crawlAndSaveBasicSubjectData(UserInfo user) {
 		// TODO Auto-generated method stub
 		return null;
 	}

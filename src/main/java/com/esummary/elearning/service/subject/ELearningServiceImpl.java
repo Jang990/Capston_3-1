@@ -46,14 +46,14 @@ public class ELearningServiceImpl implements ELearningService {
 	}
 	
 	@Override
-	public List<SubjectInfo> crawlBasicSubjectData(UserData user) {
+	public List<SubjectInfo> crawlAndSaveBasicSubjectData(UserData user) {
 		UserInfo userInfo = createUserInfo(user);
 //		userInfo.setStudentNumber(user.getStudentNumber());
 //		userInfo.setUserName(user.getUserName());
 //		userInfo.setInitialCookies(user.getInitialCookies());
 		//크롤링
-		List<SubjectInfo> subjects = subjectUtil_Crawl.crawlBasicSubject(userInfo);
-	
+		List<SubjectInfo> subjects = subjectUtil_Crawl.crawlAndSaveBasicSubjectData(userInfo);
+
 		return subjects;
 	}
 	
@@ -63,21 +63,6 @@ public class ELearningServiceImpl implements ELearningService {
 		UserInfo userInfo = createUserInfo(user);
 		//db에 내용 저장
 		return subjectUtil_Crawl.saveBasicSubject(userInfo, subjects);
-	}
-	
-	@Override
-	public List<SubjectCardData> getSubjectDTO(List<SubjectInfo> subjects) {
-		List<SubjectCardData> subjectCards = new ArrayList<SubjectCardData>();
-		for (SubjectInfo subjectInfo : subjects) {
-			subjectCards.add(new SubjectCardData(
-					subjectInfo.getSubjectId(), 
-					subjectInfo.getSubjectName(), 
-					subjectInfo.getSubjectOwnerName()
-				)
-			);
-		}
-	
-		return subjectCards;
 	}
 	
 	private UserInfo createUserInfo(UserData user) {

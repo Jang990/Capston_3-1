@@ -48,21 +48,21 @@ public class VueServiceImpl implements VueService {
 	@Autowired
 	LectureWeekUtil lectureWeekUtil;
 	
-	@Override
-	public List<SubjectCardData> getInitCardData(String studentNumber) {
-		UserInfo user = userRepository.findWithUserSubjectsByStudentNumber(studentNumber);
-		List<SubjectCardData> cardList = new ArrayList<>();
-		
-		for (UserSubject userSubject : user.getUserSubjects()) {
-			SubjectInfo subject = userSubject.getSubjectInfo();
-			SubjectCardData card = new SubjectCardData(
-					subject.getSubjectId(), subject.getSubjectName(), subject.getSubjectOwnerName());
-			cardList.add(card);
-		}
-		
-		if(cardList.size() > 0) return cardList;
-		else return null;
-	}
+//	@Override
+//	public List<SubjectCardData> getInitCardData(String studentNumber) {
+//		UserInfo user = userRepository.findWithUserSubjectsByStudentNumber(studentNumber);
+//		List<SubjectCardData> cardList = new ArrayList<>();
+//		
+//		for (UserSubject userSubject : user.getUserSubjects()) {
+//			SubjectInfo subject = userSubject.getSubjectInfo();
+//			SubjectCardData card = new SubjectCardData(
+//					subject.getSubjectId(), subject.getSubjectName(), subject.getSubjectOwnerName());
+//			cardList.add(card);
+//		}
+//		
+//		if(cardList.size() > 0) return cardList;
+//		else return null;
+//	}
 	
 	public List<NoticeData> getNoticeData(String subjectId) {
 		List<SubjectNoticeInfo> noticeInfo = subjectNoticeRepository.findBySubjectInfo_SubjectId(subjectId);
@@ -239,6 +239,21 @@ public class VueServiceImpl implements VueService {
 		}
 		
 		return lecturesDTO;
+	}
+	
+	@Override
+	public List<SubjectCardData> getSubjectDTO(List<SubjectInfo> subjects) {
+		List<SubjectCardData> subjectCards = new ArrayList<SubjectCardData>();
+		for (SubjectInfo subjectInfo : subjects) {
+			subjectCards.add(new SubjectCardData(
+					subjectInfo.getSubjectId(), 
+					subjectInfo.getSubjectName(), 
+					subjectInfo.getSubjectOwnerName()
+				)
+			);
+		}
+	
+		return subjectCards;
 	}
 	
 }
