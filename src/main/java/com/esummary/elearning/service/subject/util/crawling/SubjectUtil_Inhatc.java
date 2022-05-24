@@ -122,7 +122,9 @@ public class SubjectUtil_Inhatc implements SubjectUtil{
 			us.setSubjectInfo(subject);
 			us.setUserInfo(user);
 			usList.add(us);
-			userSubjectRepository.save(us);
+			if(userSubjectRepository.
+					findBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subject.getSubjectId(), user.getStudentNumber()) != null)
+				userSubjectRepository.save(us); //이거말고 usersubject리스트에서 찾아도 될듯 이건 쿼리를 계속보낸다 ;;
 		}
 		return usList;
 	}

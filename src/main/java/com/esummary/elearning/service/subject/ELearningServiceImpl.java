@@ -59,6 +59,7 @@ public class ELearningServiceImpl implements ELearningService {
 	
 	@Override
 	public boolean saveBasicSubjectData(UserData user, List<SubjectInfo> subjects) {
+		if(subjects == null) return false;
 		UserInfo userInfo = createUserInfo(user);
 		//db에 내용 저장
 		return subjectUtil_Crawl.saveBasicSubject(userInfo, subjects);

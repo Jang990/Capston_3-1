@@ -63,6 +63,7 @@ public class VueRestController {
 	/* 
 	 *  수강과목 정보 검색
 	 * vueLoginCheck이후 로그인이 완료되어 있다면 실행
+	 * 크롤링 id를 보내줌
 	 */
 	@RequestMapping("/getInitSubject")   
 	public InitalPageData getInitData(HttpServletRequest request) {
@@ -75,20 +76,35 @@ public class VueRestController {
 		
 		List<SubjectInfo> crawlingSubjects = eLearningService.crawlBasicSubjectData(user); //크롤링 정보 가져오기
 		List<UserSubject> dbUserSubject = vueService.searchUserSubject(studentNumber);
+		List<SubjectInfo> needStoredSubjects = getNeedStoredSubjectData(dbUserSubject, crawlingSubjects);
+		
+		
 		
 		//분기가 필요하다. 기존 db에 데이터가 있는 유저거나, db에 데이터가 없는 유저거나.
 		if(dbUserSubject.isEmpty()) {
 			//DB에 저장된 데이터가 전혀 없을때 전부 크롤링해서 db에 저장함
 			vueService.saveUser(user); //User테이블에 정보가 없으면 저장
-			eLearningService.saveBasicSubjectData(user, crawlingSubjects); //크롤링 정보 저장
+			eLearningService.saveBasicSubjectData(user, needStoredSubjects); //크롤링 정보 저장
+			
 			initPageData.setSubjectCardData(eLearningService.getSubjectDTO(crawlingSubjects));
 			return initPageData;
 		}
 		
+		
+		
+		
+		initPageData.setSubjectCardData(vueService.getInitCardData(studentNumber));
+				
+		return initPageData;
+	}
+	private List<SubjectInfo> getNeedStoredSubjectData(List<UserSubject> dbUserSubject,
+			List<SubjectInfo> crawlingSubjects) {
+		List<SubjectInfo> needStoredSubjects = new ArrayList<SubjectInfo>();
+		
 		String[] dbSubjectId = new String[dbUserSubject.size()];
 		String[] crawlingSubjectId = new String[crawlingSubjects.size()];
-		int i = 0;
 		
+		int i = 0;
 		for (UserSubject userSubject : dbUserSubject) {
 			dbSubjectId[i] = userSubject.getSubjectId();
 			i++;
@@ -97,17 +113,26 @@ public class VueRestController {
 		i = 0;
 		for (SubjectInfo subjectInfo : crawlingSubjects) {
 			crawlingSubjectId[i] = subjectInfo.getSubjectId();
+			i++;
 		}
 		
-		for (int j = 0; j < crawlingSubjectId.length; j++) {
-			boolean check = Arrays.asList(crawlingSubjectId).contains(dbSubjectId[j]);
+		for (int j = 0; j < dbSubjectId.length; j++) {
+			if(Arrays.asList(dbSubjectId).contains(crawlingSubjectId[j])) 
+				continue;
+			else 
+				needStoredSubjects.add(crawlingSubjects.get(j));
 		}
 		
-		
-		initPageData.setSubjectCardData(vueService.getInitCardData(studentNumber));
-				
-		return initPageData;
+		if(needStoredSubjects.size() == 0) {
+			return null;
+		}
+		else {
+			System.out.println("테스트ㅌ");
+			System.out.println(needStoredSubjects);
+			return needStoredSubjects;
+		}
 	}
+
 	/*
 	@RequestMapping("/crawlSubject")
 	public String crawlSubject(HttpServletRequest request, @RequestParam String subjectId) {
