@@ -1,6 +1,7 @@
 package com.esummary.elearning.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -67,25 +68,44 @@ public class VueRestController {
 	public InitalPageData getInitData(HttpServletRequest request) {
 		InitalPageData initPageData = new InitalPageData();
 		UserData user = (UserData)request.getSession().getAttribute("userData");
-		String name = user.getUserName();
 		String studentNumber = user.getStudentNumber();
 		
-		initPageData.setName(name);
+		initPageData.setName(user.getUserName());
 		initPageData.setStudentNumber(studentNumber);
 		
-		List<SubjectInfo> subjects = eLearningService.crawlBasicSubjectData(user); //크롤링 정보 가져오기
-		List<UserSubject> userUS = vueService.searchUserSubject(studentNumber);
+		List<SubjectInfo> crawlingSubjects = eLearningService.crawlBasicSubjectData(user); //크롤링 정보 가져오기
+		List<UserSubject> dbUserSubject = vueService.searchUserSubject(studentNumber);
+		
 		//분기가 필요하다. 기존 db에 데이터가 있는 유저거나, db에 데이터가 없는 유저거나.
-		if(userUS.isEmpty()) {
+		if(dbUserSubject.isEmpty()) {
+			//DB에 저장된 데이터가 전혀 없을때 전부 크롤링해서 db에 저장함
 			vueService.saveUser(user); //User테이블에 정보가 없으면 저장
-			eLearningService.saveBasicSubjectData(user, subjects); //크롤링 정보 저장
-			initPageData.setSubjectCardData(eLearningService.getSubjectDTO(subjects));
-		}
-		else {
-			//가져오기.			
-			initPageData.setSubjectCardData(vueService.getInitCardData(studentNumber));
+			eLearningService.saveBasicSubjectData(user, crawlingSubjects); //크롤링 정보 저장
+			initPageData.setSubjectCardData(eLearningService.getSubjectDTO(crawlingSubjects));
+			return initPageData;
 		}
 		
+		String[] dbSubjectId = new String[dbUserSubject.size()];
+		String[] crawlingSubjectId = new String[crawlingSubjects.size()];
+		int i = 0;
+		
+		for (UserSubject userSubject : dbUserSubject) {
+			dbSubjectId[i] = userSubject.getSubjectId();
+			i++;
+		}
+		
+		i = 0;
+		for (SubjectInfo subjectInfo : crawlingSubjects) {
+			crawlingSubjectId[i] = subjectInfo.getSubjectId();
+		}
+		
+		for (int j = 0; j < crawlingSubjectId.length; j++) {
+			boolean check = Arrays.asList(crawlingSubjectId).contains(dbSubjectId[j]);
+		}
+		
+		
+		initPageData.setSubjectCardData(vueService.getInitCardData(studentNumber));
+				
 		return initPageData;
 	}
 	/*
