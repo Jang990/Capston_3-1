@@ -27,14 +27,24 @@ export default new Vuex.Store({
         studentName: '',
         studentNumber: '',
         subjectCardData: [],
+        
         completedTask: 0,
         incompletedTask: 0,
         showCompleted: 0,
         showIncompleted: 0,
+
+        //강의
+        completedLecture: 0,
+        incompletedLecture: 0,
+        showCompletedLecture: 0,
+        showIncompletedLecture: 0,
     }, //Vue에 data와 비슷
     getters: {
         showTotalTask(state) {
             return state.showCompleted + state.showIncompleted;
+        },
+        showTotalLecture(state) {
+            return state.showCompletedLecture + state.showIncompletedLecture;
         },
     },//Vue의 computed와 비슷 
     //완전히 같은게 아니라 비슷하다는 것 명심
@@ -76,7 +86,25 @@ export default new Vuex.Store({
                         startDate: data[i].startDate, 
                         lectures: data[i].lectures, 
                     };
+
+                    for(let j = 0; j < data[i].lectures.length; j++) {
+                        if(data[i].lectures[j].type == "화상강의") continue;
+                        const learningTimeNumber = Number(data[i].lectures[j].learningTime.slice(0, data[i].lectures[j].learningTime.indexOf('분')));
+                        const fullTimeNumber = Number(data[i].lectures[j].fullTime.slice(0, data[i].lectures[j].fullTime.indexOf('분')));
+                        console.log('강의명: ' + data[i].lectures[j].title + ', 풀타임: ' + fullTimeNumber + '러닝: ' + learningTimeNumber);
+                        
+                        if(learningTimeNumber > fullTimeNumber) {
+                            state.completedLecture += 1;
+                            console.log('수강완료');
+                        }
+                        else {
+                            state.incompletedLecture += 1;
+                        }
+                    }
+                    
                 }
+
+                
             }
             else {
                 state.subjectCardData[index].lectures = null;
@@ -85,8 +113,6 @@ export default new Vuex.Store({
             // console.log(state.subjectCardData[index].lectures);
         },
         [SET_CRAWL_NOTICE_DATA](state, {cardIndex: index, noticeData: data}) {
-            console.log('90!');
-            console.log(data);
             if(data.length != 0) {
                 for(let i = 0; i < data.length; i++) {
                     state.subjectCardData[index].notice[i] = { 
@@ -106,7 +132,7 @@ export default new Vuex.Store({
         [SET_CRAWL_TASK_DATA](state, {cardIndex: index, taskData: data}) {
             if(data.length != 0) {
                 for(let i = 0; i < data.length; i++) {
-                    console.log(data[i]);
+                    // console.log(data[i]);
                     state.subjectCardData[index].task[i] = { 
                         taskId: data[i].taskId, 
                         title: data[i].title, 
@@ -189,11 +215,11 @@ export default new Vuex.Store({
                         //여기는 TaskTable에 제출현황을 보여주기위해 추가함
                         submittedState: data[i].submissionNum / data[i].totalNum* 100,
                     };
-                    if(state.subjectCardData[index].task[i].submitYN == 'Y') {
-                        state.incompletedTask += 1;
-                    } else if(state.subjectCardData[index].task[i].submitYN == 'N') {
-                        state.completedTask += 1;
-                    }
+                    // if(state.subjectCardData[index].task[i].submitYN == 'Y') {
+                    //     state.incompletedTask += 1;
+                    // } else if(state.subjectCardData[index].task[i].submitYN == 'N') {
+                    //     state.completedTask += 1;
+                    // }
                 }
             }
             else {
@@ -259,10 +285,16 @@ export default new Vuex.Store({
             let timer = setInterval(()=>{
                 if(this.state.completedTask != this.state.showCompleted) this.state.showCompleted += 1;
                 if(this.state.incompletedTask != this.state.showIncompleted) this.state.showIncompleted += 1;
+                
+                if(this.state.completedLecture != this.state.showCompletedLecture) this.state.showCompletedLecture += 1;
+                if(this.state.incompletedLecture != this.state.showIncompletedLecture) this.state.showIncompletedLecture += 1;
+                
                 // console.log('완료과제 : ' + this.state.completedTask+' == '+ this.state.showCompleted + ', 미완료과제: ' + this.state.incompletedTask+' == '+ this.state.showIncompleted + ', ' + this.state.subjectCardData[this.state.subjectCardData.length-1].isCrawling[2]);
                 if(!this.state.subjectCardData[this.state.subjectCardData.length-1].isCrawling[2] && 
                     this.state.completedTask == this.state.showCompleted && 
-                    this.state.incompletedTask == this.state.showIncompleted) {
+                    this.state.incompletedTask == this.state.showIncompleted &&
+                    this.state.completedLecture == this.state.showCompletedLecture && 
+                    this.state.incompletedLecture == this.state.showIncompletedLecture) {
                     clearInterval(timer);
                 }
             }, 100);

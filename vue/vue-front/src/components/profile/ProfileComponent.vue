@@ -11,12 +11,12 @@
     </v-card-text>
 
     <v-divider class="mx-4"></v-divider>
-    <summary-component 
-      :title="taskTitle" 
-      :completed="completedTask" 
-      :Incompleted="showIncompleted"
-    >
-    </summary-component>
+    <task-summary-component></task-summary-component>
+
+    <v-divider class="mx-4"></v-divider>
+    <lecture-summary-component></lecture-summary-component>
+    
+    <v-divider class="mx-4"></v-divider>
 
     <v-card-actions>
       <v-btn
@@ -32,10 +32,11 @@
 
 <script>
 import { mapState } from 'vuex';
-import SummaryComponent from './SummaryComponent';
+import LectureSummaryComponent from './LectureSummaryComponent'
+import TaskSummaryComponent from './TaskSummaryComponent';
 export default {
   name: 'ProfileComponent',
-  components: {SummaryComponent},
+  components: {TaskSummaryComponent, LectureSummaryComponent},
   data() {
     return {
       taskTitle: '과제'
