@@ -67,6 +67,9 @@ public class VueRestController {
 	 */
 	@RequestMapping("/getInitSubject")   
 	public InitalPageData getInitData(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		UserData userData = (UserData)session.getAttribute("userData");
+		
 		InitalPageData initPageData = new InitalPageData();
 		UserData user = (UserData)request.getSession().getAttribute("userData");
 		String studentNumber = user.getStudentNumber();

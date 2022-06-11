@@ -77,16 +77,12 @@
             >
               조회된 강의가 없습니다.
             </v-card-text>
-            <v-card-text v-else>
-              강의 주차 내용에 대한 것들...
-            </v-card-text>
-            <!-- 
-            <task-table 
+            <lecture-table 
               v-else
               :lecturesData="subjectCardData[index].lectures"
             >
-            </task-table>
-            -->
+            </lecture-table>
+            
           </div>
           <div v-else-if="showNotice">
             <v-divider></v-divider>
@@ -145,6 +141,7 @@
 import axios from "axios"
 import NoticeTable from "./noticeTable/NoticeTable"
 import TaskTable from "./taskTable/TaskTable"
+import LectureTable from "./lectureTable/LectureTable"
 import { mapState } from 'vuex';
 const mainAxios = axios.create({baseURL: 'http://localhost:38080'});
 const delayTime = 350;
@@ -155,7 +152,7 @@ const taskNum = 2;
 
 export default {
   name: 'SubjectCard',
-  components: {NoticeTable, TaskTable},
+  components: {LectureTable, NoticeTable, TaskTable},
   computed: {
     ...mapState({
       subjectCardData: state=> state.subjectCardData,

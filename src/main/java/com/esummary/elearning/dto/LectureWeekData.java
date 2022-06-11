@@ -16,4 +16,7 @@ public class LectureWeekData {
 	private Date startDate;
 	private Date endDate;
 	private List<LectureData> lectures; //주차정보를 부르고. 주차정보를 클릭하면 정보를 가져오는 식으로 하는게 좋겠다.
+	
+	private int cntCompleted;
+	private int cntIncompleted; 
 }

@@ -112,7 +112,7 @@ public class VueServiceImpl implements VueService {
 		//여기 null 고쳐야한다.
 		return new LectureWeekData(
 				weekInfo.getLectureWeekId(), weekInfo.getTitle(), 
-				weekInfo.getStartDate(), weekInfo.getEndDate(), null
+				weekInfo.getStartDate(), weekInfo.getEndDate(), null ,0,0
 		);
 	}
 
@@ -195,10 +195,12 @@ public class VueServiceImpl implements VueService {
 		List<SubjectLectureWeekInfo> lectures = lectureWeekUtil.getSubjectLectureWeekInfo(userSubject, user.getInitialCookies());
 		List<LectureWeekData> lecturesDTO = new ArrayList<LectureWeekData>();
 		for (SubjectLectureWeekInfo subjectLectureWeekInfo : lectures) {
+			int cntCompleted = 0;
+			int cntIncompleted = 0;
 			List<SubjectLecture> lectureDetail = subjectLectureWeekInfo.getLectures();
 			List<LectureData> lectureDetailDTO = new ArrayList<LectureData>();
 			for (SubjectLecture detail : lectureDetail) {
-				lectureDetailDTO.add( new LectureData(
+				LectureData lecture = new LectureData(
 						detail.getLectureId(), 
 						detail.getLectureVideoId(), 
 						detail.getType(), 
@@ -207,8 +209,12 @@ public class VueServiceImpl implements VueService {
 						detail.getFullTime(), 
 						detail.getStatus(), 
 						detail.getLearningTime()
-					)
-				);
+					);
+				
+				if(isCompletedLecture(lecture)) cntCompleted++;
+				else cntIncompleted++;
+				
+				lectureDetailDTO.add(lecture);
 			}
 					
 			lecturesDTO.add(new LectureWeekData(
@@ -216,14 +222,30 @@ public class VueServiceImpl implements VueService {
 					subjectLectureWeekInfo.getTitle(), 
 					subjectLectureWeekInfo.getStartDate(),
 					subjectLectureWeekInfo.getEndDate(),
-					lectureDetailDTO
+					lectureDetailDTO,
+					cntCompleted,
+					cntIncompleted
 				)
 			);
-		}
+		}     
 		
 		return lecturesDTO;
 	}
 	
+	private boolean isCompletedLecture(LectureData lecture) {
+		if(lecture.getFullTime() == null) return true; //수업 시간이 없다면 해야할 일이 아니다. 화상강의는 알아해라
+		
+		int fullTime = getMinuteNumber(lecture.getFullTime());
+		int studyTime = getMinuteNumber(lecture.getLearningTime());
+		if(fullTime <= studyTime && lecture.getStatus().equals("1")) return true;
+		return false;
+	}
+
+	private int getMinuteNumber(String minuteString) {
+		if(!minuteString.contains("분")) return 0;
+		return Integer.parseInt(minuteString.substring(0, minuteString.indexOf("분")));
+	}   
+
 	@Override
 	public List<LectureWeekData> getLectureeData(String subjectId, String studentNumber) {
 		UserSubject us = userSubjectRepository.
