@@ -63,7 +63,18 @@
                   <!-- <subject-card v-for="(card, i) in subjectCardData" 
                     :key="i" v-bind:card="card">
                   </subject-card> -->
-                  <main-statistics-component></main-statistics-component>
+                  <main-statistics-component 
+                    v-if="this.$store.state.completedLecture != 0 || this.$store.state.incompletedLecture != 0"
+                  >
+                  </main-statistics-component>
+                  <v-progress-circular
+                    v-else
+                    :size="70"
+                    :width="7"
+                    color="purple"
+                    indeterminate
+                  ></v-progress-circular>
+
                   <v-divider></v-divider>
                   <v-container>
                     <v-row dense>
@@ -91,8 +102,7 @@
                 min-height="268"
               >
                 <!--  -->
-                <!-- 요약 그래프 위치 -->
-                <main-statistics-component></main-statistics-component>
+                요약 그래프 위치
               </v-sheet>
             </v-col>
           </v-row>
