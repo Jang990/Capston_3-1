@@ -47,17 +47,17 @@
 
       <template v-slot:expanded-item="{ headers, item }">
         <td :colspan="headers.length" class="td-for-card">
-          <task-description-card :description="item.description"></task-description-card>
+          <lecture-description :lectureArray="item.lectures"></lecture-description>
         </td>
       </template>
     </v-data-table>
 </template>
 
 <script>
-import TaskDescriptionCard from './TaskDescriptionCard';
+import LectureDescription from './LectureDescription';
 export default {
   name: 'LectureTable',
-  components: {TaskDescriptionCard},
+  components: {LectureDescription},
   data() {
     return {
       LectureTitle: '강의',
@@ -106,9 +106,10 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .td-for-card{
   padding: 0 !important;
+  margin-left: 5%;
 }
 v-progress-linear > strong {
   cursor: default;

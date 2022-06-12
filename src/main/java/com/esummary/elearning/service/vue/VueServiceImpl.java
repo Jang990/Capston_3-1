@@ -215,7 +215,7 @@ public class VueServiceImpl implements VueService {
 				else cntIncompleted++;
 				
 				lectureDetailDTO.add(lecture);
-			}
+			}      
 					
 			lecturesDTO.add(new LectureWeekData(
 					subjectLectureWeekInfo.getLectureWeekId(),    
@@ -226,7 +226,7 @@ public class VueServiceImpl implements VueService {
 					cntCompleted,
 					cntIncompleted
 				)
-			);
+			);  
 		}     
 		
 		return lecturesDTO;
