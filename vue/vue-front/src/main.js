@@ -9,6 +9,11 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 Vue.use(Vuetify);
 
+//chart
+import {Chart} from 'chart.js'
+import Chartkick from 'vue-chartkick'
+Vue.use(Chartkick.use(Chart));
+
 // import 'material-design-icons-iconfont/dist/material-design-icons.css' // vuetify prepend-icon 안나올 때  npm install material-design-icons-iconfont 설치후 이 코드 추가
 // Vue.use(Vuetify, {
 //   iconfont: 'fa',

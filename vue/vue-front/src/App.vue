@@ -63,6 +63,8 @@
                   <!-- <subject-card v-for="(card, i) in subjectCardData" 
                     :key="i" v-bind:card="card">
                   </subject-card> -->
+                  <main-statistics-component></main-statistics-component>
+                  <v-divider></v-divider>
                   <v-container>
                     <v-row dense>
                       <v-col
@@ -89,7 +91,8 @@
                 min-height="268"
               >
                 <!--  -->
-                요약 그래프 위치
+                <!-- 요약 그래프 위치 -->
+                <main-statistics-component></main-statistics-component>
               </v-sheet>
             </v-col>
           </v-row>
@@ -106,11 +109,12 @@ import axios from "axios";
 import SubjectCard from "./components/subjectCards/SubjectCard";
 import LoginComponent from "./components/Login";
 import ProfileComponent from './components/profile/ProfileComponent';
+import MainStatisticsComponent from './components/statisticsComponents/MainStatisticsComponent';
 
 export default {
   name: 'App',
   store,
-  components: {SubjectCard, LoginComponent,ProfileComponent},
+  components: {SubjectCard, LoginComponent,ProfileComponent, MainStatisticsComponent},
   computed: {
     ...mapState(['loginCheck', 'subjectCardData']),
   },

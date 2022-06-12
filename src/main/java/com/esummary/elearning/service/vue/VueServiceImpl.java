@@ -244,7 +244,7 @@ public class VueServiceImpl implements VueService {
 	private int getMinuteNumber(String minuteString) {
 		if(!minuteString.contains("분")) return 0;
 		return Integer.parseInt(minuteString.substring(0, minuteString.indexOf("분")));
-	}   
+	}         
 
 	@Override
 	public List<LectureWeekData> getLectureeData(String subjectId, String studentNumber) {
