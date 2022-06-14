@@ -143,7 +143,7 @@ public class VueRestController {
 		List<NoticeData> noticeDTO = this.crawlNotice(request, subjectId);
 		List<TaskData> taskDTO = this.crawlTask(request, subjectId);
 		SubjectCountData cntDTO = new SubjectCountData(lectureDTO, taskDTO);
-		
+		System.out.println("안녕===" + cntDTO); 
 		
 		SubjectDetailData subjectDTO = new SubjectDetailData(lectureDTO, taskDTO, noticeDTO, cntDTO);
 		return subjectDTO;   

@@ -28,17 +28,17 @@ public class SubjectCountData {
 		this.cntIncompletedLecture = cntIncompletedLecture;
 		
 		int cntCompletedTask = 0;
-		int cntIncompletedTask = 0;
+		int cntIncompletedTask = 0; 
 		for (TaskData taskData : taskDTO) {
-			if(taskData.getSubmitYN().equals("Y")) cntCompletedTask++;
-			else if (taskData.getSubmitYN().equals("N")) cntIncompletedTask++;
+			if(taskData.getSubmitYN().equals("Y")) cntIncompletedTask++;
+			else if (taskData.getSubmitYN().equals("N")) cntCompletedTask++; 
 		}
 		this.cntCompletedTask = cntCompletedTask;
 		this.cntIncompletedTask = cntIncompletedTask;
 		
 		this.cntCompletedTotal = this.cntCompletedLecture + this.cntCompletedTask;
 		this.cntIncompletedTotal = this.cntIncompletedLecture + this.cntIncompletedTask;
-	}
+	}  
 	
 	
 }

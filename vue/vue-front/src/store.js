@@ -94,8 +94,8 @@ export default new Vuex.Store({
             state.completedLecture += data.cntCompletedLecture;
             state.incompletedLecture += data.cntIncompletedLecture;
 
-            state.incompletedTask += data.cntCompletedTask;
-            state.completedTask += data.cntIncompletedTask;
+            state.completedTask += data.cntCompletedTask;
+            state.incompletedTask += data.cntIncompletedTask;
         },
         [SET_CRAWL_LECTURES_DATA](state, {cardIndex: index, lecturesData: data}) {
             if(data.length != 0) {

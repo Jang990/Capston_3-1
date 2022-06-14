@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SubjectCardData {
 	private String subjectId;
-	private String subjectName;
+	private String subjectName; 
 	private String owner;
 }
