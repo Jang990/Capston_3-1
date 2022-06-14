@@ -6,6 +6,7 @@ Vue.use(Vuex);
 export const SET_WINNER = 'SET_WINNER';
 export const SET_LOGIN_CHECK = 'SET_LOGIN_CHECK';
 export const SET_INITIAL_DATA = 'SET_INITIAL_DATA';
+export const SET_SUBJECT_COUNT = 'SET_SUBJECT_COUNT';
 export const SET_CRAWL_NOTICE_DATA = 'SET_CRAWL_NOTICE_DATA';
 export const SET_CRAWL_TASK_DATA = 'SET_CRAWL_TASK_DATA';
 export const SET_CRAWL_LECTURES_DATA = 'SET_CRAWL_LECTURES_DATA';
@@ -66,6 +67,12 @@ export default new Vuex.Store({
                 element['lectures'] = [];
                 element['notice'] = [];
                 element['task'] = [];
+                element['cntCompletedLecture'] = 0;
+                element['cntIncompletedLecture'] = 0;
+                element['cntCompletedTask'] = 0;
+                element['cntIncompletedTask'] = 0;
+                element['cntCompletedTotal'] = 0;
+                element['cntIncompletedTotal'] = 0;
             }
             // console.log(objs);
             state.subjectCardData = objs;
@@ -75,6 +82,20 @@ export default new Vuex.Store({
         },
         [INCREASE_COMPLETED_TASK](state) {
             state.completedTask += 1;
+        },
+        [SET_SUBJECT_COUNT](state, {cardIndex: index, counts: data}) {
+            state.subjectCardData[index].cntCompletedLecture = data.cntCompletedLecture;
+            state.subjectCardData[index].cntIncompletedLecture = data.cntIncompletedLecture;
+            state.subjectCardData[index].cntCompletedTask = data.cntCompletedTask;
+            state.subjectCardData[index].cntIncompletedTask = data.cntIncompletedTask;
+            state.subjectCardData[index].cntCompletedTotal = data.cntCompletedTotal;
+            state.subjectCardData[index].cntIncompletedTotal = data.cntIncompletedTotal;
+
+            state.completedLecture += data.cntCompletedLecture;
+            state.incompletedLecture += data.cntIncompletedLecture;
+
+            state.incompletedTask += data.cntCompletedTask;
+            state.completedTask += data.cntIncompletedTask;
         },
         [SET_CRAWL_LECTURES_DATA](state, {cardIndex: index, lecturesData: data}) {
             if(data.length != 0) {
@@ -88,8 +109,7 @@ export default new Vuex.Store({
                         lectures: data[i].lectures, 
                         cntCompleted: data[i].cntCompleted, 
                         cntIncompleted: data[i].cntIncompleted, 
-                        learningState: ((data[i].cntCompleted + data[i].cntIncompleted) != 0) ? 
-                            data[i].cntCompleted / (data[i].cntCompleted + data[i].cntIncompleted) * 100 : 0,
+                        learningState: data[i].studyingState,
                     };
 
                     // for(let j = 0; j < data[i].lectures.length; j++) {
@@ -107,8 +127,8 @@ export default new Vuex.Store({
                     //     }
                     // }
 
-                    state.completedLecture += data[i].cntCompleted;
-                    state.incompletedLecture += data[i].cntIncompleted;
+                    // state.completedLecture += data[i].cntCompleted;
+                    // state.incompletedLecture += data[i].cntIncompleted;
                 }
 
                 
@@ -155,11 +175,11 @@ export default new Vuex.Store({
                         submittedState: data[i].submissionNum / data[i].totalNum* 100,
                     };
                     
-                    if(state.subjectCardData[index].task[i].submitYN == 'Y') {
-                        state.incompletedTask += 1;
-                    } else if(state.subjectCardData[index].task[i].submitYN == 'N') {
-                        state.completedTask += 1;
-                    }
+                    // if(state.subjectCardData[index].task[i].submitYN == 'Y') {
+                    //     state.incompletedTask += 1;
+                    // } else if(state.subjectCardData[index].task[i].submitYN == 'N') {
+                    //     state.completedTask += 1;
+                    // }
                 }
             }
             else {
@@ -265,25 +285,16 @@ export default new Vuex.Store({
         async [CRAWL_SUBJECT](context) {
             //각 과목들에 대한 크롤링 진행
             for(let i = 0; i < this.state.subjectCardData.length; i++) {
-                await api.post('/crawlLecture', null, {params: {
+                await api.post('/crawlSubject', null, {params: {
                     subjectId: this.state.subjectCardData[i].subjectId,
                 }}).then((response) => {
-                    // console.log(response.data);
-                    context.commit([SET_CRAWL_LECTURES_DATA], {cardIndex: i, lecturesData: response.data});
+                    console.log(response.data);
+                    context.commit([SET_CRAWL_LECTURES_DATA], {cardIndex: i, lecturesData: response.data.lecture});
+                    context.commit([SET_CRAWL_NOTICE_DATA], {cardIndex: i, noticeData: response.data.notice});
+                    context.commit([SET_CRAWL_TASK_DATA], {cardIndex: i, taskData: response.data.task});
+                    context.commit([SET_SUBJECT_COUNT], {cardIndex: i, counts: response.data.subjectCounts});
+                    
                 });
-                await api.post('/crawlNotice', null, {params: {
-                    subjectId: this.state.subjectCardData[i].subjectId,
-                }}).then((response) => {
-                    // console.log(response.data);
-                    context.commit([SET_CRAWL_NOTICE_DATA], {cardIndex: i, noticeData: response.data});
-                });
-                await api.post('/crawlTask', null, {params: {
-                    subjectId: this.state.subjectCardData[i].subjectId,
-                }}).then((response) => {
-                    // console.log(response.data);
-                    context.commit([SET_CRAWL_TASK_DATA], {cardIndex: i, taskData: response.data});
-                });
-
             }
         },
         [LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER](context) {

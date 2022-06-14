@@ -112,7 +112,7 @@ public class VueServiceImpl implements VueService {
 		//여기 null 고쳐야한다.
 		return new LectureWeekData(
 				weekInfo.getLectureWeekId(), weekInfo.getTitle(), 
-				weekInfo.getStartDate(), weekInfo.getEndDate(), null ,0,0
+				weekInfo.getStartDate(), weekInfo.getEndDate(), null ,0,0,0
 		);
 	}
 
@@ -215,8 +215,11 @@ public class VueServiceImpl implements VueService {
 				else cntIncompleted++;
 				
 				lectureDetailDTO.add(lecture);
-			}      
-					
+			}
+			
+			int studyingState = ((cntCompleted + cntIncompleted) != 0) ? 
+		            cntCompleted / (cntCompleted + cntIncompleted) * 100 : 0;
+			
 			lecturesDTO.add(new LectureWeekData(
 					subjectLectureWeekInfo.getLectureWeekId(),    
 					subjectLectureWeekInfo.getTitle(), 
@@ -224,9 +227,10 @@ public class VueServiceImpl implements VueService {
 					subjectLectureWeekInfo.getEndDate(),
 					lectureDetailDTO,
 					cntCompleted,
-					cntIncompleted
+					cntIncompleted,
+					studyingState
 				)
-			);  
+			);
 		}     
 		
 		return lecturesDTO;

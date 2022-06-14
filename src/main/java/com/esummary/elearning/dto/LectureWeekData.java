@@ -19,4 +19,5 @@ public class LectureWeekData {
 	
 	private int cntCompleted;
 	private int cntIncompleted; 
+	private int studyingState; 
 }

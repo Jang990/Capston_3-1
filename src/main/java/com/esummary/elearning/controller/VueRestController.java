@@ -18,6 +18,8 @@ import com.esummary.elearning.dto.LectureData;
 import com.esummary.elearning.dto.LectureWeekData;
 import com.esummary.elearning.dto.NoticeData;
 import com.esummary.elearning.dto.SubjectCardData;
+import com.esummary.elearning.dto.SubjectCountData;
+import com.esummary.elearning.dto.SubjectDetailData;
 import com.esummary.elearning.dto.TaskData;
 import com.esummary.elearning.dto.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
@@ -96,6 +98,7 @@ public class VueRestController {
 				
 		return initPageData;
 	}
+	
 	private List<SubjectInfo> getNeedStoredSubjectData(List<UserSubject> dbUserSubject,
 			List<SubjectInfo> crawlingSubjects) {   
 		List<SubjectInfo> needStoredSubjects = new ArrayList<SubjectInfo>();
@@ -133,13 +136,18 @@ public class VueRestController {
 		}
 	}
 
-	/*
+	
 	@RequestMapping("/crawlSubject")
-	public String crawlSubject(HttpServletRequest request, @RequestParam String subjectId) {
-		UserData user = (UserData)request.getSession().getAttribute("userData");
-		return "아이디: " + subjectId + ", 학번: " + user.getStudentNumber();
-	}
-	*/
+	public SubjectDetailData crawlSubject(HttpServletRequest request, @RequestParam String subjectId) {
+		List<LectureWeekData> lectureDTO = this.crawlLecture(request, subjectId);
+		List<NoticeData> noticeDTO = this.crawlNotice(request, subjectId);
+		List<TaskData> taskDTO = this.crawlTask(request, subjectId);
+		SubjectCountData cntDTO = new SubjectCountData(lectureDTO, taskDTO);
+		
+		
+		SubjectDetailData subjectDTO = new SubjectDetailData(lectureDTO, taskDTO, noticeDTO, cntDTO);
+		return subjectDTO;   
+	} 
 	@RequestMapping("/crawlLecture")
 	public List<LectureWeekData> crawlLecture(HttpServletRequest request, @RequestParam String subjectId) {
 		UserData user = (UserData)request.getSession().getAttribute("userData");
