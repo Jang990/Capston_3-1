@@ -27,7 +27,7 @@ public class SubjectCountData {
 		this.cntCompletedLecture = cntCompletedLecture;
 		this.cntIncompletedLecture = cntIncompletedLecture;
 		
-		int cntCompletedTask = 0;
+		int cntCompletedTask = 0;       
 		int cntIncompletedTask = 0; 
 		for (TaskData taskData : taskDTO) {
 			if(taskData.getSubmitYN().equals("Y")) cntIncompletedTask++;
