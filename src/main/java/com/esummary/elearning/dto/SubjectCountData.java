@@ -37,8 +37,8 @@ public class SubjectCountData {
 		this.cntIncompletedTask = cntIncompletedTask;
 		
 		this.cntCompletedTotal = this.cntCompletedLecture + this.cntCompletedTask;
-		this.cntIncompletedTotal = this.cntIncompletedLecture + this.cntIncompletedTask;
-	}  
+		this.cntIncompletedTotal = this.cntIncompletedLecture + this.cntIncompletedTask;      
+	}   
 	
 	
 }

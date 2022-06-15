@@ -20,8 +20,8 @@
             :value="StudyingPercentage(item.learningTime, item.fullTime)"
             striped
           >
-            <strong v-if="!hover">{{ item.learningTime+'/'+ (item.fullTime) }}</strong>
-            <strong v-else>{{ StudyingPercentage(item.learningTime, item.fullTime) }}%</strong>
+            <strong v-if="!hover">{{ item.learningTime +'/'+ item.fullTime }}</strong>
+            <strong v-else>{{ remainingTime(item.learningTime, item.fullTime) }}</strong>
           </v-progress-linear>
         </v-hover>
       </template>
@@ -53,7 +53,7 @@ export default {
       singleExpand: true,
       headers: [
           { text: ' ', value: 'studyYN', width: '5%', class: "blue lighten-5" },//제출여부
-          { text: '번호', value: 'idx', align: 'center', width: '5%', class: "blue lighten-5" },
+          { text: ' ', value: 'idx', align: 'center', width: '5%', class: "blue lighten-5" },
           {
             text: '제목',
             align: 'center',
@@ -63,7 +63,7 @@ export default {
             class: "blue lighten-5",
             //primary
           },
-          { text: '진행도', value: 'learningState', width: '35%', class: "blue lighten-5"},
+          { text: '잔여시간', value: 'learningState', width: '35%', class: "blue lighten-5"},
           { text: '학습하기', value: 'lectureVideoId', width:'15%', class: "blue lighten-5" },
           
           // { text: '내용', value: 'description' },
@@ -86,6 +86,22 @@ export default {
       if(numStudyingTime > numFullTime) return 100;
       const percent = numStudyingTime / numFullTime * 100;
       return Math.ceil(percent);
+    },
+    remainingTime(learningTime, fullTime){
+      const studyTime = learningTime.split(' ');
+      const fullTimeMinute = Number(fullTime.replace('분', ''));
+      const studyTimeMinute = Number(studyTime[0].replace('분', ''));
+      if(studyTimeMinute >= fullTimeMinute) return '수강 완료';
+
+      const fullTimeSecond = fullTimeMinute * 60;
+      const studyTimeSecond = Number(studyTime[1].replace('초', '')) + studyTimeMinute * 60;
+
+      let remainingTimeSecond = fullTimeSecond - studyTimeSecond;
+      if(remainingTimeSecond < 60) return remainingTimeSecond+'초';
+      
+      const remainingTimeMinute = Math.floor(remainingTimeSecond / 60);
+      remainingTimeSecond -= remainingTimeMinute * 60;
+      return remainingTimeMinute+'분 ' + remainingTimeSecond +'초'
     }
   },
 }

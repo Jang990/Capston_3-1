@@ -75,7 +75,7 @@
                     indeterminate
                   ></v-progress-circular>
 
-                  <v-divider></v-divider>
+                  <v-divider class="mx-4"></v-divider>
                   <v-container>
                     <v-row dense>
                       <v-col
@@ -93,7 +93,7 @@
               </v-sheet>
             </v-col>
 
-            <v-col
+            <!-- <v-col
               cols="12"
               sm="2"
             >
@@ -101,10 +101,9 @@
                 rounded="lg"
                 min-height="268"
               >
-                <!--  -->
                 요약 그래프 위치
               </v-sheet>
-            </v-col>
+            </v-col> -->
           </v-row>
         </v-container>
       </v-main>
