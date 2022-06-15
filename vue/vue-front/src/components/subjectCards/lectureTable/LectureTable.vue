@@ -33,7 +33,27 @@
             color="light-blue"
             height="18"
             :value="item.learningState"
+            v-if="item.learningState == 100"
             striped
+          >
+            <strong v-if="!hover">{{ item.learningState }}%</strong>
+            <strong v-else>{{ item.cntCompleted+'강/'+ (item.cntCompleted+item.cntIncompleted)+'강' }}</strong>
+          </v-progress-linear>
+          <v-progress-linear
+            v-else-if="item.learningState == 0"
+            color="blue-grey"
+            height="18"
+            :value="item.learningState"
+            
+          >
+            <strong v-if="!hover">{{ item.learningState }}%</strong>
+            <strong v-else>{{ item.cntCompleted+'강/'+ (item.cntCompleted+item.cntIncompleted)+'강' }}</strong>
+          </v-progress-linear>
+          <v-progress-linear
+            v-else
+            color="amber"
+            height="18"
+            :value="item.learningState"
           >
             <strong v-if="!hover">{{ item.learningState }}%</strong>
             <strong v-else>{{ item.cntCompleted+'강/'+ (item.cntCompleted+item.cntIncompleted)+'강' }}</strong>

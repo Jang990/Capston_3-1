@@ -219,8 +219,10 @@ public class VueServiceImpl implements VueService {
 				lectureDetailDTO.add(lecture);
 			}
 			
-			int studyingState = ((cntCompleted + cntIncompleted) != 0) ? 
-		            cntCompleted / (cntCompleted + cntIncompleted) * 100 : 0;
+			int studyingState = 0;
+			if(cntCompleted != 0 || cntIncompleted != 0) {
+				studyingState = (int)((float)cntCompleted / (cntCompleted + cntIncompleted) * 100); 
+			}
 			
 			lecturesDTO.add(new LectureWeekData(
 					subjectLectureWeekInfo.getLectureWeekId(),    

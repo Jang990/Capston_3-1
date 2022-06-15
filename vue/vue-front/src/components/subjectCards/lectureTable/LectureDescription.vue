@@ -57,7 +57,6 @@
       </template>
       <template v-slot:[`item.lectureVideoId`]="{ item }">
           <v-btn
-            rounded
             color="primary"
             dark
             href="https://cyber.inhatc.ac.kr/"
