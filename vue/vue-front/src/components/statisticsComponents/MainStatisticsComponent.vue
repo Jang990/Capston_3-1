@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <pie-chart :data="insertData()" legend="right" :donut="true"></pie-chart>
+        <pie-chart :data="insertData()" legend="right" :donut="true" label="학습량"></pie-chart>
         <!-- <pie-chart :data="{'완료': this.$store.state.showCompletedLecture, '미완료': this.$store.state.showIncompletedLecture}" legend="right" :donut="true"></pie-chart> -->
     </v-container>
 </template>
@@ -34,12 +34,38 @@ export default {
                 obj[this.$store.state.subjectCardData[i].subjectName.slice(idxStartTitle, idxEndTitle)] = this.$store.state.subjectCardData[i].cntIncompletedTotal;
             }
             return obj;
+        },
+        textCenter(val) {
+            /*Chart.pluginService.register({
+            beforeDraw: function(chart) {
+                const width = chart.chartArea.width;
+                const height = chart.chartArea.height;
+                var ctx = chart.chart.ctx;
+
+                ctx.restore();
+                var fontSize = (height / 114).toFixed(2);
+                ctx.font = fontSize + "em sans-serif";
+                ctx.textBaseline = "middle";
+
+                var text = val;
+                var textX = Math.round((width - ctx.measureText(text).width) / 2);
+                const textY = chart.chartArea.top + height / 2;
+
+                ctx.fillText(text, textX, textY);
+                ctx.save();
+            }
+            });
+
+            Chart.plugins.unregister(this.chartdata);*/
         }
     },
     created() {
     },
     destoryed() {
     },
+    mounted() {
+        this.textCenter(880);
+    }
 }
 </script>
 

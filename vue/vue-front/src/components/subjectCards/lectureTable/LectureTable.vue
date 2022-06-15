@@ -32,10 +32,10 @@
           <v-progress-linear
             color="light-blue"
             height="18"
-            :value="Math.ceil(item.learningState)"
+            :value="item.learningState"
             striped
           >
-            <strong v-if="!hover">{{ Math.ceil(item.learningState) }}%</strong>
+            <strong v-if="!hover">{{ item.learningState }}%</strong>
             <strong v-else>{{ item.cntCompleted+'강/'+ (item.cntCompleted+item.cntIncompleted)+'강' }}</strong>
           </v-progress-linear>
         </v-hover>
@@ -74,7 +74,7 @@ export default {
             class: "blue lighten-5",
             //primary
           },
-          { text: '잔여일', value: 'endDate', width: '20%', class: "blue lighten-5"},
+          { text: '마감일', value: 'endDate', width: '20%', class: "blue lighten-5"},
           { text: '학습율', value: 'learningState', width: '25%', class: "blue lighten-5"},
           { text: '', value: 'data-table-expand', width:'5%', class: "blue lighten-5" },
           // { text: '내용', value: 'description' },

@@ -2,7 +2,6 @@
   <v-data-table
       :headers="headers"
       :items="lectureArray"
-      :items-per-page="5"
       item-key="lectureId"
       :item-class="submitCheck"
       class="elevation-1"
@@ -15,13 +14,40 @@
           open-delay="200"
         >
           <v-progress-linear
+            v-if="item.status == '1'"
             color="light-blue"
             height="18"
-            :value="StudyingPercentage(item.learningTime, item.fullTime)"
             striped
+            :value="StudyingPercentage(item.learningTime, item.fullTime)"
           >
-            <strong v-if="!hover">{{ item.learningTime +'/'+ item.fullTime }}</strong>
-            <strong v-else>{{ remainingTime(item.learningTime, item.fullTime) }}</strong>
+            <strong v-if="!hover">{{ remainingTime(item.learningTime, item.fullTime, item.status) }}</strong>
+            <strong v-else>{{ item.learningTime +'/'+ item.fullTime }}</strong>
+          </v-progress-linear>
+          <v-progress-linear
+            v-else-if="item.learningTime == '0분'"
+            color="blue-grey"
+            height="18"
+            :value="StudyingPercentage(item.learningTime, item.fullTime)"
+          >
+            <strong v-if="!hover">{{ remainingTime(item.learningTime, item.fullTime, item.status) }}</strong>
+            <strong v-else>{{ item.learningTime +'/'+ item.fullTime }}</strong>
+          </v-progress-linear>
+          <v-progress-linear
+            v-else-if="item.type != '온라인'"
+            color="blue-grey"
+            height="18"
+            :value="StudyingPercentage(item.learningTime, item.fullTime)"
+          >
+            <strong>Empty</strong>
+          </v-progress-linear>
+          <v-progress-linear
+            v-else
+            color="amber"
+            height="18"
+            :value="StudyingPercentage(item.learningTime, item.fullTime)"
+          >
+            <strong v-if="!hover">{{ remainingTime(item.learningTime, item.fullTime, item.status) }}</strong>
+            <strong v-else>{{ item.learningTime +'/'+ item.fullTime }}</strong>
           </v-progress-linear>
         </v-hover>
       </template>
@@ -34,11 +60,12 @@
             rounded
             color="primary"
             dark
-            href="https://cyber.inhatc.ac.kr/" 
+            href="https://cyber.inhatc.ac.kr/"
             target="_blank"
           >
-            {{item.status}} + 학습하기
+            학습하기{{item.status}}
           </v-btn>
+          <!--  -->
       </template>
     </v-data-table>
 </template>
@@ -87,14 +114,17 @@ export default {
       const percent = numStudyingTime / numFullTime * 100;
       return Math.ceil(percent);
     },
-    remainingTime(learningTime, fullTime){
+    remainingTime(learningTime, fullTime, statusLecture){
       const studyTime = learningTime.split(' ');
-      const fullTimeMinute = Number(fullTime.replace('분', ''));
-      const studyTimeMinute = Number(studyTime[0].replace('분', ''));
-      if(studyTimeMinute >= fullTimeMinute) return '수강 완료';
+      const fullTimeMinute = (fullTime.indexOf('분') == -1) ? 0 : Number(fullTime.replace('분', ''));
+      const studyTimeMinute = (studyTime[0].indexOf('분') == -1) ? 0 : Number(studyTime[0].replace('분', ''));
 
       const fullTimeSecond = fullTimeMinute * 60;
-      const studyTimeSecond = Number(studyTime[1].replace('초', '')) + studyTimeMinute * 60;
+      const studyTimeSecond = ((studyTime[0].indexOf('초') == -1) ? 0 : Number(studyTime[1].replace('초', ''))) + studyTimeMinute * 60;
+      if(studyTimeSecond >= fullTimeSecond) {
+        if(statusLecture == '1' ) return '수강 완료';
+        else return '기타 사항 미흡';
+      };
 
       let remainingTimeSecond = fullTimeSecond - studyTimeSecond;
       if(remainingTimeSecond < 60) return remainingTimeSecond+'초';

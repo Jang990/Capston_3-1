@@ -23,7 +23,7 @@ public class SubjectCountData {
 		for (LectureWeekData lectureWeekData : lectureDTO) {
 			cntCompletedLecture += lectureWeekData.getCntCompleted();
 			cntIncompletedLecture += lectureWeekData.getCntIncompleted();
-		}
+		} 
 		this.cntCompletedLecture = cntCompletedLecture;
 		this.cntIncompletedLecture = cntIncompletedLecture;
 		
@@ -35,7 +35,7 @@ public class SubjectCountData {
 		}
 		this.cntCompletedTask = cntCompletedTask;
 		this.cntIncompletedTask = cntIncompletedTask;
-		
+		                        
 		this.cntCompletedTotal = this.cntCompletedLecture + this.cntCompletedTask;
 		this.cntIncompletedTotal = this.cntIncompletedLecture + this.cntIncompletedTask;      
 	}   

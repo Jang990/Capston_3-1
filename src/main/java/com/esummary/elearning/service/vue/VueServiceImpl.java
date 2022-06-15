@@ -112,7 +112,7 @@ public class VueServiceImpl implements VueService {
 		//여기 null 고쳐야한다.
 		return new LectureWeekData(
 				weekInfo.getLectureWeekId(), weekInfo.getTitle(), 
-				weekInfo.getStartDate(), weekInfo.getEndDate(), null ,0,0,0
+				"", "", null ,0,0,0
 		);
 	}
 
@@ -199,6 +199,8 @@ public class VueServiceImpl implements VueService {
 			int cntIncompleted = 0;
 			List<SubjectLecture> lectureDetail = subjectLectureWeekInfo.getLectures();
 			List<LectureData> lectureDetailDTO = new ArrayList<LectureData>();
+			String startDate =makeDateString(subjectLectureWeekInfo.getStartDate());
+			String endDate =makeDateString(subjectLectureWeekInfo.getEndDate());
 			for (SubjectLecture detail : lectureDetail) {
 				LectureData lecture = new LectureData(
 						detail.getLectureId(), 
@@ -223,8 +225,8 @@ public class VueServiceImpl implements VueService {
 			lecturesDTO.add(new LectureWeekData(
 					subjectLectureWeekInfo.getLectureWeekId(),    
 					subjectLectureWeekInfo.getTitle(), 
-					subjectLectureWeekInfo.getStartDate(),
-					subjectLectureWeekInfo.getEndDate(),
+					startDate,
+					endDate,     
 					lectureDetailDTO,
 					cntCompleted,
 					cntIncompleted,

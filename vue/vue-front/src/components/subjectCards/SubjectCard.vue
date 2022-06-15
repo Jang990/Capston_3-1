@@ -20,41 +20,6 @@
               no-gutters
             >
               <v-col style="max-width: 145px;">
-                <div>
-                  <div class="mx-4  text-subtitle-1 text-left">과제</div>
-                  <v-row class="text-align" no-gutters>
-                    <v-col class="font-weight-medium subtitle-1 
-                      red--text text--darken-1">
-                      <span>{{subjectCardData[index].cntIncompletedTask}}</span>
-                    </v-col>
-                    <v-col class="font-weight-medium subtitle-1
-                      green--text text--darken-1">
-                      <span>{{subjectCardData[index].cntCompletedTask}}</span>
-                    </v-col>
-                    <v-col class="font-weight-medium subtitle-1 
-                      blue--text text--darken-1">
-                      <span>{{subjectCardData[index].cntIncompletedTask + subjectCardData[index].cntCompletedTask}}</span>
-                    </v-col>
-                  </v-row>
-                  <v-row class="text-align center" no-gutters style="cursor: default;">
-                    <v-col class="text--disabled text-caption">
-                      미완료
-                    </v-col>
-                    <v-col class="text--disabled text-caption">
-                      완료
-                    </v-col>
-                    <v-col class="text--disabled text-caption">
-                      합
-                    </v-col>
-                  </v-row>
-                </div>
-              </v-col>
-              <v-col style="max-width: 16px;">
-                <v-divider
-                  vertical
-                ></v-divider>
-              </v-col>
-              <v-col style="max-width: 145px;">
                 <div style="padding-left: 4px;">
                   <div class="mx-4  text-subtitle-1 text-left">수업</div>
                   <v-row class="text-align" no-gutters>
@@ -77,6 +42,41 @@
                     </v-col>
                     <v-col class="text--disabled text-caption">
                       수강
+                    </v-col>
+                    <v-col class="text--disabled text-caption">
+                      합
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-col>
+              <v-col style="max-width: 16px;">
+                <v-divider
+                  vertical
+                ></v-divider>
+              </v-col>
+              <v-col style="max-width: 145px;">
+                <div>
+                  <div class="mx-4  text-subtitle-1 text-left">과제</div>
+                  <v-row class="text-align" no-gutters>
+                    <v-col class="font-weight-medium subtitle-1 
+                      red--text text--darken-1">
+                      <span>{{subjectCardData[index].cntIncompletedTask}}</span>
+                    </v-col>
+                    <v-col class="font-weight-medium subtitle-1
+                      green--text text--darken-1">
+                      <span>{{subjectCardData[index].cntCompletedTask}}</span>
+                    </v-col>
+                    <v-col class="font-weight-medium subtitle-1 
+                      blue--text text--darken-1">
+                      <span>{{subjectCardData[index].cntIncompletedTask + subjectCardData[index].cntCompletedTask}}</span>
+                    </v-col>
+                  </v-row>
+                  <v-row class="text-align center" no-gutters style="cursor: default;">
+                    <v-col class="text--disabled text-caption">
+                      미완료
+                    </v-col>
+                    <v-col class="text--disabled text-caption">
+                      완료
                     </v-col>
                     <v-col class="text--disabled text-caption">
                       합

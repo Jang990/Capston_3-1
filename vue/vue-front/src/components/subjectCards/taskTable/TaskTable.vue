@@ -31,8 +31,18 @@
           <v-progress-linear
             color="light-blue"
             height="18"
+            v-if="item.submitYN == 'N'"
             :value="Math.ceil(item.submittedState)"
             striped
+          >
+            <strong v-if="!hover">{{ Math.ceil(item.submittedState) }}%</strong>
+            <strong v-else>{{ item.submissionNum+'명/'+ item.totalNum+ '명' }}</strong>
+          </v-progress-linear>
+          <v-progress-linear
+            v-else
+            color="amber"
+            height="18"
+            :value="Math.ceil(item.submittedState)"
           >
             <strong v-if="!hover">{{ Math.ceil(item.submittedState) }}%</strong>
             <strong v-else>{{ item.submissionNum+'명/'+ item.totalNum+ '명' }}</strong>
