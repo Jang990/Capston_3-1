@@ -261,26 +261,38 @@ export default new Vuex.Store({
         async [LOAD_DB_SUBJECT](context) {
             //각 과목들에 대한 db데이터 불러오기
             for(let i = 0; i < this.state.subjectCardData.length; i++) {
-                await api.post('/lectureDB', null, {params: {
+                await api.post('/getSubjectInDB', null, {params: {
                     subjectId: this.state.subjectCardData[i].subjectId,
                 }}).then((response) => {
                     console.log(response.data);
-                    context.commit([SET_DB_LECTURES_DATA], {cardIndex: i, lecturesData: response.data});
+                    context.commit([SET_CRAWL_LECTURES_DATA], {cardIndex: i, lecturesData: response.data.lecture});
+                    context.commit([SET_CRAWL_NOTICE_DATA], {cardIndex: i, noticeData: response.data.notice});
+                    context.commit([SET_CRAWL_TASK_DATA], {cardIndex: i, taskData: response.data.task});
+                    context.commit([SET_SUBJECT_COUNT], {cardIndex: i, counts: response.data.subjectCounts});
                 });
-                await api.post('/taskDB', null, {params: {
-                    subjectId: this.state.subjectCardData[i].subjectId,
-                }}).then((response) => {
-                    console.log(response.data);
-                    context.commit([SET_DB_NOTICE_DATA], {cardIndex: i, noticeData: response.data});
-                });
-                await api.post('/noticeDB', null, {params: {
-                    subjectId: this.state.subjectCardData[i].subjectId,
-                }}).then((response) => {
-                    console.log(response.data);
-                    context.commit([SET_DB_TASK_DATA], {cardIndex: i, taskData: response.data});
-                });
-
             }
+
+            // for(let i = 0; i < this.state.subjectCardData.length; i++) {
+            //     await api.post('/lectureDB', null, {params: {
+            //         subjectId: this.state.subjectCardData[i].subjectId,
+            //     }}).then((response) => {
+            //         console.log(response.data);
+            //         context.commit([SET_DB_LECTURES_DATA], {cardIndex: i, lecturesData: response.data});
+            //     });
+            //     await api.post('/taskDB', null, {params: {
+            //         subjectId: this.state.subjectCardData[i].subjectId,
+            //     }}).then((response) => {
+            //         console.log(response.data);
+            //         context.commit([SET_DB_NOTICE_DATA], {cardIndex: i, noticeData: response.data});
+            //     });
+            //     await api.post('/noticeDB', null, {params: {
+            //         subjectId: this.state.subjectCardData[i].subjectId,
+            //     }}).then((response) => {
+            //         console.log(response.data);
+            //         context.commit([SET_DB_TASK_DATA], {cardIndex: i, taskData: response.data});
+            //     });
+
+            // }
         },
         async [CRAWL_SUBJECT](context) {
             //각 과목들에 대한 크롤링 진행
