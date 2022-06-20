@@ -96,13 +96,13 @@ public class VueServiceImpl implements VueService {
 		List<TaskData> taskDTO = new ArrayList<TaskData>(); 
 		List<UserTask> ut = us.getUserTask();  
 		for (UserTask userTask : ut) {           
-			taskDTO.add(craeteTaskData(userTask));
+			taskDTO.add(convertTaskData(userTask));
 		}
 		
 		return taskDTO;
 	}
 
-	private TaskData craeteTaskData(UserTask userTask) {
+	private TaskData convertTaskData(UserTask userTask) {
 		SubjectTaskInfo task = userTask.getSubjectTaskInfo();
 		String startDate = makeDateString(task.getStartDate());
 		String endDate = makeDateString(task.getEndDate());
@@ -113,7 +113,7 @@ public class VueServiceImpl implements VueService {
 			);
 	}                   
 
-	private LectureWeekData createWeekData(SubjectLectureWeekInfo lectureWeekInfo) {
+	private LectureWeekData convertWeekData(SubjectLectureWeekInfo lectureWeekInfo) {
 		int cntCompleted = 0;
 		int cntIncompleted = 0;
 		List<SubjectLecture> lectureDetail = lectureWeekInfo.getLectures();
@@ -122,7 +122,7 @@ public class VueServiceImpl implements VueService {
 		String endDate =makeDateString(lectureWeekInfo.getEndDate());
 		
 		for (SubjectLecture detail : lectureDetail) {
-			LectureData lecture = createLectureData(detail);
+			LectureData lecture = convertLectureData(detail);
 			if(isCompletedLecture(lecture)) cntCompleted++;
 			else cntIncompleted++;
 			
@@ -146,7 +146,7 @@ public class VueServiceImpl implements VueService {
 		);
 	}
 
-	private LectureData createLectureData(SubjectLecture detail) {
+	private LectureData convertLectureData(SubjectLecture detail) {
 		return new LectureData(
 				detail.getLectureId(), 
 				detail.getLectureVideoId(), 
@@ -184,16 +184,20 @@ public class VueServiceImpl implements VueService {
 		List<SubjectNoticeInfo> notices = noticeUtil.getSubjectNoticeInfo(userSubject, user.getInitialCookies());
 		List<NoticeData> noticeDTO = new ArrayList<NoticeData>();
 		for (SubjectNoticeInfo subjectNoticeInfo : notices) {
-			noticeDTO.add(new NoticeData(
-					subjectNoticeInfo.getNoticeId(), 
-					subjectNoticeInfo.getTitle(), 
-					subjectNoticeInfo.getDescription(), 
-					subjectNoticeInfo.getAuthor(), 
-					subjectNoticeInfo.getCreateDate())
-			);
+			noticeDTO.add(this.convertNoticeData(subjectNoticeInfo));
 		}
 		
 		return noticeDTO;
+	}
+
+	private NoticeData convertNoticeData(SubjectNoticeInfo subjectNoticeInfo) {
+		return new NoticeData(
+				subjectNoticeInfo.getNoticeId(), 
+				subjectNoticeInfo.getTitle(), 
+				subjectNoticeInfo.getDescription(), 
+				subjectNoticeInfo.getAuthor(), 
+				subjectNoticeInfo.getCreateDate()
+		);
 	}
 
 	@Override
@@ -204,25 +208,28 @@ public class VueServiceImpl implements VueService {
 		List<TaskData> taskDTO = new ArrayList<TaskData>();
 		
 		for (SubjectTaskInfo subjectTaskInfo : task) {
-			String startDate =makeDateString(subjectTaskInfo.getStartDate());
-			String endDate =makeDateString(subjectTaskInfo.getEndDate());
-			
-			taskDTO.add(new TaskData(
-					subjectTaskInfo.getTaskId(),
-					subjectTaskInfo.getTitle(),
-					subjectTaskInfo.getDescription(),
-					startDate,
-					endDate,
-					subjectTaskInfo.getSubmissionNum(),
-					subjectTaskInfo.getNotSubmittedNum(),
-					subjectTaskInfo.getTotalNum(),
-					subjectTaskInfo.getSubmitYN()
-				)
-			);
+			taskDTO.add(this.convertTaskData(subjectTaskInfo));
 		}
 		return taskDTO;
 	}
 	
+	private TaskData convertTaskData(SubjectTaskInfo subjectTaskInfo) {
+		String startDate =makeDateString(subjectTaskInfo.getStartDate());
+		String endDate =makeDateString(subjectTaskInfo.getEndDate());
+		
+		return new TaskData(
+				subjectTaskInfo.getTaskId(),
+				subjectTaskInfo.getTitle(),
+				subjectTaskInfo.getDescription(),
+				startDate,
+				endDate,
+				subjectTaskInfo.getSubmissionNum(),
+				subjectTaskInfo.getNotSubmittedNum(),
+				subjectTaskInfo.getTotalNum(),
+				subjectTaskInfo.getSubmitYN()
+		);
+	}
+
 	private String makeDateString(Date startDate) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(startDate);
@@ -238,7 +245,7 @@ public class VueServiceImpl implements VueService {
 		List<SubjectLectureWeekInfo> lectures = lectureWeekUtil.getSubjectLectureWeekInfo(userSubject, user.getInitialCookies());
 		List<LectureWeekData> lecturesDTO = new ArrayList<LectureWeekData>();
 		for (SubjectLectureWeekInfo subjectLectureWeekInfo : lectures) {
-			lecturesDTO.add(this.createWeekData(subjectLectureWeekInfo));
+			lecturesDTO.add(this.convertWeekData(subjectLectureWeekInfo));
 		}     
 		
 		return lecturesDTO;
@@ -276,7 +283,7 @@ public class VueServiceImpl implements VueService {
 		List<LectureWeekData> weekDTO = new ArrayList<LectureWeekData>(); 
 		List<SubjectLectureWeekInfo> weekList = us.getSubjectInfo().getLectureList();
 		for (SubjectLectureWeekInfo weekInfo : weekList) {
-			weekDTO.add(createWeekData(weekInfo));   
+			weekDTO.add(convertWeekData(weekInfo));   
 		}
 		return weekDTO;
 	}
