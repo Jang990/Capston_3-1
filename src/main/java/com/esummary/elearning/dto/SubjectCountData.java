@@ -18,6 +18,26 @@ public class SubjectCountData {
 	private int cntIncompletedTotal;
 	
 	public SubjectCountData(List<LectureWeekData> lectureDTO, List<TaskData> taskDTO) {
+		
+		if(lectureDTO == null) {
+			this.cntCompletedLecture = 0;
+			this.cntIncompletedLecture = 0;
+		} else {
+			this.countLecture(lectureDTO);
+		}
+		
+		if(taskDTO == null) {
+			this.cntCompletedTask = 0;
+			this.cntIncompletedTask = 0;
+		} else {
+			this.countTask(taskDTO);
+		}
+		
+		this.cntCompletedTotal = this.cntCompletedLecture + this.cntCompletedTask;
+		this.cntIncompletedTotal = this.cntIncompletedLecture + this.cntIncompletedTask;
+	}
+
+	private void countLecture(List<LectureWeekData> lectureDTO) {
 		int cntCompletedLecture = 0;
 		int cntIncompletedLecture = 0;
 		for (LectureWeekData lectureWeekData : lectureDTO) {
@@ -26,7 +46,9 @@ public class SubjectCountData {
 		} 
 		this.cntCompletedLecture = cntCompletedLecture;
 		this.cntIncompletedLecture = cntIncompletedLecture;
-		
+	}   
+	
+	private void countTask(List<TaskData> taskDTO) {
 		int cntCompletedTask = 0;       
 		int cntIncompletedTask = 0; 
 		for (TaskData taskData : taskDTO) {
@@ -35,10 +57,6 @@ public class SubjectCountData {
 		}
 		this.cntCompletedTask = cntCompletedTask;
 		this.cntIncompletedTask = cntIncompletedTask;
-		                        
-		this.cntCompletedTotal = this.cntCompletedLecture + this.cntCompletedTask;
-		this.cntIncompletedTotal = this.cntIncompletedLecture + this.cntIncompletedTask;      
-	}   
-	
+	}
 	
 }

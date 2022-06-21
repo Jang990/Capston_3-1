@@ -110,15 +110,17 @@ public class VueRestController {
 	//DB에서 가져오기
 	@RequestMapping("/getSubjectInDB")
 	public SubjectDetailData subjectSearch(HttpServletRequest request, @RequestParam String subjectId) {
+		System.out.println("db에서 조회합니다.");
 		List<LectureWeekData> lectureDTO = this.lectureSearch(request, subjectId);
 		List<NoticeData> noticeDTO = this.noticeSearch(request, subjectId);
 		List<TaskData> taskDTO = this.taskSearch(request, subjectId);
 		SubjectCountData cntDTO = new SubjectCountData(lectureDTO, taskDTO);
 		
 		SubjectDetailData subjectDTO = new SubjectDetailData(lectureDTO, taskDTO, noticeDTO, cntDTO);
+		System.out.println("이거 맞음?:"+subjectDTO);
 		return subjectDTO;
 	}
-	//강의 주차 검색 /getSubjectInDB
+	//강의 주차 검색
 	@RequestMapping("/lectureDB")
 	public List<LectureWeekData> lectureSearch(HttpServletRequest request, @RequestParam String subjectId) {
 		System.out.println("과목 주차 조회");
@@ -133,7 +135,7 @@ public class VueRestController {
 		System.out.println("과제 조회");
 		UserData user = (UserData)request.getSession().getAttribute("userData");
 		List<TaskData> taskList = vueService.getTaskData(subjectId, user.getStudentNumber());
-		return taskList; 
+		return taskList;   
 	}
 	
 	//공지 검색

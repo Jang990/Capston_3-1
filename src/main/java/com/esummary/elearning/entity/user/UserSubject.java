@@ -35,10 +35,11 @@ import lombok.Data;
 			attributeNodes = {
 					@NamedAttributeNode(value = "subjectInfo", subgraph = "week-detail")
 			},
-			subgraphs = { @NamedSubgraph(
+			subgraphs = { 
+				@NamedSubgraph(
 					name = "week-detail",
 					attributeNodes = { @NamedAttributeNode("lectureList") } 
-				)
+				),
 			}
 	)
 })

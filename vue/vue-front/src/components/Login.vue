@@ -95,9 +95,9 @@ export default {
         });
         this.loading = false;
         this.$store.dispatch(LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER);
-        // this.$store.dispatch(LOAD_DB_SUBJECT);
+        this.$store.dispatch(LOAD_DB_SUBJECT);
         // this.$store.commit(SET_LOGIN_CHECK, true);
-        this.$store.dispatch(CRAWL_SUBJECT);
+        // this.$store.dispatch(CRAWL_SUBJECT);
       }
       this.loading = false;
     }

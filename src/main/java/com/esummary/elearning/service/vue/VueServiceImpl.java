@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,12 @@ import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
 import com.esummary.elearning.entity.subject.SubjectNoticeInfo;
 import com.esummary.elearning.entity.subject.SubjectTaskInfo;
 import com.esummary.elearning.entity.user.UserInfo;
+import com.esummary.elearning.entity.user.UserLecture;
 import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.entity.user.UserTask;
 import com.esummary.elearning.repository.UserSubjectRepository;
 import com.esummary.elearning.repository.subject.SubjectNoticeRepository;
+import com.esummary.elearning.repository.user.UserLectureRepository;
 import com.esummary.elearning.repository.user.UserRepository;
 import com.esummary.elearning.service.subject.ELearningService;
 import com.esummary.elearning.service.subject.util.crawling.lectures.LectureWeekUtil;
@@ -42,7 +45,9 @@ public class VueServiceImpl implements VueService {
 	@Autowired
 	private SubjectNoticeRepository subjectNoticeRepository;
 	@Autowired
-	private UserSubjectRepository userSubjectRepository; 
+	private UserSubjectRepository userSubjectRepository;
+	@Autowired
+	private UserLectureRepository userLectureRepository;
 	
 	@Autowired
 	private ELearningService eLearningService;
@@ -71,6 +76,8 @@ public class VueServiceImpl implements VueService {
 	
 	public List<NoticeData> getNoticeData(String subjectId) {
 		List<SubjectNoticeInfo> noticeInfo = subjectNoticeRepository.findBySubjectInfo_SubjectId(subjectId);
+		if(noticeInfo == null || noticeInfo.size() == 0) return null;
+		
 		List<NoticeData> noticeDTO = new ArrayList<>();
 		for (SubjectNoticeInfo subjectNoticeInfo : noticeInfo) {
 			NoticeData notice = new NoticeData(
@@ -91,7 +98,7 @@ public class VueServiceImpl implements VueService {
 	public List<TaskData> getTaskData(String subjectId, String studentNumber) {
 		UserSubject us = userSubjectRepository.
 				findWithUserTaskBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, studentNumber);
-		if(us == null) return null;
+		if(us == null || us.getUserTask().size() == 0) return null;
 		
 		List<TaskData> taskDTO = new ArrayList<TaskData>(); 
 		List<UserTask> ut = us.getUserTask();  
@@ -122,6 +129,7 @@ public class VueServiceImpl implements VueService {
 		String endDate =makeDateString(lectureWeekInfo.getEndDate());
 		
 		for (SubjectLecture detail : lectureDetail) {
+			
 			LectureData lecture = convertLectureData(detail);
 			if(isCompletedLecture(lecture)) cntCompleted++;
 			else cntIncompleted++;
@@ -253,12 +261,12 @@ public class VueServiceImpl implements VueService {
 	
 	private boolean isCompletedLecture(LectureData lecture) {
 		if(lecture.getFullTime() == null) return true; //수업 시간이 없다면 해야할 일이 아니다. 화상강의는 알아해라
-		
+		System.out.println("오류제어 ======== " + lecture);
 		int fullTime = getMinuteNumber(lecture.getFullTime());
 		int studyTime = getMinuteNumber(lecture.getLearningTime());
 		if(fullTime <= studyTime && lecture.getStatus().equals("1")) return true;
 		return false;
-	}
+	} 
 
 	private int getMinuteNumber(String minuteString) {
 		if(!minuteString.contains("분")) return 0;
@@ -267,24 +275,40 @@ public class VueServiceImpl implements VueService {
 
 	@Override
 	public List<LectureWeekData> getLectureData(String subjectId, String studentNumber) {
-		UserSubject us = null;
-		try {
-			us = userSubjectRepository.
-					findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, studentNumber);
-		} catch(Exception e) {
-			System.out.println("오류 발생했다 ㅅㅂ");
-		}
+		UserSubject us = userSubjectRepository.
+				findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, studentNumber);
 		
 		//조인할 데이터가 아예 없어서 여기 아래로 내려가질 못함. 크롤링을 db구성이 끝나고 해야함 
 		if(us == null) {
 			return null;
 		}
+		System.out.println("강의명: "+ us.getSubjectInfo().getSubjectName());
 		
-		List<LectureWeekData> weekDTO = new ArrayList<LectureWeekData>(); 
-		List<SubjectLectureWeekInfo> weekList = us.getSubjectInfo().getLectureList();
-		for (SubjectLectureWeekInfo weekInfo : weekList) {
-			weekDTO.add(convertWeekData(weekInfo));   
+		if(us.getSubjectInfo().getLectureList().size() == 0) {
+			System.out.println("강의없음");
+			return null;
 		}
+		
+		
+		List<LectureWeekData> weekDTO = new ArrayList<LectureWeekData>();
+		List<SubjectLectureWeekInfo> weekList = us.getSubjectInfo().getLectureList();
+		for (int i = 0; i < weekList.size(); i++) {
+			SubjectLectureWeekInfo weekInfo = weekList.get(i);
+			List<SubjectLecture> lectureDetail = weekInfo.getLectures();
+			for (SubjectLecture subjectLecture : lectureDetail) {
+				UserLecture ul = userLectureRepository.findBySubjectLecture_LectureId(subjectLecture.getLectureId());
+				if(ul == null) continue;
+				
+				subjectLecture.setLearningTime(ul.getLearningTime());
+				subjectLecture.setStatus(ul.getStatus()); 
+				//여기까지 수정
+				//ul. 즉, db에 사용자 lecture데이터가 없을 때 파괴적인 상황을 생각해보기. showCompleted같은 변수들 ++가 잘못되서 차트 싱크가 안맞고 등등... 
+			}
+			weekDTO.add(convertWeekData(weekInfo));
+		}
+//		for (SubjectLectureWeekInfo weekInfo : weekList) {
+//			weekDTO.add(convertWeekData(weekInfo));   
+//		}
 		return weekDTO;
 	}
 	

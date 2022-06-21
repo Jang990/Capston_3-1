@@ -98,6 +98,11 @@ export default new Vuex.Store({
             state.incompletedTask += data.cntIncompletedTask;
         },
         [SET_CRAWL_LECTURES_DATA](state, {cardIndex: index, lecturesData: data}) {
+            if(data == null) {
+                Vue.set(state.subjectCardData[index].isCrawling, 0, false);
+                return;
+            }
+
             if(data.length != 0) {
                 for(let i = 0; i < data.length; i++) {
                     // console.log(data[i]);
@@ -111,26 +116,7 @@ export default new Vuex.Store({
                         cntIncompleted: data[i].cntIncompleted, 
                         learningState: data[i].studyingState,
                     };
-
-                    // for(let j = 0; j < data[i].lectures.length; j++) {
-                    //     if(data[i].lectures[j].type == "화상강의") continue;
-                    //     const learningTimeNumber = Number(data[i].lectures[j].learningTime.slice(0, data[i].lectures[j].learningTime.indexOf('분')));
-                    //     const fullTimeNumber = Number(data[i].lectures[j].fullTime.slice(0, data[i].lectures[j].fullTime.indexOf('분')));
-                    //     // console.log('강의명: ' + data[i].lectures[j].title + ', 풀타임: ' + fullTimeNumber + '러닝: ' + learningTimeNumber);
-                        
-                    //     if(learningTimeNumber > fullTimeNumber) {
-                    //         state.completedLecture += 1;
-                    //         // console.log('수강완료');
-                    //     }
-                    //     else {
-                    //         state.incompletedLecture += 1;
-                    //     }
-                    // }
-
-                    // state.completedLecture += data[i].cntCompleted;
-                    // state.incompletedLecture += data[i].cntIncompleted;
                 }
-
                 
             }
             else {
@@ -140,6 +126,10 @@ export default new Vuex.Store({
             console.log(state.subjectCardData[index].lectures);
         },
         [SET_CRAWL_NOTICE_DATA](state, {cardIndex: index, noticeData: data}) {
+            if(data == null) {
+                Vue.set(state.subjectCardData[index].isCrawling, 1, false);
+                return;
+            }
             if(data.length != 0) {
                 for(let i = 0; i < data.length; i++) {
                     state.subjectCardData[index].notice[i] = { 
@@ -157,6 +147,11 @@ export default new Vuex.Store({
             Vue.set(state.subjectCardData[index].isCrawling, 1, false);
         },
         [SET_CRAWL_TASK_DATA](state, {cardIndex: index, taskData: data}) {
+            if(data == null) {
+                Vue.set(state.subjectCardData[index].isCrawling, 2, false);
+                return;
+            }
+
             if(data.length != 0) {
                 for(let i = 0; i < data.length; i++) {
                     // console.log(data[i]);
