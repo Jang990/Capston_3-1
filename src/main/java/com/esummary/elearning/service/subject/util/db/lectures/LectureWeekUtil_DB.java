@@ -22,6 +22,7 @@ import com.esummary.elearning.entity.subject.SubjectTaskInfo;
 import com.esummary.elearning.entity.user.UserLecture;
 import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.entity.user.UserTask;
+import com.esummary.elearning.repository.UserSubjectRepository;
 import com.esummary.elearning.repository.subject.SubjectLectureRepository;
 import com.esummary.elearning.repository.subject.SubjectLectureWeekRepository;
 import com.esummary.elearning.repository.subject.SubjectTaskRepository;
@@ -38,6 +39,9 @@ public class LectureWeekUtil_DB implements DBLectureWeekUtil {
 	
 	@Autowired
 	private SubjectLectureWeekRepository subjectLectureWeekRepository;
+
+	@Autowired
+	private UserSubjectRepository userSubjectRepository;
 	
 	@Override
 	public List<SubjectLectureWeekInfo> getSubjectLectureInfo(SubjectInfo subjectInfo) {
@@ -49,15 +53,27 @@ public class LectureWeekUtil_DB implements DBLectureWeekUtil {
 		}
 		return weekList;
 	}
+	
+	@Override
+	public List<SubjectLectureWeekInfo> getSubjectLectureInfo(String subjectId) {
+		List<SubjectLectureWeekInfo> weekList = new ArrayList<SubjectLectureWeekInfo>();
+		weekList = subjectLectureWeekRepository.findBySubjectInfo_subjectId(subjectId);
+		for (SubjectLectureWeekInfo subjectLectureWeekInfo : weekList) {
+			List<SubjectLecture> lectures = lectureUtil.getLectureList(subjectLectureWeekInfo);
+			subjectLectureWeekInfo.setLectures(lectures);
+		}
+		return weekList;
+	}
 
 	@Override
-	public List<UserLecture> getUserlecture(List<SubjectLectureWeekInfo> weekList) {
+	public List<UserLecture> getUserlecture(UserSubject us, List<SubjectLectureWeekInfo> weekList) {		
+		if(us == null) return null;
 		List<UserLecture> userLectureList = new ArrayList<>();
 		
 		for (SubjectLectureWeekInfo subjectLectureWeekInfo : weekList) {
 			List<SubjectLecture> lectureList = subjectLectureWeekInfo.getLectures();
 			for (SubjectLecture lecture : lectureList) {
-				UserLecture ul = lectureUtil.getUserLecture(lecture);
+				UserLecture ul = lectureUtil.getUserLecture(us.getUsId(), lecture);
 				userLectureList.add(ul);
 			}
 		}

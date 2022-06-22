@@ -73,10 +73,13 @@ public class SubjectUtil_DB implements SubjectUtil{
 		List<UserSubject> userSubjects = user.getUserSubjects();
 		for (UserSubject userSubject : userSubjects) {
 			SubjectInfo subjectInfo = userSubject.getSubjectInfo();
+			UserSubject us = getUserSubject(subjectInfo.getSubjectId(), user.getStudentNumber()); // 개인정보를 불러오기 위한 객체
 			
 			//과제 불러오기
+				//사용자가 가지고 있는 과제에 대한 정보 불러오기
 			taskList = taskUtil.getSubjectTaskInfo(subjectInfo);
 			subjectInfo.setTaskList(taskList);
+				//과제에 대한 개인정보 불러오기 (과제 제출여부 등등)
 			userTaskList = taskUtil.getUserTask(taskList);
 			userSubject.setUserTask(userTaskList);
 			
@@ -85,12 +88,20 @@ public class SubjectUtil_DB implements SubjectUtil{
 			subjectInfo.setNoticeList(noticeList);
 			
 			//강의 불러오기
+				//사용자가 가지고 있는 강의에 대한 정보 불러오기
 			lectureList = lectureUtil.getSubjectLectureInfo(subjectInfo);
 			subjectInfo.setLectureList(lectureList);
-			userLecture = lectureUtil.getUserlecture(lectureList);
+				//강의에 대한 개인정보 불러오기 (학생이 강의를 들은 시간, 학생이 강의를 완료했는지 등등)
+			userLecture = lectureUtil.getUserlecture(us, lectureList);
 			userSubject.setUserLecture(userLecture);
+			
 		}
 		
+	}
+	
+	private UserSubject getUserSubject(String subjectId, String studentNumber) {
+		return userSubjectRepository.
+			findBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, studentNumber);
 	}
 
 	/*

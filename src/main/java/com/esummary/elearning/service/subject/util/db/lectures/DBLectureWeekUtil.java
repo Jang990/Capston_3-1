@@ -13,6 +13,8 @@ import com.esummary.elearning.entity.user.UserTask;
 
 public interface DBLectureWeekUtil {
 	List<SubjectLectureWeekInfo> getSubjectLectureInfo(SubjectInfo subjectInfo);
+	List<SubjectLectureWeekInfo> getSubjectLectureInfo(String subjectId);
 
-	List<UserLecture> getUserlecture(List<SubjectLectureWeekInfo> lectureList);
+	List<UserLecture> getUserlecture(UserSubject us, List<SubjectLectureWeekInfo> lectureList);
+
 }

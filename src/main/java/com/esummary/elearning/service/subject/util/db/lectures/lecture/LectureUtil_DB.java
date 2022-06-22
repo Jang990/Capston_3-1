@@ -43,10 +43,10 @@ public class LectureUtil_DB implements DBLectureUtil {
 		
 		return lectureList;
 	}
-
+	
 	@Override
-	public UserLecture getUserLecture(SubjectLecture lecture) {
-		UserLecture ul = userLectureRepository.findBySubjectLecture(lecture);
+	public UserLecture getUserLecture(int usId, SubjectLecture lecture) {
+		UserLecture ul = userLectureRepository.findByUserSubject_usIdAndSubjectLecture_lectureId(usId, lecture.getLectureId());
 		return ul;
 	}
 	

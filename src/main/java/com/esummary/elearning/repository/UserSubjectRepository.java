@@ -13,13 +13,13 @@ import com.esummary.elearning.entity.user.UserSubject;
 @Repository
 public interface UserSubjectRepository extends CrudRepository<UserSubject, String>{
 	List<UserSubject> findByUserInfo(UserInfo user);
+	UserSubject findBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(String subjectId, String studentNumber);
+	
 	@EntityGraph(value = "user-own-task") 
 	UserSubject findWithUserTaskBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(String subjectId, String studentNumber);
 	
 	@EntityGraph(value = "user-lecture-week") 
 	UserSubject findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(String subjectId, String studentNumber);
-	
-	UserSubject findBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(String subjectId, String studentNumber);
-	
 	List<UserSubject> findByUserInfo_StudentNumber(String studentNumber);
+	
 }

@@ -13,7 +13,7 @@ import com.esummary.elearning.entity.user.UserLecture;
 import com.esummary.elearning.entity.user.UserSubject;
 
 public interface DBLectureUtil {
-	List<SubjectLecture> getLectureList(SubjectLectureWeekInfo subjectLectureWeekInfo);
+	List<SubjectLecture> getLectureList(SubjectLectureWeekInfo subjectLectureWeekInfo); //이것도 없애야할듯
 
-	UserLecture getUserLecture(SubjectLecture lecture);
+	UserLecture getUserLecture(int usId, SubjectLecture lecture);
 }
