@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.esummary.elearning.dto.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.user.UserInfo;
 import com.esummary.elearning.entity.user.UserSubject;
@@ -26,6 +27,8 @@ public class TestController {
 	
 	@RequestMapping("/test")
 	public String testController1(HttpServletRequest request) { 
+		UserData user = (UserData)request.getSession().getAttribute("userData");
+		
 		return "연결확인";
 	}    
 	   
