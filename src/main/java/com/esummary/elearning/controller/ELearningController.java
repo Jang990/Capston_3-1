@@ -59,6 +59,7 @@ public class ELearningController {
 //		long secDiffTime = (afterTime - beforeTime)/1000;
 //		System.out.println("로그인시간(m) : "+secDiffTime);
 		
+		/*
 		UserInfo user = eLearningLoginService.login(id, password);
 		
 		if(user == null) {
@@ -70,7 +71,8 @@ public class ELearningController {
 //			return "redirect:/test"; // 단위 테스트용 url
 //			return "redirect:/vue"; // vue url
 			return "redirect:/mainApp/summary"; // 크롤링 데이터가 잘 오는지 확인 url 
-		} 
+		} */
+		return "테스트";
 	}
 	
 	@RequestMapping("/mainApp/summary")

@@ -1,10 +1,9 @@
 package com.esummary.elearning.service.login;
 
-import java.util.List;
+import java.util.Map;
 
-import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.user.UserInfo;
 
 public interface LoginService {
-	UserInfo login(String id, String password);
+	//로그인을 시도하고 로그인에 성공하면 로그인한 세션 쿠키를 가져옴.
+	Map<String, String> getLoginCookies(String id, String password);
 }

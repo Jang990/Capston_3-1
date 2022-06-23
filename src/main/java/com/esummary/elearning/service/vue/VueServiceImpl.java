@@ -197,17 +197,7 @@ public class VueServiceImpl implements VueService {
 		
 		return noticeDTO;
 	}
-
-	private NoticeData convertNoticeData(SubjectNoticeInfo subjectNoticeInfo) {
-		return new NoticeData(
-				subjectNoticeInfo.getNoticeId(), 
-				subjectNoticeInfo.getTitle(), 
-				subjectNoticeInfo.getDescription(), 
-				subjectNoticeInfo.getAuthor(), 
-				subjectNoticeInfo.getCreateDate()
-		);
-	}
-
+	
 	@Override
 	public List<TaskData> crawlTask(UserData user, String subjectId) {
 		UserSubject userSubject = userSubjectRepository
@@ -219,6 +209,29 @@ public class VueServiceImpl implements VueService {
 			taskDTO.add(this.convertTaskData(subjectTaskInfo));
 		}
 		return taskDTO;
+	}
+	
+	@Override
+	public List<LectureWeekData> crawlLecture(UserData user, String subjectId) {
+		UserSubject userSubject = userSubjectRepository
+				.findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, user.getStudentNumber());
+		List<SubjectLectureWeekInfo> lectures = lectureWeekUtil.getSubjectLectureWeekInfo(userSubject, user.getInitialCookies());
+		List<LectureWeekData> lecturesDTO = new ArrayList<LectureWeekData>();
+		for (SubjectLectureWeekInfo subjectLectureWeekInfo : lectures) {
+			lecturesDTO.add(this.convertWeekData(subjectLectureWeekInfo));
+		}     
+		
+		return lecturesDTO;
+	}
+
+	private NoticeData convertNoticeData(SubjectNoticeInfo subjectNoticeInfo) {
+		return new NoticeData(
+				subjectNoticeInfo.getNoticeId(), 
+				subjectNoticeInfo.getTitle(), 
+				subjectNoticeInfo.getDescription(), 
+				subjectNoticeInfo.getAuthor(), 
+				subjectNoticeInfo.getCreateDate()
+		);
 	}
 	
 	private TaskData convertTaskData(SubjectTaskInfo subjectTaskInfo) {
@@ -244,20 +257,8 @@ public class VueServiceImpl implements VueService {
 		return calendar.get(Calendar.YEAR) + "/" + (calendar.get(Calendar.MONTH)+1) + "/" + calendar.get(Calendar.DATE)
 		+ " " + calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE);
 	}
-
-
-	@Override
-	public List<LectureWeekData> crawlLecture(UserData user, String subjectId) {
-		UserSubject userSubject = userSubjectRepository
-				.findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, user.getStudentNumber());
-		List<SubjectLectureWeekInfo> lectures = lectureWeekUtil.getSubjectLectureWeekInfo(userSubject, user.getInitialCookies());
-		List<LectureWeekData> lecturesDTO = new ArrayList<LectureWeekData>();
-		for (SubjectLectureWeekInfo subjectLectureWeekInfo : lectures) {
-			lecturesDTO.add(this.convertWeekData(subjectLectureWeekInfo));
-		}     
-		
-		return lecturesDTO;
-	}
+	
+	
 	
 	private boolean isCompletedLecture(LectureData lecture) {
 		if(lecture.getFullTime() == null) return true; //수업 시간이 없다면 해야할 일이 아니다. 화상강의는 알아해라

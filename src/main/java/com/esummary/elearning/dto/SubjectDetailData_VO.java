@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SubjectDetailData {
+public class SubjectDetailData_VO {
 	
 	private List<LectureWeekData> lecture;
 	private List<TaskData> task;

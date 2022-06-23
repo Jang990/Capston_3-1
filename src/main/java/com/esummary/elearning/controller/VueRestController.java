@@ -3,6 +3,7 @@ package com.esummary.elearning.controller;
 import java.util.ArrayList; 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -19,7 +20,7 @@ import com.esummary.elearning.dto.LectureWeekData;
 import com.esummary.elearning.dto.NoticeData;
 import com.esummary.elearning.dto.SubjectCardData;
 import com.esummary.elearning.dto.SubjectCountData;
-import com.esummary.elearning.dto.SubjectDetailData;
+import com.esummary.elearning.dto.SubjectDetailData_VO;
 import com.esummary.elearning.dto.TaskData;
 import com.esummary.elearning.dto.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
@@ -30,6 +31,7 @@ import com.esummary.elearning.repository.user.UserRepository;
 import com.esummary.elearning.service.login.LoginService;
 import com.esummary.elearning.service.subject.ELearningService;
 import com.esummary.elearning.service.test.TestService;
+import com.esummary.elearning.service.user.crawling.UserCrawlingUtil;
 import com.esummary.elearning.service.vue.VueService;
 
 @RestController
@@ -40,25 +42,23 @@ public class VueRestController {
 	
 	@Autowired
 	private LoginService eLearningLoginService;
+	@Autowired
+	private UserCrawlingUtil userCrawlingUtil;
 	
 	
 	//로그인 체크
 	@RequestMapping("/vueLoginCheck") 
-	public boolean loginCheck(@RequestParam String id, @RequestParam String password, HttpServletRequest request) {
-		UserInfo user = eLearningLoginService.login(id, password);
-		if(user == null) {
-			return false;  
-		}   
-		else {
-			UserData userData = new UserData(
-						user.getStudentNumber(), 
-						user.getUserName(), 
-						user.getInitialCookies()
-					);
-			HttpSession session = request.getSession();
-			session.setAttribute("userData", userData);
-			return true;  
-		}
+	public boolean login(@RequestParam String id, @RequestParam String password, HttpServletRequest request) {
+		Map<String, String> loginSessionCookie = eLearningLoginService.getLoginCookies(id, password);
+		if(loginSessionCookie == null) // 로그인 실패
+			return false;
+		
+		String userName = userCrawlingUtil.getUserName(loginSessionCookie);
+		UserData userData = new UserData(id, userName, loginSessionCookie);
+		HttpSession session = request.getSession();
+		session.setAttribute("userData", userData);
+		return true;  
+		
 	} 
 	
 	/* 
@@ -78,13 +78,13 @@ public class VueRestController {
 
 	
 	@RequestMapping("/crawlSubject")
-	public SubjectDetailData crawlSubject(HttpServletRequest request, @RequestParam String subjectId) {
+	public SubjectDetailData_VO crawlSubject(HttpServletRequest request, @RequestParam String subjectId) {
 		List<LectureWeekData> lectureDTO = this.crawlLecture(request, subjectId);
 		List<NoticeData> noticeDTO = this.crawlNotice(request, subjectId);
 		List<TaskData> taskDTO = this.crawlTask(request, subjectId);
 		SubjectCountData cntDTO = new SubjectCountData(lectureDTO, taskDTO);
 		
-		SubjectDetailData subjectDTO = new SubjectDetailData(lectureDTO, taskDTO, noticeDTO, cntDTO);
+		SubjectDetailData_VO subjectDTO = new SubjectDetailData_VO(lectureDTO, taskDTO, noticeDTO, cntDTO);
 		return subjectDTO;   
 	} 
 	@RequestMapping("/crawlLecture")
@@ -109,14 +109,14 @@ public class VueRestController {
 	
 	//DB에서 가져오기
 	@RequestMapping("/getSubjectInDB")
-	public SubjectDetailData subjectSearch(HttpServletRequest request, @RequestParam String subjectId) {
+	public SubjectDetailData_VO subjectSearch(HttpServletRequest request, @RequestParam String subjectId) {
 		System.out.println("db에서 조회합니다.");
 		List<LectureWeekData> lectureDTO = this.lectureSearch(request, subjectId);
 		List<NoticeData> noticeDTO = this.noticeSearch(request, subjectId);
 		List<TaskData> taskDTO = this.taskSearch(request, subjectId);
 		SubjectCountData cntDTO = new SubjectCountData(lectureDTO, taskDTO);
 		
-		SubjectDetailData subjectDTO = new SubjectDetailData(lectureDTO, taskDTO, noticeDTO, cntDTO);
+		SubjectDetailData_VO subjectDTO = new SubjectDetailData_VO(lectureDTO, taskDTO, noticeDTO, cntDTO);
 		System.out.println("이거 맞음?:"+subjectDTO);
 		return subjectDTO;
 	}

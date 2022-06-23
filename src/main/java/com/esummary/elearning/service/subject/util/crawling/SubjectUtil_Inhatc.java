@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -16,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import com.esummary.elearning.dto.SubjectDetailData_DTO;
+import com.esummary.elearning.dto.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
 import com.esummary.elearning.entity.subject.SubjectNoticeInfo;
@@ -28,13 +31,11 @@ import com.esummary.elearning.service.subject.ELearningServiceImpl;
 import com.esummary.elearning.service.subject.util.crawling.lectures.LectureWeekUtil;
 import com.esummary.elearning.service.subject.util.crawling.notice.NoticeUtil;
 import com.esummary.elearning.service.subject.util.crawling.task.TaskUtil;
-import com.esummary.elearning.service.login.util.login.LoginUtil;
+import com.esummary.elearning.service.user.crawling.UserCrawlingUtil;
 
 @Component("Crawl")
 public class SubjectUtil_Inhatc implements SubjectUtil{
 	
-	@Autowired
-	private LoginUtil loginUtil;
 	@Autowired
 	@Qualifier("crawlTas")
 	private TaskUtil taskUtil;
@@ -43,7 +44,7 @@ public class SubjectUtil_Inhatc implements SubjectUtil{
 	private NoticeUtil noticeUtil;
 	@Autowired
 	@Qualifier("crawlLec")
-	private LectureWeekUtil lectureUtil;
+	private LectureWeekUtil lectureWeekUtil;
 	
 	private static int seqUserSubjectNum = 0; // 시퀸스 넘버. UserSubject에서 복합키 사용전에 임의로 사용함. 복합키로 바꿀 것
 	
@@ -53,6 +54,9 @@ public class SubjectUtil_Inhatc implements SubjectUtil{
 	private UserSubjectRepository userSubjectRepository;
 	
 	public List<SubjectInfo> getSubjectList(UserInfo user) {
+		//여길 사실상 쓰는데가 없다. 
+		//summary에서 쓰나 사장되었고, test 또한 단위테스트용이라 지우면 그만이다.
+		
 		List<SubjectInfo> subjectList = this.getInitialSubjectData(user.getInitialCookies());
 		subjectRepository.saveAll(subjectList);		//DB 저장
 		user.setSubjectList(subjectList); //DB연동없이 하는것이기때문에 오류가 있을 수 있음?
@@ -62,6 +66,23 @@ public class SubjectUtil_Inhatc implements SubjectUtil{
 		
 		this.setSubjectDetail(user); // 여기서 user가 가지고 있는 subject에 대한 과제, 강의, 공지 정보들을 전부 세팅해준다.
 		return user.getSubjectList();
+	}
+	
+	public SubjectDetailData_DTO getSubjectDetail(UserData user, String subjectId) {
+		//공지 크롤링 부분
+		UserSubject userSubject = userSubjectRepository
+				.findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, user.getStudentNumber());
+		List<SubjectNoticeInfo> notices = noticeUtil.getSubjectNoticeInfo(userSubject, user.getInitialCookies());
+		
+		//과제 크롤링 부분
+//		UserSubject userSubject = userSubjectRepository.findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, user.getStudentNumber());
+		List<SubjectTaskInfo> task = taskUtil.getSubjectTaskInfo(userSubject, user.getInitialCookies());
+		
+		//강의 크롤링 부분
+//		UserSubject userSubject = userSubjectRepository.findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, user.getStudentNumber());
+		List<SubjectLectureWeekInfo> lectures = lectureWeekUtil.getSubjectLectureWeekInfo(userSubject, user.getInitialCookies());
+		
+		return new SubjectDetailData_DTO(subjectId, lectures, task, notices);		
 	}
 	
 	@Override
@@ -88,7 +109,7 @@ public class SubjectUtil_Inhatc implements SubjectUtil{
 		
 		List<SubjectInfo> subjectList = new ArrayList<SubjectInfo>();
 		String subjectSelector = ".default option";
-		Document loginPage = loginUtil.conLoginPage(loginCookie);
+		Document loginPage = this.conLoginPage(loginCookie);
 		Elements subjectElements = loginPage.select(subjectSelector);
 //		Elements subjectElements = loginPage.select(".default option");
 		
@@ -112,6 +133,28 @@ public class SubjectUtil_Inhatc implements SubjectUtil{
 		}
 		
 		return subjectList;
+	}
+	
+	private Document conLoginPage(Map<String, String> initialCookies) {
+		//이거 이름 크롤링부분에 있는 메소드인데 재사용 어떡할지 못정해서 그냥 여기 박아버림
+		String mainUrl = "https://cyber.inhatc.ac.kr" + "/MMain.do";
+		Document loginPage = null;
+		
+		try {
+			Connection con = Jsoup.connect(mainUrl)
+					.data("cmd", "viewIndexPage")
+					.cookies(initialCookies);
+			Connection.Response resp = con.execute();
+			
+			if(resp.statusCode() == 200)
+				loginPage = con.post();
+			else
+				return null;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return loginPage;
 	}
 	
 	private List<UserSubject> createAndSaveUserSubject(UserInfo user, List<SubjectInfo> subjectList) {
@@ -156,7 +199,7 @@ public class SubjectUtil_Inhatc implements SubjectUtil{
 			
 			taskList = taskUtil.getSubjectTaskInfo(userSubject, docStudyHome, initialCookies);
 			noticeList = noticeUtil.getSubjectNoticeInfo(userSubject, docStudyHome, initialCookies);
-			lectureList = lectureUtil.getSubjectLectureInfo(userSubject, docStudyHome, initialCookies);
+			lectureList = lectureWeekUtil.getSubjectLectureInfo(userSubject, docStudyHome, initialCookies);
 			
 			
 			/*
