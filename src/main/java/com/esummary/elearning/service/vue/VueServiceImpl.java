@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.esummary.elearning.dto.InitalPageData;
@@ -31,10 +32,14 @@ import com.esummary.elearning.repository.subject.SubjectNoticeRepository;
 import com.esummary.elearning.repository.user.UserLectureRepository;
 import com.esummary.elearning.repository.user.UserRepository;
 import com.esummary.elearning.service.subject.ELearningService;
+import com.esummary.elearning.service.subject.util.crawling.SubjectUtil;
 import com.esummary.elearning.service.subject.util.crawling.lectures.LectureWeekUtil;
 import com.esummary.elearning.service.subject.util.crawling.lectures.lecture.LectureUtil;
 import com.esummary.elearning.service.subject.util.crawling.notice.NoticeUtil;
 import com.esummary.elearning.service.subject.util.crawling.task.TaskUtil;
+import com.esummary.elearning.service.subject.util.db.DBSubjectUtil;
+import com.esummary.elearning.service.subject.util.db.DBUserSubjectUtil;
+import com.esummary.elearning.service.subject.util.db.user.DBUserInfoUtil;
 
 @Service
 public class VueServiceImpl implements VueService {
@@ -49,14 +54,23 @@ public class VueServiceImpl implements VueService {
 	@Autowired
 	private UserLectureRepository userLectureRepository;
 	
-	@Autowired
-	private ELearningService eLearningService;
+//	@Autowired
+//	private ELearningService eLearningService;
 	@Autowired
 	private NoticeUtil noticeUtil;
 	@Autowired
 	private TaskUtil taskUtil;
 	@Autowired
 	private LectureWeekUtil lectureWeekUtil;
+	
+	@Autowired
+	private SubjectUtil subjectUtil;
+	@Autowired
+	private DBSubjectUtil dbSubjectUtil;
+	@Autowired
+	private DBUserSubjectUtil dbUserSubjectUtil;
+	@Autowired
+	private DBUserInfoUtil dbUserInfoUtil;
 	
 //	@Override
 //	public List<SubjectCardData> getInitCardData(String studentNumber) {
@@ -165,11 +179,6 @@ public class VueServiceImpl implements VueService {
 				detail.getStatus(), 
 				detail.getLearningTime()
 			);
-	}
-
-	@Override
-	public List<UserSubject> searchUserSubject(String studentNumber) {
-		return userSubjectRepository.findByUserInfo_StudentNumber(studentNumber);
 	}
 	
 	@Override
@@ -312,88 +321,44 @@ public class VueServiceImpl implements VueService {
 //		}
 		return weekDTO;
 	}
-	
-	/**
-	 * DB에서 가져온 List<SubjectInfo>를  SubjectCardData DTO로 바꿔줌
-	 */
+
 	@Override
-	public List<SubjectCardData> getSubjectDTO(List<SubjectInfo> subjects) {
-		List<SubjectCardData> subjectCards = new ArrayList<SubjectCardData>();
-		for (SubjectInfo subjectInfo : subjects) {
-			subjectCards.add(new SubjectCardData(
-					subjectInfo.getSubjectId(), 
-					subjectInfo.getSubjectName(), 
-					subjectInfo.getSubjectOwnerName()
-				)
-			);
-		}
-	
-		return subjectCards;
+	public InitalPageData crawlInitDataService(UserData userDTO) {
+//		List<SubjectInfo> crawlingSubjects = eLearningService.crawlAndSaveBasicSubjectData(user); //크롤링 정보 가져오기
+		
+		List<SubjectInfo> crawledBasicSubjectData = crawlInitData(userDTO); //크롤링
+		if(crawledBasicSubjectData == null) return null;
+		saveInitData(userDTO, crawledBasicSubjectData); //UserSubject와 Subject 저장
+		
+		InitalPageData initPageData = new InitalPageData(
+					crawledBasicSubjectData, userDTO.getUserName(), userDTO.getStudentNumber()
+				);
+		return initPageData;
 	}
 
 	@Override
-	public InitalPageData crawlInitData(UserData user) {
-		InitalPageData initPageData = new InitalPageData();
-		String studentName = user.getUserName();
-		String studentNumber = user.getStudentNumber();
-		
-		initPageData.setName(studentName);
-		initPageData.setStudentNumber(studentNumber);
-		
-		List<SubjectInfo> crawlingSubjects = eLearningService.crawlAndSaveBasicSubjectData(user); //크롤링 정보 가져오기
-		List<UserSubject> dbUserSubject = this.searchUserSubject(studentNumber); //기존에 있던 과목정보
-		this.saveUser(user); //User테이블에 정보가 없으면 저장
-		
-		//분기가 필요하다. 기존 db에 데이터가 있는 유저거나, db에 데이터가 없는 유저거나.
-		if(dbUserSubject.isEmpty()) {
-			//DB에 저장된 데이터가 전혀 없을때 전부 크롤링해서 db에 저장함
-			eLearningService.saveBasicSubjectData(user, crawlingSubjects); //크롤링 정보 저장
-		}
-		else {
-			List<SubjectInfo> needStoredSubjects = getNeedStoredSubjectData(dbUserSubject, crawlingSubjects);
-			eLearningService.saveBasicSubjectData(user, needStoredSubjects); //필요한 사용자의 과목정보 정보 저장
-		}
-		
-		initPageData.setSubjectCardData(this.getSubjectDTO(crawlingSubjects));
-//		initPageData.setSubjectCardData(this.getInitCardData(studentNumber));
-		return initPageData;
+	public boolean saveUserService(UserData userData) {
+		UserInfo user = new UserInfo(userData);
+		return dbUserInfoUtil.saveUserService(user);
 	}
 	
-	private List<SubjectInfo> getNeedStoredSubjectData(List<UserSubject> dbUserSubject,
-			List<SubjectInfo> crawlingSubjects) {   
-		List<SubjectInfo> needStoredSubjects = new ArrayList<SubjectInfo>();
-		
-		String[] dbSubjectId = new String[dbUserSubject.size()];
-		String[] crawlingSubjectId = new String[crawlingSubjects.size()];
-		
-		int i = 0;
-		for (UserSubject userSubject : dbUserSubject) {
-			dbSubjectId[i] = userSubject.getSubjectId();
-			i++;
+	private List<SubjectInfo> crawlInitData(UserData userDTO) {
+		List<SubjectInfo> crawlingBasicSubjectData = subjectUtil.crawlSubjectInfo(userDTO.getInitialCookies()); //크롤링 정보 가져오기
+		if(crawlingBasicSubjectData.isEmpty() || crawlingBasicSubjectData == null) return null;
+		else return crawlingBasicSubjectData;
+	}
+	
+	//UserSubject와 Subject 저장
+	private boolean saveInitData(UserData userDTO, List<SubjectInfo> crawledBasicSubjectData) {
+		UserInfo userEntity = new UserInfo(userDTO);
+		dbSubjectUtil.saveService(crawledBasicSubjectData);
+		List<UserSubject> usList = new ArrayList<UserSubject>();
+		for (SubjectInfo subjectInfo : crawledBasicSubjectData) {
+			usList.add(new UserSubject(userEntity, subjectInfo));
 		}
+		dbUserSubjectUtil.saveService(usList);
 		
-		i = 0;
-		for (SubjectInfo subjectInfo : crawlingSubjects) {
-			crawlingSubjectId[i] = subjectInfo.getSubjectId();
-			i++;
-		}
-		
-		for (int j = 0; j < crawlingSubjectId.length; j++) {
-			if(Arrays.asList(dbSubjectId).contains(crawlingSubjectId[j])) {
-				continue;
-			}
-			else { 
-				needStoredSubjects.add(crawlingSubjects.get(j));
-			}
-		}
-		
-		if(needStoredSubjects.size() == 0) {
-			return null;
-		}
-		else {
-			System.out.println(needStoredSubjects.toString());
-			return needStoredSubjects;
-		}
+		return true;
 	}
 	
 }

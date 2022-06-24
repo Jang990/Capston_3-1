@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.jsoup.nodes.Document;
 
+import com.esummary.elearning.dto.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.user.UserInfo;
 
@@ -18,4 +19,6 @@ public interface SubjectUtil {
 	List<SubjectInfo> crawlAndSaveBasicSubjectData(UserInfo user);
 
 	boolean saveBasicSubject(UserInfo user, List<SubjectInfo> subjectList);
+
+	List<SubjectInfo> crawlSubjectInfo(Map<String, String> loginCookie);
 }

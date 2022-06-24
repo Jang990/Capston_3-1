@@ -1,5 +1,6 @@
 package com.esummary.elearning.entity.user;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -47,7 +48,7 @@ import lombok.Data;
 @Entity
 public class UserSubject {
 	@Id
-	int usId; // 시퀸스 사용할 것
+	private int usId; // 시퀸스 사용할 것
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="STUDENT_NUMBER")
@@ -63,11 +64,28 @@ public class UserSubject {
 	@OneToMany(mappedBy = "userSubject")
 	private List<UserLecture> userLecture;
 	
+	public UserSubject() {
+		this.userInfo = new UserInfo();
+		this.subjectInfo = new SubjectInfo();
+		this.userTask = new ArrayList<UserTask>();
+		this.userLecture = new ArrayList<UserLecture>();
+	}
+	
+	public UserSubject(UserInfo userInfo, SubjectInfo subjectInfo) {
+		this.userInfo = userInfo;
+		this.subjectInfo = subjectInfo;
+	}
+	
 	public String getStudentNumber() {
 		return this.userInfo.getStudentNumber();
 	}
 	public String getSubjectId() {
 		return this.subjectInfo.getSubjectId();
 	}
-	
+	public void setStudentNumber(String number) {
+		this.userInfo.setStudentNumber(number);
+	}
+	public void setSubjectId(String id) {
+		this.subjectInfo.setSubjectId(id);
+	}
 }

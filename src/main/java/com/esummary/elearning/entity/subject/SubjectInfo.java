@@ -13,9 +13,11 @@ import javax.persistence.Transient;
 import com.esummary.elearning.entity.user.UserInfo;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class SubjectInfo {
 	@Id
 	private String subjectId;				//202214001LLA117		202214043C5019
@@ -29,6 +31,15 @@ public class SubjectInfo {
 	private List<SubjectTaskInfo> taskList; //과제에 관한 정보
 	@OneToMany(mappedBy = "subjectInfo")
 	private List<SubjectNoticeInfo> noticeList; //공지사항에 관한 정보
+	
+	public SubjectInfo(String subjectId, String subjectName, String subjectOwnerName, String openType) {
+		this.subjectId = subjectId;
+		this.subjectName = subjectName;
+		this.subjectOwnerName = subjectOwnerName;
+		this.openType = openType;
+	}
+	
+	
 	
 //	@OneToMany(mappedBy = "subjectInfo", fetch = FetchType.LAZY)
 //	private List<UserInfo> userList;

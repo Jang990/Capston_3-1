@@ -14,6 +14,7 @@ import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import com.esummary.elearning.dto.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 
 import lombok.AllArgsConstructor;
@@ -52,6 +53,18 @@ public class UserInfo {
 	@Transient
 	private List<SubjectInfo> subjectList;
 
+	public UserInfo(String studentNumber, String userName, Map<String, String> initialCookies) {
+		this.studentNumber = studentNumber;
+		this.userName = userName;
+		this.initialCookies = initialCookies;
+	}
+	
+	public UserInfo(UserData userDTO) {
+		this.studentNumber = userDTO.getStudentNumber();
+		this.userName = userDTO.getUserName();
+		this.initialCookies = userDTO.getInitialCookies();
+	}
+	
 	@Override
 	public String toString() {
 		return "UserInfo [studentNumber=" + studentNumber + ", userName=" + userName + ", userSubjects=" + userSubjects

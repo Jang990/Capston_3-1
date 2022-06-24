@@ -1,123 +1,50 @@
 package com.esummary.elearning.service.subject.util.db;
 
-import java.util.ArrayList; 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
-import com.esummary.elearning.entity.subject.SubjectNoticeInfo;
-import com.esummary.elearning.entity.subject.SubjectTaskInfo;
-import com.esummary.elearning.entity.user.UserInfo;
-import com.esummary.elearning.entity.user.UserLecture;
-import com.esummary.elearning.entity.user.UserSubject;
-import com.esummary.elearning.entity.user.UserTask;
-import com.esummary.elearning.repository.UserSubjectRepository;
-import com.esummary.elearning.service.subject.util.crawling.SubjectUtil;
-import com.esummary.elearning.service.subject.util.db.lectures.DBLectureWeekUtil;
-import com.esummary.elearning.service.subject.util.db.notice.DBNoticeUtil;
-import com.esummary.elearning.service.subject.util.db.task.DBTaskUtil;
+import com.esummary.elearning.repository.subject.SubjectRepository;
 
-@Component("DB")
-public class SubjectUtil_DB implements SubjectUtil{
+public class SubjectUtil_DB implements DBSubjectUtil {
 	
 	@Autowired
-	private DBTaskUtil taskUtil;
-	@Autowired
-	private DBNoticeUtil noticeUtil;
-	@Autowired
-	private DBLectureWeekUtil lectureUtil;
-	
-	@Autowired
-	private UserSubjectRepository userSubjectRepository;
+	private SubjectRepository subjectRepository;
 	
 	@Override
-	public List<SubjectInfo> getSubjectList(UserInfo user) {
-		List<SubjectInfo> subjectList = this.getOwnSubject(user);
-		user.setSubjectList(subjectList);
-		getSubjectDetail(user);
-		return subjectList;
+	public boolean saveService(SubjectInfo subject) {
+		if(validateDuplicate(subject))
+			return false;
+		
+		subjectRepository.save(subject);
+		return true;
 	}
 	
-	private List<SubjectInfo> getOwnSubject(UserInfo user) {
-		List<SubjectInfo> subjectList = new ArrayList<SubjectInfo>();
+	@Override
+	public boolean saveService(List<SubjectInfo> subjects) {
+		List<SubjectInfo> savedSubjects = new ArrayList<SubjectInfo>();
 		
-		List<UserSubject> us = null;
-		us = userSubjectRepository.findByUserInfo(user);
-		user.setUserSubjects(us);
-		for (UserSubject userSubject : us) {
-			SubjectInfo subjectInfo = userSubject.getSubjectInfo();
-			subjectList.add(subjectInfo);
-			
-//			System.out.println("ㅇㅁㅂ:" + userSubject.getSubjectInfo().getSubjectName()); //이때 쿼리를 보냄 LAZY
-//			System.out.println("ㅇㅁㅂ:" + userSubject.getSubjectInfo().getNoticeList());//이런것은 불가능
+		for (SubjectInfo subject : subjects) {
+			if(validateDuplicate(subject)) // 중복 확인, 중복일시 예외발생
+				continue;
+			else savedSubjects.add(subject);
 		}
 		
-		/*내 생각에는 Lazy로 되어있는데 sysout(us)를 하면서 없는 것을 가져와서 그런듯 UserSubject를 EAGER로 바꿈 - 안된다.
-		위에 SYSOUT부분같은부분에 getNoticeList이런것들이 아예 안들어가 있어서 그런듯*/
-//		System.out.println("단테:" + us); // 오류
-		return subjectList;
-	}
-	
-	private void getSubjectDetail(UserInfo user) {
-		List<SubjectTaskInfo> taskList = new ArrayList<>();
-		List<UserTask> userTaskList = new ArrayList<>();
-
-		List<SubjectNoticeInfo> noticeList = new ArrayList<>();
+		if(savedSubjects.size() == 0) return false;
 		
-		List<SubjectLectureWeekInfo> lectureList = new ArrayList<>();
-		List<UserLecture> userLecture = new ArrayList<>();
-		
-		List<UserSubject> userSubjects = user.getUserSubjects();
-		for (UserSubject userSubject : userSubjects) {
-			SubjectInfo subjectInfo = userSubject.getSubjectInfo();
-			UserSubject us = getUserSubject(subjectInfo.getSubjectId(), user.getStudentNumber()); // 개인정보를 불러오기 위한 객체
-			
-			//과제 불러오기
-				//사용자가 가지고 있는 과제에 대한 정보 불러오기
-			taskList = taskUtil.getSubjectTaskInfo(subjectInfo);
-			subjectInfo.setTaskList(taskList);
-				//과제에 대한 개인정보 불러오기 (과제 제출여부 등등)
-			userTaskList = taskUtil.getUserTask(taskList);
-			userSubject.setUserTask(userTaskList);
-			
-			//공지사항 불러오기
-			noticeList = noticeUtil.getSubjectNoticeInfo(subjectInfo);
-			subjectInfo.setNoticeList(noticeList);
-			
-			//강의 불러오기
-				//사용자가 가지고 있는 강의에 대한 정보 불러오기
-			lectureList = lectureUtil.getSubjectLectureInfo(subjectInfo);
-			subjectInfo.setLectureList(lectureList);
-				//강의에 대한 개인정보 불러오기 (학생이 강의를 들은 시간, 학생이 강의를 완료했는지 등등)
-			userLecture = lectureUtil.getUserlecture(us, lectureList);
-			userSubject.setUserLecture(userLecture);
-			
-		}
-		
-	}
-	
-	private UserSubject getUserSubject(String subjectId, String studentNumber) {
-		return userSubjectRepository.
-			findBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, studentNumber);
-	}
-
-	/*
-	 * 아래는 쓰레기들
-	 */
-	@Override
-	public List<SubjectInfo> crawlAndSaveBasicSubjectData(UserInfo user) {
-		// TODO Auto-generated method stub
-		return null;
+		subjectRepository.saveAll(savedSubjects);
+		return true;
 	}
 
 	@Override
-	public boolean saveBasicSubject(UserInfo user, List<SubjectInfo> subjectList) {
-		return false;
+	public boolean validateDuplicate(SubjectInfo subject) {
+		SubjectInfo us = subjectRepository.findBySubjectId(subject.getSubjectId());
+		
+		if(us == null) return false;
+		else return true; //중복 맞음
 	}
-
-
+	
 	
 }

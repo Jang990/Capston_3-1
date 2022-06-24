@@ -13,7 +13,14 @@ import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.user.UserSubject;
 
 public interface VueService {
+	/*
+	 * 프론트엔드(Vue)에서 Axios로 요청하는 것을 처리하는 서비스
+	 * 이건 나누는게 필요할 듯. 겹친다.
+	 */
+	
+	
 //	List<SubjectCardData> getInitCardData(String studentNumber);getInitCardDatagetInitCardData
+	
 	
 	//데이터베이스 조회
 	List<LectureWeekData> getLectureData(String subjectId, String studentNumber);
@@ -21,13 +28,15 @@ public interface VueService {
 	List<TaskData> getTaskData(String subjectId, String studentNumber);
 	
 	//크롤링
-	InitalPageData crawlInitData(UserData user);
+	InitalPageData crawlInitDataService(UserData user);
 	List<NoticeData> crawlNotice(UserData user, String subjectId);
 	List<TaskData> crawlTask(UserData user, String subjectId);
 	List<LectureWeekData> crawlLecture(UserData user, String subjectId);
-	List<SubjectCardData> getSubjectDTO(List<SubjectInfo> subjects);
-	List<UserSubject> searchUserSubject(String studentNumber);
 	
 	boolean saveUser(UserData user);
+	boolean saveUserService(UserData userDTO);
+	
+	//리팩토링 중 만들어지는 것
+//	boolean saveInitData(UserData userDTO, InitalPageData initPageData);
 	
 }

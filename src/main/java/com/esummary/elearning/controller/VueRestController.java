@@ -53,12 +53,16 @@ public class VueRestController {
 		if(loginSessionCookie == null) // 로그인 실패
 			return false;
 		
+		
+		//크롤링 
 		String userName = userCrawlingUtil.getUserName(loginSessionCookie);
 		UserData userData = new UserData(id, userName, loginSessionCookie);
 		HttpSession session = request.getSession();
 		session.setAttribute("userData", userData);
-		return true;  
 		
+		//db에 유저 정보 저장
+		vueService.saveUserService(userData);
+		return true;  
 	} 
 	
 	/* 
@@ -70,7 +74,7 @@ public class VueRestController {
 	public InitalPageData getInitData(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		UserData user = (UserData)session.getAttribute("userData");
-		InitalPageData initPageData = vueService.crawlInitData(user);
+		InitalPageData initPageData = vueService.crawlInitDataService(user);
 		return initPageData;
 	}
 	

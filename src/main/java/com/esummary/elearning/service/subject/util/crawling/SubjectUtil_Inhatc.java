@@ -46,8 +46,6 @@ public class SubjectUtil_Inhatc implements SubjectUtil{
 	@Qualifier("crawlLec")
 	private LectureWeekUtil lectureWeekUtil;
 	
-	private static int seqUserSubjectNum = 0; // 시퀸스 넘버. UserSubject에서 복합키 사용전에 임의로 사용함. 복합키로 바꿀 것
-	
 	@Autowired
 	private SubjectRepository subjectRepository;
 	@Autowired
@@ -85,11 +83,33 @@ public class SubjectUtil_Inhatc implements SubjectUtil{
 		return new SubjectDetailData_DTO(subjectId, lectures, task, notices);		
 	}
 	
+	//이건 너무 많은 역할을 하나의 메서드에서 하고 있다. crawl과 save로 나누고 삭제할 것이다.
 	@Override
 	public List<SubjectInfo> crawlAndSaveBasicSubjectData(UserInfo user) {
 		List<SubjectInfo> subjectList = this.getInitialSubjectData(user.getInitialCookies());
 		subjectRepository.saveAll(subjectList);		//DB 저장
 		user.setSubjectList(subjectList); //DB연동없이 하는것이기때문에 오류가 있을 수 있음?
+		return subjectList;
+	}
+	
+	//크롤링 나눔
+	@Override
+	public List<SubjectInfo> crawlSubjectInfo(Map<String, String> loginCookie) {
+//		List<SubjectInfo> subjectList = this.getInitialSubjectData(user.getInitialCookies());
+//		subjectRepository.saveAll(subjectList);		//DB 저장
+//		user.setSubjectList(subjectList); //DB연동없이 하는것이기때문에 오류가 있을 수 있음?
+		//getInitialSubjectData 함수를 그냥 전부 긇어옴.
+		List<SubjectInfo> subjectList = new ArrayList<SubjectInfo>();
+		Elements subjectElements = crawlSubjectElements(loginCookie);
+		
+		if(subjectElements.size() == 0) return null;
+		
+		for (Element subjectElement : subjectElements) {			
+			SubjectInfo subject = convertElementToSubjectInfo(subjectElement);
+			if(subject == null) continue;
+			subjectList.add(subject);
+		}
+		
 		return subjectList;
 	}
 	
@@ -106,35 +126,44 @@ public class SubjectUtil_Inhatc implements SubjectUtil{
 	}
 	
 	private List<SubjectInfo> getInitialSubjectData(Map<String, String> loginCookie) {
-		
 		List<SubjectInfo> subjectList = new ArrayList<SubjectInfo>();
-		String subjectSelector = ".default option";
-		Document loginPage = this.conLoginPage(loginCookie);
-		Elements subjectElements = loginPage.select(subjectSelector);
-//		Elements subjectElements = loginPage.select(".default option");
+		Elements subjectElements = crawlSubjectElements(loginCookie);
 		
-		final int ID_IDX = 0;
-		final int OWNER_NAME_IDX = 1;
-		final int OPEN_TYPE_IDX = 2;
+		if(subjectElements.size() == 0) return null;
 		
-		for (Element subjectElement : subjectElements) {
-			if(subjectElement.attr("value") == null || subjectElement.attr("value").equals("")) 
-				continue;
-			
-			String[] subjectStringValues = subjectElement.attr("value").split(",");
-			
-			SubjectInfo subject = new SubjectInfo();
-			subject.setSubjectName(subjectElement.text()); 
-			subject.setSubjectId(subjectStringValues[ID_IDX].trim());
-			subject.setSubjectOwnerName(subjectStringValues[OWNER_NAME_IDX].trim());
-			subject.setOpenType(subjectStringValues[OPEN_TYPE_IDX].trim());
-//			subjectRepository.save(subject);		//DB 저장
+		for (Element subjectElement : subjectElements) {			
+			SubjectInfo subject = convertElementToSubjectInfo(subjectElement);
+			if(subject == null) continue;
 			subjectList.add(subject);
 		}
 		
 		return subjectList;
 	}
 	
+	private Elements crawlSubjectElements(Map<String, String> loginCookie) {
+		Document loginPage = this.conLoginPage(loginCookie);
+		String subjectSelector = ".default option";
+		return loginPage.select(subjectSelector);
+	}
+
+	private SubjectInfo convertElementToSubjectInfo(Element subjectElement) {
+		if(subjectElement.attr("value") == null || subjectElement.attr("value").equals("")) 
+			return null;
+		
+		final int ID_IDX = 0;
+		final int OWNER_NAME_IDX = 1;
+		final int OPEN_TYPE_IDX = 2;
+		String[] subjectStringValues = subjectElement.attr("value").split(",");
+		
+		SubjectInfo subject = new SubjectInfo(
+					subjectStringValues[ID_IDX].trim(), 
+					subjectElement.text(), 
+					subjectStringValues[OWNER_NAME_IDX].trim(), 
+					subjectStringValues[OPEN_TYPE_IDX].trim()
+				);
+		return subject;
+	}
+
 	private Document conLoginPage(Map<String, String> initialCookies) {
 		//이거 이름 크롤링부분에 있는 메소드인데 재사용 어떡할지 못정해서 그냥 여기 박아버림
 		String mainUrl = "https://cyber.inhatc.ac.kr" + "/MMain.do";

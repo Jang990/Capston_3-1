@@ -45,34 +45,5 @@ public class ELearningServiceImpl implements ELearningService {
 		return null;
 	}
 	
-	@Override
-	public List<SubjectInfo> crawlAndSaveBasicSubjectData(UserData user) {
-		UserInfo userInfo = createUserInfo(user);
-//		userInfo.setStudentNumber(user.getStudentNumber());
-//		userInfo.setUserName(user.getUserName());
-//		userInfo.setInitialCookies(user.getInitialCookies());
-		//크롤링
-		List<SubjectInfo> subjects = subjectUtil_Crawl.crawlAndSaveBasicSubjectData(userInfo);
-
-		return subjects;
-	}
-	
-	@Override
-	public boolean saveBasicSubjectData(UserData user, List<SubjectInfo> subjects) {
-		if(subjects == null) return false;
-		UserInfo userInfo = createUserInfo(user);
-		//db에 내용 저장
-		return subjectUtil_Crawl.saveBasicSubject(userInfo, subjects);
-	}
-	
-	private UserInfo createUserInfo(UserData user) {
-		return new UserInfo(
-				user.getStudentNumber(), 
-				user.getUserName(), 
-				null, 
-				user.getInitialCookies(), 
-				null
-			);
-	}
 	
 }
