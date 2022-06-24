@@ -133,53 +133,6 @@ public class VueServiceImpl implements VueService {
 				task.getNotSubmittedNum(), task.getTotalNum(), task.getSubmitYN()
 			);
 	}                   
-
-	private LectureWeekData convertWeekData(SubjectLectureWeekInfo lectureWeekInfo) {
-		int cntCompleted = 0;
-		int cntIncompleted = 0;
-		List<SubjectLecture> lectureDetail = lectureWeekInfo.getLectures();
-		List<LectureData> lectureDetailDTO = new ArrayList<LectureData>();
-		String startDate =makeDateString(lectureWeekInfo.getStartDate());
-		String endDate =makeDateString(lectureWeekInfo.getEndDate());
-		
-		for (SubjectLecture detail : lectureDetail) {
-			
-			LectureData lecture = convertLectureData(detail);
-			if(isCompletedLecture(lecture)) cntCompleted++;
-			else cntIncompleted++;
-			
-			lectureDetailDTO.add(lecture);
-		}
-		
-		int studyingState = 0;
-		if(cntCompleted != 0 || cntIncompleted != 0) {
-			studyingState = (int)((float)cntCompleted / (cntCompleted + cntIncompleted) * 100); 
-		}
-		
-		return new LectureWeekData(
-				lectureWeekInfo.getLectureWeekId(),    
-				lectureWeekInfo.getTitle(), 
-				startDate,
-				endDate,     
-				lectureDetailDTO,
-				cntCompleted,
-				cntIncompleted,
-				studyingState
-		);
-	}
-
-	private LectureData convertLectureData(SubjectLecture detail) {
-		return new LectureData(
-				detail.getLectureId(), 
-				detail.getLectureVideoId(), 
-				detail.getType(), 
-				detail.getIdx(), 
-				detail.getTitle(), 
-				detail.getFullTime(), 
-				detail.getStatus(), 
-				detail.getLearningTime()
-			);
-	}
 	
 	@Override
 	public boolean saveUser(UserData user) {
@@ -222,13 +175,18 @@ public class VueServiceImpl implements VueService {
 	
 	@Override
 	public List<LectureWeekData> crawlLecture(UserData user, String subjectId) {
-		UserSubject userSubject = userSubjectRepository
-				.findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, user.getStudentNumber());
-		List<SubjectLectureWeekInfo> lectures = lectureWeekUtil.getSubjectLectureWeekInfo(userSubject, user.getInitialCookies());
+//		UserSubject userSubject = dbUserSubjectUtil.getStudentSubject(subjectId, user.getStudentNumber()); 
+		//크롤링하기.
+		List<SubjectLectureWeekInfo> lectures = lectureWeekUtil.getSubjectLectureWeekInfo(subjectId, user.getInitialCookies());
+		
+		//Lecture저장하기.
+		
+		
+		//DTO로 바꾸기.
 		List<LectureWeekData> lecturesDTO = new ArrayList<LectureWeekData>();
 		for (SubjectLectureWeekInfo subjectLectureWeekInfo : lectures) {
-			lecturesDTO.add(this.convertWeekData(subjectLectureWeekInfo));
-		}     
+			lecturesDTO.add(new LectureWeekData(subjectLectureWeekInfo));
+		}
 		
 		return lecturesDTO;
 	}
@@ -266,22 +224,6 @@ public class VueServiceImpl implements VueService {
 		return calendar.get(Calendar.YEAR) + "/" + (calendar.get(Calendar.MONTH)+1) + "/" + calendar.get(Calendar.DATE)
 		+ " " + calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE);
 	}
-	
-	
-	
-	private boolean isCompletedLecture(LectureData lecture) {
-		if(lecture.getFullTime() == null) return true; //수업 시간이 없다면 해야할 일이 아니다. 화상강의는 알아해라
-		System.out.println("오류제어 ======== " + lecture);
-		int fullTime = getMinuteNumber(lecture.getFullTime());
-		int studyTime = getMinuteNumber(lecture.getLearningTime());
-		if(fullTime <= studyTime && lecture.getStatus().equals("1")) return true;
-		return false;
-	} 
-
-	private int getMinuteNumber(String minuteString) {
-		if(!minuteString.contains("분")) return 0;
-		return Integer.parseInt(minuteString.substring(0, minuteString.indexOf("분")));
-	}  
 
 	@Override
 	public List<LectureWeekData> getLectureData(String subjectId, String studentNumber) {
@@ -314,7 +256,7 @@ public class VueServiceImpl implements VueService {
 				//여기까지 수정
 				//ul. 즉, db에 사용자 lecture데이터가 없을 때 파괴적인 상황을 생각해보기. showCompleted같은 변수들 ++가 잘못되서 차트 싱크가 안맞고 등등... 
 			}
-			weekDTO.add(convertWeekData(weekInfo));
+			weekDTO.add(new LectureWeekData(weekInfo));
 		}
 //		for (SubjectLectureWeekInfo weekInfo : weekList) {
 //			weekDTO.add(convertWeekData(weekInfo));   
@@ -324,8 +266,6 @@ public class VueServiceImpl implements VueService {
 
 	@Override
 	public InitalPageData crawlInitDataService(UserData userDTO) {
-//		List<SubjectInfo> crawlingSubjects = eLearningService.crawlAndSaveBasicSubjectData(user); //크롤링 정보 가져오기
-		
 		List<SubjectInfo> crawledBasicSubjectData = crawlInitData(userDTO); //크롤링
 		if(crawledBasicSubjectData == null) return null;
 		saveInitData(userDTO, crawledBasicSubjectData); //UserSubject와 Subject 저장

@@ -14,9 +14,11 @@ public interface DBUserSubjectUtil {
 	//저장 서비스 (중복 체크 + 저장)
 	boolean saveService(UserSubject us);
 	boolean saveService(List<UserSubject> us);
+	
 	boolean validateDuplicate(UserSubject userSubject);
 	
 	List<UserSubject> getStudentsSubject(String studentNumber);
+	UserSubject getStudentSubject(String subjectId, String studentNumber);
 	
 //	List<SubjectInfo> InitSubjectData(UserInfo user);
 //	void getSubjectDetail(UserInfo user);

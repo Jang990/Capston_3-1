@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.repository.subject.SubjectRepository;
 
+@Component
 public class SubjectUtil_DB implements DBSubjectUtil {
 	
 	@Autowired

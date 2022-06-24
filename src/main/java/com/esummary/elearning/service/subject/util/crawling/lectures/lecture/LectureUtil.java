@@ -12,5 +12,9 @@ import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
 import com.esummary.elearning.entity.user.UserSubject;
 
 public interface LectureUtil {
+	//리팩터링 전
 	List<SubjectLecture> getLectureList(Elements lectureElements, SubjectLectureWeekInfo weekInfo, UserSubject userSubject);
+	
+	//리팩터링 후
+	List<SubjectLecture> getLectureList(Elements lectureElements, String lectureWeekId);
 }

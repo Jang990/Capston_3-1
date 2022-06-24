@@ -31,6 +31,8 @@ public class SubjectLecture {
 //	@Transient
 	private SubjectLectureWeekInfo subjectLectureWeekInfo;
 
+	
+	
 	public Long getLectureId() {
 		return lectureId;
 	}
@@ -101,6 +103,19 @@ public class SubjectLecture {
 
 	public void setLearningTime(String learningTime) {
 		this.learningTime = learningTime;
+	}
+
+	public SubjectLecture(String lectureVideoId, String type, String idx, String title, String fullTime, String status,
+			String learningTime, String lectureWeekId) {
+		this.lectureVideoId = lectureVideoId;
+		this.type = type;
+		this.idx = idx;
+		this.title = title;
+		this.fullTime = fullTime;
+		this.status = status;
+		this.learningTime = learningTime;
+		this.subjectLectureWeekInfo = new SubjectLectureWeekInfo();
+		subjectLectureWeekInfo.setLectureWeekId(lectureWeekId);
 	}
 	
 	

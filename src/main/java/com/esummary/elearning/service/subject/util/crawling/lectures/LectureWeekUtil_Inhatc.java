@@ -41,12 +41,12 @@ public class LectureWeekUtil_Inhatc implements LectureWeekUtil {
 	private SubjectLectureWeekRepository subjectLectureWeekRepository;
 	
 	//UserLecture에 넣어야하는데 계속 함수간에 전달하기 귀찮아서 그냥 여기 많듦
-	private UserSubject userSubject;
+	//리팩토링 끝나면 삭제할 것 
+	private UserSubject 취소userSubject;
 	
 	public List<SubjectLectureWeekInfo> getSubjectLectureInfo(
 			UserSubject userSubject, Document docStudyHome, 
 			Map<String, String> initialCookies) {
-		this.userSubject = userSubject;
 		List<SubjectLectureWeekInfo> weekList = new ArrayList<SubjectLectureWeekInfo>();
 		
 		//StudyHome에서 과제 내용이 적혀있는 섹션에 css Selector
@@ -58,7 +58,7 @@ public class LectureWeekUtil_Inhatc implements LectureWeekUtil {
 		Elements lectures = docNoticePage.select(lectureBoxSelector);
 		
 		for (Element element : lectures) {
-			SubjectLectureWeekInfo week = getWeekInfo(element, userSubject.getSubjectInfo());
+			SubjectLectureWeekInfo week = 취소crawlWeekDetailInfo(element, userSubject.getSubjectInfo());
 			if(week != null) {
 				weekList.add(week);
 			}
@@ -67,9 +67,8 @@ public class LectureWeekUtil_Inhatc implements LectureWeekUtil {
 		return weekList;
 	}
 	
-	
-	
-	private SubjectLectureWeekInfo getWeekInfo(Element element, SubjectInfo subjectInfo) {
+	//리팩토링끝나면 삭제할 것
+	private SubjectLectureWeekInfo 취소crawlWeekDetailInfo(Element element, SubjectInfo subjectInfo) {
 		Elements lectureElements = crawlLectureBox(element);
 		if(lectureElements.isEmpty()) {
 			return null;
@@ -92,9 +91,29 @@ public class LectureWeekUtil_Inhatc implements LectureWeekUtil {
 		weekInfo.setSubjectInfo(subjectInfo);
 		subjectLectureWeekRepository.save(weekInfo); //DB에 저장 - 여기서 저장하는 이유는 lecture가 외래키로 사용해야하기 때문.
 		
-		List<SubjectLecture> lectureList = lectureUtil.getLectureList(lectureElements, weekInfo, this.userSubject);
+		List<SubjectLecture> lectureList = lectureUtil.getLectureList(lectureElements, weekInfo, this.취소userSubject);
 		weekInfo.setLectures(lectureList);
 		
+		return weekInfo;
+	}
+	
+	private SubjectLectureWeekInfo crawlWeekDetailInfo(Element element, String subjectId) {
+		Elements lectureElements = crawlLectureBox(element);
+		if(lectureElements.isEmpty()) {
+			return null;
+		}
+		
+		String lectureWeekId = crawlWeekId(element);
+		String titleAndDeadline = crawlTitleAndDaealine(element);
+		Map<String, String> splitData = splitDataInTitleString(titleAndDeadline);
+		if(splitData == null) return null;
+		String title = splitData.get("title");
+		Date startDate = SubjectUtil_Inhatc.parseDate(splitData.get("startDate"));
+		Date endDate = SubjectUtil_Inhatc.parseDate(splitData.get("endDate"));
+		List<SubjectLecture> lectureList = lectureUtil.getLectureList(lectureElements, lectureWeekId);
+		SubjectLectureWeekInfo weekInfo = new SubjectLectureWeekInfo(lectureWeekId, title, startDate, endDate, subjectId, lectureList);
+		
+//		subjectLectureWeekRepository.save(weekInfo); //DB에 저장 - 여기서 저장하는 이유는 lecture가 외래키로 사용해야하기 때문.
 		return weekInfo;
 	}
 
@@ -154,33 +173,37 @@ public class LectureWeekUtil_Inhatc implements LectureWeekUtil {
 	}
 
 	@Override
-	public List<SubjectLectureWeekInfo> getSubjectLectureWeekInfo(UserSubject userSubject,
-			Map<String, String> initialCookies) {
-		this.userSubject = userSubject;
+	public List<SubjectLectureWeekInfo> getSubjectLectureWeekInfo(String subjectId,
+			Map<String, String> loginCookies) {
+//		this.userSubject = userSubject;
+		
+//		String studyHome = SubjectUtil_Inhatc.createStudyHomeUrl(subjectId);
+		Document docStudyHome = SubjectUtil_Inhatc.connStudyHome(subjectId, loginCookies);
+		
+		//lecture페이지로 이동
+		final String lecturePageURLSelector = "#0  > ul > li.last > a";
+		Document docLecturePage = ELearningServiceImpl.gotoHrefPageFromHomePage(
+				loginCookies, docStudyHome, lecturePageURLSelector);
+		
+		//StudyHome에서 과제 내용이 적혀있는 박섹션
+		Elements lectures = crawlLectureWeekContentsBox(docLecturePage);
+		
+		//주차 정보 크롤링 - 이 하위에는 강의 차시 크롤링도 포함된다.
 		List<SubjectLectureWeekInfo> weekList = new ArrayList<SubjectLectureWeekInfo>();
-		String studyHome = SubjectUtil_Inhatc.createStudyHomeUrl(userSubject.getSubjectId());
-		Document docStudyHome = null;
-		try {
-			docStudyHome = Jsoup.connect(studyHome).cookies(initialCookies).get();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		//StudyHome에서 과제 내용이 적혀있는 섹션에 css Selector
-		final String lecturePageSelector = "#0  > ul > li.last > a";
-		final String lectureBoxSelector = ".listContent";
-		
-		Document docNoticePage = ELearningServiceImpl.gotoHrefPageFromHomePage(
-				initialCookies, docStudyHome, lecturePageSelector);
-		Elements lectures = docNoticePage.select(lectureBoxSelector);
-		
 		for (Element element : lectures) {
-			SubjectLectureWeekInfo week = getWeekInfo(element, userSubject.getSubjectInfo());
+			SubjectLectureWeekInfo week = crawlWeekDetailInfo(element, subjectId);
 			if(week != null) {
 				weekList.add(week);
 			}
 		}
 		
 		return weekList;
+	}
+
+
+
+	private Elements crawlLectureWeekContentsBox(Document docLecturePage) {
+		final String lectureBoxSelector = ".listContent";
+		return docLecturePage.select(lectureBoxSelector);
 	}
 }

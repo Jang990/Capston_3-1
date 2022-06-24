@@ -13,9 +13,11 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class SubjectLectureWeekInfo {
 	//지금 id는 임의로 lecture 서비스에서 static 변수를 이용해서 사용중이다. mysql로 바꾸면 autoIncrement사용할 것
 	@Id
@@ -33,4 +35,16 @@ public class SubjectLectureWeekInfo {
 	
 	@OneToMany(mappedBy = "subjectLectureWeekInfo")
 	private List<SubjectLecture> lectures;
+
+	public SubjectLectureWeekInfo(String lectureWeekId, String title, Date startDate, Date endDate,
+			String subjectId, List<SubjectLecture> lectures) {
+		this.lectureWeekId = lectureWeekId;
+		this.title = title;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.subjectInfo = new SubjectInfo();
+		subjectInfo.setSubjectId(subjectId);
+		this.lectures = lectures;
+	}
+	
 }

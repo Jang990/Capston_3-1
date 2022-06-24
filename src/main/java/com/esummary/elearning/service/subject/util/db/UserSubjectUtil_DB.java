@@ -41,6 +41,7 @@ public class UserSubjectUtil_DB implements DBUserSubjectUtil{
 		if(validateDuplicate(userSubject)) // 중복 확인, 중복일시 예외발생
 			return false;
 		
+		userSubject.setUsId(seqUserSubjectNum++); //이거 삭제하고 MySQL 로 바꾸기 OK?
 		userSubjectRepository.save(userSubject); // DB 저장
 		return true;
 	}
@@ -52,7 +53,10 @@ public class UserSubjectUtil_DB implements DBUserSubjectUtil{
 		for (UserSubject userSubject : userSubjects) {
 			if(validateDuplicate(userSubject)) // 중복 확인, 중복일시 예외발생
 				continue;
-			else savedUserSubject.add(userSubject);
+			else {
+				userSubject.setUsId(seqUserSubjectNum++); //이거 삭제하고 MySQL 로 바꾸기 OK?
+				savedUserSubject.add(userSubject);
+			}
 		}
 		
 		if(savedUserSubject.size() == 0) return false;
@@ -72,9 +76,17 @@ public class UserSubjectUtil_DB implements DBUserSubjectUtil{
 	}
 
 	@Override
+	public UserSubject getStudentSubject(String subjectId, String studentNumber) {
+		return userSubjectRepository
+				.findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, studentNumber);
+	}
+	
+	@Override
 	public List<UserSubject> getStudentsSubject(String studentNumber) {
 		return userSubjectRepository.findByUserInfo_StudentNumber(studentNumber);
 	}
+	
+	
 	
 	//?? getSubjectDetail부분떄문에 남겨놓음. 리팩터링 후 삭제할 것
 	private List<SubjectInfo> getSubjectListIncludeDetail(UserInfo user) {

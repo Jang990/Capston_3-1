@@ -53,22 +53,24 @@ public class VueRestController {
 		if(loginSessionCookie == null) // 로그인 실패
 			return false;
 		
-		
 		//크롤링 
 		String userName = userCrawlingUtil.getUserName(loginSessionCookie);
 		UserData userData = new UserData(id, userName, loginSessionCookie);
-		HttpSession session = request.getSession();
-		session.setAttribute("userData", userData);
 		
 		//db에 유저 정보 저장
 		vueService.saveUserService(userData);
+		
+		//세션 설정
+		HttpSession session = request.getSession();
+		session.setAttribute("userData", userData);
 		return true;  
 	} 
 	
 	/* 
 	 *  수강과목 정보 검색
 	 * vueLoginCheck이후 로그인이 완료되어 있다면 실행
-	 * 크롤링 id를 보내줌
+	 * 1. 크롤링으로 정보 가져옴
+	 * 2. 크롤링정보(si)랑 사용자정보(us) 저장.
 	 */
 	@RequestMapping("/getInitSubject")   
 	public InitalPageData getInitData(HttpServletRequest request) {
@@ -83,14 +85,15 @@ public class VueRestController {
 	
 	@RequestMapping("/crawlSubject")
 	public SubjectDetailData_VO crawlSubject(HttpServletRequest request, @RequestParam String subjectId) {
-		List<LectureWeekData> lectureDTO = this.crawlLecture(request, subjectId);
+		List<LectureWeekData> lectureDTO = this.crawlLecture(request, subjectId); //여기 리팩토링중
 		List<NoticeData> noticeDTO = this.crawlNotice(request, subjectId);
 		List<TaskData> taskDTO = this.crawlTask(request, subjectId);
 		SubjectCountData cntDTO = new SubjectCountData(lectureDTO, taskDTO);
 		
-		SubjectDetailData_VO subjectDTO = new SubjectDetailData_VO(lectureDTO, taskDTO, noticeDTO, cntDTO);
-		return subjectDTO;   
-	} 
+		SubjectDetailData_VO subjectVO = new SubjectDetailData_VO(lectureDTO, taskDTO, noticeDTO, cntDTO);
+		return subjectVO;   
+	}
+	//여기하는중
 	@RequestMapping("/crawlLecture")
 	public List<LectureWeekData> crawlLecture(HttpServletRequest request, @RequestParam String subjectId) {
 		UserData user = (UserData)request.getSession().getAttribute("userData");

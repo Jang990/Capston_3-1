@@ -245,12 +245,26 @@ public class SubjectUtil_Inhatc implements SubjectUtil{
 		
 	}
 	
-	public static String createStudyHomeUrl(String subjectId) { 
+	// private으로 바꾸고 싶다
+	public static String createStudyHomeUrl(String subjectId) {  
 //		final String MOBILE_STUDY_HOME_URL1 = ELearningServiceImpl_test.MAIN_URL + "/MCourse.do?cmd=viewStudyHome&courseDTO.courseId=";
 		final String DESKTOP_STUDY_HOME_URL1 = ELearningServiceImpl.MAIN_URL + "/Course.do?cmd=viewStudyHome&courseDTO.courseId=";
 		final String STUDY_HOME_URL2 = "&boardInfoDTO.boardInfoGubun=study_home&boardGubun=study_course&gubun=study_course";
 		
 		return DESKTOP_STUDY_HOME_URL1 + subjectId + STUDY_HOME_URL2;
+	}
+	
+	public static Document connStudyHome(String subjectId, Map<String, String> loginCookies) { 
+		String studyHome = createStudyHomeUrl(subjectId);
+		Document docStudyHome = null;
+		try {
+			docStudyHome = Jsoup.connect(studyHome).cookies(loginCookies).get();
+		} catch (IOException e) {
+			System.out.println("로그인 쿠키가 잘못된것 같다.");
+			e.printStackTrace();
+		}
+		
+		return docStudyHome;
 	}
 	
 	public static String[] extractDataFromJsCode(String attr) {
