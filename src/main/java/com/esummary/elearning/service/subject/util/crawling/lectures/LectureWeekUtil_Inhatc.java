@@ -185,7 +185,7 @@ public class LectureWeekUtil_Inhatc implements LectureWeekUtil {
 		Document docLecturePage = ELearningServiceImpl.gotoHrefPageFromHomePage(
 				loginCookies, docStudyHome, lecturePageURLSelector);
 		
-		//StudyHome에서 과제 내용이 적혀있는 박섹션
+		//StudyHome에서 과제 내용이 적혀있는 박스 섹션
 		Elements lectures = crawlLectureWeekContentsBox(docLecturePage);
 		
 		//주차 정보 크롤링 - 이 하위에는 강의 차시 크롤링도 포함된다.

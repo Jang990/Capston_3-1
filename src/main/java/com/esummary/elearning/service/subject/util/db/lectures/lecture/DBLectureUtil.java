@@ -16,4 +16,9 @@ public interface DBLectureUtil {
 	List<SubjectLecture> getLectureList(SubjectLectureWeekInfo subjectLectureWeekInfo); //이것도 없애야할듯
 
 	UserLecture getUserLecture(int usId, SubjectLecture lecture);
+	
+	//리팩토링하면서 추가되는 것
+	boolean saveService(SubjectLecture  lecture);
+	boolean saveService(List<SubjectLecture> lectures);
+	boolean validateDuplicate(SubjectLecture lecture);
 }

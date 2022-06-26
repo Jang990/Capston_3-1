@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class UserLecture {
 	@Id
-	Long ulId;
+	long ulId;
 	String status; // 0 or 1 //학습 완료: 1, 학습 미완료: 0 
 	String learningTime;
 	
@@ -29,5 +29,22 @@ public class UserLecture {
 	@ManyToOne
 	@JoinColumn(name = "LECTURE_ID")
 	private SubjectLecture subjectLecture;
+	
+	public long getSubjectLectureId() {
+		return this.subjectLecture.getLectureId();
+	}
+	
+	public long getUserSubjectId() {
+		return this.userSubject.getUsId();
+	}
+
+	public UserLecture(SubjectLecture lecture, UserSubject userSubject) {
+//		this.ulId = ulId;
+		this.status = lecture.getStatus();
+		this.learningTime = lecture.getLearningTime();
+		this.userSubject = userSubject;
+		this.subjectLecture = lecture;
+	}
+	
 	
 }

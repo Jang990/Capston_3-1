@@ -12,8 +12,8 @@ import com.esummary.elearning.entity.user.UserTask;
 
 @Repository
 public interface UserLectureRepository extends CrudRepository<UserLecture, String>{
-	UserLecture findBySubjectLecture_LectureId(Long lectureId);
+	UserLecture findBySubjectLecture_LectureId(long lectureId);
 	UserLecture findBySubjectLecture(SubjectLecture lecture);
 	
-	UserLecture findByUserSubject_usIdAndSubjectLecture_lectureId(int usId, Long lectureId);
+	UserLecture findByUserSubject_usIdAndSubjectLecture_lectureId(long usId, long lectureId);
 }

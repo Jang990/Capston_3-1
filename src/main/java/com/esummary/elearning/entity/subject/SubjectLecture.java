@@ -32,6 +32,9 @@ public class SubjectLecture {
 	private SubjectLectureWeekInfo subjectLectureWeekInfo;
 
 	
+	public String getLectureWeekId() {
+		return this.subjectLectureWeekInfo.getLectureWeekId();
+	}
 	
 	public Long getLectureId() {
 		return lectureId;

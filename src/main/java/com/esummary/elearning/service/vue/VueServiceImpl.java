@@ -39,7 +39,10 @@ import com.esummary.elearning.service.subject.util.crawling.notice.NoticeUtil;
 import com.esummary.elearning.service.subject.util.crawling.task.TaskUtil;
 import com.esummary.elearning.service.subject.util.db.DBSubjectUtil;
 import com.esummary.elearning.service.subject.util.db.DBUserSubjectUtil;
+import com.esummary.elearning.service.subject.util.db.lectures.DBLectureWeekUtil;
+import com.esummary.elearning.service.subject.util.db.lectures.lecture.DBLectureUtil;
 import com.esummary.elearning.service.subject.util.db.user.DBUserInfoUtil;
+import com.esummary.elearning.service.subject.util.db.user.DBUserLectureUtil;
 
 @Service
 public class VueServiceImpl implements VueService {
@@ -68,7 +71,14 @@ public class VueServiceImpl implements VueService {
 	@Autowired
 	private DBSubjectUtil dbSubjectUtil;
 	@Autowired
+	private DBLectureWeekUtil dbLectureWeekUtil;
+	@Autowired
+	private DBLectureUtil dbLectureUtil;
+	
+	@Autowired
 	private DBUserSubjectUtil dbUserSubjectUtil;
+	@Autowired
+	private DBUserLectureUtil dbUserLectureUtil;
 	@Autowired
 	private DBUserInfoUtil dbUserInfoUtil;
 	
@@ -180,7 +190,13 @@ public class VueServiceImpl implements VueService {
 		List<SubjectLectureWeekInfo> lectures = lectureWeekUtil.getSubjectLectureWeekInfo(subjectId, user.getInitialCookies());
 		
 		//Lecture저장하기.
-		
+		dbLectureWeekUtil.saveService(lectures); //LectureWeek에 저장
+		UserSubject userSubject = dbUserSubjectUtil.getStudentSubject(subjectId, user.getStudentNumber());
+		for (SubjectLectureWeekInfo lectureWeek : lectures) {
+			dbLectureUtil.saveService(lectureWeek.getLectures()); // Lecture에 저장
+			List<UserLecture> userLectures = convertToUserLectureList(userSubject, lectureWeek.getLectures());
+			dbUserLectureUtil.saveService(userLectures); //UserLecture에 저장
+		}
 		
 		//DTO로 바꾸기.
 		List<LectureWeekData> lecturesDTO = new ArrayList<LectureWeekData>();
@@ -189,6 +205,14 @@ public class VueServiceImpl implements VueService {
 		}
 		
 		return lecturesDTO;
+	}
+
+	private List<UserLecture> convertToUserLectureList(UserSubject userSubject, List<SubjectLecture> lectureList) {
+		List<UserLecture> userLectures = new ArrayList<UserLecture>();
+		for (SubjectLecture lecture : lectureList) {
+			userLectures.add(new UserLecture(lecture, userSubject));
+		}
+		return userLectures;
 	}
 
 	private NoticeData convertNoticeData(SubjectNoticeInfo subjectNoticeInfo) {

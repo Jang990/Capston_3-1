@@ -47,4 +47,8 @@ public class SubjectLectureWeekInfo {
 		this.lectures = lectures;
 	}
 	
+	public String getSubjectId() {
+		return this.subjectInfo.getSubjectId();
+	}
+	
 }

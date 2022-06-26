@@ -42,9 +42,9 @@ public class SubjectUtil_DB implements DBSubjectUtil {
 
 	@Override
 	public boolean validateDuplicate(SubjectInfo subject) {
-		SubjectInfo us = subjectRepository.findBySubjectId(subject.getSubjectId());
+		SubjectInfo subjectCheck = subjectRepository.findBySubjectId(subject.getSubjectId());
 		
-		if(us == null) return false;
+		if(subjectCheck == null) return false;
 		else return true; //중복 맞음
 	}
 	

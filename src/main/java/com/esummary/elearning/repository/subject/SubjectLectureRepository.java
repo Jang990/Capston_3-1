@@ -14,4 +14,6 @@ public interface SubjectLectureRepository extends CrudRepository<SubjectLecture,
 
 	List<SubjectLecture> findBySubjectLectureWeekInfo(SubjectLectureWeekInfo subjectLectureWeekInfo);
 
+	SubjectLecture findBySubjectLectureWeekInfo_LectureWeekIdAndIdx(String lectureWeekId, String idx);
+
 }

@@ -80,5 +80,41 @@ public class LectureWeekUtil_DB implements DBLectureWeekUtil {
 		
 		return userLectureList;
 	}
+	
+	
+	/* ===================리팩토링====================== */
+	@Override
+	public boolean saveService(SubjectLectureWeekInfo lectureWeek) {
+		if(validateDuplicate(lectureWeek))
+			return false;
+		
+		subjectLectureWeekRepository.save(lectureWeek);
+		return true;
+	}
+
+	@Override
+	public boolean saveService(List<SubjectLectureWeekInfo> lectureWeeks) {
+		List<SubjectLectureWeekInfo> savedLectureWeeks = new ArrayList<SubjectLectureWeekInfo>();
+		
+		for (SubjectLectureWeekInfo lectureWeek : lectureWeeks) {
+			if(validateDuplicate(lectureWeek)) // 중복 확인, 중복일시 예외발생
+				continue;
+			else savedLectureWeeks.add(lectureWeek);
+		}
+		
+		if(savedLectureWeeks.size() == 0) return false;
+		
+		subjectLectureWeekRepository.saveAll(savedLectureWeeks);
+		return true;
+	}
+
+	@Override
+	public boolean validateDuplicate(SubjectLectureWeekInfo lectureWeek) {
+		SubjectLectureWeekInfo lectureWeekCheck = subjectLectureWeekRepository.
+				findByLectureWeekIdAndSubjectInfo_subjectId(lectureWeek.getLectureWeekId(), lectureWeek.getSubjectId());
+		
+		if(lectureWeekCheck == null) return false;
+		else return true; //중복 맞음
+	}
 
 }
