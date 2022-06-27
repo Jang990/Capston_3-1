@@ -41,6 +41,7 @@ import com.esummary.elearning.service.subject.util.db.DBSubjectUtil;
 import com.esummary.elearning.service.subject.util.db.DBUserSubjectUtil;
 import com.esummary.elearning.service.subject.util.db.lectures.DBLectureWeekUtil;
 import com.esummary.elearning.service.subject.util.db.lectures.lecture.DBLectureUtil;
+import com.esummary.elearning.service.subject.util.db.notice.DBNoticeUtil;
 import com.esummary.elearning.service.subject.util.db.user.DBUserInfoUtil;
 import com.esummary.elearning.service.subject.util.db.user.DBUserLectureUtil;
 
@@ -74,6 +75,8 @@ public class VueServiceImpl implements VueService {
 	private DBLectureWeekUtil dbLectureWeekUtil;
 	@Autowired
 	private DBLectureUtil dbLectureUtil;
+	@Autowired
+	private DBNoticeUtil dbNoticeUtil;
 	
 	@Autowired
 	private DBUserSubjectUtil dbUserSubjectUtil;
@@ -159,9 +162,13 @@ public class VueServiceImpl implements VueService {
 
 	@Override
 	public List<NoticeData> crawlNotice(UserData user, String subjectId) {
-		UserSubject userSubject = userSubjectRepository
-				.findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, user.getStudentNumber());
-		List<SubjectNoticeInfo> notices = noticeUtil.getSubjectNoticeInfo(userSubject, user.getInitialCookies());
+		//크롤링
+		List<SubjectNoticeInfo> notices = noticeUtil.getSubjectNoticeInfo(subjectId, user.getInitialCookies());
+		
+		//저장
+		dbNoticeUtil.saveService(notices);
+		
+		//DTO로 변환
 		List<NoticeData> noticeDTO = new ArrayList<NoticeData>();
 		for (SubjectNoticeInfo subjectNoticeInfo : notices) {
 			noticeDTO.add(this.convertNoticeData(subjectNoticeInfo));

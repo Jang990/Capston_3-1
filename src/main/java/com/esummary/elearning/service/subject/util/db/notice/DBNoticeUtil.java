@@ -13,5 +13,13 @@ import com.esummary.elearning.entity.subject.SubjectNoticeInfo;
 import com.esummary.elearning.service.subject.ELearningServiceImpl;
 
 public interface DBNoticeUtil {
+	
+	//일단 Subject쪽 할때 전부 바꿀꺼라 남겨둠
 	List<SubjectNoticeInfo> getSubjectNoticeInfo(SubjectInfo subjectInfo);
+
+	boolean saveService(SubjectNoticeInfo notice);
+
+	boolean saveService(List<SubjectNoticeInfo> notices);
+
+	boolean validateDuplicate(SubjectNoticeInfo notice);
 }

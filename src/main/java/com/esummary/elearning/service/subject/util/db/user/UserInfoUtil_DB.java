@@ -1,5 +1,6 @@
 package com.esummary.elearning.service.subject.util.db.user;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.esummary.elearning.entity.user.UserInfo;
@@ -7,7 +8,8 @@ import com.esummary.elearning.repository.user.UserRepository;
 
 @Component
 public class UserInfoUtil_DB implements DBUserInfoUtil {
-
+	
+	@Autowired
 	private UserRepository userRepository;
 	
 	@Override

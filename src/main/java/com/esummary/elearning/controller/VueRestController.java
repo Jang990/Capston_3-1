@@ -77,12 +77,34 @@ public class VueRestController {
 		HttpSession session = request.getSession();
 		UserData user = (UserData)session.getAttribute("userData");
 		InitalPageData initPageData = vueService.crawlInitDataService(user);
+//		testCode(initPageData.getSubjectCardData());
 		return initPageData;
 	}
 	
-	
+	private void testCode(List<SubjectCardData> subjectCardData) {
+		/*
+		만약 이러닝에 1학기 정보가 내려갔을때 테스트를 위한 코드
+		SubjectCardData(subjectId=CORS_1703071437557d610794, subjectName=서버프로그래밍, owner=조규철), 
+		SubjectCardData(subjectId=CORS_1704050920510f7c44c0, subjectName=프로그래밍, owner=관리자), 
+		SubjectCardData(subjectId=202214001LLA117, subjectName=[1학년L반] 발명과특허, owner=김영준), 
+		SubjectCardData(subjectId=202214001LLA138, subjectName=[1학년L반] 빅데이터의이해, owner=용승림), 
+		SubjectCardData(subjectId=202211141LLA104, subjectName=[1학년L반] 자기개발과직업윤리, owner=김성진), 
+		SubjectCardData(subjectId=202214043CMP389, subjectName=[3학년C반] 빅데이터, owner=권두순), 
+		SubjectCardData(subjectId=202214043C4846, subjectName=[3학년C반] 소프트웨어분석설계, owner=김철진), 
+		SubjectCardData(subjectId=202214043C5019, subjectName=[3학년C반] 웹보안, owner=용승림), 
+		SubjectCardData(subjectId=202214043CMP743, subjectName=[3학년C반] 자율드론, owner=박병섭), 
+		SubjectCardData(subjectId=202214043DMP250, subjectName=[3학년D반] 캡스톤디자인, owner=황수철)])
+		*/
+		subjectCardData.add(new SubjectCardData("202214001LLA117", "[1학년L반] 발명과특허", "김영준"));
+		subjectCardData.add(new SubjectCardData("202214001LLA138", "[1학년L반] 빅데이터의이해", "용승림"));
+		subjectCardData.add(new SubjectCardData("202211141LLA104", "[1학년L반] 자기개발과직업윤리", "김성진"));
+		subjectCardData.add(new SubjectCardData("202214043CMP389", "[3학년C반] 빅데이터", "권두순"));
+		subjectCardData.add(new SubjectCardData("202214043C4846", "[3학년C반] 소프트웨어분석설계", "김철진"));
+		subjectCardData.add(new SubjectCardData("202214043C5019", "[3학년C반] 웹보안", "용승림"));
+		subjectCardData.add(new SubjectCardData("202214043CMP743", "[3학년C반] 자율드론", "박병섭"));
+		subjectCardData.add(new SubjectCardData("202214043DMP250", "[3학년D반] 캡스톤디자인", "황수철"));
+	}
 
-	
 	@RequestMapping("/crawlSubject")
 	public SubjectDetailData_VO crawlSubject(HttpServletRequest request, @RequestParam String subjectId) {
 		List<LectureWeekData> lectureDTO = this.crawlLecture(request, subjectId); //여기 리팩토링중

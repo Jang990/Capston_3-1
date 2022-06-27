@@ -27,4 +27,17 @@ public class SubjectNoticeInfo {
 	@ManyToOne
 	@JoinColumn(name = "SUBJECT_ID")
 	private SubjectInfo subjectInfo;
+	
+	
+	
+	public SubjectNoticeInfo(String noticeId, String title, String author, String createDate, String description,
+			String subjectId) {
+		this.noticeId = noticeId;
+		this.title = title;
+		this.author = author;
+		this.createDate = createDate;
+		this.description = description;
+		this.subjectInfo = new SubjectInfo();
+		this.subjectInfo.setSubjectId(subjectId);
+	}
 }

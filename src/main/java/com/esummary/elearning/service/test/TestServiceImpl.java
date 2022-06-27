@@ -16,7 +16,7 @@ import com.esummary.elearning.service.subject.util.crawling.SubjectUtil;
 public class TestServiceImpl implements TestService {
 	
 	@Autowired
-	@Qualifier("DB")
+//	@Qualifier("DB")
 	private SubjectUtil subjectUtil_DB;
 	
 	@Autowired
