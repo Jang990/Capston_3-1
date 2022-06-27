@@ -28,8 +28,23 @@ public class UserTask {
 	private SubjectTaskInfo subjectTaskInfo;
 	
 	public UserTask() {
+		
 	}
 	
+	public UserTask(SubjectTaskInfo task, UserSubject userSubject) {
+		this.submitYN = task.getSubmitYN();
+		this.userSubject = userSubject;
+		this.subjectTaskInfo = task;
+	}
+	
+	public String getSubjectTaskId() {
+		return this.subjectTaskInfo.getTaskId();
+	}
+	
+	public long getUserSubjectId() {
+		return this.userSubject.getUsId();
+	}
+
 	public UserTask(Long utId, String submitYN, UserSubject userSubject, SubjectTaskInfo subjectTaskInfo) {
 		super();
 		this.utId = utId;

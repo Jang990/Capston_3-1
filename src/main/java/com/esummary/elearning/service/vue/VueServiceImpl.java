@@ -42,8 +42,10 @@ import com.esummary.elearning.service.subject.util.db.DBUserSubjectUtil;
 import com.esummary.elearning.service.subject.util.db.lectures.DBLectureWeekUtil;
 import com.esummary.elearning.service.subject.util.db.lectures.lecture.DBLectureUtil;
 import com.esummary.elearning.service.subject.util.db.notice.DBNoticeUtil;
+import com.esummary.elearning.service.subject.util.db.task.DBTaskUtil;
 import com.esummary.elearning.service.subject.util.db.user.DBUserInfoUtil;
 import com.esummary.elearning.service.subject.util.db.user.DBUserLectureUtil;
+import com.esummary.elearning.service.subject.util.db.user.DBUserTaskUtil;
 
 @Service
 public class VueServiceImpl implements VueService {
@@ -77,11 +79,15 @@ public class VueServiceImpl implements VueService {
 	private DBLectureUtil dbLectureUtil;
 	@Autowired
 	private DBNoticeUtil dbNoticeUtil;
+	@Autowired
+	private DBTaskUtil dbTaskUtil;
 	
 	@Autowired
 	private DBUserSubjectUtil dbUserSubjectUtil;
 	@Autowired
 	private DBUserLectureUtil dbUserLectureUtil;
+	@Autowired
+	private DBUserTaskUtil dbUserTaskUtil;
 	@Autowired
 	private DBUserInfoUtil dbUserInfoUtil;
 	
@@ -118,8 +124,8 @@ public class VueServiceImpl implements VueService {
 		}
 		
 		if(noticeDTO.size() > 0) return noticeDTO;
-		else return null;     
-	}        
+		else return null;
+	}
 
 	@Override
 	public List<TaskData> getTaskData(String subjectId, String studentNumber) {
@@ -145,7 +151,7 @@ public class VueServiceImpl implements VueService {
 				startDate, endDate, task.getSubmissionNum(), 
 				task.getNotSubmittedNum(), task.getTotalNum(), task.getSubmitYN()
 			);
-	}                   
+	}
 	
 	@Override
 	public boolean saveUser(UserData user) {
@@ -179,17 +185,31 @@ public class VueServiceImpl implements VueService {
 	
 	@Override
 	public List<TaskData> crawlTask(UserData user, String subjectId) {
-		UserSubject userSubject = userSubjectRepository
-				.findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, user.getStudentNumber());
-		List<SubjectTaskInfo> task = taskUtil.getSubjectTaskInfo(userSubject, user.getInitialCookies());
-		List<TaskData> taskDTO = new ArrayList<TaskData>();
+		//크롤링
+		List<SubjectTaskInfo> tasks = taskUtil.getSubjectTaskInfo(subjectId, user.getInitialCookies());
 		
-		for (SubjectTaskInfo subjectTaskInfo : task) {
+		//저장
+		dbTaskUtil.saveService(tasks); // SubjectTask 저장
+		UserSubject userSubject = dbUserSubjectUtil.getStudentSubject(subjectId, user.getStudentNumber());
+		List<UserTask> userTasks = convertToUserTaskList(userSubject, tasks);
+		dbUserTaskUtil.saveService(userTasks); //UserLecture에 저장
+		
+		//DTO로 변환
+		List<TaskData> taskDTO = new ArrayList<TaskData>();
+		for (SubjectTaskInfo subjectTaskInfo : tasks) {
 			taskDTO.add(this.convertTaskData(subjectTaskInfo));
 		}
 		return taskDTO;
 	}
 	
+	private List<UserTask> convertToUserTaskList(UserSubject userSubject, List<SubjectTaskInfo> tasks) {
+		List<UserTask> userTasks = new ArrayList<UserTask>();
+		for (SubjectTaskInfo lecture : tasks) {
+			userTasks.add(new UserTask(lecture, userSubject));
+		}
+		return userTasks;
+	}
+
 	@Override
 	public List<LectureWeekData> crawlLecture(UserData user, String subjectId) {
 //		UserSubject userSubject = dbUserSubjectUtil.getStudentSubject(subjectId, user.getStudentNumber()); 

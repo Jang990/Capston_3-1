@@ -39,9 +39,6 @@ public class LectureWeekUtil_DB implements DBLectureWeekUtil {
 	
 	@Autowired
 	private SubjectLectureWeekRepository subjectLectureWeekRepository;
-
-	@Autowired
-	private UserSubjectRepository userSubjectRepository;
 	
 	@Override
 	public List<SubjectLectureWeekInfo> getSubjectLectureInfo(SubjectInfo subjectInfo) {

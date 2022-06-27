@@ -41,4 +41,22 @@ public class SubjectTaskInfo {
 	@ManyToOne
 	@JoinColumn(name = "SUBJECT_ID")
 	private SubjectInfo subjectInfo;
+
+	public SubjectTaskInfo(String taskId, String title, String description, Date startDate, Date endDate,
+			int submissionNum, int notSubmittedNum, int totalNum, String submitYN, String subjectId) {
+		super();
+		this.taskId = taskId;
+		this.title = title;
+		this.description = description;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.submissionNum = submissionNum;
+		this.notSubmittedNum = notSubmittedNum;
+		this.totalNum = totalNum;
+		this.submitYN = submitYN;
+		this.subjectInfo = new SubjectInfo();
+		this.subjectInfo.setSubjectId(subjectId);
+	}
+	
+	
 }

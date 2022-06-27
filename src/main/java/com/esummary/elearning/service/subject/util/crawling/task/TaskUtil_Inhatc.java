@@ -28,66 +28,42 @@ import com.esummary.elearning.service.subject.util.crawling.SubjectUtil_Inhatc;
 @Component("crawlTas")
 public class TaskUtil_Inhatc implements TaskUtil{
 	
-	private static Long seq_UserTask = 1L;
+//	private static Long seq_UserTask = 1L;
 	
 	@Autowired
 	private SubjectTaskRepository subjectTaskRepository;
 	@Autowired
 	private UserTaskRepository userTaskRepository;
 	
-	
-	public List<SubjectTaskInfo> getSubjectTaskInfo(UserSubject userSubject, Document docStudyHome, Map<String, String> initialCookies) {
-		
-		List<SubjectTaskInfo> taskList = new ArrayList<SubjectTaskInfo>();
-		//StudyHome에서 과제 내용이 적혀있는 섹션에 css Selector
-		final String taskPageSelector = "#3  > ul > li:nth-child(2) > a";
-		final String taskBoxSelector = "#listBox > div:not(.paginator_pages):not(.paginator)";
-		
-		Document docTaskPage = ELearningServiceImpl.gotoHrefPageFromHomePage(initialCookies, docStudyHome, taskPageSelector);
-		Elements tasks = docTaskPage.select(taskBoxSelector);
-		for (Element element : tasks) {
-			SubjectTaskInfo task = createTask(element, userSubject.getSubjectInfo());
-			if(task != null) {
-				taskList.add(task);
-				UserTask ut = new UserTask(seq_UserTask++, task.getSubmitYN(), userSubject, task);
-				userTaskRepository.save(ut);
-			}
-		}
-		
-		return taskList;
-	}
-	
 	@Override
-	public List<SubjectTaskInfo> getSubjectTaskInfo(UserSubject userSubject, Map<String, String> initialCookies) {
+	public List<SubjectTaskInfo> getSubjectTaskInfo(String subjectId, Map<String, String> loginCookies) {
 		List<SubjectTaskInfo> taskList = new ArrayList<SubjectTaskInfo>();
-		//StudyHome에서 과제 내용이 적혀있는 섹션에 css Selector
-		final String taskPageSelector = "#3  > ul > li:nth-child(2) > a";
-		final String taskBoxSelector = "#listBox > div:not(.paginator_pages):not(.paginator)";
+		Elements tasks = crawlTaskBox(subjectId, loginCookies);
 		
-		String studyHome = SubjectUtil_Inhatc.createStudyHomeUrl(userSubject.getSubjectId());
-		Document docStudyHome = null;
-		try {
-			docStudyHome = Jsoup.connect(studyHome).cookies(initialCookies).get();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		
-		Document docTaskPage = ELearningServiceImpl.gotoHrefPageFromHomePage(initialCookies, docStudyHome, taskPageSelector);
-		Elements tasks = docTaskPage.select(taskBoxSelector);
 		for (Element element : tasks) {
-			SubjectTaskInfo task = createTask(element, userSubject.getSubjectInfo());
+			SubjectTaskInfo task = crawlTaskDetail(element, subjectId);
 			if(task != null) {
 				taskList.add(task);
-				UserTask ut = new UserTask(seq_UserTask++, task.getSubmitYN(), userSubject, task);
-				userTaskRepository.save(ut);
+//				UserTask ut = new UserTask(seq_UserTask++, task.getSubmitYN(), userSubject, task);
+//				userTaskRepository.save(ut);
 			}
 		}
 		
 		return taskList;
 	}
 	
-	private SubjectTaskInfo createTask(Element element, SubjectInfo subjectInfo) {
+	private Elements crawlTaskBox(String subjectId, Map<String, String> loginCookies) {
+		Document docStudyHome = SubjectUtil_Inhatc.connStudyHome(subjectId, loginCookies);
+
+		//StudyHome에서 과제 내용이 적혀있는 섹션에 css Selector
+		final String taskPageSelector = "#3  > ul > li:nth-child(2) > a";
+		final String taskBoxSelector = "#listBox > div:not(.paginator_pages):not(.paginator)";		
+		Document docTaskPage = ELearningServiceImpl.gotoHrefPageFromHomePage(loginCookies, docStudyHome, taskPageSelector);
+		
+		return docTaskPage.select(taskBoxSelector);
+	}
+
+	private SubjectTaskInfo crawlTaskDetail(Element element, String subjectId) {
 		String[] idAndStatus = crawlIdAndStatus(element);
 		/*
 		 * 여기 조건부는 상황에 따라 달라질 수 있다.
@@ -110,8 +86,8 @@ public class TaskUtil_Inhatc implements TaskUtil{
 				id, title, description, 
 				rangeDate.get("startDate"), rangeDate.get("endDate"), 
 				submissionData.get("submissionNum"), submissionData.get("notSubmittedNum"), submissionData.get("totalNum"), 
-				status, subjectInfo);
-		subjectTaskRepository.save(task);
+				status, subjectId);
+//		subjectTaskRepository.save(task);
 		return task;
 	}
 	

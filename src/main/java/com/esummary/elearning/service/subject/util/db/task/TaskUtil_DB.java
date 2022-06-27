@@ -54,5 +54,26 @@ public class TaskUtil_DB implements DBTaskUtil{
 		
 		return userTaskList;
 	}
+
+
+	@Override
+	public boolean saveService(SubjectTaskInfo task) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean saveService(List<SubjectTaskInfo> tasks) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean validateDuplicate(SubjectTaskInfo tasks) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }

@@ -44,7 +44,7 @@ public class UserLectureUtil_DB implements DBUserLectureUtil {
 	public boolean validateDuplicate(UserLecture userLecture) {
 		//UserLecture와 UserTask 의 경우 중복 체크가 다름
 		UserLecture userLectureCheck = userLectureRepository.
-				findByUserSubject_usIdAndSubjectLecture_lectureId(userLecture.getSubjectLectureId(), userLecture.getSubjectLectureId());
+				findByUserSubject_usIdAndSubjectLecture_lectureId(userLecture.getUserSubjectId(), userLecture.getSubjectLectureId());
 		
 		if(userLectureCheck == null || checkEntityValue(userLecture, userLectureCheck)) return false;
 		return true; //중복 맞음
