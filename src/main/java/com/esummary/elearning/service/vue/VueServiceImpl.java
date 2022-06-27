@@ -217,12 +217,12 @@ public class VueServiceImpl implements VueService {
 		List<SubjectLectureWeekInfo> lectures = lectureWeekUtil.getSubjectLectureWeekInfo(subjectId, user.getInitialCookies());
 		
 		//Lecture저장하기.
-		dbLectureWeekUtil.saveService(lectures); //LectureWeek에 저장
+		dbLectureWeekUtil.saveService(lectures);
 		UserSubject userSubject = dbUserSubjectUtil.getStudentSubject(subjectId, user.getStudentNumber());
 		for (SubjectLectureWeekInfo lectureWeek : lectures) {
-			dbLectureUtil.saveService(lectureWeek.getLectures()); // Lecture에 저장
+			dbLectureUtil.saveService(lectureWeek.getLectures());
 			List<UserLecture> userLectures = convertToUserLectureList(userSubject, lectureWeek.getLectures());
-			dbUserLectureUtil.saveService(userLectures); //UserLecture에 저장
+			dbUserLectureUtil.saveService(userLectures);
 		}
 		
 		//DTO로 바꾸기.

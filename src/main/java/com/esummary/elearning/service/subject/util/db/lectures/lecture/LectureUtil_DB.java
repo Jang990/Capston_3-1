@@ -69,22 +69,31 @@ public class LectureUtil_DB implements DBLectureUtil {
 	public boolean validateDuplicate(SubjectLecture lecture) {
 		SubjectLecture lectureCheck = getLecture(lecture.getLectureWeekId(), lecture.getIdx());
 		
-		if(lectureCheck == null) return false;
-		if(checkEntityValue(lecture, lectureCheck)) return false; 
+		if(lectureCheck == null) return false; //중복 아님
+		if(!equalEntityValue(lecture, lectureCheck)) return false; //중복 아님 
 		
 		return true; //중복 맞음
 	}
 	
 	//두 UserLecture Entity의 실제 값을 비교.
-	private boolean checkEntityValue(SubjectLecture lecture1, SubjectLecture lecture2) {
+	private boolean equalEntityValue(SubjectLecture lecture1, SubjectLecture lecture2) {
+		if(!lecture1.getTitle().equals(lecture2.getTitle())) return true;
+		if(!(lecture1.getLectureVideoId() != null)) {
+			if(!lecture1.getLectureVideoId().equals(lecture2.getLectureVideoId())) return true;
+		}
+		if(!lecture1.getLearningTime().equals(lecture2.getLearningTime())) return true;
+		
+		return false;
+		/*
 		if(lecture1.getFullTime().equals(lecture2.getFullTime()) &&
 				lecture1.getTitle().equals(lecture2.getTitle())) {
 			if(!lecture1.getType().equals("온라인")) return true; // 실제 값이 같음.
-			if(lecture1.getLectureVideoId().equals(lecture2.getLectureVideoId())) return true;
+			if(lecture1.getLectureVideoId() == null) return true;
 			return false;
 		}
 		else
 			return false;
+		*/
 	}
 
 	@Override

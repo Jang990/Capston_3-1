@@ -51,7 +51,8 @@ public class UserTaskUtil_DB implements DBUserTaskUtil {
 		//UserLecture와 UserTask 의 경우 중복 체크가 다름
 		UserTask userLectureCheck = getUserTask(userTask.getUserSubjectId(), userTask.getSubjectTaskId());
 		
-		if(userLectureCheck == null || !equalEntityValue(userTask, userLectureCheck)) return false;
+		if(userLectureCheck == null) return false;
+		if(!equalEntityValue(userTask, userLectureCheck)) return false;
 		return true; //중복 맞음
 	}
 	
