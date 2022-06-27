@@ -12,6 +12,8 @@ import com.esummary.elearning.repository.user.UserLectureRepository;
 @Component
 public class UserLectureUtil_DB implements DBUserLectureUtil {
 	
+	private static long seq_UserLec = 1L; //임시로 UserLecture를 DB에 등록하기위해 만들어놓음 시퀀스사용할 것
+	
 	@Autowired
 	private UserLectureRepository userLectureRepository;
 	
@@ -20,6 +22,7 @@ public class UserLectureUtil_DB implements DBUserLectureUtil {
 		if(validateDuplicate(userLecture))
 			return false;
 		
+		userLecture.setUlId(seq_UserLec++); // MySQL로 바꾸고 삭제
 		userLectureRepository.save(userLecture);
 		return true;
 	}
@@ -31,7 +34,10 @@ public class UserLectureUtil_DB implements DBUserLectureUtil {
 		for (UserLecture userLecture : userLectures) {
 			if(validateDuplicate(userLecture)) // 중복 확인, 중복일시 예외발생
 				continue;
-			else savedSubjects.add(userLecture);
+			else {
+				userLecture.setUlId(seq_UserLec++); // MySQL로 바꾸고 삭제
+				savedSubjects.add(userLecture);
+			}
 		}
 		
 		if(savedSubjects.size() == 0) return false;

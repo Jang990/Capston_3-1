@@ -1,35 +1,21 @@
 package com.esummary.elearning.service.subject.util.db.lectures.lecture;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.subject.SubjectLecture;
 import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
 import com.esummary.elearning.entity.user.UserLecture;
-import com.esummary.elearning.entity.user.UserSubject;
-import com.esummary.elearning.entity.user.UserTask;
 import com.esummary.elearning.repository.subject.SubjectLectureRepository;
-import com.esummary.elearning.repository.subject.SubjectLectureWeekRepository;
-import com.esummary.elearning.repository.subject.SubjectTaskRepository;
 import com.esummary.elearning.repository.user.UserLectureRepository;
-import com.esummary.elearning.service.subject.ELearningServiceImpl;
-import com.esummary.elearning.service.subject.util.crawling.SubjectUtil_Inhatc;
 
 @Component
 public class LectureUtil_DB implements DBLectureUtil {
+	
+	private static Long seq_Leture = 1L; //임시로 Lecture를 DB에 등록하기위해 만들어놓음 시퀀스사용할 것
 	
 	@Autowired
 	private SubjectLectureRepository subjectLectureRepository;
@@ -55,6 +41,7 @@ public class LectureUtil_DB implements DBLectureUtil {
 		if(validateDuplicate(lecture))
 			return false;
 		
+		lecture.setLectureId(seq_Leture++); // MySQL로 바꾸고 삭제할 코드
 		subjectLectureRepository.save(lecture);
 		return true;
 	}
@@ -66,7 +53,10 @@ public class LectureUtil_DB implements DBLectureUtil {
 		for (SubjectLecture lecture : lectures) {
 			if(validateDuplicate(lecture)) // 중복 확인, 중복일시 예외발생
 				continue;
-			else savedLectureWeeks.add(lecture);
+			else {
+				lecture.setLectureId(seq_Leture++); // MySQL로 바꾸고 삭제할 코드
+				savedLectureWeeks.add(lecture);
+			}
 		}
 		
 		if(savedLectureWeeks.size() == 0) return false;
@@ -77,8 +67,7 @@ public class LectureUtil_DB implements DBLectureUtil {
 
 	@Override
 	public boolean validateDuplicate(SubjectLecture lecture) {
-		SubjectLecture lectureCheck = subjectLectureRepository.
-				findBySubjectLectureWeekInfo_LectureWeekIdAndIdx(lecture.getLectureWeekId(), lecture.getIdx());
+		SubjectLecture lectureCheck = getLecture(lecture.getLectureWeekId(), lecture.getIdx());
 		
 		if(lectureCheck == null) return false;
 		if(checkEntityValue(lecture, lectureCheck)) return false; 
@@ -96,5 +85,11 @@ public class LectureUtil_DB implements DBLectureUtil {
 		}
 		else
 			return false;
+	}
+
+	@Override
+	public SubjectLecture getLecture(String lectureWeekId, String idx) {
+		return subjectLectureRepository.
+				findBySubjectLectureWeekInfo_LectureWeekIdAndIdx(lectureWeekId, idx);
 	}
 }

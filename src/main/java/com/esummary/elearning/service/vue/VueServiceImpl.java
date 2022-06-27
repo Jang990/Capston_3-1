@@ -63,14 +63,14 @@ public class VueServiceImpl implements VueService {
 //	@Autowired
 //	private ELearningService eLearningService;
 	@Autowired
+	private SubjectUtil subjectUtil;
+	@Autowired
 	private NoticeUtil noticeUtil;
 	@Autowired
 	private TaskUtil taskUtil;
 	@Autowired
 	private LectureWeekUtil lectureWeekUtil;
 	
-	@Autowired
-	private SubjectUtil subjectUtil;
 	@Autowired
 	private DBSubjectUtil dbSubjectUtil;
 	@Autowired
@@ -192,7 +192,7 @@ public class VueServiceImpl implements VueService {
 		dbTaskUtil.saveService(tasks); // SubjectTask 저장
 		UserSubject userSubject = dbUserSubjectUtil.getStudentSubject(subjectId, user.getStudentNumber());
 		List<UserTask> userTasks = convertToUserTaskList(userSubject, tasks);
-		dbUserTaskUtil.saveService(userTasks); //UserLecture에 저장
+		dbUserTaskUtil.saveService(userTasks); //UserTask 저장
 		
 		//DTO로 변환
 		List<TaskData> taskDTO = new ArrayList<TaskData>();
@@ -235,8 +235,23 @@ public class VueServiceImpl implements VueService {
 	}
 
 	private List<UserLecture> convertToUserLectureList(UserSubject userSubject, List<SubjectLecture> lectureList) {
+		/*
+		 *  예외사례
+		 * 사용자 A의 첫 사이트 이용인 경우 saveService부분에서 userLecture에 ul_Id가 무조건 들어간다.
+		 * 근데 사용자 A가 재접속을 한다면? save를 하지않음 -> setLectureId를 하지않음 -> 즉 ul_Id는 null이 된다.
+		 *  
+		 *  해결방안
+		 * convertToUserLectureList 부분에서 SubjectLecture를 검색해서 넣어준다.
+		 */
 		List<UserLecture> userLectures = new ArrayList<UserLecture>();
 		for (SubjectLecture lecture : lectureList) {
+			if(lecture.getLectureId() == null) {
+				SubjectLecture dbLecture = dbLectureUtil.getLecture(lecture.getLectureWeekId(), lecture.getIdx());
+				if(dbLecture == null) System.out.println("======= 오류위치: convertToUserLectureList ");
+				else {
+					lecture.setLectureId(dbLecture.getLectureId());
+				}
+			}
 			userLectures.add(new UserLecture(lecture, userSubject));
 		}
 		return userLectures;

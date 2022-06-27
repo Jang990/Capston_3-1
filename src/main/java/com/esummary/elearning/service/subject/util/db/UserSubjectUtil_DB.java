@@ -1,6 +1,6 @@
 package com.esummary.elearning.service.subject.util.db;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,7 +16,6 @@ import com.esummary.elearning.entity.user.UserLecture;
 import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.entity.user.UserTask;
 import com.esummary.elearning.repository.UserSubjectRepository;
-import com.esummary.elearning.service.subject.util.crawling.SubjectUtil;
 import com.esummary.elearning.service.subject.util.db.lectures.DBLectureWeekUtil;
 import com.esummary.elearning.service.subject.util.db.notice.DBNoticeUtil;
 import com.esummary.elearning.service.subject.util.db.task.DBTaskUtil;
@@ -24,7 +23,7 @@ import com.esummary.elearning.service.subject.util.db.task.DBTaskUtil;
 @Component("DB")
 public class UserSubjectUtil_DB implements DBUserSubjectUtil{
 	
-	private static int seqUserSubjectNum = 0; // 시퀸스 넘버. MySQL로 바꾸고 auto Increment로 바꿀것
+	private static long seqUserSubjectNum = 0; // 시퀸스 넘버. MySQL로 바꾸고 auto Increment로 바꿀것
 	
 	@Autowired
 	private DBTaskUtil taskUtil;

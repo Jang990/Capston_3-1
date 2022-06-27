@@ -115,7 +115,7 @@ public class VueRestController {
 		SubjectDetailData_VO subjectVO = new SubjectDetailData_VO(lectureDTO, taskDTO, noticeDTO, cntDTO);
 		return subjectVO;   
 	}
-	//여기하는중
+	
 	@RequestMapping("/crawlLecture")
 	public List<LectureWeekData> crawlLecture(HttpServletRequest request, @RequestParam String subjectId) {
 		UserData user = (UserData)request.getSession().getAttribute("userData");
@@ -131,7 +131,7 @@ public class VueRestController {
 	@RequestMapping("/crawlTask")
 	public List<TaskData> crawlTask(HttpServletRequest request, @RequestParam String subjectId) {
 		UserData user = (UserData)request.getSession().getAttribute("userData");
-		List<TaskData> task = vueService.crawlTask(user, subjectId);  
+		List<TaskData> task = vueService.crawlTask(user, subjectId);
 		return task;
 	}
 	
@@ -164,7 +164,7 @@ public class VueRestController {
 		System.out.println("과제 조회");
 		UserData user = (UserData)request.getSession().getAttribute("userData");
 		List<TaskData> taskList = vueService.getTaskData(subjectId, user.getStudentNumber());
-		return taskList;   
+		return taskList;
 	}
 	
 	//공지 검색

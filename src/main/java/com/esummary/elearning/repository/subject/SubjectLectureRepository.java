@@ -13,7 +13,6 @@ import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
 public interface SubjectLectureRepository extends CrudRepository<SubjectLecture, String>{
 
 	List<SubjectLecture> findBySubjectLectureWeekInfo(SubjectLectureWeekInfo subjectLectureWeekInfo);
-
 	SubjectLecture findBySubjectLectureWeekInfo_LectureWeekIdAndIdx(String lectureWeekId, String idx);
 
 }

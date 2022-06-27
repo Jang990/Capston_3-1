@@ -21,4 +21,6 @@ public interface DBLectureUtil {
 	boolean saveService(SubjectLecture  lecture);
 	boolean saveService(List<SubjectLecture> lectures);
 	boolean validateDuplicate(SubjectLecture lecture);
+	
+	SubjectLecture getLecture(String lectureWeekId, String idx);
 }

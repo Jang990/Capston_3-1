@@ -30,9 +30,6 @@ import com.esummary.elearning.service.subject.util.crawling.SubjectUtil_Inhatc;
 @Component
 public class LectureUtil_Inhatc implements LectureUtil {
 	
-	private static Long seq_Leture = 1L; //임시로 Lecture를 DB에 등록하기위해 만들어놓음 시퀀스사용할 것
-	private static Long seq_UserLec = 1L; //임시로 UserLecture를 DB에 등록하기위해 만들어놓음 시퀀스사용할 것
-	
 	@Autowired
 	private SubjectLectureRepository subjectLectureRepository;
 	@Autowired
@@ -83,67 +80,6 @@ public class LectureUtil_Inhatc implements LectureUtil {
 			
 //			UserLecture ul = new UserLecture(seq_UserLec++, status, learningTime, userSubject, lecture);
 //			userLectureRepository.save(ul);
-		}
-		
-		return lectures;
-	}
-	
-	//리펙토링이전
-	public List<SubjectLecture> getLectureList(
-			Elements elements, SubjectLectureWeekInfo weekInfo, UserSubject userSubject) {
-//		final String idSelector = "JS코드에서 뽑아내기";
-		
-		List<SubjectLecture> lectures = new ArrayList<SubjectLecture>();
-		
-		for (Element element : elements) {
-			String idx = crawlIdx(element);
-			String type = crawlType(element); 
-			String title = crawlTitle(element);
-			String fullTime = crawlFulltime(element);
-			String learningTime = crawlLearningTime(element);
-			String status = crawlStatus(element);
-			if(status.equals("full")) // full O, empty X, half 세모
-				status = "1";
-			else
-				status = "0";
-			
-			
-			/*
-			 *  viewStudyBoard일 경우 학습활동 글쓰기 이기 때문에 학습하기를 찾아야 함 
-			 *  또는 학습활동 글쓰기 id와 교안을 따로 저장해야함.
-			 */
-			final String jsCodeSelector = "tr > td:nth-child(8) > p > a";
-			String jsCode = findStudyVideoId(element.select(jsCodeSelector));
-			
-			/*
-			 * javascript:viewStudyContents(
-			 * 'LESN_220301162243a6d4208b','LESN_22030112283496aa7084','1024','768','date','0','1');
-			 * 
-			 * lessonElementId, = 고유 학습 id
-			 * lessonContentsId, = 해당 주차의 id 
-			 * windowWidth,
-			 * windowHeight, 
-			 * learningControl, = 값이 date일때 학습기간(lessonCnt)을 판단함(거의 다 date) 
-			 * lessonCnt, = -1일때는 학습기간이 아님, 0일때 학습기간임 
-			 * lessonOrder = 몇 주차 번호 (1, 2, 3, 4 ... 15)
-			 */
-			String[] videoIdAndDetails = SubjectUtil_Inhatc.extractDataFromJsCode(jsCode);//일단 
-			
-			SubjectLecture lecture = new SubjectLecture();
-			lecture.setLectureId(seq_Leture++);
-			lecture.setLectureVideoId(videoIdAndDetails[0]);
-			lecture.setIdx(idx);
-			lecture.setType(type);
-			lecture.setTitle(title);
-			lecture.setFullTime(fullTime);
-			lecture.setSubjectLectureWeekInfo(weekInfo);
-			lecture.setStatus(status);
-			lecture.setLearningTime(learningTime);
-			subjectLectureRepository.save(lecture);
-			lectures.add(lecture);
-			
-			UserLecture ul = new UserLecture(seq_UserLec++, status, learningTime, userSubject, lecture);
-			userLectureRepository.save(ul);
 		}
 		
 		return lectures;

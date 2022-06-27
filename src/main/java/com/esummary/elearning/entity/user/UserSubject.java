@@ -48,7 +48,7 @@ import lombok.Data;
 @Entity
 public class UserSubject {
 	@Id
-	private int usId; // 시퀸스 사용할 것
+	private long usId; // 시퀸스 사용할 것
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="STUDENT_NUMBER")

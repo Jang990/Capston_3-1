@@ -28,13 +28,6 @@ import com.esummary.elearning.service.subject.util.crawling.SubjectUtil_Inhatc;
 @Component("crawlTas")
 public class TaskUtil_Inhatc implements TaskUtil{
 	
-//	private static Long seq_UserTask = 1L;
-	
-	@Autowired
-	private SubjectTaskRepository subjectTaskRepository;
-	@Autowired
-	private UserTaskRepository userTaskRepository;
-	
 	@Override
 	public List<SubjectTaskInfo> getSubjectTaskInfo(String subjectId, Map<String, String> loginCookies) {
 		List<SubjectTaskInfo> taskList = new ArrayList<SubjectTaskInfo>();

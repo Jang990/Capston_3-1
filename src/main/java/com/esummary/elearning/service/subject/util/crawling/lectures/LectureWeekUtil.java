@@ -10,7 +10,5 @@ import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
 import com.esummary.elearning.entity.user.UserSubject;
 
 public interface LectureWeekUtil {
-	List<SubjectLectureWeekInfo> getSubjectLectureInfo(UserSubject userSubject, Document docStudyHome, Map<String, String> initialCookies);
-
 	List<SubjectLectureWeekInfo> getSubjectLectureWeekInfo(String subjectId, Map<String, String> initialCookies);
 }

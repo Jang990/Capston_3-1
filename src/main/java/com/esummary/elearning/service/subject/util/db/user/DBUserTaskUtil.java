@@ -10,4 +10,5 @@ public interface DBUserTaskUtil {
 	boolean saveService(UserTask subject);
 	boolean saveService(List<UserTask> subjects);
 	boolean validateDuplicate(UserTask subject);
+	UserTask getUserTask(long usId, String taskId);
 }
