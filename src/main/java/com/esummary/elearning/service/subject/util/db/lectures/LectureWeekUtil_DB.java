@@ -33,53 +33,9 @@ import com.esummary.elearning.service.subject.util.db.lectures.lecture.DBLecture
 
 @Component
 public class LectureWeekUtil_DB implements DBLectureWeekUtil {
-	
-	@Autowired
-	private DBLectureUtil lectureUtil;
-	
 	@Autowired
 	private SubjectLectureWeekRepository subjectLectureWeekRepository;
 	
-	@Override
-	public List<SubjectLectureWeekInfo> getSubjectLectureInfo(SubjectInfo subjectInfo) {
-		List<SubjectLectureWeekInfo> weekList = new ArrayList<SubjectLectureWeekInfo>();
-		weekList = subjectLectureWeekRepository.findBySubjectInfo(subjectInfo);
-		for (SubjectLectureWeekInfo subjectLectureWeekInfo : weekList) {
-			List<SubjectLecture> lectures = lectureUtil.getLectureList(subjectLectureWeekInfo);
-			subjectLectureWeekInfo.setLectures(lectures);
-		}
-		return weekList;
-	}
-	
-	@Override
-	public List<SubjectLectureWeekInfo> getSubjectLectureInfo(String subjectId) {
-		List<SubjectLectureWeekInfo> weekList = new ArrayList<SubjectLectureWeekInfo>();
-		weekList = subjectLectureWeekRepository.findBySubjectInfo_subjectId(subjectId);
-		for (SubjectLectureWeekInfo subjectLectureWeekInfo : weekList) {
-			List<SubjectLecture> lectures = lectureUtil.getLectureList(subjectLectureWeekInfo);
-			subjectLectureWeekInfo.setLectures(lectures);
-		}
-		return weekList;
-	}
-
-	@Override
-	public List<UserLecture> getUserlecture(UserSubject us, List<SubjectLectureWeekInfo> weekList) {		
-		if(us == null) return null;
-		List<UserLecture> userLectureList = new ArrayList<>();
-		
-		for (SubjectLectureWeekInfo subjectLectureWeekInfo : weekList) {
-			List<SubjectLecture> lectureList = subjectLectureWeekInfo.getLectures();
-			for (SubjectLecture lecture : lectureList) {
-				UserLecture ul = lectureUtil.getUserLecture(us.getUsId(), lecture);
-				userLectureList.add(ul);
-			}
-		}
-		
-		return userLectureList;
-	}
-	
-	
-	/* ===================리팩토링====================== */
 	@Override
 	public boolean saveService(SubjectLectureWeekInfo lectureWeek) {
 		if(validateDuplicate(lectureWeek))

@@ -28,12 +28,6 @@ public class ELearningServiceImpl implements ELearningService {
 //	@Autowired
 //	@Qualifier("DB")
 //	private SubjectUtil subjectUtil_DB;
-	
-	@Override
-	public List<SubjectInfo> summary(UserInfo user) {
-		//쓰레드 처리?
-		return subjectUtil_Crawl.getSubjectList(user);
-	}
 
 	public static Document gotoHrefPageFromHomePage(Map<String, String> initialCookies, Document docHomePage, String hrefPageSelector) {
 		String pageUrl = docHomePage.select(hrefPageSelector).attr("href");

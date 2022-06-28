@@ -27,7 +27,7 @@ public class TestServiceImpl implements TestService {
 	//이제 화면구성 들어가야 할듯.
 	@Override
 	public List<SubjectInfo> test(UserInfo user) {
-		List<SubjectInfo> subjectList = subjectUtil_DB.getSubjectList(user); //전체 조회를 한번에 하면 1~2초정도 걸림. 나눠서 조회해야 할듯
+		List<SubjectInfo> subjectList = null; //전체 조회를 한번에 하면 1~2초정도 걸림. 나눠서 조회해야 할듯
 		user.setSubjectList(subjectList);
 		return user.getSubjectList();
 	}

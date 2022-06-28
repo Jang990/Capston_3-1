@@ -11,14 +11,11 @@ import com.esummary.elearning.entity.user.UserInfo;
 
 public interface SubjectUtil {
 	
-	List<SubjectInfo> getSubjectList(UserInfo user);
+//	List<SubjectInfo> getSubjectList(UserInfo user);
+	
 //	List<SubjectInfo> InitSubjectData(UserInfo user);
 //	void getSubjectDetail(UserInfo user);
 //	void settingUserSubject(UserInfo user, List<SubjectInfo> subjectList);
 
-	List<SubjectInfo> crawlAndSaveBasicSubjectData(UserInfo user);
-
-	boolean saveBasicSubject(UserInfo user, List<SubjectInfo> subjectList);
-
-	List<SubjectInfo> crawlSubjectInfo(Map<String, String> loginCookie);
+	List<SubjectInfo> crawlBasicSubjectInfo(Map<String, String> loginCookie);
 }

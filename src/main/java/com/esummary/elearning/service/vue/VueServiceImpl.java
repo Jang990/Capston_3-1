@@ -349,7 +349,7 @@ public class VueServiceImpl implements VueService {
 	}
 	
 	private List<SubjectInfo> crawlInitData(UserData userDTO) {
-		List<SubjectInfo> crawlingBasicSubjectData = subjectUtil.crawlSubjectInfo(userDTO.getInitialCookies()); //크롤링 정보 가져오기
+		List<SubjectInfo> crawlingBasicSubjectData = subjectUtil.crawlBasicSubjectInfo(userDTO.getInitialCookies()); //크롤링 정보 가져오기
 		if(crawlingBasicSubjectData.isEmpty() || crawlingBasicSubjectData == null) return null;
 		else return crawlingBasicSubjectData;
 	}

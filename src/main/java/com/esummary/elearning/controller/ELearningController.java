@@ -79,7 +79,7 @@ public class ELearningController {
 	public String summary(HttpServletRequest request, Model model) {
 		UserInfo user = (UserInfo)request.getSession().getAttribute("userInfo");
 		
-		List<SubjectInfo> subjectList = eLearningService.summary(user);
+		List<SubjectInfo> subjectList = null;
 		
 		model.addAttribute("name", user.getUserName());
 		model.addAttribute("id", user.getStudentNumber());

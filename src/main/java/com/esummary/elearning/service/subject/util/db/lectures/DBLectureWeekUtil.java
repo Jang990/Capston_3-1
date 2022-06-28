@@ -12,11 +12,6 @@ import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.entity.user.UserTask;
 
 public interface DBLectureWeekUtil {
-	List<SubjectLectureWeekInfo> getSubjectLectureInfo(SubjectInfo subjectInfo);
-	List<SubjectLectureWeekInfo> getSubjectLectureInfo(String subjectId);
-
-	List<UserLecture> getUserlecture(UserSubject us, List<SubjectLectureWeekInfo> lectureList);
-	
 	//리팩토링하면서 추가되는 것
 	boolean saveService(SubjectLectureWeekInfo  lectureWeek);
 	boolean saveService(List<SubjectLectureWeekInfo> lectureWeeks);
