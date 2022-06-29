@@ -23,9 +23,9 @@ public interface VueService {
 	
 	
 	//데이터베이스 조회
-	List<LectureWeekData> getLectureData(String subjectId, String studentNumber);
+	List<LectureWeekData> getLectureData(UserData user, String studentNumber);
 	List<NoticeData> getNoticeData(String subjectId);
-	List<TaskData> getTaskData(String subjectId, String studentNumber);
+	List<TaskData> getTaskData(UserData user, String studentNumber);
 	
 	//크롤링
 	InitalPageData crawlInitDataService(UserData user);

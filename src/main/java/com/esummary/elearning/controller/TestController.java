@@ -18,6 +18,7 @@ import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.repository.user.UserRepository;
 import com.esummary.elearning.service.login.LoginService;
 import com.esummary.elearning.service.subject.util.crawling.SubjectUtil;
+import com.esummary.elearning.service.subject.util.db.DBSubjectUtil;
 import com.esummary.elearning.service.test.TestService;
 
 @RestController
@@ -25,10 +26,15 @@ public class TestController {
 	@Autowired
 	private TestService testService;
 	
+	@Autowired
+	private DBSubjectUtil subjectUtil;
+	
 	@RequestMapping("/test")
 	public String testController1(HttpServletRequest request) { 
 		UserData user = (UserData)request.getSession().getAttribute("userData");
-		
+		System.out.println("앓");
+		SubjectInfo sub = subjectUtil.getSubjectAllDetails("202214001LLA117");
+		System.out.println("제어용: " + sub);
 		return "연결확인";
 	}    
 	   

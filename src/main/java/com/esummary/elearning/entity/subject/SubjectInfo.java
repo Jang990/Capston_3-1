@@ -7,6 +7,10 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
@@ -15,6 +19,21 @@ import com.esummary.elearning.entity.user.UserInfo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@NamedEntityGraphs({
+	@NamedEntityGraph(
+			name = "all-detail-data",
+			attributeNodes = {
+					@NamedAttributeNode(value = "lectureList", subgraph = "lecture-detail"),
+					@NamedAttributeNode(value = "noticeList"),
+					@NamedAttributeNode(value = "taskList"),
+			},
+			subgraphs = { @NamedSubgraph(
+					name = "lecture-detail",
+					attributeNodes = { @NamedAttributeNode("lectures") } 
+				)
+			}
+	),
+})
 @Entity
 @Data
 @NoArgsConstructor

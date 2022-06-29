@@ -128,32 +128,6 @@ public class VueServiceImpl implements VueService {
 	}
 
 	@Override
-	public List<TaskData> getTaskData(String subjectId, String studentNumber) {
-		UserSubject us = userSubjectRepository.
-				findWithUserTaskBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, studentNumber);
-		if(us == null || us.getUserTask().size() == 0) return null;
-		
-		List<TaskData> taskDTO = new ArrayList<TaskData>(); 
-		List<UserTask> ut = us.getUserTask();  
-		for (UserTask userTask : ut) {           
-			taskDTO.add(convertTaskData(userTask));
-		}
-		
-		return taskDTO;
-	}
-
-	private TaskData convertTaskData(UserTask userTask) {
-		SubjectTaskInfo task = userTask.getSubjectTaskInfo();
-		String startDate = makeDateString(task.getStartDate());
-		String endDate = makeDateString(task.getEndDate());
-		return new TaskData(
-				task.getTaskId(), task.getTitle(), task.getDescription(), 
-				startDate, endDate, task.getSubmissionNum(), 
-				task.getNotSubmittedNum(), task.getTotalNum(), task.getSubmitYN()
-			);
-	}
-	
-	@Override
 	public boolean saveUser(UserData user) {
 		if(userRepository.findByStudentNumber(user.getStudentNumber()) == null) {
 			UserInfo userInfo = new UserInfo();
@@ -292,12 +266,13 @@ public class VueServiceImpl implements VueService {
 	}
 
 	@Override
-	public List<LectureWeekData> getLectureData(String subjectId, String studentNumber) {
-		UserSubject us = userSubjectRepository.
-				findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, studentNumber);
+	public List<LectureWeekData> getLectureData(UserData user, String subjectId) {
+		String studentNumber = user.getStudentNumber();
+		UserSubject us = dbUserSubjectUtil.getStudentSubject(subjectId, studentNumber);
 		
-		//조인할 데이터가 아예 없어서 여기 아래로 내려가질 못함. 크롤링을 db구성이 끝나고 해야함 
+		 //조인할 데이터가 아예 없어서 여기 아래로 내려가질 못함. 크롤링을 db구성이 끝나고 해야함 
 		if(us == null) {
+			//기존 데이터가 없음.
 			return null;
 		}
 		System.out.println("강의명: "+ us.getSubjectInfo().getSubjectName());
@@ -306,7 +281,7 @@ public class VueServiceImpl implements VueService {
 			System.out.println("강의없음");
 			return null;
 		}
-		
+//		dbSubjectUtil;
 		
 		List<LectureWeekData> weekDTO = new ArrayList<LectureWeekData>();
 		List<SubjectLectureWeekInfo> weekList = us.getSubjectInfo().getLectureList();
@@ -330,6 +305,33 @@ public class VueServiceImpl implements VueService {
 		return weekDTO;
 	}
 
+	@Override
+	public List<TaskData> getTaskData(UserData user, String subjectId) {
+		String studentNumber = user.getStudentNumber();
+		UserSubject us = userSubjectRepository.
+				findWithUserTaskBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, studentNumber);
+		if(us == null || us.getUserTask().size() == 0) return null;
+		
+		List<TaskData> taskDTO = new ArrayList<TaskData>(); 
+		List<UserTask> ut = us.getUserTask();  
+		for (UserTask userTask : ut) {           
+			taskDTO.add(convertTaskData(userTask));
+		}
+		
+		return taskDTO;
+	}
+
+	private TaskData convertTaskData(UserTask userTask) {
+		SubjectTaskInfo task = userTask.getSubjectTaskInfo();
+		String startDate = makeDateString(task.getStartDate());
+		String endDate = makeDateString(task.getEndDate());
+		return new TaskData(
+				task.getTaskId(), task.getTitle(), task.getDescription(), 
+				startDate, endDate, task.getSubmissionNum(), 
+				task.getNotSubmittedNum(), task.getTotalNum(), task.getSubmitYN()
+			);
+	}
+	
 	@Override
 	public InitalPageData crawlInitDataService(UserData userDTO) {
 		List<SubjectInfo> crawledBasicSubjectData = crawlInitData(userDTO); //크롤링

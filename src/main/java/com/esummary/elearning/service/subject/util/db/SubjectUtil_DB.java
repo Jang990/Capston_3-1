@@ -42,10 +42,16 @@ public class SubjectUtil_DB implements DBSubjectUtil {
 
 	@Override
 	public boolean validateDuplicate(SubjectInfo subject) {
-		SubjectInfo subjectCheck = subjectRepository.findBySubjectId(subject.getSubjectId());
+		SubjectInfo subjectCheck = subjectRepository.findSingleSubject(subject.getSubjectId());
 		
 		if(subjectCheck == null) return false;
 		else return true; //중복 맞음
+	}
+
+	@Override
+	public SubjectInfo getSubjectAllDetails(String subjectId) {
+		SubjectInfo subjectInAllData = subjectRepository.findBySubjectId(subjectId);
+		return subjectInAllData;
 	}
 	
 	

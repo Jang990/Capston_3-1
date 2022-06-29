@@ -9,4 +9,6 @@ public interface DBSubjectUtil {
 	boolean saveService(SubjectInfo subject);
 	boolean saveService(List<SubjectInfo> subjects);
 	boolean validateDuplicate(SubjectInfo subject);
+	
+	SubjectInfo getSubjectAllDetails(String subjectId);
 }

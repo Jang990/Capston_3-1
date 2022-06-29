@@ -107,13 +107,13 @@ public class VueRestController {
 
 	@RequestMapping("/crawlSubject")
 	public SubjectDetailData_VO crawlSubject(HttpServletRequest request, @RequestParam String subjectId) {
-		List<LectureWeekData> lectureDTO = this.crawlLecture(request, subjectId); //여기 리팩토링중
+		List<LectureWeekData> lectureDTO = this.crawlLecture(request, subjectId);
 		List<NoticeData> noticeDTO = this.crawlNotice(request, subjectId);
 		List<TaskData> taskDTO = this.crawlTask(request, subjectId);
 		SubjectCountData cntDTO = new SubjectCountData(lectureDTO, taskDTO);
 		
 		SubjectDetailData_VO subjectVO = new SubjectDetailData_VO(lectureDTO, taskDTO, noticeDTO, cntDTO);
-		return subjectVO;   
+		return subjectVO;
 	}
 	
 	@RequestMapping("/crawlLecture")
@@ -139,38 +139,33 @@ public class VueRestController {
 	//DB에서 가져오기
 	@RequestMapping("/getSubjectInDB")
 	public SubjectDetailData_VO subjectSearch(HttpServletRequest request, @RequestParam String subjectId) {
-		System.out.println("db에서 조회합니다.");
 		List<LectureWeekData> lectureDTO = this.lectureSearch(request, subjectId);
 		List<NoticeData> noticeDTO = this.noticeSearch(request, subjectId);
 		List<TaskData> taskDTO = this.taskSearch(request, subjectId);
 		SubjectCountData cntDTO = new SubjectCountData(lectureDTO, taskDTO);
 		
 		SubjectDetailData_VO subjectDTO = new SubjectDetailData_VO(lectureDTO, taskDTO, noticeDTO, cntDTO);
-		System.out.println("이거 맞음?:"+subjectDTO);
 		return subjectDTO;
 	}
 	//강의 주차 검색
 	@RequestMapping("/lectureDB")
 	public List<LectureWeekData> lectureSearch(HttpServletRequest request, @RequestParam String subjectId) {
-		System.out.println("과목 주차 조회");
 		UserData user = (UserData)request.getSession().getAttribute("userData");
-		List<LectureWeekData> lectureWeekList = vueService.getLectureData(subjectId, user.getStudentNumber()); 
+		List<LectureWeekData> lectureWeekList = vueService.getLectureData(user, subjectId); 
 		return lectureWeekList;
 	}
 	
 	//과제 검색 
 	@RequestMapping("/taskDB")
 	public List<TaskData> taskSearch(HttpServletRequest request, @RequestParam String subjectId) {
-		System.out.println("과제 조회");
 		UserData user = (UserData)request.getSession().getAttribute("userData");
-		List<TaskData> taskList = vueService.getTaskData(subjectId, user.getStudentNumber());
+		List<TaskData> taskList = vueService.getTaskData(user, subjectId);
 		return taskList;
 	}
 	
 	//공지 검색
 	@RequestMapping("/noticeDB")    
 	public List<NoticeData> noticeSearch(HttpServletRequest request, @RequestParam String subjectId) {
-		System.out.println("공지 조회");
 		List<NoticeData> notices = vueService.getNoticeData(subjectId);
 		if(notices == null) return null;
 		
