@@ -10,11 +10,13 @@ import javax.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "subjectInfo")
 public class SubjectNoticeInfo {
 	@Id
 	private String noticeId; 

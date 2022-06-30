@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
+import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
 import com.esummary.elearning.repository.subject.SubjectRepository;
 
 @Component
@@ -51,6 +52,13 @@ public class SubjectUtil_DB implements DBSubjectUtil {
 	@Override
 	public SubjectInfo getSubjectAllDetails(String subjectId) {
 		SubjectInfo subjectInAllData = subjectRepository.findBySubjectId(subjectId);
+		System.out.println("조회");
+		List<SubjectLectureWeekInfo> lectureWeeks = subjectInAllData.getLectureList();
+		for (SubjectLectureWeekInfo subjectLectureWeekInfo : lectureWeeks) {
+			subjectLectureWeekInfo.getLectures();
+		}
+		subjectInAllData.getNoticeList();
+		subjectInAllData.getTaskList();
 		return subjectInAllData;
 	}
 	

@@ -14,11 +14,13 @@ import javax.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "subjectInfo")
 public class SubjectTaskInfo {
 	@Id
 	private String taskId;
@@ -57,6 +59,5 @@ public class SubjectTaskInfo {
 		this.subjectInfo = new SubjectInfo();
 		this.subjectInfo.setSubjectId(subjectId);
 	}
-	
 	
 }

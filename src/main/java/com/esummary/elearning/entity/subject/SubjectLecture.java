@@ -8,9 +8,11 @@ import javax.persistence.Transient;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @NoArgsConstructor
 @Entity
+@ToString(exclude = "subjectLectureWeekInfo")
 public class SubjectLecture {
 	@Id
 	Long lectureId;
