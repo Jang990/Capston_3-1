@@ -1,5 +1,7 @@
 package com.esummary.elearning.repository.user;
 
+import java.util.Optional;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +14,7 @@ import com.esummary.elearning.entity.user.UserTask;
 @Repository
 public interface UserTaskRepository extends CrudRepository<UserTask, String>{
 
-	UserTask findBySubjectTaskInfo(SubjectTaskInfo subjectTaskInfo);
-	UserTask findByUserSubject_usIdAndSubjectTaskInfo_TaskId(long usId, String taskId);
-
+	Optional<UserTask> findBySubjectTaskInfo(SubjectTaskInfo subjectTaskInfo);
+	Optional<UserTask> findByUserSubject_usIdAndSubjectTaskInfo_TaskId(long usId, String taskId);
+	
 }

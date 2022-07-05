@@ -2,6 +2,7 @@ package com.esummary.elearning.service.subject.util.db.lectures.lecture;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -15,12 +16,12 @@ import com.esummary.elearning.entity.user.UserSubject;
 public interface DBLectureUtil {
 	List<SubjectLecture> getLectureList(SubjectLectureWeekInfo subjectLectureWeekInfo); //이것도 없애야할듯
 
-	UserLecture getUserLecture(int usId, SubjectLecture lecture);
+	Optional<UserLecture> getUserLecture(int usId, SubjectLecture lecture);
 	
 	//리팩토링하면서 추가되는 것
 	boolean saveService(SubjectLecture  lecture);
 	boolean saveService(List<SubjectLecture> lectures);
 	boolean validateDuplicate(SubjectLecture lecture);
 	
-	SubjectLecture getLecture(String lectureWeekId, String idx);
+	Optional<SubjectLecture> getLecture(String lectureWeekId, String idx);
 }

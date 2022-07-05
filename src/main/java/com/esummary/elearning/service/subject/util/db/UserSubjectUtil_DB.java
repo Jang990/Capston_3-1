@@ -3,6 +3,7 @@ package com.esummary.elearning.service.subject.util.db;
 import java.util.ArrayList; 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -60,15 +61,15 @@ public class UserSubjectUtil_DB implements DBUserSubjectUtil{
 	@Override
 	public boolean validateDuplicate(UserSubject userSubject) {
 		//auto Increment가 기본키이기 때문에 과목번호랑 학번이 중복되는건 저장하면 안된다. 
-		UserSubject us = userSubjectRepository.findBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(
+		Optional<UserSubject> us = userSubjectRepository.findBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(
 				userSubject.getSubjectId(), userSubject.getStudentNumber());
 		
-		if(us == null) return false;
+		if(us.isEmpty()) return false;
 		else return true; //중복 맞음
 	}
 
 	@Override
-	public UserSubject getStudentSubject(String subjectId, String studentNumber) {
+	public Optional<UserSubject> getStudentSubject(String subjectId, String studentNumber) {
 		return userSubjectRepository
 				.findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, studentNumber);
 	}

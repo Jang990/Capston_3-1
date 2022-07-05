@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -46,7 +47,9 @@ public class TaskUtil_DB implements DBTaskUtil{
 	public List<UserTask> getUserTask(List<SubjectTaskInfo> taskList) {
 		List<UserTask> userTaskList = new ArrayList<UserTask>();
 		for (SubjectTaskInfo subjectTaskInfo : taskList) {
-			UserTask ut = userTaskRepository.findBySubjectTaskInfo(subjectTaskInfo);
+			Optional<UserTask> check = userTaskRepository.findBySubjectTaskInfo(subjectTaskInfo);
+			if(check.isEmpty()) continue;
+			UserTask ut = check.get();
 			ut.setSubjectTaskInfo(subjectTaskInfo);
 			userTaskList.add(ut);
 		}
@@ -85,10 +88,10 @@ public class TaskUtil_DB implements DBTaskUtil{
 	@Override
 	public boolean validateDuplicate(SubjectTaskInfo task) {
 		//값이 중복되는지도 체크한다.
-		SubjectTaskInfo taskCheck = subjectTaskRepository.
+		Optional<SubjectTaskInfo> taskCheck = subjectTaskRepository.
 				findByTaskId(task.getTaskId());
 		
-		if(taskCheck == null || !equalEntityValue(task, taskCheck)) return false;
+		if(taskCheck.isEmpty() || !equalEntityValue(task, taskCheck.get())) return false;
 		else return true; //중복 맞음
 	}
 	

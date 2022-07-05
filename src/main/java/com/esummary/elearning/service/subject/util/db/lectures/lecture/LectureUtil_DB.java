@@ -2,6 +2,7 @@ package com.esummary.elearning.service.subject.util.db.lectures.lecture;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
 import com.esummary.elearning.entity.user.UserLecture;
 import com.esummary.elearning.repository.subject.SubjectLectureRepository;
 import com.esummary.elearning.repository.user.UserLectureRepository;
+import com.esummary.elearning.service.subject.util.db.user.UserLectureUtil_DB;
 
 @Component
 public class LectureUtil_DB implements DBLectureUtil {
@@ -21,6 +23,8 @@ public class LectureUtil_DB implements DBLectureUtil {
 	private SubjectLectureRepository subjectLectureRepository;
 	@Autowired
 	private UserLectureRepository userLectureRepository;
+	@Autowired
+	private UserLectureUtil_DB userLectureUtil_DB; 
 
 	@Override
 	public List<SubjectLecture> getLectureList(SubjectLectureWeekInfo subjectLectureWeekInfo) {
@@ -31,8 +35,8 @@ public class LectureUtil_DB implements DBLectureUtil {
 	}
 	
 	@Override
-	public UserLecture getUserLecture(int usId, SubjectLecture lecture) {
-		UserLecture ul = userLectureRepository.findByUserSubject_usIdAndSubjectLecture_lectureId(usId, lecture.getLectureId());
+	public Optional<UserLecture> getUserLecture(int usId, SubjectLecture lecture) {
+		Optional<UserLecture> ul = userLectureUtil_DB.getUserLecture(usId, lecture.getLectureId());
 		return ul;
 	}
 
@@ -67,10 +71,10 @@ public class LectureUtil_DB implements DBLectureUtil {
 
 	@Override
 	public boolean validateDuplicate(SubjectLecture lecture) {
-		SubjectLecture lectureCheck = getLecture(lecture.getLectureWeekId(), lecture.getIdx());
+		Optional<SubjectLecture> lectureCheck = getLecture(lecture.getLectureWeekId(), lecture.getIdx());
 		
-		if(lectureCheck == null) return false; //중복 아님
-		if(!equalEntityValue(lecture, lectureCheck)) return false; //중복 아님 
+		if(lectureCheck.isEmpty()) return false; //중복 아님
+		if(!equalEntityValue(lecture, lectureCheck.get())) return false; //중복 아님 
 		
 		return true; //중복 맞음
 	}
@@ -97,7 +101,7 @@ public class LectureUtil_DB implements DBLectureUtil {
 	}
 
 	@Override
-	public SubjectLecture getLecture(String lectureWeekId, String idx) {
+	public Optional<SubjectLecture> getLecture(String lectureWeekId, String idx) {
 		return subjectLectureRepository.
 				findBySubjectLectureWeekInfo_LectureWeekIdAndIdx(lectureWeekId, idx);
 	}

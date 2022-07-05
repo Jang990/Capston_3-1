@@ -1,5 +1,7 @@
 package com.esummary.elearning.repository.user;
 
+import java.util.Optional;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +17,5 @@ public interface UserLectureRepository extends CrudRepository<UserLecture, Strin
 	UserLecture findBySubjectLecture_LectureId(long lectureId);
 	UserLecture findBySubjectLecture(SubjectLecture lecture);
 	
-	UserLecture findByUserSubject_usIdAndSubjectLecture_lectureId(long usId, long lectureId);
+	Optional<UserLecture> findByUserSubject_usIdAndSubjectLecture_lectureId(long usId, long lectureId);
 }

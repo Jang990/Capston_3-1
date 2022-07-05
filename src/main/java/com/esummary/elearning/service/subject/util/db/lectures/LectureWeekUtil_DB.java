@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -63,10 +64,10 @@ public class LectureWeekUtil_DB implements DBLectureWeekUtil {
 
 	@Override
 	public boolean validateDuplicate(SubjectLectureWeekInfo lectureWeek) {
-		SubjectLectureWeekInfo lectureWeekCheck = subjectLectureWeekRepository.
+		Optional<SubjectLectureWeekInfo> lectureWeekCheck = subjectLectureWeekRepository.
 				findByLectureWeekIdAndSubjectInfo_subjectId(lectureWeek.getLectureWeekId(), lectureWeek.getSubjectId());
 		
-		if(lectureWeekCheck == null) return false;
+		if(lectureWeekCheck.isEmpty()) return false;
 		else return true; //중복 맞음
 	}
 

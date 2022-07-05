@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -129,7 +130,7 @@ public class VueServiceImpl implements VueService {
 
 	@Override
 	public boolean saveUser(UserData user) {
-		if(userRepository.findByStudentNumber(user.getStudentNumber()) == null) {
+		if(userRepository.findByStudentNumber(user.getStudentNumber()).isEmpty()) {
 			UserInfo userInfo = new UserInfo();
 			userInfo.setStudentNumber(user.getStudentNumber());
 			userInfo.setUserName(user.getUserName());
@@ -164,8 +165,9 @@ public class VueServiceImpl implements VueService {
 		
 		//저장
 		dbTaskUtil.saveService(tasks); // SubjectTask 저장
-		UserSubject userSubject = dbUserSubjectUtil.getStudentSubject(subjectId, user.getStudentNumber());
-		List<UserTask> userTasks = convertToUserTaskList(userSubject, tasks);
+		Optional<UserSubject> userSubject = dbUserSubjectUtil.getStudentSubject(subjectId, user.getStudentNumber());
+		if(userSubject.isEmpty()) System.out.println("여기발생");
+		List<UserTask> userTasks = convertToUserTaskList(userSubject.get(), tasks);
 		dbUserTaskUtil.saveService(userTasks); //UserTask 저장
 		
 		//DTO로 변환
@@ -192,10 +194,11 @@ public class VueServiceImpl implements VueService {
 		
 		//Lecture저장하기.
 		dbLectureWeekUtil.saveService(lectures);
-		UserSubject userSubject = dbUserSubjectUtil.getStudentSubject(subjectId, user.getStudentNumber());
+		Optional<UserSubject> userSubject = dbUserSubjectUtil.getStudentSubject(subjectId, user.getStudentNumber());
+		if(userSubject.isEmpty()) System.out.println("여기발생");
 		for (SubjectLectureWeekInfo lectureWeek : lectures) {
 			dbLectureUtil.saveService(lectureWeek.getLectures());
-			List<UserLecture> userLectures = convertToUserLectureList(userSubject, lectureWeek.getLectures());
+			List<UserLecture> userLectures = convertToUserLectureList(userSubject.get(), lectureWeek.getLectures());
 			dbUserLectureUtil.saveService(userLectures);
 		}
 		
@@ -220,10 +223,10 @@ public class VueServiceImpl implements VueService {
 		List<UserLecture> userLectures = new ArrayList<UserLecture>();
 		for (SubjectLecture lecture : lectureList) {
 			if(lecture.getLectureId() == null) {
-				SubjectLecture dbLecture = dbLectureUtil.getLecture(lecture.getLectureWeekId(), lecture.getIdx());
-				if(dbLecture == null) System.out.println("======= 오류위치: convertToUserLectureList ");
+				Optional<SubjectLecture> dbLecture = dbLectureUtil.getLecture(lecture.getLectureWeekId(), lecture.getIdx());
+				if(dbLecture.isEmpty()) System.out.println("======= 오류위치: convertToUserLectureList ");
 				else {
-					lecture.setLectureId(dbLecture.getLectureId());
+					lecture.setLectureId(dbLecture.get().getLectureId());
 				}
 			}
 			userLectures.add(new UserLecture(lecture, userSubject));
@@ -268,23 +271,22 @@ public class VueServiceImpl implements VueService {
 	@Override
 	public List<LectureWeekData> getLectureData(UserData user, String subjectId) {
 		String studentNumber = user.getStudentNumber();
-		UserSubject us = dbUserSubjectUtil.getStudentSubject(subjectId, studentNumber);
-		
+		Optional<UserSubject> us = dbUserSubjectUtil.getStudentSubject(subjectId, user.getStudentNumber());		
 		 //조인할 데이터가 아예 없어서 여기 아래로 내려가질 못함. 크롤링을 db구성이 끝나고 해야함 
-		if(us == null) {
+		if(us.isEmpty()) {
 			//기존 데이터가 없음.
 			return null;
 		}
-		System.out.println("강의명: "+ us.getSubjectInfo().getSubjectName());
+		System.out.println("강의명: "+ us.get().getSubjectInfo().getSubjectName());
 		
-		if(us.getSubjectInfo().getLectureList().size() == 0) {
+		if(us.get().getSubjectInfo().getLectureList().size() == 0) {
 			System.out.println("강의없음");
 			return null;
 		}
 //		dbSubjectUtil;
 		
 		List<LectureWeekData> weekDTO = new ArrayList<LectureWeekData>();
-		List<SubjectLectureWeekInfo> weekList = us.getSubjectInfo().getLectureList();
+		List<SubjectLectureWeekInfo> weekList = us.get().getSubjectInfo().getLectureList();
 		for (int i = 0; i < weekList.size(); i++) {
 			SubjectLectureWeekInfo weekInfo = weekList.get(i);
 			List<SubjectLecture> lectureDetail = weekInfo.getLectures();
@@ -308,12 +310,12 @@ public class VueServiceImpl implements VueService {
 	@Override
 	public List<TaskData> getTaskData(UserData user, String subjectId) {
 		String studentNumber = user.getStudentNumber();
-		UserSubject us = userSubjectRepository.
+		Optional<UserSubject> us = userSubjectRepository.
 				findWithUserTaskBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, studentNumber);
-		if(us == null || us.getUserTask().size() == 0) return null;
+		if(us.isEmpty()|| us.get().getUserTask().size() == 0) return null;
 		
 		List<TaskData> taskDTO = new ArrayList<TaskData>(); 
-		List<UserTask> ut = us.getUserTask();  
+		List<UserTask> ut = us.get().getUserTask();  
 		for (UserTask userTask : ut) {           
 			taskDTO.add(convertTaskData(userTask));
 		}

@@ -1,5 +1,7 @@
 package com.esummary.elearning.service.subject.util.db.user;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,11 +26,13 @@ public class UserInfoUtil_DB implements DBUserInfoUtil {
 	@Override
 	public boolean validateDuplicate(UserInfo user) {
 		//중복 확인
-		UserInfo check = userRepository.
-				findByStudentNumberAndUserName(user.getStudentNumber(), user.getUserName());
-		
-		if(check == null) return false; 
-		else return true; //중복 맞음
+		Optional<UserInfo> check =  getUser(user.getStudentNumber(), user.getUserName());
+		if(check.isPresent()) return true; //중복 맞음  
+		else return false;
+	}
+	
+	public Optional<UserInfo> getUser(String studentNumber, String userName) {
+		return userRepository.findByStudentNumberAndUserName(studentNumber, userName);
 	}
 
 }

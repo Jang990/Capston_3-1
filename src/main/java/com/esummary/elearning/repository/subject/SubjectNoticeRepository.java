@@ -1,6 +1,7 @@
 package com.esummary.elearning.repository.subject;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -13,5 +14,5 @@ import com.esummary.elearning.entity.subject.SubjectNoticeInfo;
 public interface SubjectNoticeRepository extends CrudRepository<SubjectNoticeInfo, String>{
 	List<SubjectNoticeInfo> findBySubjectInfo(SubjectInfo subjectInfo);
 	List<SubjectNoticeInfo> findBySubjectInfo_SubjectId(String subjectId);
-	SubjectNoticeInfo findByNoticeIdAndTitleAndDescription(String noticeId, String title, String description);
+	Optional<SubjectNoticeInfo> findByNoticeIdAndTitleAndDescription(String noticeId, String title, String description);
 }

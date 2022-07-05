@@ -2,6 +2,7 @@ package com.esummary.elearning.service.subject.util.db.user;
 
 import java.util.ArrayList;  
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -49,10 +50,10 @@ public class UserTaskUtil_DB implements DBUserTaskUtil {
 	@Override
 	public boolean validateDuplicate(UserTask userTask) {
 		//UserLecture와 UserTask 의 경우 중복 체크가 다름
-		UserTask userLectureCheck = getUserTask(userTask.getUserSubjectId(), userTask.getSubjectTaskId());
+		Optional<UserTask> userLectureCheck = getUserTask(userTask.getUserSubjectId(), userTask.getSubjectTaskId());
 		
-		if(userLectureCheck == null) return false;
-		if(!equalEntityValue(userTask, userLectureCheck)) return false;
+		if(userLectureCheck.isEmpty()) return false;
+		if(!equalEntityValue(userTask, userLectureCheck.get())) return false;
 		return true; //중복 맞음
 	}
 	
@@ -64,7 +65,7 @@ public class UserTaskUtil_DB implements DBUserTaskUtil {
 			return false;
 	}
 	
-	public UserTask getUserTask(long usId, String taskId) {
+	public Optional<UserTask> getUserTask(long usId, String taskId) {
 		return userTaskRepository.
 				findByUserSubject_usIdAndSubjectTaskInfo_TaskId(usId, taskId);
 	}

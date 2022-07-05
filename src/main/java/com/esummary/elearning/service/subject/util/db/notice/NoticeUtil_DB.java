@@ -3,6 +3,7 @@ package com.esummary.elearning.service.subject.util.db.notice;
 import java.util.ArrayList; 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -57,10 +58,10 @@ public class NoticeUtil_DB implements DBNoticeUtil{
 
 	@Override
 	public boolean validateDuplicate(SubjectNoticeInfo notice) {
-		SubjectNoticeInfo noticeCheck = subjectNoticeRepository.
+		Optional<SubjectNoticeInfo> noticeCheck = subjectNoticeRepository.
 				findByNoticeIdAndTitleAndDescription(notice.getNoticeId(), notice.getTitle(), notice.getDescription());
 		
-		if(noticeCheck == null) return false;
+		if(noticeCheck.isEmpty()) return false;
 		else return true; //중복 맞음
 	}
 	

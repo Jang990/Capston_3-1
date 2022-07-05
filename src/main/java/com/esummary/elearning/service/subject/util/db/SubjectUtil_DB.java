@@ -2,6 +2,7 @@ package com.esummary.elearning.service.subject.util.db;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -43,16 +44,15 @@ public class SubjectUtil_DB implements DBSubjectUtil {
 
 	@Override
 	public boolean validateDuplicate(SubjectInfo subject) {
-		SubjectInfo subjectCheck = subjectRepository.findSingleSubject(subject.getSubjectId());
+		Optional<SubjectInfo> subjectCheck = subjectRepository.findSingleSubject(subject.getSubjectId());
 		
-		if(subjectCheck == null) return false;
+		if(subjectCheck.isEmpty()) return false;
 		else return true; //중복 맞음
 	}
 
 	@Override
 	public SubjectInfo getSubjectAllDetails(String subjectId) {
 		SubjectInfo subjectInAllData = subjectRepository.findBySubjectId(subjectId);
-		System.out.println("조회");
 		List<SubjectLectureWeekInfo> lectureWeeks = subjectInAllData.getLectureList();
 		for (SubjectLectureWeekInfo subjectLectureWeekInfo : lectureWeeks) {
 			subjectLectureWeekInfo.getLectures();

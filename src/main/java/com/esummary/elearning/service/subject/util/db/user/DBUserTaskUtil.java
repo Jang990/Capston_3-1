@@ -1,6 +1,7 @@
 package com.esummary.elearning.service.subject.util.db.user;
 
-import java.util.List; 
+import java.util.List;
+import java.util.Optional;
 
 import com.esummary.elearning.entity.user.UserTask; 
 
@@ -10,5 +11,5 @@ public interface DBUserTaskUtil {
 	boolean saveService(UserTask subject);
 	boolean saveService(List<UserTask> subjects);
 	boolean validateDuplicate(UserTask subject);
-	UserTask getUserTask(long usId, String taskId);
+	Optional<UserTask> getUserTask(long usId, String taskId);
 }

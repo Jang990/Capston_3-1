@@ -2,6 +2,7 @@ package com.esummary.elearning.service.subject.util.db;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.jsoup.nodes.Document;
 
@@ -18,7 +19,7 @@ public interface DBUserSubjectUtil {
 	boolean validateDuplicate(UserSubject userSubject);
 	
 	List<UserSubject> getStudentsSubject(String studentNumber);
-	UserSubject getStudentSubject(String subjectId, String studentNumber);
+	Optional<UserSubject> getStudentSubject(String subjectId, String studentNumber);
 	
 //	List<SubjectInfo> InitSubjectData(UserInfo user);
 //	void getSubjectDetail(UserInfo user);

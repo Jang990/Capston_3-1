@@ -1,6 +1,7 @@
 package com.esummary.elearning.repository.subject;
 
-import java.util.List; 
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -14,5 +15,5 @@ public interface SubjectTaskRepository extends CrudRepository<SubjectTaskInfo, S
 	List<SubjectTaskInfo> findBySubjectInfo(SubjectInfo subjectInfo);
 	List<SubjectTaskInfo> findBySubjectInfo_SubjectId(String subjectId);
 	
-	SubjectTaskInfo findByTaskId(String taskId);
+	Optional<SubjectTaskInfo> findByTaskId(String taskId);
 }

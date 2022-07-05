@@ -1,6 +1,7 @@
 package com.esummary.elearning.repository.user;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
@@ -17,10 +18,10 @@ import net.bytebuddy.asm.Advice.This;
 
 @Repository
 public interface UserRepository extends CrudRepository<UserInfo, String>{
-	UserInfo findByStudentNumber(String studentNumber);
-	UserInfo findByStudentNumberAndUserName(String studentNumber, String userName);
+	Optional<UserInfo> findByStudentNumber(String studentNumber);
+	Optional<UserInfo> findByStudentNumberAndUserName(String studentNumber, String userName);
 
 //	@EntityGraph(value = "user-own-subject") 
 	@EntityGraph(value = "user-own-subject-Detail") 
-	UserInfo findWithUserSubjectsByStudentNumber(String studentNumber);
+	Optional<UserInfo> findWithUserSubjectsByStudentNumber(String studentNumber);
 }
