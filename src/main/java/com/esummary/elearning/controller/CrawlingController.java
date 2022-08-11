@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.esummary.elearning.dto.InitalPageData;
 import com.esummary.elearning.dto.LectureWeekData;
@@ -19,6 +20,7 @@ import com.esummary.elearning.dto.TaskData;
 import com.esummary.elearning.dto.UserData;
 import com.esummary.elearning.service.vue.VueService;
 
+@RestController
 public class CrawlingController {
 	
 	@Autowired
@@ -33,6 +35,7 @@ public class CrawlingController {
 	@RequestMapping("/getInitSubject")   
 	public InitalPageData getInitData(HttpServletRequest request) {
 		HttpSession session = request.getSession();
+		System.out.println("=======>"+request.getSession());
 		UserData user = (UserData)session.getAttribute("userData");
 		InitalPageData initPageData = vueService.crawlInitDataService(user);
 //		testCode(initPageData.getSubjectCardData());
