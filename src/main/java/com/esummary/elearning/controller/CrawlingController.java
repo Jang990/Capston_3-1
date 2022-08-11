@@ -1,21 +1,15 @@
 package com.esummary.elearning.controller;
 
-import java.util.ArrayList;  
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.esummary.elearning.dto.InitalPageData;
-import com.esummary.elearning.dto.LectureData;
 import com.esummary.elearning.dto.LectureWeekData;
 import com.esummary.elearning.dto.NoticeData;
 import com.esummary.elearning.dto.SubjectCardData;
@@ -23,47 +17,12 @@ import com.esummary.elearning.dto.SubjectCountData;
 import com.esummary.elearning.dto.SubjectDetailData_VO;
 import com.esummary.elearning.dto.TaskData;
 import com.esummary.elearning.dto.UserData;
-import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.user.UserInfo;
-import com.esummary.elearning.entity.user.UserSubject;
-import com.esummary.elearning.repository.UserSubjectRepository;
-import com.esummary.elearning.repository.user.UserRepository;
-import com.esummary.elearning.service.login.LoginService;
-import com.esummary.elearning.service.subject.ELearningService;
-import com.esummary.elearning.service.user.crawling.UserCrawlingUtil;
 import com.esummary.elearning.service.vue.VueService;
 
-@RestController
-public class VueRestController {
+public class CrawlingController {
 	
 	@Autowired
 	private VueService vueService;
-	
-	@Autowired
-	private LoginService eLearningLoginService;
-	@Autowired
-	private UserCrawlingUtil userCrawlingUtil;
-	
-	
-	//로그인 체크
-	@RequestMapping("/vueLoginCheck") 
-	public boolean login(@RequestParam String id, @RequestParam String password, HttpServletRequest request) {
-		Map<String, String> loginSessionCookie = eLearningLoginService.getLoginCookies(id, password);
-		if(loginSessionCookie == null) // 로그인 실패
-			return false;
-		
-		//크롤링 
-		String userName = userCrawlingUtil.getUserName(loginSessionCookie);
-		UserData userData = new UserData(id, userName, loginSessionCookie);
-		
-		//db에 유저 정보 저장
-		vueService.saveUserService(userData);
-		
-		//세션 설정
-		HttpSession session = request.getSession();
-		session.setAttribute("userData", userData);
-		return true;  
-	} 
 	
 	/* 
 	 *  수강과목 정보 검색
@@ -103,6 +62,7 @@ public class VueRestController {
 		subjectCardData.add(new SubjectCardData("202214043CMP743", "[3학년C반] 자율드론", "박병섭"));
 		subjectCardData.add(new SubjectCardData("202214043DMP250", "[3학년D반] 캡스톤디자인", "황수철"));
 	}
+	
 
 	@RequestMapping("/crawlSubject")
 	public SubjectDetailData_VO crawlSubject(HttpServletRequest request, @RequestParam String subjectId) {
@@ -133,42 +93,4 @@ public class VueRestController {
 		List<TaskData> task = vueService.crawlTask(user, subjectId);
 		return task;
 	}
-	
-	
-	//DB에서 가져오기
-	@RequestMapping("/getSubjectInDB")
-	public SubjectDetailData_VO subjectSearch(HttpServletRequest request, @RequestParam String subjectId) {
-		List<LectureWeekData> lectureDTO = this.lectureSearch(request, subjectId);
-		List<NoticeData> noticeDTO = this.noticeSearch(request, subjectId);
-		List<TaskData> taskDTO = this.taskSearch(request, subjectId);
-		SubjectCountData cntDTO = new SubjectCountData(lectureDTO, taskDTO);
-		
-		SubjectDetailData_VO subjectDTO = new SubjectDetailData_VO(lectureDTO, taskDTO, noticeDTO, cntDTO);
-		return subjectDTO;
-	}
-	//강의 주차 검색
-	@RequestMapping("/lectureDB")
-	public List<LectureWeekData> lectureSearch(HttpServletRequest request, @RequestParam String subjectId) {
-		UserData user = (UserData)request.getSession().getAttribute("userData");
-		List<LectureWeekData> lectureWeekList = vueService.getLectureData(user, subjectId); 
-		return lectureWeekList;
-	}
-	
-	//과제 검색 
-	@RequestMapping("/taskDB")
-	public List<TaskData> taskSearch(HttpServletRequest request, @RequestParam String subjectId) {
-		UserData user = (UserData)request.getSession().getAttribute("userData");
-		List<TaskData> taskList = vueService.getTaskData(user, subjectId);
-		return taskList;
-	}
-	
-	//공지 검색
-	@RequestMapping("/noticeDB")    
-	public List<NoticeData> noticeSearch(HttpServletRequest request, @RequestParam String subjectId) {
-		List<NoticeData> notices = vueService.getNoticeData(subjectId);
-		if(notices == null) return null;
-		
-		return notices;
-	}
-	
 }
