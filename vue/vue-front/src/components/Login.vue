@@ -6,7 +6,7 @@
               <v-flex xs12 sm8 md4>
                   <v-card class="elevation-12">
                     <v-toolbar dark color="primary">
-                      <v-toolbar-title>Esummary 로그인</v-toolbar-title>
+                      <v-toolbar-title>Esummary 로그인??</v-toolbar-title>
                     </v-toolbar>
                     <v-progress-linear
                         color="deep-purple"
@@ -49,7 +49,7 @@
 import {SET_INITIAL_DATA, CRAWL_SUBJECT, LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER, LOAD_DB_SUBJECT} from '../store'
 import { mapState } from 'vuex';
 import axios from "axios"
-const api = axios.create({baseURL: 'http://localhost:38080'});
+const api = axios.create({baseURL: 'http://localhost:8080'});
 
 
 export default {

@@ -19,7 +19,7 @@ export const CRAWL_SUBJECT = 'crawlSubject';
 export const LOAD_DB_SUBJECT = 'loadDBSubject';
 export const LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER = 'LoginCheckANDcalculateToDoNumber';
 
-const api = axios.create({baseURL: 'http://localhost:38080'});
+const api = axios.create({baseURL: 'http://localhost:8080'});
 
 export default new Vuex.Store({
     state: {

@@ -98,7 +98,7 @@ export default {
   }),
   methods: {
     dbSearch() {
-      axios.get('http://localhost:38080/vueDB')
+      axios.get('http://localhost:8080/vueDB')
         .then((response) => {
           //주의하라 (response) => {} 이렇게 화살표 함수를 사용해야 this를 사용할때 원하는 값이 나온다. 스코프를 이해해라.
           console.log(response); 

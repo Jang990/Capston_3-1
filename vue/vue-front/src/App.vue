@@ -140,7 +140,7 @@ export default {
   },
   methods: {
     async test() {
-      const api = axios.create({baseURL: 'http://localhost:38080'});
+      const api = axios.create({baseURL: 'http://localhost:8080'});
       await api.post('/test', null, {params: {
         
       }}).then((response) => {

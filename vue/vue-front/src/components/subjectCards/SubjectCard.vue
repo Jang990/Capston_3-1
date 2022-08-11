@@ -214,7 +214,7 @@ import NoticeTable from "./noticeTable/NoticeTable"
 import TaskTable from "./taskTable/TaskTable"
 import LectureTable from "./lectureTable/LectureTable"
 import { mapState } from 'vuex';
-const mainAxios = axios.create({baseURL: 'http://localhost:38080'});
+const mainAxios = axios.create({baseURL: 'http://localhost:8080'});
 const delayTime = 350;
 let timeouts = [];
 const lectureNum = 0;
