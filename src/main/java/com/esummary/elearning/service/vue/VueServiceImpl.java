@@ -1,6 +1,6 @@
 package com.esummary.elearning.service.vue;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,21 +32,20 @@ import com.esummary.elearning.repository.UserSubjectRepository;
 import com.esummary.elearning.repository.subject.SubjectNoticeRepository;
 import com.esummary.elearning.repository.user.UserLectureRepository;
 import com.esummary.elearning.repository.user.UserRepository;
-import com.esummary.elearning.service.subject.ELearningService;
-import com.esummary.elearning.service.subject.util.crawling.SubjectUtil;
-import com.esummary.elearning.service.subject.util.crawling.lectures.LectureWeekUtil;
-import com.esummary.elearning.service.subject.util.crawling.lectures.lecture.LectureUtil;
-import com.esummary.elearning.service.subject.util.crawling.notice.NoticeUtil;
-import com.esummary.elearning.service.subject.util.crawling.task.TaskUtil;
-import com.esummary.elearning.service.subject.util.db.DBSubjectUtil;
-import com.esummary.elearning.service.subject.util.db.DBUserSubjectUtil;
-import com.esummary.elearning.service.subject.util.db.lectures.DBLectureWeekUtil;
-import com.esummary.elearning.service.subject.util.db.lectures.lecture.DBLectureUtil;
-import com.esummary.elearning.service.subject.util.db.notice.DBNoticeUtil;
-import com.esummary.elearning.service.subject.util.db.task.DBTaskUtil;
-import com.esummary.elearning.service.subject.util.db.user.DBUserInfoUtil;
-import com.esummary.elearning.service.subject.util.db.user.DBUserLectureUtil;
-import com.esummary.elearning.service.subject.util.db.user.DBUserTaskUtil;
+import com.esummary.elearning.service.crawling.SubjectCrawlingService;
+import com.esummary.elearning.service.crawling.lecture.LectureCrawlingService;
+import com.esummary.elearning.service.crawling.notice.NoticeCrawlingService;
+import com.esummary.elearning.service.crawling.task.TaskCrawlingService;
+import com.esummary.elearning.service.crawling.week.WeekCrawlingService;
+import com.esummary.elearning.service.dao.DBSubjectUtil;
+import com.esummary.elearning.service.dao.DBUserSubjectUtil;
+import com.esummary.elearning.service.dao.lectures.DBLectureWeekUtil;
+import com.esummary.elearning.service.dao.lectures.lecture.DBLectureUtil;
+import com.esummary.elearning.service.dao.notice.DBNoticeUtil;
+import com.esummary.elearning.service.dao.task.DBTaskUtil;
+import com.esummary.elearning.service.dao.user.DBUserInfoUtil;
+import com.esummary.elearning.service.dao.user.DBUserLectureUtil;
+import com.esummary.elearning.service.dao.user.DBUserTaskUtil;
 
 @Service
 public class VueServiceImpl implements VueService {
@@ -64,13 +63,13 @@ public class VueServiceImpl implements VueService {
 //	@Autowired
 //	private ELearningService eLearningService;
 	@Autowired
-	private SubjectUtil subjectUtil;
+	private SubjectCrawlingService subjectUtil;
 	@Autowired
-	private NoticeUtil noticeUtil;
+	private NoticeCrawlingService noticeUtil;
 	@Autowired
-	private TaskUtil taskUtil;
+	private TaskCrawlingService taskUtil;
 	@Autowired
-	private LectureWeekUtil lectureWeekUtil;
+	private WeekCrawlingService lectureWeekUtil;
 	
 	@Autowired
 	private DBSubjectUtil dbSubjectUtil;

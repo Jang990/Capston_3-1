@@ -1,6 +1,6 @@
 package com.esummary.elearning.controller;
 
-import java.util.List;
+import java.util.List; 
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,9 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.esummary.elearning.dto.InitalPageData;
 import com.esummary.elearning.dto.SubjectCardData;
 import com.esummary.elearning.dto.UserData;
+import com.esummary.elearning.service.crawling.user.UserCrawlingUtil;
 import com.esummary.elearning.service.login.LoginService;
-import com.esummary.elearning.service.subject.ELearningService;
-import com.esummary.elearning.service.user.crawling.UserCrawlingUtil;
 import com.esummary.elearning.service.vue.VueService;
 
 @RestController
@@ -35,7 +34,7 @@ public class LoginController {
 	@RequestMapping("/vueLoginCheck") 
 	public boolean login(@RequestParam String id, @RequestParam String password, HttpServletRequest request) {
 		Map<String, String> loginSessionCookie = eLearningLoginService.getLoginCookies(id, password);
-		if(loginSessionCookie == null) // 로그인 실패
+		if(loginSessionCookie == null) // 로그인 실패 
 			return false;
 		
 		//크롤링 
@@ -48,7 +47,8 @@ public class LoginController {
 		//세션 설정
 		HttpSession session = request.getSession();
 		session.setAttribute("userData", userData);
-		return true;  
-	} 
+		
+		return true;
+	}
 	
 }
