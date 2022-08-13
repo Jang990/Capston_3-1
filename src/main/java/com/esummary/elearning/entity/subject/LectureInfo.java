@@ -12,7 +12,7 @@ import lombok.ToString;
 
 @NoArgsConstructor
 @Entity
-@ToString(exclude = "subjectLectureWeekInfo")
+@ToString(exclude = "weekInfo")
 public class LectureInfo {
 	@Id
 	Long lectureId;
