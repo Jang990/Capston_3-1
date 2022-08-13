@@ -222,7 +222,7 @@ public class VueServiceImpl implements VueService {
 		List<UserLecture> userLectures = new ArrayList<UserLecture>();
 		for (LectureInfo lecture : lectureList) {
 			if(lecture.getLectureId() == null) {
-				Optional<LectureInfo> dbLecture = dbLectureUtil.getLecture(lecture.getLectureWeekId(), lecture.getIdx());
+				Optional<LectureInfo> dbLecture = dbLectureUtil.getLecture(lecture.getWeekId(), lecture.getIdx());
 				if(dbLecture.isEmpty()) System.out.println("======= 오류위치: convertToUserLectureList ");
 				else {
 					lecture.setLectureId(dbLecture.get().getLectureId());

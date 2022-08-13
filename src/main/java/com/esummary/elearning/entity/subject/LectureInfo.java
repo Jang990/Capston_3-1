@@ -31,11 +31,11 @@ public class LectureInfo {
 	@ManyToOne
 	@JoinColumn(name = "LECTURE_WEEK_ID")
 //	@Transient
-	private WeekInfo subjectLectureWeekInfo;
+	private WeekInfo weekInfo;
 
 	
-	public String getLectureWeekId() {
-		return this.subjectLectureWeekInfo.getWeekId();
+	public String getWeekId() {
+		return this.weekInfo.getWeekId();
 	}
 	
 	public Long getLectureId() {
@@ -86,12 +86,12 @@ public class LectureInfo {
 		this.fullTime = fullTime;
 	}
 
-	public WeekInfo getSubjectLectureWeekInfo() {
-		return subjectLectureWeekInfo;
+	public WeekInfo getWeekInfo() {
+		return weekInfo;
 	}
 
-	public void setSubjectLectureWeekInfo(WeekInfo subjectLectureWeekInfo) {
-		this.subjectLectureWeekInfo = subjectLectureWeekInfo;
+	public void setWeekInfo(WeekInfo weekInfo) {
+		this.weekInfo = weekInfo;
 	}
 
 	public String getStatus() {
@@ -119,8 +119,8 @@ public class LectureInfo {
 		this.fullTime = fullTime;
 		this.status = status;
 		this.learningTime = learningTime;
-		this.subjectLectureWeekInfo = new WeekInfo();
-		subjectLectureWeekInfo.setWeekId(weekId);
+		this.weekInfo = new WeekInfo();
+		weekInfo.setWeekId(weekId);
 	}
 	
 	

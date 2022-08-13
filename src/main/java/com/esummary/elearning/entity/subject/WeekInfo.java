@@ -35,7 +35,7 @@ public class WeekInfo {
 	@JoinColumn(name = "SUBJECT_ID")
 	private SubjectInfo subjectInfo;
 	
-	@OneToMany(mappedBy = "subjectLectureWeekInfo")
+	@OneToMany(mappedBy = "weekInfo")
 	private List<LectureInfo> lectures;
 
 	public WeekInfo(String weekId, String title, Date startDate, Date endDate,

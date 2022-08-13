@@ -29,7 +29,7 @@ public class LectureUtil_DB implements DBLectureUtil {
 	@Override
 	public List<LectureInfo> getLectureList(WeekInfo subjectLectureWeekInfo) {
 		List<LectureInfo> lectureList = new ArrayList<LectureInfo>();
-		lectureList = subjectLectureRepository.findBySubjectLectureWeekInfo(subjectLectureWeekInfo);
+		lectureList = subjectLectureRepository.findByWeekInfo(subjectLectureWeekInfo);
 		
 		return lectureList;
 	}
@@ -71,7 +71,7 @@ public class LectureUtil_DB implements DBLectureUtil {
 
 	@Override
 	public boolean validateDuplicate(LectureInfo lecture) {
-		Optional<LectureInfo> lectureCheck = getLecture(lecture.getLectureWeekId(), lecture.getIdx());
+		Optional<LectureInfo> lectureCheck = getLecture(lecture.getWeekId(), lecture.getIdx());
 		
 		if(lectureCheck.isEmpty()) return false; //중복 아님
 		if(!equalEntityValue(lecture, lectureCheck.get())) return false; //중복 아님 
@@ -103,6 +103,6 @@ public class LectureUtil_DB implements DBLectureUtil {
 	@Override
 	public Optional<LectureInfo> getLecture(String weekId, String idx) {
 		return subjectLectureRepository.
-				findBySubjectLectureWeekInfo_WeekIdAndIdx(weekId, idx);
+				findByWeekInfo_WeekIdAndIdx(weekId, idx);
 	}
 }

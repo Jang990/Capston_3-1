@@ -13,8 +13,8 @@ import com.esummary.elearning.entity.subject.WeekInfo;
 @Repository
 public interface SubjectLectureRepository extends CrudRepository<LectureInfo, String>{
 
-	List<LectureInfo> findBySubjectLectureWeekInfo(WeekInfo subjectLectureWeekInfo);
+	List<LectureInfo> findByWeekInfo(WeekInfo subjectLectureWeekInfo);
 	
-	Optional<LectureInfo> findBySubjectLectureWeekInfo_WeekIdAndIdx(String weekId, String idx);
+	Optional<LectureInfo> findByWeekInfo_WeekIdAndIdx(String weekId, String idx);
 
 }
