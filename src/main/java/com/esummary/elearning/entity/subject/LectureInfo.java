@@ -1,6 +1,8 @@
 package com.esummary.elearning.entity.subject;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -15,6 +17,7 @@ import lombok.ToString;
 @ToString(exclude = "weekInfo")
 public class LectureInfo {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long lectureId;
 	String lectureVideoId;//id로 사용하기 적합하지 않음. 없을 때가 있다.
 	String type;
@@ -32,7 +35,12 @@ public class LectureInfo {
 	@JoinColumn(name = "LECTURE_WEEK_ID")
 //	@Transient
 	private WeekInfo weekInfo;
-
+	
+	
+	public void setLectureIdForCrawlingObject(Long lectureId) {
+		//크롤링을 한 객체는 MySQL에서 ID를 save하기전까지 부여할 수 없기 때문에 직접 넣어주어야한다.
+		this.lectureId = lectureId;
+	}
 	
 	public String getWeekId() {
 		return this.weekInfo.getWeekId();
@@ -40,10 +48,6 @@ public class LectureInfo {
 	
 	public Long getLectureId() {
 		return lectureId;
-	}
-
-	public void setLectureId(Long lectureId) {
-		this.lectureId = lectureId;
 	}
 
 	public String getLectureVideoId() {

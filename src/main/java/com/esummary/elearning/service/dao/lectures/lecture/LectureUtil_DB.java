@@ -17,8 +17,6 @@ import com.esummary.elearning.service.dao.user.UserLectureUtil_DB;
 @Component
 public class LectureUtil_DB implements DBLectureUtil {
 	
-	private static Long seq_Leture = 1L; //임시로 Lecture를 DB에 등록하기위해 만들어놓음 시퀀스사용할 것
-	
 	@Autowired
 	private SubjectLectureRepository subjectLectureRepository;
 	@Autowired
@@ -45,7 +43,6 @@ public class LectureUtil_DB implements DBLectureUtil {
 		if(validateDuplicate(lecture))
 			return false;
 		
-		lecture.setLectureId(seq_Leture++); // MySQL로 바꾸고 삭제할 코드
 		subjectLectureRepository.save(lecture);
 		return true;
 	}
@@ -58,7 +55,6 @@ public class LectureUtil_DB implements DBLectureUtil {
 			if(validateDuplicate(lecture)) // 중복 확인, 중복일시 예외발생
 				continue;
 			else {
-				lecture.setLectureId(seq_Leture++); // MySQL로 바꾸고 삭제할 코드
 				savedLectureWeeks.add(lecture);
 			}
 		}

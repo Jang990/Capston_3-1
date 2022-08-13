@@ -69,12 +69,12 @@ public class VueServiceImpl implements VueService {
 	@Autowired
 	private TaskCrawlingService taskUtil;
 	@Autowired
-	private WeekCrawlingService lectureWeekUtil;
+	private WeekCrawlingService weekUtil;
 	
 	@Autowired
 	private DBSubjectUtil dbSubjectUtil;
 	@Autowired
-	private DBLectureWeekUtil dbLectureWeekUtil;
+	private DBLectureWeekUtil dbWeekUtil;
 	@Autowired
 	private DBLectureUtil dbLectureUtil;
 	@Autowired
@@ -189,21 +189,21 @@ public class VueServiceImpl implements VueService {
 	public List<LectureWeekData> crawlLecture(UserData user, String subjectId) {
 //		UserSubject userSubject = dbUserSubjectUtil.getStudentSubject(subjectId, user.getStudentNumber()); 
 		//크롤링하기.
-		List<WeekInfo> lectures = lectureWeekUtil.getSubjectLectureWeekInfo(subjectId, user.getInitialCookies());
+		List<WeekInfo> weeks = weekUtil.getSubjectLectureWeekInfo(subjectId, user.getInitialCookies());
 		
 		//Lecture저장하기.
-		dbLectureWeekUtil.saveService(lectures);
+		dbWeekUtil.saveService(weeks);
 		Optional<UserSubject> userSubject = dbUserSubjectUtil.getStudentSubject(subjectId, user.getStudentNumber());
-		if(userSubject.isEmpty()) System.out.println("여기발생");
-		for (WeekInfo lectureWeek : lectures) {
-			dbLectureUtil.saveService(lectureWeek.getLectures());
-			List<UserLecture> userLectures = convertToUserLectureList(userSubject.get(), lectureWeek.getLectures());
+//		if(userSubject.isEmpty()) System.out.println("UserSubject 존재하지 않음");
+		for (WeekInfo week : weeks) {
+			dbLectureUtil.saveService(week.getLectures());
+			List<UserLecture> userLectures = convertToUserLectureList(userSubject.get(), week.getLectures());
 			dbUserLectureUtil.saveService(userLectures);
 		}
 		
 		//DTO로 바꾸기.
 		List<LectureWeekData> lecturesDTO = new ArrayList<LectureWeekData>();
-		for (WeekInfo subjectLectureWeekInfo : lectures) {
+		for (WeekInfo subjectLectureWeekInfo : weeks) {
 			lecturesDTO.add(new LectureWeekData(subjectLectureWeekInfo));
 		}
 		
@@ -221,11 +221,11 @@ public class VueServiceImpl implements VueService {
 		 */
 		List<UserLecture> userLectures = new ArrayList<UserLecture>();
 		for (LectureInfo lecture : lectureList) {
-			if(lecture.getLectureId() == null) {
-				Optional<LectureInfo> dbLecture = dbLectureUtil.getLecture(lecture.getWeekId(), lecture.getIdx());
+			if(lecture.getLectureId() == null) { 
+				Optional<LectureInfo> dbLecture = dbLectureUtil.getLecture(lecture.getWeekId(), lecture.getIdx()); //여기 최적화 필요. 전부 쿼리를 보냄. 한번에 불러오고 키값으로 찾는게 좋을 듯
 				if(dbLecture.isEmpty()) System.out.println("======= 오류위치: convertToUserLectureList ");
 				else {
-					lecture.setLectureId(dbLecture.get().getLectureId());
+					lecture.setLectureIdForCrawlingObject(dbLecture.get().getLectureId()); // 크롤링을 했기때문에 MySQL에 ID값은 들어가 있지 않다.
 				}
 			}
 			userLectures.add(new UserLecture(lecture, userSubject));
