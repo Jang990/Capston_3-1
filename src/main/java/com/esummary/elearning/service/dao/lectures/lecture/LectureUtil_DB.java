@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import com.esummary.elearning.entity.subject.LectureInfo;
 import com.esummary.elearning.entity.subject.WeekInfo;
 import com.esummary.elearning.entity.user.UserLecture;
-import com.esummary.elearning.repository.subject.SubjectLectureRepository;
+import com.esummary.elearning.repository.subject.LectureInfoRepository;
 import com.esummary.elearning.repository.user.UserLectureRepository;
 import com.esummary.elearning.service.dao.user.UserLectureUtil_DB;
 
@@ -18,7 +18,7 @@ import com.esummary.elearning.service.dao.user.UserLectureUtil_DB;
 public class LectureUtil_DB implements DBLectureUtil {
 	
 	@Autowired
-	private SubjectLectureRepository subjectLectureRepository;
+	private LectureInfoRepository subjectLectureRepository;
 	@Autowired
 	private UserLectureRepository userLectureRepository;
 	@Autowired

@@ -15,15 +15,15 @@ import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.subject.WeekInfo;
 import com.esummary.elearning.entity.subject.NoticeInfo;
 import com.esummary.elearning.entity.subject.TaskInfo;
-import com.esummary.elearning.repository.subject.SubjectNoticeRepository;
-import com.esummary.elearning.repository.subject.SubjectTaskRepository;
+import com.esummary.elearning.repository.subject.NoticeInfoRepository;
+import com.esummary.elearning.repository.subject.TaskInfoRepository;
 import com.esummary.elearning.service.crawling.ELearningURL;
 
 @Component
 public class NoticeUtil_DB implements DBNoticeUtil{
 	
 	@Autowired
-	private SubjectNoticeRepository subjectNoticeRepository;
+	private NoticeInfoRepository subjectNoticeRepository;
 	
 	public List<NoticeInfo> getSubjectNoticeInfo(SubjectInfo subjectInfo) {
 		List<NoticeInfo> noticeList = null;

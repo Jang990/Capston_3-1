@@ -29,7 +29,7 @@ import com.esummary.elearning.entity.user.UserLecture;
 import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.entity.user.UserTask;
 import com.esummary.elearning.repository.UserSubjectRepository;
-import com.esummary.elearning.repository.subject.SubjectNoticeRepository;
+import com.esummary.elearning.repository.subject.NoticeInfoRepository;
 import com.esummary.elearning.repository.user.UserLectureRepository;
 import com.esummary.elearning.repository.user.UserRepository;
 import com.esummary.elearning.service.crawling.SubjectCrawlingService;
@@ -54,7 +54,7 @@ public class VueServiceImpl implements VueService {
 	private UserRepository userRepository;
 	
 	@Autowired
-	private SubjectNoticeRepository subjectNoticeRepository;
+	private NoticeInfoRepository subjectNoticeRepository;
 	@Autowired
 	private UserSubjectRepository userSubjectRepository;
 	@Autowired

@@ -20,9 +20,9 @@ import com.esummary.elearning.entity.subject.LectureInfo;
 import com.esummary.elearning.entity.subject.WeekInfo;
 import com.esummary.elearning.entity.user.UserLecture;
 import com.esummary.elearning.entity.user.UserSubject;
-import com.esummary.elearning.repository.subject.SubjectLectureRepository;
+import com.esummary.elearning.repository.subject.LectureInfoRepository;
 import com.esummary.elearning.repository.subject.WeekInfoRepository;
-import com.esummary.elearning.repository.subject.SubjectTaskRepository;
+import com.esummary.elearning.repository.subject.TaskInfoRepository;
 import com.esummary.elearning.repository.user.UserLectureRepository;
 import com.esummary.elearning.service.crawling.ELearningURL;
 import com.esummary.elearning.service.crawling.SubjectCrawlingService_Inhatc;
@@ -31,7 +31,7 @@ import com.esummary.elearning.service.crawling.SubjectCrawlingService_Inhatc;
 public class LectureCrawlingService_Inhatc implements LectureCrawlingService {
 	
 	@Autowired
-	private SubjectLectureRepository subjectLectureRepository;
+	private LectureInfoRepository subjectLectureRepository;
 	@Autowired
 	private UserLectureRepository userLectureRepository;
 	

@@ -11,7 +11,7 @@ import com.esummary.elearning.entity.subject.NoticeInfo;
 
 
 @Repository
-public interface SubjectNoticeRepository extends CrudRepository<NoticeInfo, String>{
+public interface NoticeInfoRepository extends CrudRepository<NoticeInfo, String>{
 	List<NoticeInfo> findBySubjectInfo(SubjectInfo subjectInfo);
 	List<NoticeInfo> findBySubjectInfo_SubjectId(String subjectId);
 	Optional<NoticeInfo> findByNoticeIdAndTitleAndDescription(String noticeId, String title, String description);

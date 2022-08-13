@@ -11,7 +11,7 @@ import com.esummary.elearning.entity.subject.TaskInfo;
  
 
 @Repository
-public interface SubjectTaskRepository extends CrudRepository<TaskInfo, String>{
+public interface TaskInfoRepository extends CrudRepository<TaskInfo, String>{
 	List<TaskInfo> findBySubjectInfo(SubjectInfo subjectInfo);
 	List<TaskInfo> findBySubjectInfo_SubjectId(String subjectId);
 	

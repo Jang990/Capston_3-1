@@ -26,7 +26,7 @@ import com.esummary.elearning.entity.subject.TaskInfo;
 import com.esummary.elearning.entity.user.UserInfo;
 import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.repository.UserSubjectRepository;
-import com.esummary.elearning.repository.subject.SubjectRepository;
+import com.esummary.elearning.repository.subject.SubjectInfoRepository;
 import com.esummary.elearning.service.crawling.notice.NoticeCrawlingService;
 import com.esummary.elearning.service.crawling.task.TaskCrawlingService;
 import com.esummary.elearning.service.crawling.user.UserCrawlingUtil;

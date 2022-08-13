@@ -15,8 +15,8 @@ import org.springframework.stereotype.Component;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.subject.NoticeInfo;
 import com.esummary.elearning.entity.user.UserSubject;
-import com.esummary.elearning.repository.subject.SubjectNoticeRepository;
-import com.esummary.elearning.repository.subject.SubjectTaskRepository;
+import com.esummary.elearning.repository.subject.NoticeInfoRepository;
+import com.esummary.elearning.repository.subject.TaskInfoRepository;
 import com.esummary.elearning.service.crawling.ELearningURL;
 import com.esummary.elearning.service.crawling.SubjectCrawlingService_Inhatc;
 

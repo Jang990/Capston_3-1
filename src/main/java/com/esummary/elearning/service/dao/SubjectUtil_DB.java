@@ -9,13 +9,13 @@ import org.springframework.stereotype.Component;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.subject.WeekInfo;
-import com.esummary.elearning.repository.subject.SubjectRepository;
+import com.esummary.elearning.repository.subject.SubjectInfoRepository;
 
 @Component
 public class SubjectUtil_DB implements DBSubjectUtil {
 	
 	@Autowired
-	private SubjectRepository subjectRepository;
+	private SubjectInfoRepository subjectRepository;
 	
 	@Override
 	public boolean saveService(SubjectInfo subject) {

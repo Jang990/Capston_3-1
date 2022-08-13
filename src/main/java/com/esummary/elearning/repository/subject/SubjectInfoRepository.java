@@ -12,7 +12,7 @@ import com.esummary.elearning.entity.subject.SubjectInfo;
 
 
 @Repository
-public interface SubjectRepository extends CrudRepository<SubjectInfo, String>{
+public interface SubjectInfoRepository extends CrudRepository<SubjectInfo, String>{
 	@Query(value="Select si From SubjectInfo si Where si.subjectId = :subjectId")
 	Optional<SubjectInfo> findSingleSubject(@Param("subjectId")String subjectId);
 	
