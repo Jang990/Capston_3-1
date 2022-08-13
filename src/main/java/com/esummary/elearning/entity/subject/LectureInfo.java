@@ -35,7 +35,7 @@ public class LectureInfo {
 
 	
 	public String getLectureWeekId() {
-		return this.subjectLectureWeekInfo.getLectureWeekId();
+		return this.subjectLectureWeekInfo.getWeekId();
 	}
 	
 	public Long getLectureId() {
@@ -111,7 +111,7 @@ public class LectureInfo {
 	}
 
 	public LectureInfo(String lectureVideoId, String type, String idx, String title, String fullTime, String status,
-			String learningTime, String lectureWeekId) {
+			String learningTime, String weekId) {
 		this.lectureVideoId = lectureVideoId;
 		this.type = type;
 		this.idx = idx;
@@ -120,7 +120,7 @@ public class LectureInfo {
 		this.status = status;
 		this.learningTime = learningTime;
 		this.subjectLectureWeekInfo = new WeekInfo();
-		subjectLectureWeekInfo.setLectureWeekId(lectureWeekId);
+		subjectLectureWeekInfo.setWeekId(weekId);
 	}
 	
 	

@@ -48,7 +48,7 @@ public class LectureWeekData {
 			studyingState = (int)((float)cntCompleted / (cntCompleted + cntIncompleted) * 100); 
 		}
 		
-		this.lectureWeekId = lectureWeekInfo.getLectureWeekId();
+		this.lectureWeekId = lectureWeekInfo.getWeekId();
 		this.title = lectureWeekInfo.getTitle();
 		this.startDate = startDate;
 		this.endDate = endDate;

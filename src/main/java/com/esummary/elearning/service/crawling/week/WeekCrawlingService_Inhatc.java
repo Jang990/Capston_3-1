@@ -23,7 +23,7 @@ import com.esummary.elearning.entity.subject.WeekInfo;
 import com.esummary.elearning.entity.user.UserLecture;
 import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.repository.subject.SubjectLectureRepository;
-import com.esummary.elearning.repository.subject.SubjectLectureWeekRepository;
+import com.esummary.elearning.repository.subject.WeekInfoRepository;
 import com.esummary.elearning.repository.subject.SubjectTaskRepository;
 import com.esummary.elearning.repository.user.UserLectureRepository;
 import com.esummary.elearning.service.crawling.ELearningURL;

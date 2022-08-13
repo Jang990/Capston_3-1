@@ -23,7 +23,7 @@ import lombok.ToString;
 public class WeekInfo {
 	//지금 id는 임의로 lecture 서비스에서 static 변수를 이용해서 사용중이다. mysql로 바꾸면 autoIncrement사용할 것
 	@Id
-	private String lectureWeekId; 
+	private String WeekId; 
 	private String title;
 	@Temporal(TemporalType.DATE)
 	private Date startDate;
@@ -38,9 +38,9 @@ public class WeekInfo {
 	@OneToMany(mappedBy = "subjectLectureWeekInfo")
 	private List<LectureInfo> lectures;
 
-	public WeekInfo(String lectureWeekId, String title, Date startDate, Date endDate,
+	public WeekInfo(String WeekId, String title, Date startDate, Date endDate,
 			String subjectId, List<LectureInfo> lectures) {
-		this.lectureWeekId = lectureWeekId;
+		this.WeekId = WeekId;
 		this.title = title;
 		this.startDate = startDate;
 		this.endDate = endDate;

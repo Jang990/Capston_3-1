@@ -11,11 +11,11 @@ import com.esummary.elearning.entity.subject.WeekInfo;
 
 
 @Repository
-public interface SubjectLectureWeekRepository extends CrudRepository<WeekInfo, String>{
+public interface WeekInfoRepository extends CrudRepository<WeekInfo, String>{
 
 	List<WeekInfo> findBySubjectInfo(SubjectInfo subjectInfo);
 	List<WeekInfo> findBySubjectInfo_subjectId(String subjectId);
 	
-	Optional<WeekInfo> findByLectureWeekIdAndSubjectInfo_subjectId(String lectureWeekId, String subjectId);
+	Optional<WeekInfo> findByWeekIdAndSubjectInfo_subjectId(String lectureWeekId, String subjectId);
 
 }

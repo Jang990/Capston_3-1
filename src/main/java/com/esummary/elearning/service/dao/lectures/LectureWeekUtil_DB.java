@@ -25,7 +25,7 @@ import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.entity.user.UserTask;
 import com.esummary.elearning.repository.UserSubjectRepository;
 import com.esummary.elearning.repository.subject.SubjectLectureRepository;
-import com.esummary.elearning.repository.subject.SubjectLectureWeekRepository;
+import com.esummary.elearning.repository.subject.WeekInfoRepository;
 import com.esummary.elearning.repository.subject.SubjectTaskRepository;
 import com.esummary.elearning.repository.user.UserLectureRepository;
 import com.esummary.elearning.service.crawling.ELearningURL;
@@ -35,14 +35,14 @@ import com.esummary.elearning.service.dao.lectures.lecture.DBLectureUtil;
 @Component
 public class LectureWeekUtil_DB implements DBLectureWeekUtil {
 	@Autowired
-	private SubjectLectureWeekRepository subjectLectureWeekRepository;
+	private WeekInfoRepository WeekInfoRepository;
 	
 	@Override
 	public boolean saveService(WeekInfo lectureWeek) {
 		if(validateDuplicate(lectureWeek))
 			return false;
 		
-		subjectLectureWeekRepository.save(lectureWeek);
+		WeekInfoRepository.save(lectureWeek);
 		return true;
 	}
 
@@ -58,16 +58,16 @@ public class LectureWeekUtil_DB implements DBLectureWeekUtil {
 		
 		if(savedLectureWeeks.size() == 0) return false;
 		
-		subjectLectureWeekRepository.saveAll(savedLectureWeeks);
+		WeekInfoRepository.saveAll(savedLectureWeeks);
 		return true;
 	}
 
 	@Override
 	public boolean validateDuplicate(WeekInfo lectureWeek) {
-		Optional<WeekInfo> lectureWeekCheck = subjectLectureWeekRepository.
-				findByLectureWeekIdAndSubjectInfo_subjectId(lectureWeek.getLectureWeekId(), lectureWeek.getSubjectId());
+		Optional<WeekInfo> WeekCheck = WeekInfoRepository.
+				findByWeekIdAndSubjectInfo_subjectId(lectureWeek.getWeekId(), lectureWeek.getSubjectId());
 		
-		if(lectureWeekCheck.isEmpty()) return false;
+		if(WeekCheck.isEmpty()) return false;
 		else return true; //중복 맞음
 	}
 
