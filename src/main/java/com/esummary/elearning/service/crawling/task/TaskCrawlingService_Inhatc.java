@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.subject.SubjectTaskInfo;
+import com.esummary.elearning.entity.subject.TaskInfo;
 import com.esummary.elearning.entity.user.UserInfo;
 import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.entity.user.UserTask;
@@ -29,12 +29,12 @@ import com.esummary.elearning.service.crawling.SubjectCrawlingService_Inhatc;
 public class TaskCrawlingService_Inhatc implements TaskCrawlingService{
 	
 	@Override
-	public List<SubjectTaskInfo> getSubjectTaskInfo(String subjectId, Map<String, String> loginCookies) {
-		List<SubjectTaskInfo> taskList = new ArrayList<SubjectTaskInfo>();
+	public List<TaskInfo> getSubjectTaskInfo(String subjectId, Map<String, String> loginCookies) {
+		List<TaskInfo> taskList = new ArrayList<TaskInfo>();
 		Elements tasks = crawlTaskBox(subjectId, loginCookies);
 		
 		for (Element element : tasks) {
-			SubjectTaskInfo task = crawlTaskDetail(element, subjectId);
+			TaskInfo task = crawlTaskDetail(element, subjectId);
 			if(task != null) {
 				taskList.add(task);
 //				UserTask ut = new UserTask(seq_UserTask++, task.getSubmitYN(), userSubject, task);
@@ -56,7 +56,7 @@ public class TaskCrawlingService_Inhatc implements TaskCrawlingService{
 		return docTaskPage.select(taskBoxSelector);
 	}
 
-	private SubjectTaskInfo crawlTaskDetail(Element element, String subjectId) {
+	private TaskInfo crawlTaskDetail(Element element, String subjectId) {
 		String[] idAndStatus = crawlIdAndStatus(element);
 		/*
 		 * 여기 조건부는 상황에 따라 달라질 수 있다.
@@ -75,7 +75,7 @@ public class TaskCrawlingService_Inhatc implements TaskCrawlingService{
 		Map<String, Date> rangeDate = splitDataInRangeString(deadline);
 		Map<String, Integer> submissionData = splitSubmissionData(submissionInfo);
 		
-		SubjectTaskInfo task = new SubjectTaskInfo(
+		TaskInfo task = new TaskInfo(
 				id, title, description, 
 				rangeDate.get("startDate"), rangeDate.get("endDate"), 
 				submissionData.get("submissionNum"), submissionData.get("notSubmittedNum"), submissionData.get("totalNum"), 

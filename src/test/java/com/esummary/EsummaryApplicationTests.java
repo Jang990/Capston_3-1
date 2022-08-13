@@ -17,7 +17,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
+import com.esummary.elearning.entity.subject.WeekInfo;
 import com.esummary.elearning.service.dao.SubjectUtil_DB;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

@@ -7,8 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.esummary.elearning.entity.subject.SubjectLecture;
-import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
+import com.esummary.elearning.entity.subject.LectureInfo;
+import com.esummary.elearning.entity.subject.WeekInfo;
 import com.esummary.elearning.entity.user.UserLecture;
 import com.esummary.elearning.repository.subject.SubjectLectureRepository;
 import com.esummary.elearning.repository.user.UserLectureRepository;
@@ -27,21 +27,21 @@ public class LectureUtil_DB implements DBLectureUtil {
 	private UserLectureUtil_DB userLectureUtil_DB; 
 
 	@Override
-	public List<SubjectLecture> getLectureList(SubjectLectureWeekInfo subjectLectureWeekInfo) {
-		List<SubjectLecture> lectureList = new ArrayList<SubjectLecture>();
+	public List<LectureInfo> getLectureList(WeekInfo subjectLectureWeekInfo) {
+		List<LectureInfo> lectureList = new ArrayList<LectureInfo>();
 		lectureList = subjectLectureRepository.findBySubjectLectureWeekInfo(subjectLectureWeekInfo);
 		
 		return lectureList;
 	}
 	
 	@Override
-	public Optional<UserLecture> getUserLecture(int usId, SubjectLecture lecture) {
+	public Optional<UserLecture> getUserLecture(int usId, LectureInfo lecture) {
 		Optional<UserLecture> ul = userLectureUtil_DB.getUserLecture(usId, lecture.getLectureId());
 		return ul;
 	}
 
 	@Override
-	public boolean saveService(SubjectLecture lecture) {
+	public boolean saveService(LectureInfo lecture) {
 		if(validateDuplicate(lecture))
 			return false;
 		
@@ -51,10 +51,10 @@ public class LectureUtil_DB implements DBLectureUtil {
 	}
 
 	@Override
-	public boolean saveService(List<SubjectLecture> lectures) {
-		List<SubjectLecture> savedLectureWeeks = new ArrayList<SubjectLecture>();
+	public boolean saveService(List<LectureInfo> lectures) {
+		List<LectureInfo> savedLectureWeeks = new ArrayList<LectureInfo>();
 		
-		for (SubjectLecture lecture : lectures) {
+		for (LectureInfo lecture : lectures) {
 			if(validateDuplicate(lecture)) // 중복 확인, 중복일시 예외발생
 				continue;
 			else {
@@ -70,8 +70,8 @@ public class LectureUtil_DB implements DBLectureUtil {
 	}
 
 	@Override
-	public boolean validateDuplicate(SubjectLecture lecture) {
-		Optional<SubjectLecture> lectureCheck = getLecture(lecture.getLectureWeekId(), lecture.getIdx());
+	public boolean validateDuplicate(LectureInfo lecture) {
+		Optional<LectureInfo> lectureCheck = getLecture(lecture.getLectureWeekId(), lecture.getIdx());
 		
 		if(lectureCheck.isEmpty()) return false; //중복 아님
 		if(!equalEntityValue(lecture, lectureCheck.get())) return false; //중복 아님 
@@ -80,7 +80,7 @@ public class LectureUtil_DB implements DBLectureUtil {
 	}
 	
 	//두 UserLecture Entity의 실제 값을 비교.
-	private boolean equalEntityValue(SubjectLecture lecture1, SubjectLecture lecture2) {
+	private boolean equalEntityValue(LectureInfo lecture1, LectureInfo lecture2) {
 		if(!lecture1.getTitle().equals(lecture2.getTitle())) return true;
 		if(!(lecture1.getLectureVideoId() != null)) {
 			if(!lecture1.getLectureVideoId().equals(lecture2.getLectureVideoId())) return true;
@@ -101,7 +101,7 @@ public class LectureUtil_DB implements DBLectureUtil {
 	}
 
 	@Override
-	public Optional<SubjectLecture> getLecture(String lectureWeekId, String idx) {
+	public Optional<LectureInfo> getLecture(String lectureWeekId, String idx) {
 		return subjectLectureRepository.
 				findBySubjectLectureWeekInfo_LectureWeekIdAndIdx(lectureWeekId, idx);
 	}

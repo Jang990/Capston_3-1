@@ -17,7 +17,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = "subjectInfo")
-public class SubjectNoticeInfo {
+public class NoticeInfo {
 	@Id
 	private String noticeId; 
 	private String title;
@@ -32,7 +32,7 @@ public class SubjectNoticeInfo {
 	
 	
 	
-	public SubjectNoticeInfo(String noticeId, String title, String author, String createDate, String description,
+	public NoticeInfo(String noticeId, String title, String author, String createDate, String description,
 			String subjectId) {
 		this.noticeId = noticeId;
 		this.title = title;

@@ -5,8 +5,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.esummary.elearning.entity.subject.SubjectLecture;
-import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
+import com.esummary.elearning.entity.subject.LectureInfo;
+import com.esummary.elearning.entity.subject.WeekInfo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,7 +28,7 @@ public class UserLecture {
 	
 	@ManyToOne
 	@JoinColumn(name = "LECTURE_ID")
-	private SubjectLecture subjectLecture;
+	private LectureInfo subjectLecture;
 	
 	public long getSubjectLectureId() {
 		return this.subjectLecture.getLectureId();
@@ -38,7 +38,7 @@ public class UserLecture {
 		return this.userSubject.getUsId();
 	}
 
-	public UserLecture(SubjectLecture lecture, UserSubject userSubject) {
+	public UserLecture(LectureInfo lecture, UserSubject userSubject) {
 //		this.ulId = ulId;
 		this.status = lecture.getStatus();
 		this.learningTime = lecture.getLearningTime();

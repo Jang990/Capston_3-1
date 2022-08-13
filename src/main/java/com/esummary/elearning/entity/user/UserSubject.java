@@ -15,7 +15,7 @@ import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
+import com.esummary.elearning.entity.subject.WeekInfo;
 
 import lombok.Data;
 

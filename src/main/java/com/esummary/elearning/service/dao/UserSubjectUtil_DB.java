@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
-import com.esummary.elearning.entity.subject.SubjectNoticeInfo;
-import com.esummary.elearning.entity.subject.SubjectTaskInfo;
+import com.esummary.elearning.entity.subject.WeekInfo;
+import com.esummary.elearning.entity.subject.NoticeInfo;
+import com.esummary.elearning.entity.subject.TaskInfo;
 import com.esummary.elearning.entity.user.UserInfo;
 import com.esummary.elearning.entity.user.UserLecture;
 import com.esummary.elearning.entity.user.UserSubject;

@@ -16,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.subject.SubjectLecture;
-import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
+import com.esummary.elearning.entity.subject.LectureInfo;
+import com.esummary.elearning.entity.subject.WeekInfo;
 import com.esummary.elearning.entity.user.UserLecture;
 import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.repository.subject.SubjectLectureRepository;
@@ -36,8 +36,8 @@ public class LectureCrawlingService_Inhatc implements LectureCrawlingService {
 	private UserLectureRepository userLectureRepository;
 	
 	//리팩토링 중...
-	public List<SubjectLecture> getLectureList(Elements lectureElements, String lectureWeekId) {
-		List<SubjectLecture> lectures = new ArrayList<SubjectLecture>();
+	public List<LectureInfo> getLectureList(Elements lectureElements, String lectureWeekId) {
+		List<LectureInfo> lectures = new ArrayList<LectureInfo>();
 		
 		for (Element element : lectureElements) {
 			String idx = crawlIdx(element);
@@ -72,7 +72,7 @@ public class LectureCrawlingService_Inhatc implements LectureCrawlingService {
 			 */
 			String[] videoIdAndDetails = SubjectCrawlingService_Inhatc.extractDataFromJsCode(jsCode);//일단 
 			
-			SubjectLecture lecture = new SubjectLecture(videoIdAndDetails[0], type, idx, title, fullTime, status, learningTime, lectureWeekId);
+			LectureInfo lecture = new LectureInfo(videoIdAndDetails[0], type, idx, title, fullTime, status, learningTime, lectureWeekId);
 //			lecture.setLectureId(seq_Leture++);
 //			subjectLectureRepository.save(lecture);
 			

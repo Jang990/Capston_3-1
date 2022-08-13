@@ -18,8 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.subject.SubjectLecture;
-import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
+import com.esummary.elearning.entity.subject.LectureInfo;
+import com.esummary.elearning.entity.subject.WeekInfo;
 import com.esummary.elearning.entity.user.UserLecture;
 import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.repository.subject.SubjectLectureRepository;
@@ -37,7 +37,7 @@ public class WeekCrawlingService_Inhatc implements WeekCrawlingService {
 	@Autowired
 	private LectureCrawlingService lectureUtil;
 	
-	private SubjectLectureWeekInfo crawlWeekDetailInfo(Element element, String subjectId) {
+	private WeekInfo crawlWeekDetailInfo(Element element, String subjectId) {
 		Elements lectureElements = crawlLectureBox(element);
 		if(lectureElements.isEmpty()) {
 			return null;
@@ -51,8 +51,8 @@ public class WeekCrawlingService_Inhatc implements WeekCrawlingService {
 		Date startDate = SubjectCrawlingService_Inhatc.parseDate(splitData.get("startDate"));
 		Date endDate = SubjectCrawlingService_Inhatc.parseDate(splitData.get("endDate"));
 		
-		List<SubjectLecture> lectureList = lectureUtil.getLectureList(lectureElements, lectureWeekId);
-		SubjectLectureWeekInfo weekInfo = new SubjectLectureWeekInfo(lectureWeekId, title, startDate, endDate, subjectId, lectureList);
+		List<LectureInfo> lectureList = lectureUtil.getLectureList(lectureElements, lectureWeekId);
+		WeekInfo weekInfo = new WeekInfo(lectureWeekId, title, startDate, endDate, subjectId, lectureList);
 		
 		return weekInfo;
 	}
@@ -113,7 +113,7 @@ public class WeekCrawlingService_Inhatc implements WeekCrawlingService {
 	}
 
 	@Override
-	public List<SubjectLectureWeekInfo> getSubjectLectureWeekInfo(String subjectId,
+	public List<WeekInfo> getSubjectLectureWeekInfo(String subjectId,
 			Map<String, String> loginCookies) {
 		
 		Document docStudyHome = SubjectCrawlingService_Inhatc.connStudyHome(subjectId, loginCookies);
@@ -128,9 +128,9 @@ public class WeekCrawlingService_Inhatc implements WeekCrawlingService {
 		Elements lectures = crawlLectureWeekContentsBox(docLecturePage);
 		
 		//주차 정보 크롤링 - 이 하위에는 강의 차시 크롤링도 포함된다.
-		List<SubjectLectureWeekInfo> weekList = new ArrayList<SubjectLectureWeekInfo>();
+		List<WeekInfo> weekList = new ArrayList<WeekInfo>();
 		for (Element element : lectures) {
-			SubjectLectureWeekInfo week = crawlWeekDetailInfo(element, subjectId);
+			WeekInfo week = crawlWeekDetailInfo(element, subjectId);
 			if(week != null) {
 				weekList.add(week);
 			}

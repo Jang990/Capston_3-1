@@ -6,8 +6,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.subject.SubjectLecture;
-import com.esummary.elearning.entity.subject.SubjectTaskInfo;
+import com.esummary.elearning.entity.subject.LectureInfo;
+import com.esummary.elearning.entity.subject.TaskInfo;
 
 import lombok.Data;
 
@@ -25,13 +25,13 @@ public class UserTask {
 	
 	@ManyToOne
 	@JoinColumn(name = "TASK_ID")
-	private SubjectTaskInfo subjectTaskInfo;
+	private TaskInfo subjectTaskInfo;
 	
 	public UserTask() {
 		
 	}
 	
-	public UserTask(SubjectTaskInfo task, UserSubject userSubject) {
+	public UserTask(TaskInfo task, UserSubject userSubject) {
 		this.submitYN = task.getSubmitYN();
 		this.userSubject = userSubject;
 		this.subjectTaskInfo = task;
@@ -45,7 +45,7 @@ public class UserTask {
 		return this.userSubject.getUsId();
 	}
 
-	public UserTask(Long utId, String submitYN, UserSubject userSubject, SubjectTaskInfo subjectTaskInfo) {
+	public UserTask(Long utId, String submitYN, UserSubject userSubject, TaskInfo subjectTaskInfo) {
 		super();
 		this.utId = utId;
 		this.submitYN = submitYN;

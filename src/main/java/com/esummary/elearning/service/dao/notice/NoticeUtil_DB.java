@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
-import com.esummary.elearning.entity.subject.SubjectNoticeInfo;
-import com.esummary.elearning.entity.subject.SubjectTaskInfo;
+import com.esummary.elearning.entity.subject.WeekInfo;
+import com.esummary.elearning.entity.subject.NoticeInfo;
+import com.esummary.elearning.entity.subject.TaskInfo;
 import com.esummary.elearning.repository.subject.SubjectNoticeRepository;
 import com.esummary.elearning.repository.subject.SubjectTaskRepository;
 import com.esummary.elearning.service.crawling.ELearningURL;
@@ -25,14 +25,14 @@ public class NoticeUtil_DB implements DBNoticeUtil{
 	@Autowired
 	private SubjectNoticeRepository subjectNoticeRepository;
 	
-	public List<SubjectNoticeInfo> getSubjectNoticeInfo(SubjectInfo subjectInfo) {
-		List<SubjectNoticeInfo> noticeList = null;
+	public List<NoticeInfo> getSubjectNoticeInfo(SubjectInfo subjectInfo) {
+		List<NoticeInfo> noticeList = null;
 		noticeList = subjectNoticeRepository.findBySubjectInfo(subjectInfo);
 		return noticeList;
 	}
 	
 	@Override
-	public boolean saveService(SubjectNoticeInfo notice) {
+	public boolean saveService(NoticeInfo notice) {
 		if(validateDuplicate(notice))
 			return false;
 		
@@ -41,10 +41,10 @@ public class NoticeUtil_DB implements DBNoticeUtil{
 	}
 
 	@Override
-	public boolean saveService(List<SubjectNoticeInfo> notices) {
-		List<SubjectNoticeInfo> savedLectureWeeks = new ArrayList<SubjectNoticeInfo>();
+	public boolean saveService(List<NoticeInfo> notices) {
+		List<NoticeInfo> savedLectureWeeks = new ArrayList<NoticeInfo>();
 		
-		for (SubjectNoticeInfo notice : notices) {
+		for (NoticeInfo notice : notices) {
 			if(validateDuplicate(notice)) // 중복 확인, 중복일시 예외발생
 				continue;
 			else savedLectureWeeks.add(notice);
@@ -57,8 +57,8 @@ public class NoticeUtil_DB implements DBNoticeUtil{
 	}
 
 	@Override
-	public boolean validateDuplicate(SubjectNoticeInfo notice) {
-		Optional<SubjectNoticeInfo> noticeCheck = subjectNoticeRepository.
+	public boolean validateDuplicate(NoticeInfo notice) {
+		Optional<NoticeInfo> noticeCheck = subjectNoticeRepository.
 				findByNoticeIdAndTitleAndDescription(notice.getNoticeId(), notice.getTitle(), notice.getDescription());
 		
 		if(noticeCheck.isEmpty()) return false;

@@ -7,10 +7,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.subject.SubjectLecture;
-import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
+import com.esummary.elearning.entity.subject.LectureInfo;
+import com.esummary.elearning.entity.subject.WeekInfo;
 import com.esummary.elearning.entity.user.UserSubject;
 
 public interface LectureCrawlingService {
-	List<SubjectLecture> getLectureList(Elements lectureElements, String lectureWeekId);
+	List<LectureInfo> getLectureList(Elements lectureElements, String lectureWeekId);
 }

@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.subject.SubjectNoticeInfo;
+import com.esummary.elearning.entity.subject.NoticeInfo;
 import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.repository.subject.SubjectNoticeRepository;
 import com.esummary.elearning.repository.subject.SubjectTaskRepository;
@@ -25,12 +25,12 @@ import com.esummary.elearning.service.crawling.SubjectCrawlingService_Inhatc;
 public class NoticeCrawlingService_Inhatc implements NoticeCrawlingService{
 
 	@Override
-	public List<SubjectNoticeInfo> getSubjectNoticeInfo(String subjectId, Map<String, String> loginCookies) {
-		List<SubjectNoticeInfo> noticeList = new ArrayList<SubjectNoticeInfo>();
+	public List<NoticeInfo> getSubjectNoticeInfo(String subjectId, Map<String, String> loginCookies) {
+		List<NoticeInfo> noticeList = new ArrayList<NoticeInfo>();
 		Elements notices = crawlNoticeBox(subjectId, loginCookies);
 		
 		for (Element element : notices) {
-			SubjectNoticeInfo notice = createNotice(element, subjectId);
+			NoticeInfo notice = createNotice(element, subjectId);
 			if(notice != null) {
 				noticeList.add(notice);
 			}
@@ -49,7 +49,7 @@ public class NoticeCrawlingService_Inhatc implements NoticeCrawlingService{
 		return docNoticePage.select(noticeBoxSelector);
 	}
 
-	private SubjectNoticeInfo createNotice(Element element, String subjectId) {
+	private NoticeInfo createNotice(Element element, String subjectId) {
 		String id = crawlNoticeId(element);
 		String title = crawlTitle(element);
 		if(title.equals("") || title == null)
@@ -58,8 +58,8 @@ public class NoticeCrawlingService_Inhatc implements NoticeCrawlingService{
 		String author = crawlAutor(element);
 		String createDate = crawlCreateDate(element);
 		
-		SubjectNoticeInfo createdNotice = 
-				new SubjectNoticeInfo(id, title, author, createDate, description, subjectId);
+		NoticeInfo createdNotice = 
+				new NoticeInfo(id, title, author, createDate, description, subjectId);
 		
 		return createdNotice; 
 	}

@@ -7,15 +7,15 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
+import com.esummary.elearning.entity.subject.WeekInfo;
 
 
 @Repository
-public interface SubjectLectureWeekRepository extends CrudRepository<SubjectLectureWeekInfo, String>{
+public interface SubjectLectureWeekRepository extends CrudRepository<WeekInfo, String>{
 
-	List<SubjectLectureWeekInfo> findBySubjectInfo(SubjectInfo subjectInfo);
-	List<SubjectLectureWeekInfo> findBySubjectInfo_subjectId(String subjectId);
+	List<WeekInfo> findBySubjectInfo(SubjectInfo subjectInfo);
+	List<WeekInfo> findBySubjectInfo_subjectId(String subjectId);
 	
-	Optional<SubjectLectureWeekInfo> findByLectureWeekIdAndSubjectInfo_subjectId(String lectureWeekId, String subjectId);
+	Optional<WeekInfo> findByLectureWeekIdAndSubjectInfo_subjectId(String lectureWeekId, String subjectId);
 
 }

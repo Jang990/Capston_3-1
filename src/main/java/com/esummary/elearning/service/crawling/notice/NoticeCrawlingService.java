@@ -9,10 +9,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.subject.SubjectNoticeInfo;
+import com.esummary.elearning.entity.subject.NoticeInfo;
 import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.service.crawling.ELearningURL;
 
 public interface NoticeCrawlingService {
-	List<SubjectNoticeInfo> getSubjectNoticeInfo(String subjectId, Map<String, String> initialCookies);
+	List<NoticeInfo> getSubjectNoticeInfo(String subjectId, Map<String, String> initialCookies);
 }

@@ -1,6 +1,6 @@
 package com.esummary.elearning.dto;
 
-import com.esummary.elearning.entity.subject.SubjectLecture;
+import com.esummary.elearning.entity.subject.LectureInfo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +22,7 @@ public class LectureData {
 	String status; // 0 or 1 //학습 완료: 1, 학습 미완료: 0 
 	String learningTime;
 	
-	public LectureData(SubjectLecture subjectLecture) {
+	public LectureData(LectureInfo subjectLecture) {
 		this.lectureId = subjectLecture.getLectureId();
 		this.lectureVideoId = subjectLecture.getLectureVideoId();
 		this.type = subjectLecture.getType();

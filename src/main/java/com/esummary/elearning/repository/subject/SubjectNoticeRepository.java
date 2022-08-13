@@ -7,12 +7,12 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.subject.SubjectNoticeInfo;
+import com.esummary.elearning.entity.subject.NoticeInfo;
 
 
 @Repository
-public interface SubjectNoticeRepository extends CrudRepository<SubjectNoticeInfo, String>{
-	List<SubjectNoticeInfo> findBySubjectInfo(SubjectInfo subjectInfo);
-	List<SubjectNoticeInfo> findBySubjectInfo_SubjectId(String subjectId);
-	Optional<SubjectNoticeInfo> findByNoticeIdAndTitleAndDescription(String noticeId, String title, String description);
+public interface SubjectNoticeRepository extends CrudRepository<NoticeInfo, String>{
+	List<NoticeInfo> findBySubjectInfo(SubjectInfo subjectInfo);
+	List<NoticeInfo> findBySubjectInfo_SubjectId(String subjectId);
+	Optional<NoticeInfo> findByNoticeIdAndTitleAndDescription(String noticeId, String title, String description);
 }

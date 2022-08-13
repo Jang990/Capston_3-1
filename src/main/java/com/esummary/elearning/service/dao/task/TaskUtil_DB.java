@@ -16,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.subject.SubjectNoticeInfo;
-import com.esummary.elearning.entity.subject.SubjectTaskInfo;
+import com.esummary.elearning.entity.subject.NoticeInfo;
+import com.esummary.elearning.entity.subject.TaskInfo;
 import com.esummary.elearning.entity.user.UserInfo;
 import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.entity.user.UserTask;
@@ -35,8 +35,8 @@ public class TaskUtil_DB implements DBTaskUtil{
 	private UserTaskRepository userTaskRepository;
 	
 	
-	public List<SubjectTaskInfo> getSubjectTaskInfo(SubjectInfo subjectInfo) {
-		List<SubjectTaskInfo> taskList = null;
+	public List<TaskInfo> getSubjectTaskInfo(SubjectInfo subjectInfo) {
+		List<TaskInfo> taskList = null;
 		taskList = subjectTaskRepository.findBySubjectInfo(subjectInfo);
 		
 		return taskList;
@@ -44,9 +44,9 @@ public class TaskUtil_DB implements DBTaskUtil{
 
 
 	@Override
-	public List<UserTask> getUserTask(List<SubjectTaskInfo> taskList) {
+	public List<UserTask> getUserTask(List<TaskInfo> taskList) {
 		List<UserTask> userTaskList = new ArrayList<UserTask>();
-		for (SubjectTaskInfo subjectTaskInfo : taskList) {
+		for (TaskInfo subjectTaskInfo : taskList) {
 			Optional<UserTask> check = userTaskRepository.findBySubjectTaskInfo(subjectTaskInfo);
 			if(check.isEmpty()) continue;
 			UserTask ut = check.get();
@@ -59,7 +59,7 @@ public class TaskUtil_DB implements DBTaskUtil{
 
 
 	@Override
-	public boolean saveService(SubjectTaskInfo task) {
+	public boolean saveService(TaskInfo task) {
 		if(validateDuplicate(task))
 			return false;
 		
@@ -69,10 +69,10 @@ public class TaskUtil_DB implements DBTaskUtil{
 
 
 	@Override
-	public boolean saveService(List<SubjectTaskInfo> tasks) {
-		List<SubjectTaskInfo> savedTasks = new ArrayList<SubjectTaskInfo>();
+	public boolean saveService(List<TaskInfo> tasks) {
+		List<TaskInfo> savedTasks = new ArrayList<TaskInfo>();
 		
-		for (SubjectTaskInfo task : tasks) {
+		for (TaskInfo task : tasks) {
 			if(validateDuplicate(task)) // 중복 확인, 중복일시 예외발생
 				continue;
 			else savedTasks.add(task);
@@ -86,16 +86,16 @@ public class TaskUtil_DB implements DBTaskUtil{
 
 
 	@Override
-	public boolean validateDuplicate(SubjectTaskInfo task) {
+	public boolean validateDuplicate(TaskInfo task) {
 		//값이 중복되는지도 체크한다.
-		Optional<SubjectTaskInfo> taskCheck = subjectTaskRepository.
+		Optional<TaskInfo> taskCheck = subjectTaskRepository.
 				findByTaskId(task.getTaskId());
 		
 		if(taskCheck.isEmpty() || !equalEntityValue(task, taskCheck.get())) return false;
 		else return true; //중복 맞음
 	}
 	
-	private boolean equalEntityValue(SubjectTaskInfo task1, SubjectTaskInfo task2) {
+	private boolean equalEntityValue(TaskInfo task1, TaskInfo task2) {
 		if(
 				task1.getSubmitYN().equals(task2.getSubmitYN()) &&
 				task1.getDescription().equals(task2.getDescription()) &&

@@ -20,10 +20,10 @@ import com.esummary.elearning.dto.SubjectCardData;
 import com.esummary.elearning.dto.TaskData;
 import com.esummary.elearning.dto.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.subject.SubjectLecture;
-import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
-import com.esummary.elearning.entity.subject.SubjectNoticeInfo;
-import com.esummary.elearning.entity.subject.SubjectTaskInfo;
+import com.esummary.elearning.entity.subject.LectureInfo;
+import com.esummary.elearning.entity.subject.WeekInfo;
+import com.esummary.elearning.entity.subject.NoticeInfo;
+import com.esummary.elearning.entity.subject.TaskInfo;
 import com.esummary.elearning.entity.user.UserInfo;
 import com.esummary.elearning.entity.user.UserLecture;
 import com.esummary.elearning.entity.user.UserSubject;
@@ -108,11 +108,11 @@ public class VueServiceImpl implements VueService {
 //	}
 	
 	public List<NoticeData> getNoticeData(String subjectId) {
-		List<SubjectNoticeInfo> noticeInfo = subjectNoticeRepository.findBySubjectInfo_SubjectId(subjectId);
+		List<NoticeInfo> noticeInfo = subjectNoticeRepository.findBySubjectInfo_SubjectId(subjectId);
 		if(noticeInfo == null || noticeInfo.size() == 0) return null;
 		
 		List<NoticeData> noticeDTO = new ArrayList<>();
-		for (SubjectNoticeInfo subjectNoticeInfo : noticeInfo) {
+		for (NoticeInfo subjectNoticeInfo : noticeInfo) {
 			NoticeData notice = new NoticeData(
 					subjectNoticeInfo.getNoticeId(),
 					subjectNoticeInfo.getTitle(), 
@@ -143,14 +143,14 @@ public class VueServiceImpl implements VueService {
 	@Override
 	public List<NoticeData> crawlNotice(UserData user, String subjectId) {
 		//크롤링
-		List<SubjectNoticeInfo> notices = noticeUtil.getSubjectNoticeInfo(subjectId, user.getInitialCookies());
+		List<NoticeInfo> notices = noticeUtil.getSubjectNoticeInfo(subjectId, user.getInitialCookies());
 		
 		//저장
 		dbNoticeUtil.saveService(notices);
 		
 		//DTO로 변환
 		List<NoticeData> noticeDTO = new ArrayList<NoticeData>();
-		for (SubjectNoticeInfo subjectNoticeInfo : notices) {
+		for (NoticeInfo subjectNoticeInfo : notices) {
 			noticeDTO.add(this.convertNoticeData(subjectNoticeInfo));
 		}
 		
@@ -160,7 +160,7 @@ public class VueServiceImpl implements VueService {
 	@Override
 	public List<TaskData> crawlTask(UserData user, String subjectId) {
 		//크롤링
-		List<SubjectTaskInfo> tasks = taskUtil.getSubjectTaskInfo(subjectId, user.getInitialCookies());
+		List<TaskInfo> tasks = taskUtil.getSubjectTaskInfo(subjectId, user.getInitialCookies());
 		
 		//저장
 		dbTaskUtil.saveService(tasks); // SubjectTask 저장
@@ -171,15 +171,15 @@ public class VueServiceImpl implements VueService {
 		
 		//DTO로 변환
 		List<TaskData> taskDTO = new ArrayList<TaskData>();
-		for (SubjectTaskInfo subjectTaskInfo : tasks) {
+		for (TaskInfo subjectTaskInfo : tasks) {
 			taskDTO.add(this.convertTaskData(subjectTaskInfo));
 		}
 		return taskDTO;
 	}
 	
-	private List<UserTask> convertToUserTaskList(UserSubject userSubject, List<SubjectTaskInfo> tasks) {
+	private List<UserTask> convertToUserTaskList(UserSubject userSubject, List<TaskInfo> tasks) {
 		List<UserTask> userTasks = new ArrayList<UserTask>();
-		for (SubjectTaskInfo lecture : tasks) {
+		for (TaskInfo lecture : tasks) {
 			userTasks.add(new UserTask(lecture, userSubject));
 		}
 		return userTasks;
@@ -189,13 +189,13 @@ public class VueServiceImpl implements VueService {
 	public List<LectureWeekData> crawlLecture(UserData user, String subjectId) {
 //		UserSubject userSubject = dbUserSubjectUtil.getStudentSubject(subjectId, user.getStudentNumber()); 
 		//크롤링하기.
-		List<SubjectLectureWeekInfo> lectures = lectureWeekUtil.getSubjectLectureWeekInfo(subjectId, user.getInitialCookies());
+		List<WeekInfo> lectures = lectureWeekUtil.getSubjectLectureWeekInfo(subjectId, user.getInitialCookies());
 		
 		//Lecture저장하기.
 		dbLectureWeekUtil.saveService(lectures);
 		Optional<UserSubject> userSubject = dbUserSubjectUtil.getStudentSubject(subjectId, user.getStudentNumber());
 		if(userSubject.isEmpty()) System.out.println("여기발생");
-		for (SubjectLectureWeekInfo lectureWeek : lectures) {
+		for (WeekInfo lectureWeek : lectures) {
 			dbLectureUtil.saveService(lectureWeek.getLectures());
 			List<UserLecture> userLectures = convertToUserLectureList(userSubject.get(), lectureWeek.getLectures());
 			dbUserLectureUtil.saveService(userLectures);
@@ -203,14 +203,14 @@ public class VueServiceImpl implements VueService {
 		
 		//DTO로 바꾸기.
 		List<LectureWeekData> lecturesDTO = new ArrayList<LectureWeekData>();
-		for (SubjectLectureWeekInfo subjectLectureWeekInfo : lectures) {
+		for (WeekInfo subjectLectureWeekInfo : lectures) {
 			lecturesDTO.add(new LectureWeekData(subjectLectureWeekInfo));
 		}
 		
 		return lecturesDTO;
 	}
 
-	private List<UserLecture> convertToUserLectureList(UserSubject userSubject, List<SubjectLecture> lectureList) {
+	private List<UserLecture> convertToUserLectureList(UserSubject userSubject, List<LectureInfo> lectureList) {
 		/*
 		 *  예외사례
 		 * 사용자 A의 첫 사이트 이용인 경우 saveService부분에서 userLecture에 ul_Id가 무조건 들어간다.
@@ -220,9 +220,9 @@ public class VueServiceImpl implements VueService {
 		 * convertToUserLectureList 부분에서 SubjectLecture를 검색해서 넣어준다.
 		 */
 		List<UserLecture> userLectures = new ArrayList<UserLecture>();
-		for (SubjectLecture lecture : lectureList) {
+		for (LectureInfo lecture : lectureList) {
 			if(lecture.getLectureId() == null) {
-				Optional<SubjectLecture> dbLecture = dbLectureUtil.getLecture(lecture.getLectureWeekId(), lecture.getIdx());
+				Optional<LectureInfo> dbLecture = dbLectureUtil.getLecture(lecture.getLectureWeekId(), lecture.getIdx());
 				if(dbLecture.isEmpty()) System.out.println("======= 오류위치: convertToUserLectureList ");
 				else {
 					lecture.setLectureId(dbLecture.get().getLectureId());
@@ -233,7 +233,7 @@ public class VueServiceImpl implements VueService {
 		return userLectures;
 	}
 
-	private NoticeData convertNoticeData(SubjectNoticeInfo subjectNoticeInfo) {
+	private NoticeData convertNoticeData(NoticeInfo subjectNoticeInfo) {
 		return new NoticeData(
 				subjectNoticeInfo.getNoticeId(), 
 				subjectNoticeInfo.getTitle(), 
@@ -243,7 +243,7 @@ public class VueServiceImpl implements VueService {
 		);
 	}
 	
-	private TaskData convertTaskData(SubjectTaskInfo subjectTaskInfo) {
+	private TaskData convertTaskData(TaskInfo subjectTaskInfo) {
 		String startDate =makeDateString(subjectTaskInfo.getStartDate());
 		String endDate =makeDateString(subjectTaskInfo.getEndDate());
 		
@@ -285,11 +285,11 @@ public class VueServiceImpl implements VueService {
 //		dbSubjectUtil;
 		
 		List<LectureWeekData> weekDTO = new ArrayList<LectureWeekData>();
-		List<SubjectLectureWeekInfo> weekList = us.get().getSubjectInfo().getLectureList();
+		List<WeekInfo> weekList = us.get().getSubjectInfo().getLectureList();
 		for (int i = 0; i < weekList.size(); i++) {
-			SubjectLectureWeekInfo weekInfo = weekList.get(i);
-			List<SubjectLecture> lectureDetail = weekInfo.getLectures();
-			for (SubjectLecture subjectLecture : lectureDetail) {
+			WeekInfo weekInfo = weekList.get(i);
+			List<LectureInfo> lectureDetail = weekInfo.getLectures();
+			for (LectureInfo subjectLecture : lectureDetail) {
 				UserLecture ul = userLectureRepository.findBySubjectLecture_LectureId(subjectLecture.getLectureId());
 				if(ul == null) continue;
 				
@@ -323,7 +323,7 @@ public class VueServiceImpl implements VueService {
 	}
 
 	private TaskData convertTaskData(UserTask userTask) {
-		SubjectTaskInfo task = userTask.getSubjectTaskInfo();
+		TaskInfo task = userTask.getSubjectTaskInfo();
 		String startDate = makeDateString(task.getStartDate());
 		String endDate = makeDateString(task.getEndDate());
 		return new TaskData(

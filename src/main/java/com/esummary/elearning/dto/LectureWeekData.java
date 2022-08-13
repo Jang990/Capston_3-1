@@ -5,8 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import com.esummary.elearning.entity.subject.SubjectLecture;
-import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
+import com.esummary.elearning.entity.subject.LectureInfo;
+import com.esummary.elearning.entity.subject.WeekInfo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,15 +26,15 @@ public class LectureWeekData {
 	private int cntIncompleted; 
 	private int studyingState; 
 	
-	public LectureWeekData(SubjectLectureWeekInfo lectureWeekInfo) {
+	public LectureWeekData(WeekInfo lectureWeekInfo) {
 		int cntCompleted = 0;
 		int cntIncompleted = 0;
-		List<SubjectLecture> lectureDetail = lectureWeekInfo.getLectures();
+		List<LectureInfo> lectureDetail = lectureWeekInfo.getLectures();
 		List<LectureData> lectureDetailDTO = new ArrayList<LectureData>();
 		String startDate = makeDateString(lectureWeekInfo.getStartDate());
 		String endDate = makeDateString(lectureWeekInfo.getEndDate());
 		
-		for (SubjectLecture detail : lectureDetail) {
+		for (LectureInfo detail : lectureDetail) {
 			
 			LectureData lecture = new LectureData(detail);
 			if(isCompletedLecture(lecture)) cntCompleted++;

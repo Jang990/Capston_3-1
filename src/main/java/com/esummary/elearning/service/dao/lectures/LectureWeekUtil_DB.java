@@ -17,9 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.subject.SubjectLecture;
-import com.esummary.elearning.entity.subject.SubjectLectureWeekInfo;
-import com.esummary.elearning.entity.subject.SubjectTaskInfo;
+import com.esummary.elearning.entity.subject.LectureInfo;
+import com.esummary.elearning.entity.subject.WeekInfo;
+import com.esummary.elearning.entity.subject.TaskInfo;
 import com.esummary.elearning.entity.user.UserLecture;
 import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.entity.user.UserTask;
@@ -38,7 +38,7 @@ public class LectureWeekUtil_DB implements DBLectureWeekUtil {
 	private SubjectLectureWeekRepository subjectLectureWeekRepository;
 	
 	@Override
-	public boolean saveService(SubjectLectureWeekInfo lectureWeek) {
+	public boolean saveService(WeekInfo lectureWeek) {
 		if(validateDuplicate(lectureWeek))
 			return false;
 		
@@ -47,10 +47,10 @@ public class LectureWeekUtil_DB implements DBLectureWeekUtil {
 	}
 
 	@Override
-	public boolean saveService(List<SubjectLectureWeekInfo> lectureWeeks) {
-		List<SubjectLectureWeekInfo> savedLectureWeeks = new ArrayList<SubjectLectureWeekInfo>();
+	public boolean saveService(List<WeekInfo> lectureWeeks) {
+		List<WeekInfo> savedLectureWeeks = new ArrayList<WeekInfo>();
 		
-		for (SubjectLectureWeekInfo lectureWeek : lectureWeeks) {
+		for (WeekInfo lectureWeek : lectureWeeks) {
 			if(validateDuplicate(lectureWeek)) // 중복 확인, 중복일시 예외발생
 				continue;
 			else savedLectureWeeks.add(lectureWeek);
@@ -63,8 +63,8 @@ public class LectureWeekUtil_DB implements DBLectureWeekUtil {
 	}
 
 	@Override
-	public boolean validateDuplicate(SubjectLectureWeekInfo lectureWeek) {
-		Optional<SubjectLectureWeekInfo> lectureWeekCheck = subjectLectureWeekRepository.
+	public boolean validateDuplicate(WeekInfo lectureWeek) {
+		Optional<WeekInfo> lectureWeekCheck = subjectLectureWeekRepository.
 				findByLectureWeekIdAndSubjectInfo_subjectId(lectureWeek.getLectureWeekId(), lectureWeek.getSubjectId());
 		
 		if(lectureWeekCheck.isEmpty()) return false;

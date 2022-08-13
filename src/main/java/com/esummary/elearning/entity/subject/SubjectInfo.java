@@ -45,11 +45,11 @@ public class SubjectInfo {
 	private String openType;				//normal				normal
 	
 	@OneToMany(mappedBy = "subjectInfo")
-	private List<SubjectLectureWeekInfo> lectureList; //1주차, 2주차, 3주차에 관한 정보
+	private List<WeekInfo> lectureList; //1주차, 2주차, 3주차에 관한 정보
 	@OneToMany(mappedBy = "subjectInfo")
-	private List<SubjectTaskInfo> taskList; //과제에 관한 정보
+	private List<TaskInfo> taskList; //과제에 관한 정보
 	@OneToMany(mappedBy = "subjectInfo")
-	private List<SubjectNoticeInfo> noticeList; //공지사항에 관한 정보
+	private List<NoticeInfo> noticeList; //공지사항에 관한 정보
 	
 	public SubjectInfo(String subjectId, String subjectName, String subjectOwnerName, String openType) {
 		this.subjectId = subjectId;

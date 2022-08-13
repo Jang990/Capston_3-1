@@ -21,7 +21,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = "subjectInfo")
-public class SubjectTaskInfo {
+public class TaskInfo {
 	@Id
 	private String taskId;
 	private String title;
@@ -44,7 +44,7 @@ public class SubjectTaskInfo {
 	@JoinColumn(name = "SUBJECT_ID")
 	private SubjectInfo subjectInfo;
 
-	public SubjectTaskInfo(String taskId, String title, String description, Date startDate, Date endDate,
+	public TaskInfo(String taskId, String title, String description, Date startDate, Date endDate,
 			int submissionNum, int notSubmittedNum, int totalNum, String submitYN, String subjectId) {
 		super();
 		this.taskId = taskId;

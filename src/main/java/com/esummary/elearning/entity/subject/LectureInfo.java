@@ -13,7 +13,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Entity
 @ToString(exclude = "subjectLectureWeekInfo")
-public class SubjectLecture {
+public class LectureInfo {
 	@Id
 	Long lectureId;
 	String lectureVideoId;//id로 사용하기 적합하지 않음. 없을 때가 있다.
@@ -31,7 +31,7 @@ public class SubjectLecture {
 	@ManyToOne
 	@JoinColumn(name = "LECTURE_WEEK_ID")
 //	@Transient
-	private SubjectLectureWeekInfo subjectLectureWeekInfo;
+	private WeekInfo subjectLectureWeekInfo;
 
 	
 	public String getLectureWeekId() {
@@ -86,11 +86,11 @@ public class SubjectLecture {
 		this.fullTime = fullTime;
 	}
 
-	public SubjectLectureWeekInfo getSubjectLectureWeekInfo() {
+	public WeekInfo getSubjectLectureWeekInfo() {
 		return subjectLectureWeekInfo;
 	}
 
-	public void setSubjectLectureWeekInfo(SubjectLectureWeekInfo subjectLectureWeekInfo) {
+	public void setSubjectLectureWeekInfo(WeekInfo subjectLectureWeekInfo) {
 		this.subjectLectureWeekInfo = subjectLectureWeekInfo;
 	}
 
@@ -110,7 +110,7 @@ public class SubjectLecture {
 		this.learningTime = learningTime;
 	}
 
-	public SubjectLecture(String lectureVideoId, String type, String idx, String title, String fullTime, String status,
+	public LectureInfo(String lectureVideoId, String type, String idx, String title, String fullTime, String status,
 			String learningTime, String lectureWeekId) {
 		this.lectureVideoId = lectureVideoId;
 		this.type = type;
@@ -119,7 +119,7 @@ public class SubjectLecture {
 		this.fullTime = fullTime;
 		this.status = status;
 		this.learningTime = learningTime;
-		this.subjectLectureWeekInfo = new SubjectLectureWeekInfo();
+		this.subjectLectureWeekInfo = new WeekInfo();
 		subjectLectureWeekInfo.setLectureWeekId(lectureWeekId);
 	}
 	
