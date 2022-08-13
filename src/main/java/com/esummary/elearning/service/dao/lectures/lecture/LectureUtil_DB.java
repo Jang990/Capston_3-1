@@ -101,8 +101,8 @@ public class LectureUtil_DB implements DBLectureUtil {
 	}
 
 	@Override
-	public Optional<LectureInfo> getLecture(String lectureWeekId, String idx) {
+	public Optional<LectureInfo> getLecture(String weekId, String idx) {
 		return subjectLectureRepository.
-				findBySubjectLectureWeekInfo_LectureWeekIdAndIdx(lectureWeekId, idx);
+				findBySubjectLectureWeekInfo_WeekIdAndIdx(weekId, idx);
 	}
 }
