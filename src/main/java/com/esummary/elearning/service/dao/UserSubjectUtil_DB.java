@@ -24,8 +24,6 @@ import com.esummary.elearning.service.dao.task.DBTaskUtil;
 @Component("DB")
 public class UserSubjectUtil_DB implements DBUserSubjectUtil{
 	
-	private static long seqUserSubjectNum = 0; // 시퀸스 넘버. MySQL로 바꾸고 auto Increment로 바꿀것
-	
 	@Autowired
 	private UserSubjectRepository userSubjectRepository;
 	
@@ -34,7 +32,6 @@ public class UserSubjectUtil_DB implements DBUserSubjectUtil{
 		if(validateDuplicate(userSubject)) // 중복 확인, 중복일시 예외발생
 			return false;
 		
-		userSubject.setUsId(seqUserSubjectNum++); //이거 삭제하고 MySQL 로 바꾸기 OK?
 		userSubjectRepository.save(userSubject); // DB 저장
 		return true;
 	}
@@ -47,7 +44,6 @@ public class UserSubjectUtil_DB implements DBUserSubjectUtil{
 			if(validateDuplicate(userSubject)) // 중복 확인, 중복일시 예외발생
 				continue;
 			else {
-				userSubject.setUsId(seqUserSubjectNum++); //이거 삭제하고 MySQL 로 바꾸기 OK?
 				savedUserSubject.add(userSubject);
 			}
 		}
