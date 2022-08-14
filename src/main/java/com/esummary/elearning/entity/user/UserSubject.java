@@ -27,7 +27,7 @@ import lombok.Data;
 			},
 			subgraphs = { @NamedSubgraph(
 					name = "task-detail",
-					attributeNodes = { @NamedAttributeNode("subjectTaskInfo") } 
+					attributeNodes = { @NamedAttributeNode("taskInfo") } 
 				)
 			}
 	),

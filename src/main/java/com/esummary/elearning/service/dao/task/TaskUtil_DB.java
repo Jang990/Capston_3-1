@@ -47,10 +47,10 @@ public class TaskUtil_DB implements DBTaskUtil{
 	public List<UserTask> getUserTask(List<TaskInfo> taskList) {
 		List<UserTask> userTaskList = new ArrayList<UserTask>();
 		for (TaskInfo subjectTaskInfo : taskList) {
-			Optional<UserTask> check = userTaskRepository.findBySubjectTaskInfo(subjectTaskInfo);
+			Optional<UserTask> check = userTaskRepository.findByTaskInfo(subjectTaskInfo);
 			if(check.isEmpty()) continue;
 			UserTask ut = check.get();
-			ut.setSubjectTaskInfo(subjectTaskInfo);
+			ut.setTaskInfo(subjectTaskInfo);
 			userTaskList.add(ut);
 		}
 		

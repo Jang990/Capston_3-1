@@ -67,7 +67,7 @@ public class UserTaskUtil_DB implements DBUserTaskUtil {
 	
 	public Optional<UserTask> getUserTask(long usId, String taskId) {
 		return userTaskRepository.
-				findByUserSubject_usIdAndSubjectTaskInfo_TaskId(usId, taskId);
+				findByUserSubject_usIdAndTaskInfo_TaskId(usId, taskId);
 	}
 
 //	@Override

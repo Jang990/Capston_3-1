@@ -25,7 +25,7 @@ public class UserTask {
 	
 	@ManyToOne
 	@JoinColumn(name = "TASK_ID")
-	private TaskInfo subjectTaskInfo;
+	private TaskInfo taskInfo;
 	
 	public UserTask() {
 		
@@ -34,11 +34,11 @@ public class UserTask {
 	public UserTask(TaskInfo task, UserSubject userSubject) {
 		this.submitYN = task.getSubmitYN();
 		this.userSubject = userSubject;
-		this.subjectTaskInfo = task;
+		this.taskInfo = task;
 	}
 	
 	public String getSubjectTaskId() {
-		return this.subjectTaskInfo.getTaskId();
+		return this.taskInfo.getTaskId();
 	}
 	
 	public long getUserSubjectId() {
@@ -50,7 +50,7 @@ public class UserTask {
 		this.utId = utId;
 		this.submitYN = submitYN;
 		this.userSubject = userSubject;
-		this.subjectTaskInfo = subjectTaskInfo;
+		this.taskInfo = subjectTaskInfo;
 	}
 	
 }

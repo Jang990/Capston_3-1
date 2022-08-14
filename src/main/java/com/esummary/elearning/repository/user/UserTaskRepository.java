@@ -14,7 +14,7 @@ import com.esummary.elearning.entity.user.UserTask;
 @Repository
 public interface UserTaskRepository extends CrudRepository<UserTask, String>{
 
-	Optional<UserTask> findBySubjectTaskInfo(TaskInfo subjectTaskInfo);
-	Optional<UserTask> findByUserSubject_usIdAndSubjectTaskInfo_TaskId(long usId, String taskId);
+	Optional<UserTask> findByTaskInfo(TaskInfo subjectTaskInfo);
+	Optional<UserTask> findByUserSubject_usIdAndTaskInfo_TaskId(long usId, String taskId);
 	
 }

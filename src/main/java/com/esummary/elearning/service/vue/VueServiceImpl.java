@@ -323,7 +323,7 @@ public class VueServiceImpl implements VueService {
 	}
 
 	private TaskData convertTaskData(UserTask userTask) {
-		TaskInfo task = userTask.getSubjectTaskInfo();
+		TaskInfo task = userTask.getTaskInfo();
 		String startDate = makeDateString(task.getStartDate());
 		String endDate = makeDateString(task.getEndDate());
 		return new TaskData(
