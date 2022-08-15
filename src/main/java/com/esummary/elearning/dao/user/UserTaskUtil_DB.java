@@ -13,7 +13,6 @@ import com.esummary.elearning.repository.user.UserTaskRepository;
 @Component
 public class UserTaskUtil_DB implements DBUserTaskUtil {
 
-	private static Long seq_UserTask = 1L; // MySQL로 바꾸고 삭제
 	
 	@Autowired
 	private UserTaskRepository userTaskRepository;
@@ -23,7 +22,6 @@ public class UserTaskUtil_DB implements DBUserTaskUtil {
 		if(validateDuplicate(userTask))
 			return false;
 		
-		userTask.setUtId(seq_UserTask++); // MySQL로 바꾸고 삭제
 		userTaskRepository.save(userTask);
 		return true;
 	}
@@ -36,7 +34,6 @@ public class UserTaskUtil_DB implements DBUserTaskUtil {
 			if(validateDuplicate(userTask)) // 중복 확인, 중복일시 예외발생
 				continue;
 			else {
-				userTask.setUtId(seq_UserTask++); // MySQL로 바꾸고 삭제
 				savedTasks.add(userTask);
 			}
 		}
