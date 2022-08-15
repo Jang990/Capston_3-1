@@ -16,6 +16,6 @@ public interface WeekInfoRepository extends CrudRepository<WeekInfo, String>{
 	List<WeekInfo> findBySubjectInfo(SubjectInfo subjectInfo);
 	List<WeekInfo> findBySubjectInfo_subjectId(String subjectId);
 	
-	Optional<WeekInfo> findByWeekIdAndSubjectInfo_subjectId(String lectureWeekId, String subjectId);
+	Optional<WeekInfo> findByWeekIdAndSubjectInfo_subjectId(String weekId, String subjectId);
 
 }

@@ -25,9 +25,9 @@ public class LectureUtil_DB implements DBLectureUtil {
 	private UserLectureUtil_DB userLectureUtil_DB; 
 
 	@Override
-	public List<LectureInfo> getLectureList(WeekInfo subjectLectureWeekInfo) {
+	public List<LectureInfo> getLectureList(WeekInfo weekInfo) {
 		List<LectureInfo> lectureList = new ArrayList<LectureInfo>();
-		lectureList = subjectLectureRepository.findByWeekInfo(subjectLectureWeekInfo);
+		lectureList = subjectLectureRepository.findByWeekInfo(weekInfo);
 		
 		return lectureList;
 	}

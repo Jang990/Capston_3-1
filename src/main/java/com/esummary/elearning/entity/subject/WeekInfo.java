@@ -21,7 +21,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString(exclude = "subjectInfo")
 public class WeekInfo {
-	//지금 id는 임의로 lecture 서비스에서 static 변수를 이용해서 사용중이다. mysql로 바꾸면 autoIncrement사용할 것
 	@Id
 	private String weekId; 
 	private String title;
