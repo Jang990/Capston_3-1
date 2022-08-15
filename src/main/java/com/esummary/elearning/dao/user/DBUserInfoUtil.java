@@ -1,4 +1,4 @@
-package com.esummary.elearning.service.dao.user;
+package com.esummary.elearning.dao.user;
 
 import com.esummary.elearning.entity.user.UserInfo;
 

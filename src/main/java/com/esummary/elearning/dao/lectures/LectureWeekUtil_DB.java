@@ -1,4 +1,4 @@
-package com.esummary.elearning.service.dao.lectures;
+package com.esummary.elearning.dao.lectures;
 
 import java.text.ParseException; 
 import java.text.SimpleDateFormat;
@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
+import com.esummary.elearning.dao.lectures.lecture.DBLectureUtil;
 import com.esummary.elearning.entity.subject.LectureInfo;
 import com.esummary.elearning.entity.subject.WeekInfo;
 import com.esummary.elearning.entity.subject.TaskInfo;
@@ -30,7 +31,6 @@ import com.esummary.elearning.repository.subject.TaskInfoRepository;
 import com.esummary.elearning.repository.user.UserLectureRepository;
 import com.esummary.elearning.service.crawling.ELearningURL;
 import com.esummary.elearning.service.crawling.SubjectCrawlingService_Inhatc;
-import com.esummary.elearning.service.dao.lectures.lecture.DBLectureUtil;
 
 @Component
 public class LectureWeekUtil_DB implements DBLectureWeekUtil {

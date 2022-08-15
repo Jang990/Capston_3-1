@@ -1,4 +1,4 @@
-package com.esummary.elearning.service.dao;
+package com.esummary.elearning.dao;
 
 import java.util.ArrayList; 
 import java.util.Arrays;
@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.subject.WeekInfo;
+import com.esummary.elearning.dao.lectures.DBLectureWeekUtil;
+import com.esummary.elearning.dao.notice.DBNoticeUtil;
+import com.esummary.elearning.dao.task.DBTaskUtil;
 import com.esummary.elearning.entity.subject.NoticeInfo;
 import com.esummary.elearning.entity.subject.TaskInfo;
 import com.esummary.elearning.entity.user.UserInfo;
@@ -17,9 +20,6 @@ import com.esummary.elearning.entity.user.UserLecture;
 import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.entity.user.UserTask;
 import com.esummary.elearning.repository.UserSubjectRepository;
-import com.esummary.elearning.service.dao.lectures.DBLectureWeekUtil;
-import com.esummary.elearning.service.dao.notice.DBNoticeUtil;
-import com.esummary.elearning.service.dao.task.DBTaskUtil;
 
 @Component("DB")
 public class UserSubjectUtil_DB implements DBUserSubjectUtil{

@@ -1,4 +1,4 @@
-package com.esummary.elearning.service.dao.notice;
+package com.esummary.elearning.dao.notice;
 
 import java.util.ArrayList;
 import java.util.List;

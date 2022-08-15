@@ -1,4 +1,4 @@
-package com.esummary.elearning.service.dao.lectures.lecture;
+package com.esummary.elearning.dao.lectures.lecture;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,12 +7,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.esummary.elearning.dao.user.UserLectureUtil_DB;
 import com.esummary.elearning.entity.subject.LectureInfo;
 import com.esummary.elearning.entity.subject.WeekInfo;
 import com.esummary.elearning.entity.user.UserLecture;
 import com.esummary.elearning.repository.subject.LectureInfoRepository;
 import com.esummary.elearning.repository.user.UserLectureRepository;
-import com.esummary.elearning.service.dao.user.UserLectureUtil_DB;
 
 @Component
 public class LectureUtil_DB implements DBLectureUtil {

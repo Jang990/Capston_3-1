@@ -1,4 +1,4 @@
-package com.esummary.elearning.service.dao.task;
+package com.esummary.elearning.dao.task;
 
 import java.util.List; 
 

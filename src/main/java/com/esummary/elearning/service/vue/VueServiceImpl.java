@@ -12,6 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.esummary.elearning.dao.DBSubjectUtil;
+import com.esummary.elearning.dao.DBUserSubjectUtil;
+import com.esummary.elearning.dao.lectures.DBLectureWeekUtil;
+import com.esummary.elearning.dao.lectures.lecture.DBLectureUtil;
+import com.esummary.elearning.dao.notice.DBNoticeUtil;
+import com.esummary.elearning.dao.task.DBTaskUtil;
+import com.esummary.elearning.dao.user.DBUserInfoUtil;
+import com.esummary.elearning.dao.user.DBUserLectureUtil;
+import com.esummary.elearning.dao.user.DBUserTaskUtil;
 import com.esummary.elearning.dto.InitalPageData;
 import com.esummary.elearning.dto.LectureData;
 import com.esummary.elearning.dto.LectureWeekData;
@@ -37,15 +46,6 @@ import com.esummary.elearning.service.crawling.lecture.LectureCrawlingService;
 import com.esummary.elearning.service.crawling.notice.NoticeCrawlingService;
 import com.esummary.elearning.service.crawling.task.TaskCrawlingService;
 import com.esummary.elearning.service.crawling.week.WeekCrawlingService;
-import com.esummary.elearning.service.dao.DBSubjectUtil;
-import com.esummary.elearning.service.dao.DBUserSubjectUtil;
-import com.esummary.elearning.service.dao.lectures.DBLectureWeekUtil;
-import com.esummary.elearning.service.dao.lectures.lecture.DBLectureUtil;
-import com.esummary.elearning.service.dao.notice.DBNoticeUtil;
-import com.esummary.elearning.service.dao.task.DBTaskUtil;
-import com.esummary.elearning.service.dao.user.DBUserInfoUtil;
-import com.esummary.elearning.service.dao.user.DBUserLectureUtil;
-import com.esummary.elearning.service.dao.user.DBUserTaskUtil;
 
 @Service
 public class VueServiceImpl implements VueService {

@@ -1,4 +1,4 @@
-package com.esummary.elearning.service.dao.lectures;
+package com.esummary.elearning.dao.lectures;
 
 import java.util.List; 
 import java.util.Map;

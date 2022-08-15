@@ -17,10 +17,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
+import com.esummary.elearning.dao.SubjectUtil_DB;
 import com.esummary.elearning.dto.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.subject.WeekInfo;
-import com.esummary.elearning.service.dao.SubjectUtil_DB;
 import com.esummary.elearning.service.login.LoginService;
 import com.esummary.elearning.service.vue.VueService;
 import com.zaxxer.hikari.HikariConfig;
