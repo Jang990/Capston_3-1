@@ -1,5 +1,6 @@
 package com.esummary.elearning.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import com.esummary.elearning.dto.SubjectCountData;
 import com.esummary.elearning.dto.SubjectDetailData_VO;
 import com.esummary.elearning.dto.TaskData;
 import com.esummary.elearning.dto.UserData;
+import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.service.vue.VueService;
 
 @RestController
@@ -34,12 +36,18 @@ public class CrawlingController {
 	 */
 	@RequestMapping("/getInitSubject")   
 	public InitalPageData getInitData(HttpServletRequest request) {
+		//이러닝이 안되서 추가한 테스트코드
+		InitalPageData testInitPageData = new InitalPageData(new ArrayList<SubjectInfo>(), "장현우", "201845096");
+		testCode(testInitPageData.getSubjectCardData());
+		return testInitPageData;
+		
+		/*
 		HttpSession session = request.getSession();
 		System.out.println("=======>"+request.getSession());
 		UserData user = (UserData)session.getAttribute("userData");
 		InitalPageData initPageData = vueService.crawlInitDataService(user);
-//		testCode(initPageData.getSubjectCardData());
 		return initPageData;
+		*/
 	}
 	
 	private void testCode(List<SubjectCardData> subjectCardData) {
@@ -69,6 +77,10 @@ public class CrawlingController {
 
 	@RequestMapping("/crawlSubject")
 	public SubjectDetailData_VO crawlSubject(HttpServletRequest request, @RequestParam String subjectId) {
+		//테스트 코드
+		return null;
+		
+		/*
 		List<LectureWeekData> lectureDTO = this.crawlLecture(request, subjectId);
 		List<NoticeData> noticeDTO = this.crawlNotice(request, subjectId);
 		List<TaskData> taskDTO = this.crawlTask(request, subjectId);
@@ -76,6 +88,7 @@ public class CrawlingController {
 		
 		SubjectDetailData_VO subjectVO = new SubjectDetailData_VO(lectureDTO, taskDTO, noticeDTO, cntDTO);
 		return subjectVO;
+		*/
 	}
 	
 	@RequestMapping("/crawlLecture")

@@ -41,6 +41,7 @@ public class SubjectController {
 	//DB에서 가져오기
 	@RequestMapping("/getSubjectInDB")
 	public SubjectDetailData_VO subjectSearch(HttpServletRequest request, @RequestParam String subjectId) {
+		//해당 학생이 US테이블에 subjectId가 있는지 검사해야한다.
 		List<LectureWeekData> lectureDTO = this.lectureSearch(request, subjectId);
 		List<NoticeData> noticeDTO = this.noticeSearch(request, subjectId);
 		List<TaskData> taskDTO = this.taskSearch(request, subjectId);

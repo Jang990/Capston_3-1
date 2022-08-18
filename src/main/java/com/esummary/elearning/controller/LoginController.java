@@ -1,5 +1,6 @@
 package com.esummary.elearning.controller;
 
+import java.util.HashMap;
 import java.util.List; 
 import java.util.Map;
 
@@ -33,6 +34,11 @@ public class LoginController {
 	//로그인 체크
 	@RequestMapping("/vueLoginCheck") 
 	public boolean login(@RequestParam String id, @RequestParam String password, HttpServletRequest request) {
+		//이러닝이 안되서 일단 테스트코드로 놓음 이러닝되면 지울 것
+		testCode(request);
+		return true;
+		
+		/*
 		Map<String, String> loginSessionCookie = eLearningLoginService.getLoginCookies(id, password);
 		if(loginSessionCookie == null) // 로그인 실패 
 			return false;
@@ -49,6 +55,13 @@ public class LoginController {
 		session.setAttribute("userData", userData);
 		
 		return true;
+		*/
+	}
+
+	private void testCode(HttpServletRequest request) {
+		UserData userData = new UserData("201845096", "장현우", new HashMap<String, String>());
+		HttpSession session = request.getSession();
+		session.setAttribute("userData", userData);
 	}
 	
 }
