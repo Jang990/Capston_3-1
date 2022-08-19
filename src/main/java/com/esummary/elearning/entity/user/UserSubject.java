@@ -48,6 +48,15 @@ import lombok.ToString;
 					attributeNodes = { @NamedAttributeNode("lectureList") } 
 				),
 			}
+	),
+	@NamedEntityGraph(
+			name = "test",
+			attributeNodes = {
+					@NamedAttributeNode(value = "subjectInfo", subgraph = "lecture")
+			},
+			subgraphs = {
+					@NamedSubgraph(name = "lecture", attributeNodes = { @NamedAttributeNode("lectureList") })
+			}
 	)
 })
 @Data

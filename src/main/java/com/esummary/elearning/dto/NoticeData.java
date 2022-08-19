@@ -1,5 +1,7 @@
 package com.esummary.elearning.dto;
 
+import com.esummary.elearning.entity.subject.NoticeInfo;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,4 +15,14 @@ public class NoticeData {
 	private String description;
 	private String author;
 	private String createDate;
+	
+	public static NoticeData convertNoticeData(NoticeInfo subjectNoticeInfo) {
+		return new NoticeData(
+				subjectNoticeInfo.getNoticeId(), 
+				subjectNoticeInfo.getTitle(), 
+				subjectNoticeInfo.getDescription(), 
+				subjectNoticeInfo.getAuthor(), 
+				subjectNoticeInfo.getCreateDate()
+		);
+	}
 }

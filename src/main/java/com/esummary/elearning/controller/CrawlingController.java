@@ -16,7 +16,7 @@ import com.esummary.elearning.dto.LectureWeekData;
 import com.esummary.elearning.dto.NoticeData;
 import com.esummary.elearning.dto.SubjectCardData;
 import com.esummary.elearning.dto.SubjectCountData;
-import com.esummary.elearning.dto.SubjectDetailData_VO;
+import com.esummary.elearning.dto.SubjectDetailDataWithCnt_DTO;
 import com.esummary.elearning.dto.TaskData;
 import com.esummary.elearning.dto.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
@@ -76,7 +76,7 @@ public class CrawlingController {
 	
 
 	@RequestMapping("/crawlSubject")
-	public SubjectDetailData_VO crawlSubject(HttpServletRequest request, @RequestParam String subjectId) {
+	public SubjectDetailDataWithCnt_DTO crawlSubject(HttpServletRequest request, @RequestParam String subjectId) {
 		//테스트 코드
 		return null;
 		

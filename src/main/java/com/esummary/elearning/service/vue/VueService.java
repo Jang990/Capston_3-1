@@ -17,15 +17,7 @@ public interface VueService {
 	 * 프론트엔드(Vue)에서 Axios로 요청하는 것을 처리하는 서비스
 	 * 이건 나누는게 필요할 듯. 겹친다.
 	 */
-	
-	
 //	List<SubjectCardData> getInitCardData(String studentNumber);getInitCardDatagetInitCardData
-	
-	
-	//데이터베이스 조회
-	List<LectureWeekData> getLectureData(UserData user, String studentNumber);
-	List<NoticeData> getNoticeData(String subjectId);
-	List<TaskData> getTaskData(UserData user, String studentNumber);
 	
 	//크롤링
 	InitalPageData crawlInitDataService(UserData user);

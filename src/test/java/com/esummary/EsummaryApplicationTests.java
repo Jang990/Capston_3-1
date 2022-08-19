@@ -1,6 +1,8 @@
 package com.esummary;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -19,10 +21,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import com.esummary.elearning.dao.SubjectUtil_DB;
+import com.esummary.elearning.dto.LectureWeekData;
 import com.esummary.elearning.dto.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.subject.WeekInfo;
 import com.esummary.elearning.service.login.LoginService;
+import com.esummary.elearning.service.subject.SubjectDBService;
 import com.esummary.elearning.service.vue.VueService;
 import com.esummary.entity.TestModel;
 import com.esummary.repository.TestRepository;
@@ -34,6 +38,8 @@ import com.zaxxer.hikari.HikariDataSource;
 class EsummaryApplicationTests {
 	
 	@Autowired
+	private SubjectDBService subjectDBService;
+	@Autowired
 	private VueService vueService;
 	@Autowired
 	private LoginService loginService;
@@ -42,38 +48,20 @@ class EsummaryApplicationTests {
 	private TestRepository testRepository;
 	
 	@Test
-	public void checkTime() {
-		TestModel test = new TestModel();
-		try {
-			test.setName("Jang");
-			testRepository.save(test);
-			
-			Thread.sleep(3*1000);
-			testRepository.save(test);
-						
-			Thread.sleep(3*1000);
-			test.setName("Kim");
-			testRepository.save(test);
-			
-			Thread.sleep(3*1000);
-			Timestamp timestamp = new Timestamp(0);
-			test.setCrawlingTime(timestamp);
-			test.setCreateTime(timestamp);
-			testRepository.save(test);
-			
-			Thread.sleep(3*1000);
-//			test.setCreateTime(timestamp);
-//			test.setTestId(100L);
-//			testRepository.save(test);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+	public void loadDB() {
+		String num = "201845096";
+		String id = "202214043C4846";
+		UserData ud = new UserData(num, "장현우", new HashMap<String,String>());
+		List<LectureWeekData> wd = subjectDBService.getLectureData(ud, id);
+		System.out.println("==============>여기");
+		System.out.println(wd);
 	}
+	
 	
 //	@Test
 	public void CrawlWeekAndLecture() {
 		String studentNumber = "201845096";
-		String password = "...";
+		String password = "..."; //비밀번호로 변경할 것
 		String subjectId = "202211141LLA104";
 		Map<String, String> loginCookies = loginService.getLoginCookies(studentNumber, password);
 		UserData user = new UserData(studentNumber, password, loginCookies);

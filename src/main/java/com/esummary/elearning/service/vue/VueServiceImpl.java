@@ -1,15 +1,10 @@
 package com.esummary.elearning.service.vue;
 
-import java.util.ArrayList; 
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
+import java.util.ArrayList;  
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.esummary.elearning.dao.DBSubjectUtil;
@@ -22,10 +17,8 @@ import com.esummary.elearning.dao.user.DBUserInfoUtil;
 import com.esummary.elearning.dao.user.DBUserLectureUtil;
 import com.esummary.elearning.dao.user.DBUserTaskUtil;
 import com.esummary.elearning.dto.InitalPageData;
-import com.esummary.elearning.dto.LectureData;
 import com.esummary.elearning.dto.LectureWeekData;
 import com.esummary.elearning.dto.NoticeData;
-import com.esummary.elearning.dto.SubjectCardData;
 import com.esummary.elearning.dto.TaskData;
 import com.esummary.elearning.dto.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
@@ -37,12 +30,9 @@ import com.esummary.elearning.entity.user.UserInfo;
 import com.esummary.elearning.entity.user.UserLecture;
 import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.entity.user.UserTask;
-import com.esummary.elearning.repository.UserSubjectRepository;
 import com.esummary.elearning.repository.subject.NoticeInfoRepository;
-import com.esummary.elearning.repository.user.UserLectureRepository;
 import com.esummary.elearning.repository.user.UserRepository;
 import com.esummary.elearning.service.crawling.SubjectCrawlingService;
-import com.esummary.elearning.service.crawling.lecture.LectureCrawlingService;
 import com.esummary.elearning.service.crawling.notice.NoticeCrawlingService;
 import com.esummary.elearning.service.crawling.task.TaskCrawlingService;
 import com.esummary.elearning.service.crawling.week.WeekCrawlingService;
@@ -55,10 +45,6 @@ public class VueServiceImpl implements VueService {
 	
 	@Autowired
 	private NoticeInfoRepository subjectNoticeRepository;
-	@Autowired
-	private UserSubjectRepository userSubjectRepository;
-	@Autowired
-	private UserLectureRepository userLectureRepository;
 	
 //	@Autowired
 //	private ELearningService eLearningService;
@@ -151,7 +137,7 @@ public class VueServiceImpl implements VueService {
 		//DTO로 변환
 		List<NoticeData> noticeDTO = new ArrayList<NoticeData>();
 		for (NoticeInfo subjectNoticeInfo : notices) {
-			noticeDTO.add(this.convertNoticeData(subjectNoticeInfo));
+			noticeDTO.add(NoticeData.convertNoticeData(subjectNoticeInfo));
 		}
 		
 		return noticeDTO;
@@ -172,7 +158,7 @@ public class VueServiceImpl implements VueService {
 		//DTO로 변환
 		List<TaskData> taskDTO = new ArrayList<TaskData>();
 		for (TaskInfo subjectTaskInfo : tasks) {
-			taskDTO.add(this.convertTaskData(subjectTaskInfo));
+			taskDTO.add(TaskData.convertTaskData(subjectTaskInfo));
 		}
 		return taskDTO;
 	}
@@ -233,106 +219,6 @@ public class VueServiceImpl implements VueService {
 		return userLectures;
 	}
 
-	private NoticeData convertNoticeData(NoticeInfo subjectNoticeInfo) {
-		return new NoticeData(
-				subjectNoticeInfo.getNoticeId(), 
-				subjectNoticeInfo.getTitle(), 
-				subjectNoticeInfo.getDescription(), 
-				subjectNoticeInfo.getAuthor(), 
-				subjectNoticeInfo.getCreateDate()
-		);
-	}
-	
-	private TaskData convertTaskData(TaskInfo subjectTaskInfo) {
-		String startDate =makeDateString(subjectTaskInfo.getStartDate());
-		String endDate =makeDateString(subjectTaskInfo.getEndDate());
-		
-		return new TaskData(
-				subjectTaskInfo.getTaskId(),
-				subjectTaskInfo.getTitle(),
-				subjectTaskInfo.getDescription(),
-				startDate,
-				endDate,
-				subjectTaskInfo.getSubmissionNum(),
-				subjectTaskInfo.getNotSubmittedNum(),
-				subjectTaskInfo.getTotalNum(),
-				subjectTaskInfo.getSubmitYN()
-		);
-	}
-
-	private String makeDateString(Date startDate) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(startDate);
-		return calendar.get(Calendar.YEAR) + "/" + (calendar.get(Calendar.MONTH)+1) + "/" + calendar.get(Calendar.DATE)
-		+ " " + calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE);
-	}
-
-	@Override
-	public List<LectureWeekData> getLectureData(UserData user, String subjectId) {
-		String studentNumber = user.getStudentNumber();
-		Optional<UserSubject> us = dbUserSubjectUtil.getStudentSubject(subjectId, user.getStudentNumber());		
-		 //조인할 데이터가 아예 없어서 여기 아래로 내려가질 못함. 크롤링을 db구성이 끝나고 해야함 
-		if(us.isEmpty()) {
-			//기존 데이터가 없음.
-			return null;
-		}
-		System.out.println("강의명: "+ us.get().getSubjectInfo().getSubjectName());
-		
-		if(us.get().getSubjectInfo().getLectureList().size() == 0) {
-			System.out.println("강의없음");
-			return null;
-		}
-//		dbSubjectUtil;
-		
-		List<LectureWeekData> weekDTO = new ArrayList<LectureWeekData>();
-		List<WeekInfo> weekList = us.get().getSubjectInfo().getLectureList();
-		for (int i = 0; i < weekList.size(); i++) {
-			WeekInfo weekInfo = weekList.get(i);
-			List<LectureInfo> lectureDetail = weekInfo.getLectures();
-			for (LectureInfo subjectLecture : lectureDetail) {
-				UserLecture ul = userLectureRepository.findBySubjectLecture_LectureId(subjectLecture.getLectureId());
-				if(ul == null) continue;
-				
-				subjectLecture.setLearningTime(ul.getLearningTime());
-				subjectLecture.setStatus(ul.getStatus()); 
-				//여기까지 수정
-				//ul. 즉, db에 사용자 lecture데이터가 없을 때 파괴적인 상황을 생각해보기. showCompleted같은 변수들 ++가 잘못되서 차트 싱크가 안맞고 등등... 
-			}
-			weekDTO.add(new LectureWeekData(weekInfo));
-		}
-//		for (SubjectLectureWeekInfo weekInfo : weekList) {
-//			weekDTO.add(convertWeekData(weekInfo));   
-//		}
-		return weekDTO;
-	}
-
-	@Override
-	public List<TaskData> getTaskData(UserData user, String subjectId) {
-		String studentNumber = user.getStudentNumber();
-		Optional<UserSubject> us = userSubjectRepository.
-				findWithUserTaskBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, studentNumber);
-		if(us.isEmpty()|| us.get().getUserTask().size() == 0) return null;
-		
-		List<TaskData> taskDTO = new ArrayList<TaskData>(); 
-		List<UserTask> ut = us.get().getUserTask();  
-		for (UserTask userTask : ut) {           
-			taskDTO.add(convertTaskData(userTask));
-		}
-		
-		return taskDTO;
-	}
-
-	private TaskData convertTaskData(UserTask userTask) {
-		TaskInfo task = userTask.getTaskInfo();
-		String startDate = makeDateString(task.getStartDate());
-		String endDate = makeDateString(task.getEndDate());
-		return new TaskData(
-				task.getTaskId(), task.getTitle(), task.getDescription(), 
-				startDate, endDate, task.getSubmissionNum(), 
-				task.getNotSubmittedNum(), task.getTotalNum(), task.getSubmitYN()
-			);
-	}
-	
 	@Override
 	public InitalPageData crawlInitDataService(UserData userDTO) {
 		List<SubjectInfo> crawledBasicSubjectData = crawlInitData(userDTO); //크롤링

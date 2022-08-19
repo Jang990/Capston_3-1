@@ -20,7 +20,8 @@ public interface UserSubjectRepository extends CrudRepository<UserSubject, Strin
 	@EntityGraph(value = "user-own-task") 
 	Optional<UserSubject> findWithUserTaskBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(String subjectId, String studentNumber);
 	
-	@EntityGraph(value = "user-lecture-week") 
+//	@EntityGraph(value = "user-lecture-week") 
+	@EntityGraph(value = "test") 
 	Optional<UserSubject> findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(String subjectId, String studentNumber);
 	List<UserSubject> findByUserInfo_StudentNumber(String studentNumber);
 	

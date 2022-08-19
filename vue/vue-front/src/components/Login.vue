@@ -95,7 +95,8 @@ export default {
         });
         this.loading = false;
         this.$store.dispatch(LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER);
-        // this.$store.dispatch(LOAD_DB_SUBJECT);
+        
+        this.$store.dispatch(LOAD_DB_SUBJECT); //주석해제 함
         // this.$store.commit(SET_LOGIN_CHECK, true); //LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER 여기서 설정해서 사라져도 됨
         this.$store.dispatch(CRAWL_SUBJECT);
       }
