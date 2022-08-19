@@ -35,10 +35,13 @@ public class SubjectDBServiceImpl implements SubjectDBService {
 	private UserSubjectRepository userSubjectRepository;
 	@Autowired
 	private UserLectureRepository userLectureRepository;
-
+	
+	/**
+	 * 사용자 정보(UserData)와 과목ID를 주면 이에 해당하는 과목의 하위 정보(공지, 주차-강의, 과제)내용을 전부 가져옴
+	 */
 	@Override
-	public List<SubjectDetailDataWithCnt_DTO> getSubjectDataWithAllDetail(UserData user, String studentNumber) {
-		// TODO Auto-generated method stub
+	public List<SubjectDetailDataWithCnt_DTO> getSubjectDataWithAllDetail(UserData user, String subjectId) {
+		
 		return null;
 	}
 

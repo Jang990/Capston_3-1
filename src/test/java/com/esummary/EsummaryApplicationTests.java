@@ -25,6 +25,7 @@ import com.esummary.elearning.dto.LectureWeekData;
 import com.esummary.elearning.dto.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.subject.WeekInfo;
+import com.esummary.elearning.repository.subject.SubjectInfoRepository;
 import com.esummary.elearning.service.login.LoginService;
 import com.esummary.elearning.service.subject.SubjectDBService;
 import com.esummary.elearning.service.vue.VueService;
@@ -47,14 +48,22 @@ class EsummaryApplicationTests {
 	@Autowired
 	private TestRepository testRepository;
 	
+	@Autowired
+	private SubjectInfoRepository subjectInfoRepository;
+	
 	@Test
 	public void loadDB() {
+		/*
 		String num = "201845096";
 		String id = "202214043C4846";
 		UserData ud = new UserData(num, "장현우", new HashMap<String,String>());
 		List<LectureWeekData> wd = subjectDBService.getLectureData(ud, id);
 		System.out.println("==============>여기");
 		System.out.println(wd);
+		*/
+		System.out.println("시작");
+		SubjectInfo si = subjectInfoRepository.findBySubjectId("202214043C4846");
+		System.out.println("여기까지");
 	}
 	
 	

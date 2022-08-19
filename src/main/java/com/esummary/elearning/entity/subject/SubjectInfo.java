@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 	@NamedEntityGraph(
 			name = "all-detail-data",
 			attributeNodes = {
-					@NamedAttributeNode(value = "lectureList", subgraph = "lecture-detail"),
+					@NamedAttributeNode(value = "lectureList"),
 					@NamedAttributeNode(value = "noticeList"),
 					@NamedAttributeNode(value = "taskList"),
 			},

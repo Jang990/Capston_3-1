@@ -16,6 +16,6 @@ public interface SubjectInfoRepository extends CrudRepository<SubjectInfo, Strin
 	@Query(value="Select si From SubjectInfo si Where si.subjectId = :subjectId")
 	Optional<SubjectInfo> findSingleSubject(@Param("subjectId")String subjectId);
 	
-//	@EntityGraph(value = "all-detail-data") 
+	@EntityGraph(value = "all-detail-data") 
 	SubjectInfo findBySubjectId(String subjectId);
 }
