@@ -61,8 +61,10 @@ class EsummaryApplicationTests {
 		System.out.println("==============>여기");
 		System.out.println(wd);
 		*/
+		
 		System.out.println("시작");
 		SubjectInfo si = subjectInfoRepository.findBySubjectId("202214043C4846");
+		System.out.println("=====>여기: "+si.getLectureList().get(0).getTitle());
 		System.out.println("여기까지");
 	}
 	
