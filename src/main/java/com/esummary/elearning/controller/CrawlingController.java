@@ -78,17 +78,17 @@ public class CrawlingController {
 	@RequestMapping("/crawlSubject")
 	public SubjectDetailDataWithCnt_DTO crawlSubject(HttpServletRequest request, @RequestParam String subjectId) {
 		//테스트 코드
-		return null;
+//		return null;
 		
-		/*
+//		/*
 		List<LectureWeekData> lectureDTO = this.crawlLecture(request, subjectId);
 		List<NoticeData> noticeDTO = this.crawlNotice(request, subjectId);
 		List<TaskData> taskDTO = this.crawlTask(request, subjectId);
 		SubjectCountData cntDTO = new SubjectCountData(lectureDTO, taskDTO);
 		
-		SubjectDetailData_VO subjectVO = new SubjectDetailData_VO(lectureDTO, taskDTO, noticeDTO, cntDTO);
+		SubjectDetailDataWithCnt_DTO subjectVO = new SubjectDetailDataWithCnt_DTO(lectureDTO, taskDTO, noticeDTO, cntDTO);
 		return subjectVO;
-		*/
+//		*/
 	}
 	
 	@RequestMapping("/crawlLecture")
