@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Bean;
 
 import com.esummary.elearning.dao.SubjectUtil_DB;
 import com.esummary.elearning.dto.LectureWeekData;
-import com.esummary.elearning.dto.UserData;
+import com.esummary.elearning.dto.user.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.subject.WeekInfo;
 import com.esummary.elearning.repository.subject.SubjectInfoRepository;

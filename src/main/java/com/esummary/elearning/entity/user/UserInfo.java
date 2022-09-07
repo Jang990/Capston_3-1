@@ -18,7 +18,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.esummary.elearning.dto.UserData;
+import com.esummary.elearning.dto.user.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 
 import lombok.AllArgsConstructor;
@@ -63,17 +63,12 @@ public class UserInfo {
 	private List<SubjectInfo> subjectList;
 	
 	@Builder
-	protected UserInfo(String studentNumber, String password, String nickname, List<SubjectInfo> subjectList, List<UserSubject> userSubjects) {
+	protected UserInfo(String studentNumber, String password, String name, String nickname, List<SubjectInfo> subjectList, List<UserSubject> userSubjects) {
 		this.studentNumber = studentNumber;
 		this.password = password;
 		this.nickname = nickname;
 		this.subjectList = subjectList;
 		this.userSubjects = userSubjects;
-	}
-	
-	public UserInfo(UserData userDTO) {
-		this.studentNumber = userDTO.getStudentNumber();
-		this.nickname = userDTO.getUserName();
 	}
 	
 	@Override

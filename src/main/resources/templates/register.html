@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- <link rel="stylesheet" th:href="@{/css/style.css}"> -->
+</head>
+<body>
+	<h1>회원 등록</h1>
+	<form action="User" method="post" id="loginForm">
+		<table>
+			<tr>
+				<td>ID :</td>
+				<td><input type="text" id="id" name="id" value=""/></td>
+			</tr>
+			<tr>
+				<td>PW :</td>
+				<td><input type="password" id="pw" name="password" value=""/></td>
+			</tr>
+			
+			<!-- 
+			<input type="hidden" id="RSAModulus" name="RSAModulus" th:value="${RSAModulus}"/>
+			<input type="hidden" id="RSAExponent" name="RSAExponent" th:value="${RSAExponent}"/>
+			 -->
+		</table>
+		<input type="submit" value="입력"/>
+	</form>
+	
+	<div>
+		<span th:value="${name}"></span>
+	</div>
+	<!-- <input type="button" id="btn" onclick="submitRSA()" value="로그인"/>  -->
+	
+<!-- 
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/8.0.20/ext/rsa.js"></script>
+<script type="text/javascript" th:src="@{/js/jsbn.js}"></script>
+<script type="text/javascript" th:src="@{/js/prng4.js}"></script>
+<script type="text/javascript" th:src="@{/js/rng.js}"></script>
+<script type="text/javascript" th:src="@{/js/rsa.js}"></script>
+<script th:inline="javascript">
+	function submitRSA() {
+		const form = document.getElementById('loginForm');
+		const pw = document.getElementById('pw');
+	    const rsa = new RSAKey();
+	    /*<![CDATA[*/
+	    rsa.setPublic([[${RSAModulus}]],[[${RSAExponent}]]);
+	    pw.value=rsa.encrypt(pw.value);
+	    /*]]>*/
+		form.submit();
+	}
+</script>
+
+-->
+</body>
+</html>

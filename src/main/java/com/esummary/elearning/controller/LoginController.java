@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.esummary.elearning.dto.UserData;
+import com.esummary.elearning.dto.user.UserData;
 import com.esummary.elearning.service.crawling.user.UserCrawlingUtil;
 import com.esummary.elearning.service.login.LoginService;
 import com.esummary.elearning.service.user.UserService;
@@ -46,7 +46,7 @@ public class LoginController {
 		
 		//db에 유저 정보 저장
 //		vueService.saveUserService(userData);
-		userService.registerUser(userData);
+		userService.exRegisterUser(userData);
 		
 		//세션 설정
 		HttpSession session = request.getSession();

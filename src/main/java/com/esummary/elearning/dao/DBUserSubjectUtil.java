@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import org.jsoup.nodes.Document;
 
-import com.esummary.elearning.dto.UserData;
+import com.esummary.elearning.dto.user.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.user.UserInfo;
 import com.esummary.elearning.entity.user.UserSubject;

@@ -1,10 +1,12 @@
 package com.esummary.elearning.service.user;
 
-import com.esummary.elearning.dto.UserData;
+import com.esummary.elearning.dto.user.UserData;
+import com.esummary.elearning.dto.user.UserToRegister;
 import com.esummary.elearning.entity.user.UserInfo;
 
 public interface UserService {
-	boolean registerUser(UserData user);
-	boolean checkIdDuplicate(String id);
-	boolean checkNicknameDuplicate(String nickname);
+	boolean exRegisterUser(UserData user);
+	boolean registerUser(UserToRegister user);
+	void checkIdDuplicate(String id);
+	void checkNicknameDuplicate(String nickname);
 }

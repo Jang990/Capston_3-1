@@ -14,7 +14,7 @@ import com.esummary.elearning.dto.NoticeData;
 import com.esummary.elearning.dto.SubjectCountData;
 import com.esummary.elearning.dto.SubjectDetailDataWithCnt_DTO;
 import com.esummary.elearning.dto.TaskData;
-import com.esummary.elearning.dto.UserData;
+import com.esummary.elearning.dto.user.UserData;
 import com.esummary.elearning.service.subject.SubjectDBService;
 
 @RestController

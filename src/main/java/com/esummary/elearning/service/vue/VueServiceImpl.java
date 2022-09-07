@@ -19,7 +19,7 @@ import com.esummary.elearning.dto.InitalPageData;
 import com.esummary.elearning.dto.LectureWeekData;
 import com.esummary.elearning.dto.NoticeData;
 import com.esummary.elearning.dto.TaskData;
-import com.esummary.elearning.dto.UserData;
+import com.esummary.elearning.dto.user.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.subject.LectureInfo;
 import com.esummary.elearning.entity.subject.WeekInfo;
@@ -222,7 +222,7 @@ public class VueServiceImpl implements VueService {
 	
 	//UserSubject와 Subject 저장
 	private boolean saveInitData(UserData userDTO, List<SubjectInfo> crawledBasicSubjectData) {
-		UserInfo userEntity = new UserInfo(userDTO);
+		UserInfo userEntity = UserData.toEntity(userDTO);
 		dbSubjectUtil.saveService(crawledBasicSubjectData);
 		List<UserSubject> usList = new ArrayList<UserSubject>();
 		for (SubjectInfo subjectInfo : crawledBasicSubjectData) {
