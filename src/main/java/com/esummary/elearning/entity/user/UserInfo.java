@@ -1,6 +1,8 @@
 package com.esummary.elearning.entity.user;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -50,6 +52,15 @@ public class UserInfo {
 	private String studentNumber; //=username
 	private String password;
 	private String nickname;
+	private String roles;
+	
+	public List<String> getRoleList() {
+		if(this.roles.length() > 0) {
+			return Arrays.asList(this.roles.split(","));
+		}
+		
+		return new ArrayList<String>();
+	}
 	
 	@CreationTimestamp
 	private Date createdDate;
@@ -63,10 +74,11 @@ public class UserInfo {
 	private List<SubjectInfo> subjectList;
 	
 	@Builder
-	protected UserInfo(String studentNumber, String password, String name, String nickname, List<SubjectInfo> subjectList, List<UserSubject> userSubjects) {
+	protected UserInfo(String studentNumber, String password, String name, String nickname, String roles, List<SubjectInfo> subjectList, List<UserSubject> userSubjects) {
 		this.studentNumber = studentNumber;
 		this.password = password;
 		this.nickname = nickname;
+		this.roles = roles;
 		this.subjectList = subjectList;
 		this.userSubjects = userSubjects;
 	}

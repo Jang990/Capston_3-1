@@ -27,6 +27,7 @@ public class UserToRegister {
 				.studentNumber(user.getStudentId())
 				.password(user.getPassword())
 				.nickname(user.getNickname())
+				.roles("USER")
 				.build();
 	}
 	

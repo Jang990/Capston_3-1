@@ -1,5 +1,6 @@
 package com.esummary.configuration.security.auth;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -16,12 +17,16 @@ public class PrincipalDetails implements UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
+		Collection<GrantedAuthority> authorities = new ArrayList<>();
+		user.getRoleList().forEach(r -> {
+			authorities.add(()->r);
+		});
+		return authorities;
 	}
 
 	@Override
 	public String getPassword() {
-		return null;
+		return user.getPassword();
 	}
 
 	@Override
