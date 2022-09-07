@@ -1,7 +1,6 @@
 package com.esummary.elearning.controller;
 
-import java.util.HashMap;
-import java.util.List; 
+import java.util.HashMap; 
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,18 +11,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.esummary.elearning.dto.InitalPageData;
-import com.esummary.elearning.dto.SubjectCardData;
 import com.esummary.elearning.dto.UserData;
 import com.esummary.elearning.service.crawling.user.UserCrawlingUtil;
 import com.esummary.elearning.service.login.LoginService;
-import com.esummary.elearning.service.vue.VueService;
+import com.esummary.elearning.service.user.UserService;
 
 @RestController
 public class LoginController {
 
 	@Autowired
-	private VueService vueService;
+	private UserService userService;
 	
 	@Autowired
 	private LoginService eLearningLoginService;
@@ -48,7 +45,8 @@ public class LoginController {
 		UserData userData = new UserData(id, userName, loginSessionCookie);
 		
 		//db에 유저 정보 저장
-		vueService.saveUserService(userData);
+//		vueService.saveUserService(userData);
+		userService.registerUser(userData);
 		
 		//세션 설정
 		HttpSession session = request.getSession();

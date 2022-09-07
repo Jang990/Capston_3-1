@@ -100,9 +100,6 @@ public class UserSubject {
 	public String getSubjectId() {
 		return this.subjectInfo.getSubjectId();
 	}
-	public void setStudentNumber(String number) {
-		this.userInfo.setStudentNumber(number);
-	}
 	public void setSubjectId(String id) {
 		this.subjectInfo.setSubjectId(id);
 	}

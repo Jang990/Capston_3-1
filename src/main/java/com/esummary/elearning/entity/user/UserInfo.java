@@ -1,5 +1,6 @@
 package com.esummary.elearning.entity.user;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -12,13 +13,18 @@ import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedEntityGraphs;
 import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.esummary.elearning.dto.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NamedEntityGraphs({
@@ -35,40 +41,45 @@ import lombok.NoArgsConstructor;
 	)
 })
 @Entity
-@Data
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "user_info")
 public class UserInfo {
 	@Id
-	private String studentNumber;
-	private String userName;
+	private String studentNumber; //=username
+	private String password;
+	private String nickname;
 	
-	@OneToMany(mappedBy = "userInfo", fetch = FetchType.LAZY, targetEntity = UserSubject.class)
+	@CreationTimestamp
+	private Date createdDate;
+	
+	@OneToMany(mappedBy = "userInfo")
 	private List<UserSubject> userSubjects;
 	
-	@Transient
-	private Map<String, String> initialCookies;
 
 //	@OneToMany(mappedBy = "subjectInfo", targetEntity = UserSubject.class)
 	@Transient
 	private List<SubjectInfo> subjectList;
-
-	public UserInfo(String studentNumber, String userName, Map<String, String> initialCookies) {
+	
+	@Builder
+	protected UserInfo(String studentNumber, String password, String nickname, List<SubjectInfo> subjectList, List<UserSubject> userSubjects) {
 		this.studentNumber = studentNumber;
-		this.userName = userName;
-		this.initialCookies = initialCookies;
+		this.password = password;
+		this.nickname = nickname;
+		this.subjectList = subjectList;
+		this.userSubjects = userSubjects;
 	}
 	
 	public UserInfo(UserData userDTO) {
 		this.studentNumber = userDTO.getStudentNumber();
-		this.userName = userDTO.getUserName();
-		this.initialCookies = userDTO.getInitialCookies();
+		this.nickname = userDTO.getUserName();
 	}
 	
 	@Override
 	public String toString() {
-		return "UserInfo [studentNumber=" + studentNumber + ", userName=" + userName + ", userSubjects=" + userSubjects
-				+ ", initialCookies=" + initialCookies + ", subjectList=" + subjectList + "]";
+		return "UserInfo [studentNumber=" + studentNumber + ", nickname=" + nickname + ", userSubjects=" + userSubjects
+				+ ", subjectList=" + subjectList + "]";
 	}
 	
 //	public List<SubjectInfo> getSubjectList() {

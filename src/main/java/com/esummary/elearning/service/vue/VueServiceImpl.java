@@ -1,6 +1,6 @@
 package com.esummary.elearning.service.vue;
 
-import java.util.ArrayList;  
+import java.util.ArrayList;   
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +13,6 @@ import com.esummary.elearning.dao.lectures.DBLectureWeekUtil;
 import com.esummary.elearning.dao.lectures.lecture.DBLectureUtil;
 import com.esummary.elearning.dao.notice.DBNoticeUtil;
 import com.esummary.elearning.dao.task.DBTaskUtil;
-import com.esummary.elearning.dao.user.DBUserInfoUtil;
 import com.esummary.elearning.dao.user.DBUserLectureUtil;
 import com.esummary.elearning.dao.user.DBUserTaskUtil;
 import com.esummary.elearning.dto.InitalPageData;
@@ -31,7 +30,6 @@ import com.esummary.elearning.entity.user.UserLecture;
 import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.entity.user.UserTask;
 import com.esummary.elearning.repository.subject.NoticeInfoRepository;
-import com.esummary.elearning.repository.user.UserRepository;
 import com.esummary.elearning.service.crawling.SubjectCrawlingService;
 import com.esummary.elearning.service.crawling.notice.NoticeCrawlingService;
 import com.esummary.elearning.service.crawling.task.TaskCrawlingService;
@@ -39,9 +37,6 @@ import com.esummary.elearning.service.crawling.week.WeekCrawlingService;
 
 @Service
 public class VueServiceImpl implements VueService {
-	
-	@Autowired 
-	private UserRepository userRepository;
 	
 	@Autowired
 	private NoticeInfoRepository subjectNoticeRepository;
@@ -74,8 +69,6 @@ public class VueServiceImpl implements VueService {
 	private DBUserLectureUtil dbUserLectureUtil;
 	@Autowired
 	private DBUserTaskUtil dbUserTaskUtil;
-	@Autowired
-	private DBUserInfoUtil dbUserInfoUtil;
 	
 //	@Override
 //	public List<SubjectCardData> getInitCardData(String studentNumber) {
@@ -113,18 +106,7 @@ public class VueServiceImpl implements VueService {
 		else return null;
 	}
 
-	@Override
-	public boolean saveUser(UserData user) {
-		if(userRepository.findByStudentNumber(user.getStudentNumber()).isEmpty()) {
-			UserInfo userInfo = new UserInfo();
-			userInfo.setStudentNumber(user.getStudentNumber());
-			userInfo.setUserName(user.getUserName());
-			userRepository.save(userInfo); 
-			return true;
-		}
-		else
-			return false;
-	}
+	
 
 	@Override
 	public List<NoticeData> crawlNotice(UserData user, String subjectId) {
@@ -231,11 +213,6 @@ public class VueServiceImpl implements VueService {
 		return initPageData;
 	}
 
-	@Override
-	public boolean saveUserService(UserData userData) {
-		UserInfo user = new UserInfo(userData);
-		return dbUserInfoUtil.saveUserService(user);
-	}
 	
 	private List<SubjectInfo> crawlInitData(UserData userDTO) {
 		List<SubjectInfo> crawlingBasicSubjectData = subjectUtil.crawlBasicSubjectInfo(userDTO.getInitialCookies()); //크롤링 정보 가져오기

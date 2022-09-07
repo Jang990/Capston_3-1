@@ -25,9 +25,6 @@ public interface VueService {
 	List<TaskData> crawlTask(UserData user, String subjectId);
 	List<LectureWeekData> crawlLecture(UserData user, String subjectId);
 	
-	boolean saveUser(UserData user);
-	boolean saveUserService(UserData userDTO);
-	
 	//리팩토링 중 만들어지는 것
 //	boolean saveInitData(UserData userDTO, InitalPageData initPageData);
 	

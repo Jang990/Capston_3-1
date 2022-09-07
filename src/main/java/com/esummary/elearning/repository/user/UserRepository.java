@@ -19,7 +19,7 @@ import net.bytebuddy.asm.Advice.This;
 @Repository
 public interface UserRepository extends CrudRepository<UserInfo, String>{
 	Optional<UserInfo> findByStudentNumber(String studentNumber);
-	Optional<UserInfo> findByStudentNumberAndUserName(String studentNumber, String userName);
+	Optional<UserInfo> findByStudentNumberAndNickname(String studentNumber, String nickname);
 
 //	@EntityGraph(value = "user-own-subject") 
 	@EntityGraph(value = "user-own-subject-Detail") 

@@ -3,6 +3,7 @@ package com.esummary.configuration.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -35,9 +36,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.httpBasic().disable()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		
-		http.addFilter(corsConfig)
+		http
+			.addFilter(corsConfig)
 			.addFilter(new JwtAuthenticationFilter(authenticationManager(), userRepository))
 			.addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository));
+	}
+	
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/resources/**")
+			.antMatchers("/static")
+			.antMatchers("/templates/**");
 	}
 	
 	@Bean
