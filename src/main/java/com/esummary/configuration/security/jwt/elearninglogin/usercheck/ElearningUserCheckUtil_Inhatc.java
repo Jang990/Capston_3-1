@@ -1,4 +1,4 @@
-package com.esummary.elearning.service.crawling.user;
+package com.esummary.configuration.security.jwt.elearninglogin.usercheck;
 
 import java.io.IOException; 
 import java.util.Map;
@@ -15,7 +15,7 @@ import com.esummary.elearning.repository.user.UserRepository;
 import com.esummary.elearning.service.crawling.ELearningURL;
 
 @Component
-public class UserCrawlingUtil_Inhatc implements UserCrawlingUtil{
+public class ElearningUserCheckUtil_Inhatc implements ElearningUserCheckUtil{
 	public final String MAIN_URL = "https://cyber.inhatc.ac.kr";
 	
 	public String getUserName(Map<String, String> loginCookies) {
@@ -27,7 +27,8 @@ public class UserCrawlingUtil_Inhatc implements UserCrawlingUtil{
 
 	private String crawlName(Document loginPage) {
 		Element str = loginPage.getElementsByClass("login_info").select("ul li").last(); //정보를 찾을 수 없음. 즉 로그인이 되지 않은 쿠키라는 것(또는 만료된 로그인 쿠키라는 것)
-		if(str == null) return null;
+		if(str == null) 
+			return null;
 		
 		String[] nameAndWStudentNumber = str.text().split(" ");
 		return nameAndWStudentNumber[0].trim();

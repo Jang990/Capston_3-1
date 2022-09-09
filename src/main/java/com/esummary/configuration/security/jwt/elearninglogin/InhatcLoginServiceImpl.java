@@ -1,4 +1,4 @@
-package com.esummary.elearning.service.login;
+package com.esummary.configuration.security.jwt.elearninglogin;
  
 import java.io.IOException;
 import java.util.Map;
@@ -7,15 +7,21 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
 
+import com.esummary.configuration.security.jwt.elearninglogin.usercheck.ElearningUserCheckUtil;
+import com.esummary.elearning.dto.LoginCheck_DTO;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
-public class LoginServiceImpl implements LoginService {
+@RequiredArgsConstructor
+public class InhatcLoginServiceImpl implements ElearningLoginService {
 	public final String MAIN_URL = "https://cyber.inhatc.ac.kr";
+	private final ElearningUserCheckUtil userCrawlingUtil;
 	
 	@Override
-	public Map<String, String> getLoginCookies(String id, String password) {
+	public Map<String, String> getLoginCookies(LoginCheck_DTO loginCheck) {
 		Map<String, String> initialCookies = this.getInitialCookies("/MMain.do?cmd=viewIndexPage"); //초기 쿠키 가져오기
-		if(this.checkLogin(id, password, initialCookies)) {
+		if(this.checkLogin(loginCheck.getStudentNumber(), loginCheck.getPassword(), initialCookies)) {
 			return initialCookies; //로그인 세션 쿠키 반환
 		}
 		
@@ -33,13 +39,13 @@ public class LoginServiceImpl implements LoginService {
 		
 		try {
 			Connection.Response resp = con.execute();
-			if(resp.statusCode() == 200) {
-				System.out.println(con.get());
-//				setUserInfo(initialCookies);
-//				userRepository.save(user);		//DB에 저장
-				con.post();
-				return true;
-			}
+			if(resp.statusCode() != 200)
+				return false;
+			
+			con.post();
+			if(userCrawlingUtil.getUserName(initialCookies) == null) 
+				return false; //로그인 쿠키를 사용했을 때 페이지에서 개인정보란을 찾을 수 없음
+			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -61,7 +67,5 @@ public class LoginServiceImpl implements LoginService {
 		}
 		return null;
 	}
-	
-	
 	
 }
