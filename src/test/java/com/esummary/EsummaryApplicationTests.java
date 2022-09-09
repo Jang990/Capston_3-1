@@ -21,7 +21,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import com.esummary.elearning.dao.SubjectUtil_DB;
-import com.esummary.elearning.dto.LectureWeekData;
+import com.esummary.elearning.dto.subject.LectureWeekData;
 import com.esummary.elearning.dto.user.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.subject.WeekInfo;

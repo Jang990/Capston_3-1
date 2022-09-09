@@ -3,11 +3,11 @@ package com.esummary.elearning.service.vue;
 import java.util.List;
 
 import com.esummary.elearning.dto.InitalPageData;
-import com.esummary.elearning.dto.LectureData;
-import com.esummary.elearning.dto.LectureWeekData;
-import com.esummary.elearning.dto.NoticeData;
-import com.esummary.elearning.dto.SubjectCardData;
-import com.esummary.elearning.dto.TaskData;
+import com.esummary.elearning.dto.subject.LectureData;
+import com.esummary.elearning.dto.subject.LectureWeekData;
+import com.esummary.elearning.dto.subject.NoticeData;
+import com.esummary.elearning.dto.subject.SubjectCardData;
+import com.esummary.elearning.dto.subject.TaskData;
 import com.esummary.elearning.dto.user.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.user.UserSubject;

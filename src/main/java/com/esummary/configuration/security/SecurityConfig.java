@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		
 		http
 			.addFilter(corsConfig)
-			.addFilter(new JwtAuthenticationFilter(authenticationManager(), userRepository))
+			.addFilter(new JwtAuthenticationFilter(authenticationManager()))
 			.addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository));
 	}
 	

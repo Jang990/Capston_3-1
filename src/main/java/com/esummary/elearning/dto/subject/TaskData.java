@@ -1,4 +1,4 @@
-package com.esummary.elearning.dto;
+package com.esummary.elearning.dto.subject;
 
 import java.util.Calendar;
 import java.util.Date;

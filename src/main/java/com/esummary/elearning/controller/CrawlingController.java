@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.esummary.elearning.dto.InitalPageData;
-import com.esummary.elearning.dto.LectureWeekData;
-import com.esummary.elearning.dto.NoticeData;
-import com.esummary.elearning.dto.SubjectCardData;
-import com.esummary.elearning.dto.SubjectCountData;
-import com.esummary.elearning.dto.SubjectDetailDataWithCnt_DTO;
-import com.esummary.elearning.dto.TaskData;
+import com.esummary.elearning.dto.subject.LectureWeekData;
+import com.esummary.elearning.dto.subject.NoticeData;
+import com.esummary.elearning.dto.subject.SubjectCardData;
+import com.esummary.elearning.dto.subject.SubjectCountData;
+import com.esummary.elearning.dto.subject.SubjectDetailDataWithCnt_DTO;
+import com.esummary.elearning.dto.subject.TaskData;
 import com.esummary.elearning.dto.user.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.service.vue.VueService;

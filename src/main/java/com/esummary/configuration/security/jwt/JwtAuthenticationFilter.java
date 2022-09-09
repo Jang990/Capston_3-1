@@ -17,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.esummary.configuration.security.auth.PrincipalDetails;
+import com.esummary.elearning.dto.LoginCheck_DTO;
 import com.esummary.elearning.entity.user.UserInfo;
 import com.esummary.elearning.repository.user.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,18 +28,22 @@ import lombok.RequiredArgsConstructor;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
 	
 	private final AuthenticationManager authenticationManager;
-	private final UserRepository userRepository;
 	
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
 		ObjectMapper om = new ObjectMapper();
+		
 		try {
-			UserInfo user = om.readValue(request.getInputStream(), UserInfo.class);
-			userRepository.findByStudentNumber(user.getStudentNumber());
+			//json 방식
+			LoginCheck_DTO loginCheck = om.readValue(request.getInputStream(), LoginCheck_DTO.class);
 			UsernamePasswordAuthenticationToken authenticationToken = 
-					new UsernamePasswordAuthenticationToken(user.getStudentNumber(), user.getPassword());
+					new UsernamePasswordAuthenticationToken(loginCheck.getStudentNumber(), loginCheck.getPassword());
 			Authentication authentication = authenticationManager.authenticate(authenticationToken);
+			//파라미터방식
+//			UsernamePasswordAuthenticationToken authenticationToken = 
+//					new UsernamePasswordAuthenticationToken(request.getParameter("studentNumber"), request.getParameter("password"));
+//			Authentication authentication = authenticationManager.authenticate(authenticationToken);
 			return authentication;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -58,6 +63,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				.withExpiresAt(JwtInfo.expireDate)
 				.sign(Algorithm.HMAC256(JwtInfo.Key));
 		
-		response.addHeader("Authorization", "Bearer: "+ jwtToken);
+		response.addHeader("Authorization", JwtInfo.prefix+ jwtToken);
 	}
 }

@@ -3,6 +3,7 @@ package com.esummary.elearning.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.esummary.elearning.dto.subject.SubjectCardData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 
 import lombok.AllArgsConstructor;

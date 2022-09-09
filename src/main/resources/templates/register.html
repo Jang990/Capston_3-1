@@ -7,15 +7,19 @@
 </head>
 <body>
 	<h1>회원 등록</h1>
-	<form action="User" method="post" id="loginForm">
+	<form action="/users" method="post" id="loginForm">
 		<table>
 			<tr>
 				<td>ID :</td>
-				<td><input type="text" id="id" name="id" value=""/></td>
+				<td><input type="text" id="id" name="studentId" value=""/></td>
 			</tr>
 			<tr>
 				<td>PW :</td>
 				<td><input type="password" id="pw" name="password" value=""/></td>
+			</tr>
+			<tr>
+				<td>Nickname :</td>
+				<td><input type="text" id="nn" name="nickname" value=""/></td>
 			</tr>
 			
 			<!-- 

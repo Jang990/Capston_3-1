@@ -3,10 +3,10 @@ package com.esummary.elearning.service.subject;
 import java.util.List;
 import java.util.Map;
 
-import com.esummary.elearning.dto.LectureWeekData;
-import com.esummary.elearning.dto.NoticeData;
-import com.esummary.elearning.dto.SubjectDetailDataWithCnt_DTO;
-import com.esummary.elearning.dto.TaskData;
+import com.esummary.elearning.dto.subject.LectureWeekData;
+import com.esummary.elearning.dto.subject.NoticeData;
+import com.esummary.elearning.dto.subject.SubjectDetailDataWithCnt_DTO;
+import com.esummary.elearning.dto.subject.TaskData;
 import com.esummary.elearning.dto.user.UserData;
 
 
