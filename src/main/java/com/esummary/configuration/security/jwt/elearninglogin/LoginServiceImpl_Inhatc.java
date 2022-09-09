@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class InhatcLoginServiceImpl implements ElearningLoginService {
+public class LoginServiceImpl_Inhatc implements ElearningLoginService {
 	public final String MAIN_URL = "https://cyber.inhatc.ac.kr";
 	private final ElearningUserCheckUtil userCrawlingUtil;
 	
