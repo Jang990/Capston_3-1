@@ -20,7 +20,7 @@ import com.esummary.elearning.exdto.subject.SubjectCountData;
 import com.esummary.elearning.exdto.subject.SubjectDetailDataWithCnt_DTO;
 import com.esummary.elearning.exdto.subject.TaskData;
 import com.esummary.elearning.exdto.user.UserData;
-import com.esummary.elearning.service.vue.VueService;
+import com.esummary.elearning.exservice.vue.VueService;
 
 @RestController
 public class CrawlingController {

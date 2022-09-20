@@ -21,10 +21,10 @@ import com.esummary.elearning.entity.subject.TaskInfo;
 import com.esummary.elearning.entity.user.UserInfo;
 import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.entity.user.UserTask;
+import com.esummary.elearning.exservice.crawling.ELearningURL;
+import com.esummary.elearning.exservice.crawling.SubjectCrawlingService_Inhatc;
 import com.esummary.elearning.repository.subject.TaskInfoRepository;
 import com.esummary.elearning.repository.user.UserTaskRepository;
-import com.esummary.elearning.service.crawling.ELearningURL;
-import com.esummary.elearning.service.crawling.SubjectCrawlingService_Inhatc;
 
 @Component
 public class TaskUtil_DB implements DBTaskUtil{

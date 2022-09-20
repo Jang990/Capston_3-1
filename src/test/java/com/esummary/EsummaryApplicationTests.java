@@ -9,11 +9,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.esummary.configuration.security.jwt.elearninglogin.ElearningLoginService;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.exdto.LoginCheck_DTO;
+import com.esummary.elearning.exservice.crawling.user.UserCrawlingUtil;
+import com.esummary.elearning.exservice.login.LoginService;
+import com.esummary.elearning.exservice.subject.SubjectDBService;
+import com.esummary.elearning.exservice.vue.VueService;
 import com.esummary.elearning.repository.subject.SubjectInfoRepository;
-import com.esummary.elearning.service.crawling.user.UserCrawlingUtil;
-import com.esummary.elearning.service.login.LoginService;
-import com.esummary.elearning.service.subject.SubjectDBService;
-import com.esummary.elearning.service.vue.VueService;
 import com.esummary.repository.TestRepository;
 
 @SpringBootTest

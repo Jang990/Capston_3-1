@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.esummary.elearning.exdto.user.UserToRegister;
-import com.esummary.elearning.service.user.UserService;
+import com.esummary.elearning.exservice.user.UserService;
 
 import lombok.RequiredArgsConstructor;
 

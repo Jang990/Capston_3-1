@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.subject.WeekInfo;
+import com.esummary.elearning.exservice.crawling.ELearningURL;
 import com.esummary.elearning.entity.subject.NoticeInfo;
 import com.esummary.elearning.entity.subject.TaskInfo;
 import com.esummary.elearning.repository.subject.NoticeInfoRepository;
 import com.esummary.elearning.repository.subject.TaskInfoRepository;
-import com.esummary.elearning.service.crawling.ELearningURL;
 
 @Component
 public class NoticeUtil_DB implements DBNoticeUtil{

@@ -9,8 +9,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
+import com.esummary.elearning.exservice.crawling.ELearningURL;
 import com.esummary.elearning.entity.subject.NoticeInfo;
-import com.esummary.elearning.service.crawling.ELearningURL;
 
 public interface DBNoticeUtil {
 	
