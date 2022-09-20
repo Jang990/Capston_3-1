@@ -1,4 +1,4 @@
-package com.esummary.elearning.controller;
+package com.esummary.elearning.excontroller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

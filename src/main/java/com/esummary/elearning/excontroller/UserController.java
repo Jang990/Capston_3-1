@@ -1,4 +1,4 @@
-package com.esummary.elearning.controller;
+package com.esummary.elearning.excontroller;
 
 import javax.validation.Valid;
 
