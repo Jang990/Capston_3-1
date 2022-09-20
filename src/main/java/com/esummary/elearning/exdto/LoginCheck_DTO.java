@@ -1,4 +1,4 @@
-package com.esummary.elearning.dto;
+package com.esummary.elearning.exdto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package com.esummary.elearning.dto.subject;
+package com.esummary.elearning.exdto.subject;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
 

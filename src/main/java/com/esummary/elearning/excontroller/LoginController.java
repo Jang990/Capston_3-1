@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.esummary.elearning.dto.user.UserData;
+import com.esummary.elearning.exdto.user.UserData;
 import com.esummary.elearning.service.crawling.user.UserCrawlingUtil;
 import com.esummary.elearning.service.login.LoginService;
 import com.esummary.elearning.service.user.UserService;

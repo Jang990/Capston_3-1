@@ -3,11 +3,11 @@ package com.esummary.elearning.service.subject;
 import java.util.List;
 import java.util.Map;
 
-import com.esummary.elearning.dto.subject.LectureWeekData;
-import com.esummary.elearning.dto.subject.NoticeData;
-import com.esummary.elearning.dto.subject.SubjectDetailDataWithCnt_DTO;
-import com.esummary.elearning.dto.subject.TaskData;
-import com.esummary.elearning.dto.user.UserData;
+import com.esummary.elearning.exdto.subject.LectureWeekData;
+import com.esummary.elearning.exdto.subject.NoticeData;
+import com.esummary.elearning.exdto.subject.SubjectDetailDataWithCnt_DTO;
+import com.esummary.elearning.exdto.subject.TaskData;
+import com.esummary.elearning.exdto.user.UserData;
 
 
 public interface SubjectDBService {

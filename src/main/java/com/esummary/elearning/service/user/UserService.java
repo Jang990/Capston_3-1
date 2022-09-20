@@ -1,8 +1,8 @@
 package com.esummary.elearning.service.user;
 
-import com.esummary.elearning.dto.user.UserData;
-import com.esummary.elearning.dto.user.UserToRegister;
 import com.esummary.elearning.entity.user.UserInfo;
+import com.esummary.elearning.exdto.user.UserData;
+import com.esummary.elearning.exdto.user.UserToRegister;
 
 public interface UserService {
 	boolean exRegisterUser(UserData user);

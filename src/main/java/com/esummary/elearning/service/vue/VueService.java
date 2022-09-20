@@ -2,15 +2,15 @@ package com.esummary.elearning.service.vue;
 
 import java.util.List;
 
-import com.esummary.elearning.dto.InitalPageData;
-import com.esummary.elearning.dto.subject.LectureData;
-import com.esummary.elearning.dto.subject.LectureWeekData;
-import com.esummary.elearning.dto.subject.NoticeData;
-import com.esummary.elearning.dto.subject.SubjectCardData;
-import com.esummary.elearning.dto.subject.TaskData;
-import com.esummary.elearning.dto.user.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.user.UserSubject;
+import com.esummary.elearning.exdto.InitalPageData;
+import com.esummary.elearning.exdto.subject.LectureData;
+import com.esummary.elearning.exdto.subject.LectureWeekData;
+import com.esummary.elearning.exdto.subject.NoticeData;
+import com.esummary.elearning.exdto.subject.SubjectCardData;
+import com.esummary.elearning.exdto.subject.TaskData;
+import com.esummary.elearning.exdto.user.UserData;
 
 public interface VueService {
 	/*

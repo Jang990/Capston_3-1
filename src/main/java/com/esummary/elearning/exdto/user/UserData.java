@@ -1,4 +1,4 @@
-package com.esummary.elearning.dto.user;
+package com.esummary.elearning.exdto.user;
 
 import java.util.Map;
 

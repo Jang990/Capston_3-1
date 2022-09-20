@@ -8,7 +8,7 @@ import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
 
 import com.esummary.configuration.security.jwt.elearninglogin.usercheck.ElearningUserCheckUtil;
-import com.esummary.elearning.dto.LoginCheck_DTO;
+import com.esummary.elearning.exdto.LoginCheck_DTO;
 
 import lombok.RequiredArgsConstructor;
 

@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.esummary.configuration.security.jwt.elearninglogin.ElearningLoginService;
-import com.esummary.elearning.dto.LoginCheck_DTO;
 import com.esummary.elearning.entity.subject.SubjectInfo;
+import com.esummary.elearning.exdto.LoginCheck_DTO;
 import com.esummary.elearning.repository.subject.SubjectInfoRepository;
 import com.esummary.elearning.service.crawling.user.UserCrawlingUtil;
 import com.esummary.elearning.service.login.LoginService;

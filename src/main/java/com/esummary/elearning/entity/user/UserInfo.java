@@ -20,8 +20,8 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.esummary.elearning.dto.user.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
+import com.esummary.elearning.exdto.user.UserData;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -17,14 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import com.esummary.elearning.dto.subject.SubjectDetailData_DTO;
-import com.esummary.elearning.dto.user.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.subject.WeekInfo;
 import com.esummary.elearning.entity.subject.NoticeInfo;
 import com.esummary.elearning.entity.subject.TaskInfo;
 import com.esummary.elearning.entity.user.UserInfo;
 import com.esummary.elearning.entity.user.UserSubject;
+import com.esummary.elearning.exdto.subject.SubjectDetailData_DTO;
+import com.esummary.elearning.exdto.user.UserData;
 import com.esummary.elearning.repository.UserSubjectRepository;
 import com.esummary.elearning.repository.subject.SubjectInfoRepository;
 import com.esummary.elearning.service.crawling.notice.NoticeCrawlingService;

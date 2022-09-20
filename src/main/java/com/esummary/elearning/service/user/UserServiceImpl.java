@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.esummary.elearning.dto.user.UserData;
-import com.esummary.elearning.dto.user.UserToRegister;
 import com.esummary.elearning.entity.user.UserInfo;
+import com.esummary.elearning.exdto.user.UserData;
+import com.esummary.elearning.exdto.user.UserToRegister;
 import com.esummary.elearning.repository.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;

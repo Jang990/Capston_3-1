@@ -18,7 +18,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.esummary.configuration.security.auth.PrincipalDetails;
 import com.esummary.configuration.security.jwt.elearninglogin.ElearningLoginService;
-import com.esummary.elearning.dto.LoginCheck_DTO;
+import com.esummary.elearning.exdto.LoginCheck_DTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;

@@ -5,9 +5,9 @@ import java.util.Map;
 
 import org.jsoup.nodes.Document;
 
-import com.esummary.elearning.dto.user.UserData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.user.UserInfo;
+import com.esummary.elearning.exdto.user.UserData;
 
 public interface SubjectCrawlingService {
 	

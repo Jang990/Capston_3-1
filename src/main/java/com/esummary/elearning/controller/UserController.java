@@ -1,4 +1,4 @@
-package com.esummary.elearning.excontroller;
+package com.esummary.elearning.controller;
 
 import javax.validation.Valid;
 
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.esummary.elearning.dto.user.UserToRegister;
+import com.esummary.elearning.exdto.user.UserToRegister;
 import com.esummary.elearning.service.user.UserService;
 
 import lombok.RequiredArgsConstructor;
