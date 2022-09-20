@@ -27,6 +27,7 @@ public interface SubjectInfoRepository extends CrudRepository<SubjectInfo, Strin
 //			+ "join WeekInfo wi on si.subjectId = wi.subjectId "
 //			+ "join LectureInfo li on wi.weekId = li.lecture_weekId "
 //		+ "Where si.subjectId = :subjectId")
+	/*
 	@Query(value="Select * "
 			+ "From subject_info si join task_info ti on si.subject_id = ti.subject_id "
 			+ "					Join notice_info ni on si.subject_id = ni.subject_id "
@@ -35,4 +36,6 @@ public interface SubjectInfoRepository extends CrudRepository<SubjectInfo, Strin
 			+ "where si.subject_id = '202214043CMP743';", 
 			nativeQuery = true)
 	SubjectInfo findBySubjectId(@Param("subjectId")String subjectId);
+	*/
+	Optional<SubjectInfo> findBySubjectId(String subjectId);
 }

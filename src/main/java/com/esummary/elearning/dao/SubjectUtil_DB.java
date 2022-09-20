@@ -52,7 +52,7 @@ public class SubjectUtil_DB implements DBSubjectUtil {
 
 	@Override
 	public SubjectInfo getSubjectAllDetails(String subjectId) {
-		SubjectInfo subjectInAllData = subjectRepository.findBySubjectId(subjectId);
+		SubjectInfo subjectInAllData = subjectRepository.findBySubjectId(subjectId).get();
 		List<WeekInfo> lectureWeeks = subjectInAllData.getLectureList();
 		for (WeekInfo subjectLectureWeekInfo : lectureWeeks) {
 			subjectLectureWeekInfo.getLectures();

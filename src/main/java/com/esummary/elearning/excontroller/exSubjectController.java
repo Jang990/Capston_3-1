@@ -18,7 +18,7 @@ import com.esummary.elearning.exdto.user.UserData;
 import com.esummary.elearning.exservice.subject.SubjectDBService;
 
 @RestController
-public class SubjectController {
+public class exSubjectController {
 	
 	@Autowired
 	private SubjectDBService subjectDBService;
