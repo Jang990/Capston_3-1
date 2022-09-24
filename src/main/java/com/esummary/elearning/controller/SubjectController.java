@@ -24,7 +24,7 @@ public class SubjectController {
 	 * @return SubjectInfo 테이블 정보를 그대로 줌
 	 */
 	@GetMapping("/{subjectId}")
-	public SubjectDTO getSubject(@PathVariable String subjectId) {
+	public SubjectDTO getSubjectInfo(@PathVariable String subjectId) {
 		return subjectService.getSubject(subjectId);
 	}
 	

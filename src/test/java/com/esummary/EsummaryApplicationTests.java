@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.esummary.configuration.security.jwt.elearninglogin.ElearningLoginService;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.exdto.LoginCheck_DTO;
+import com.esummary.elearning.exservice.crawling.SubjectCrawlingService;
 import com.esummary.elearning.exservice.crawling.user.UserCrawlingUtil;
 import com.esummary.elearning.exservice.login.LoginService;
 import com.esummary.elearning.exservice.subject.SubjectDBService;
@@ -25,6 +26,9 @@ class EsummaryApplicationTests {
 	private VueService vueService;
 	@Autowired
 	private ElearningLoginService elearningLoginService;
+	@Autowired
+	private SubjectCrawlingService subjectCrawlingService;
+	
 	@Autowired
 	private TestRepository testRepository;
 	@Autowired
@@ -45,9 +49,9 @@ class EsummaryApplicationTests {
 		*/
 		
 		System.out.println("시작");
-		SubjectInfo si = subjectInfoRepository.findBySubjectId("202214043C4846");
-		System.out.println("=====>여기: "+si.getLectureList().get(0).getTitle());
-		System.out.println("여기까지");
+//		SubjectInfo si = subjectInfoRepository.findBySubjectId("202214043C4846");
+//		System.out.println("=====>여기: "+si.getLectureList().get(0).getTitle());
+//		System.out.println("여기까지");
 	}
 	
 	
@@ -62,6 +66,8 @@ class EsummaryApplicationTests {
 		
 		Map<String, String> loginCookies = elearningLoginService.getLoginCookies(loginCheck);
 		System.out.println("=========>"+loginCookies);
+		subjectCrawlingService.crawlBasicSubjectInfo(loginCookies);
+		
 	}
 	
 }
