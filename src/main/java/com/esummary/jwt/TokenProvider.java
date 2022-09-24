@@ -1,9 +1,10 @@
 package com.esummary.jwt;
 
-import java.security.Key;
+import java.security.Key; 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -17,6 +18,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+
+import com.esummary.auth.service.ElearningLoginService;
+import com.esummary.auth.service.login.CustomUserDetails;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -32,14 +36,15 @@ public class TokenProvider {
 	
 	private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
 	private static final String AUTHORITIES_KEY = "auth";
-	@Value("${jwt.secret}")
+	private static final String ELEARNING_SESSION_ID = "EId";
+	
 	private final String secret;
-	@Value("${jwt.token-validity-in-seconds}")
 	private final long tokenValidityInMilliseconds;
 	private Key key;
 
 	public TokenProvider(@Value("${jwt.secret}") String secret,
-			@Value("${jwt.token-validity-in-seconds}") long tokenSecond) {
+			@Value("${jwt.token-validity-in-seconds}") long tokenSecond,
+			ElearningLoginService loginService) {
 		this.secret = secret;
 		this.tokenValidityInMilliseconds = tokenSecond * 1000;
 	}
@@ -51,17 +56,21 @@ public class TokenProvider {
 	}
 	
 	public String createToken(Authentication authentication) {
+		CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
+		
 		// 권한을 String타입으로 변경
-		String authorities = authentication.getAuthorities().stream()
+		String authorities = user.getAuthorities().stream()
 				.map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
 		
 		//만료시간 설정
 		long now = (new Date()).getTime();
 		Date validity = new Date(now + this.tokenValidityInMilliseconds);
 		
+		
 		return Jwts.builder()
-				.setSubject(authentication.getName())
+				.setSubject(user.getUsername())
 				.claim(AUTHORITIES_KEY, authorities)
+				.claim(ELEARNING_SESSION_ID, user.getInhaTcSessionId()) //이러닝 로그인 세션 삽입
 				.signWith(key, SignatureAlgorithm.HS512)
 				.setExpiration(validity)
 				.compact();

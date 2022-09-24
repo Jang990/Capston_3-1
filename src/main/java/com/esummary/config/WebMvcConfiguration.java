@@ -1,4 +1,4 @@
-package com.esummary.configuration;
+package com.esummary.config;
 
 import java.util.concurrent.TimeUnit;
 

@@ -1,26 +1,28 @@
-package com.esummary.configuration.security.auth;
+package com.esummary.auth.service.login;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.esummary.elearning.entity.user.UserInfo;
 
-public class PrincipalDetails implements UserDetails{
+public class CustomUserDetails implements UserDetails {
 	private UserInfo user;
+	private Map<String, String> loginCookie;
 	
-	public PrincipalDetails(UserInfo user) {
+	public CustomUserDetails(UserInfo user) {
 		this.user = user;
+		loginCookie = null;
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<GrantedAuthority> authorities = new ArrayList<>();
-		user.getRoleList().forEach(r -> {
-			authorities.add(()->r);
-		});
+		authorities.add(new SimpleGrantedAuthority(user.getRoles().name()));
 		return authorities;
 	}
 
@@ -34,8 +36,11 @@ public class PrincipalDetails implements UserDetails{
 		return user.getStudentNumber();
 	}
 	
-	public String getInhaTcSessionId() {
-		return "테스트";
+	public Map<String, String> getInhaTcSessionId() {
+		return this.loginCookie;
+	}
+	public void setInhaTcSessionId(Map<String, String> loginCookie) {
+		this.loginCookie = loginCookie;
 	}
 
 	@Override

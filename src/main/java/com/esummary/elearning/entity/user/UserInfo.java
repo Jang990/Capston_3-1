@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -20,6 +22,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.esummary.auth.entity.Authority;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.exdto.user.UserData;
 
@@ -52,15 +55,8 @@ public class UserInfo {
 	private String studentNumber; //=username
 	private String password;
 	private String nickname;
-	private String roles;
-	
-	public List<String> getRoleList() {
-		if(this.roles.length() > 0) {
-			return Arrays.asList(this.roles.split(","));
-		}
-		
-		return new ArrayList<String>();
-	}
+	@Enumerated(EnumType.STRING)
+	private Authority roles;
 	
 	@CreationTimestamp
 	private Date createdDate;
@@ -74,7 +70,7 @@ public class UserInfo {
 	private List<SubjectInfo> subjectList;
 	
 	@Builder
-	protected UserInfo(String studentNumber, String password, String name, String nickname, String roles, List<SubjectInfo> subjectList, List<UserSubject> userSubjects) {
+	protected UserInfo(String studentNumber, String password, String name, String nickname, Authority roles, List<SubjectInfo> subjectList, List<UserSubject> userSubjects) {
 		this.studentNumber = studentNumber;
 		this.password = password;
 		this.nickname = nickname;

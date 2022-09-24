@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.esummary.auth.service.User.UserService;
 import com.esummary.elearning.dto.subject.SubjectDTO;
-import com.esummary.elearning.exservice.user.UserService;
 import com.esummary.elearning.service.UserSubjectService;
 
 import lombok.RequiredArgsConstructor;

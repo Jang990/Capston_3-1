@@ -1,4 +1,4 @@
-package com.esummary.configuration;
+package com.esummary.config;
 
 import java.io.IOException;
 import java.util.Properties;

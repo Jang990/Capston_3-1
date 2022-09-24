@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 //`AuthenticationEntryPoint`는 인증이 되지않은 유저가 요청을 했을때 동작된다.
 @Component
-public class MyJwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
 	// Response에 401이 떨어질만한 에러가 발생할 경우 commence라는 메소드를 실행 - 정확하진 않음
 	@Override

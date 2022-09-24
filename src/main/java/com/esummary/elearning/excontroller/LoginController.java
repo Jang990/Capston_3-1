@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.esummary.auth.service.User.UserService;
 import com.esummary.elearning.exdto.user.UserData;
 import com.esummary.elearning.exservice.crawling.user.UserCrawlingUtil;
 import com.esummary.elearning.exservice.login.LoginService;
-import com.esummary.elearning.exservice.user.UserService;
 
 @RestController
 public class LoginController {

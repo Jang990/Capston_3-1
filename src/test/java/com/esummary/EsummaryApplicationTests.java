@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.esummary.configuration.security.jwt.elearninglogin.ElearningLoginService;
+import com.esummary.auth.dto.LoginDTO;
+import com.esummary.auth.service.ElearningLoginService;
 import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.exdto.LoginCheck_DTO;
 import com.esummary.elearning.exservice.crawling.SubjectCrawlingService;
 import com.esummary.elearning.exservice.crawling.user.UserCrawlingUtil;
 import com.esummary.elearning.exservice.login.LoginService;
@@ -60,7 +60,7 @@ class EsummaryApplicationTests {
 		String studentNumber = "201845096";
 		String password = "..."; //비밀번호로 변경할 것
 		String subjectId = "202211141LLA104";
-		LoginCheck_DTO loginCheck = new LoginCheck_DTO();
+		LoginDTO loginCheck = new LoginDTO();
 		loginCheck.setStudentNumber(studentNumber);
 		loginCheck.setPassword(password);
 		
