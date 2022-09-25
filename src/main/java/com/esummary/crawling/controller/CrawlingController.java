@@ -20,6 +20,7 @@ import com.esummary.auth.dto.JwtTokenDTO;
 import com.esummary.auth.service.login.CustomUserDetails;
 import com.esummary.crawling.dto.InhatcSubjectCardDTO;
 import com.esummary.crawling.dto.InhatcUserDTO;
+import com.esummary.crawling.dto.TaskData;
 import com.esummary.crawling.dto.exInitalPageData;
 import com.esummary.crawling.dto.exSubjectCardData;
 import com.esummary.crawling.service.CrawlingService;
@@ -28,14 +29,13 @@ import com.esummary.elearning.exdto.subject.LectureWeekData;
 import com.esummary.elearning.exdto.subject.NoticeData;
 import com.esummary.elearning.exdto.subject.SubjectCountData;
 import com.esummary.elearning.exdto.subject.SubjectDetailDataWithCnt_DTO;
-import com.esummary.elearning.exdto.subject.TaskData;
 import com.esummary.elearning.exdto.user.UserData;
 import com.esummary.elearning.exservice.vue.VueService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/inhatc/{studentId}")
+@RequestMapping("/api/inhatc")
 @RequiredArgsConstructor
 public class CrawlingController {
 	
@@ -47,7 +47,7 @@ public class CrawlingController {
 	 * @return 크롤링한 정보들을 리턴
 	 */
 	@PostMapping("/login-info")
-	public List<InhatcSubjectCardDTO> getInitData(@PathVariable String studentId) {
+	public List<InhatcSubjectCardDTO> getInitData() {
 		//이러닝이 안되서 추가한 테스트코드
 		/*
 		InitalPageData testInitPageData = new InitalPageData(new ArrayList<SubjectInfo>(), "장현우", "201845096");
@@ -55,7 +55,7 @@ public class CrawlingController {
 		return testInitPageData;
 		*/
 		CustomUserDetails principal = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		InhatcUserDTO userDto = new InhatcUserDTO(studentId, principal.getInhaTcSessionId());
+		InhatcUserDTO userDto = new InhatcUserDTO(principal.getUsername(), principal.getInhaTcSessionId());
 		
 		List<InhatcSubjectCardDTO> subjects =  crawlingService.crawlLoginPage(userDto);
 		return subjects;
