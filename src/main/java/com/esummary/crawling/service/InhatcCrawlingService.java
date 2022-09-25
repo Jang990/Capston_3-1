@@ -35,13 +35,8 @@ public class InhatcCrawlingService implements CrawlingService {
 		//크롤링 정보 가져오기
 		List<SubjectInfo> basicSubjectData = subjectUtil.crawlBasicSubjectInfo(userDTO.getInitialCookies());
 		
-		System.out.println("===========>ㅇㅇㅇ");
-		for (SubjectInfo subjectInfo : basicSubjectData) {
-			System.out.println(subjectInfo.getSubjectId() + "," + subjectInfo.getSubjectName());
-		}
-		
 		if(basicSubjectData.isEmpty() || basicSubjectData == null) 
-			throw new DeniedElearningCookieException("만료된 이러닝 로그인 쿠키"); // 크롤링 실패
+			throw new DeniedElearningCookieException("만료된 이러닝 로그인 쿠키 or 이러닝 사이트 다운"); // 크롤링 실패
 		
 		//UserSubject와 Subject 저장
 		UserInfo userEntity = InhatcUserDTO.toEntity(userDTO);
