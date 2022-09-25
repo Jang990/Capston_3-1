@@ -42,10 +42,6 @@ public class AuthController {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getStudentNumber(), loginDto.getPassword());
         
-        
-        if(authenticationManagerBuilder == null) System.out.println("==========> 1번 오류발생");
-        if(authenticationManagerBuilder.getObject() == null) System.out.println("==========> 2번 오류발생");
-        
         //Authentication 객체 생성 -> CustomUserDetailsService에 loadUserByUsername 메서드 실행
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken); 
         
@@ -73,4 +69,5 @@ public class AuthController {
 	public ResponseEntity<SignUpUserDTO> signup(@Valid @RequestBody SignUpUserDTO signUpUserDTO) {
 		return ResponseEntity.ok(userService.signup(signUpUserDTO));
 	}
+    
 }

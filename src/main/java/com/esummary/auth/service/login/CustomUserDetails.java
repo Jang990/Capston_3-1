@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.esummary.auth.entity.Authority;
 import com.esummary.elearning.entity.user.UserInfo;
 
 public class CustomUserDetails implements UserDetails {
@@ -17,6 +18,16 @@ public class CustomUserDetails implements UserDetails {
 	public CustomUserDetails(UserInfo user) {
 		this.user = user;
 		loginCookie = null;
+	}
+
+	public CustomUserDetails(String studentId, String password, String authString,
+			Map<String, String> loginCookies) {
+		this.user = UserInfo.builder()
+				.studentNumber(studentId)
+				.password(password)
+				.roles(Authority.valueOf(authString))
+				.build();
+		this.loginCookie = loginCookies;
 	}
 
 	@Override

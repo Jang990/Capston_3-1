@@ -27,12 +27,12 @@ public class InhatcCrawlingService implements CrawlingService {
 	
 	@Override
 	public boolean crawlLoginPage(InhatcUserDTO userDTO) {
-		Map<String, String> test = new HashMap<String, String>();
-		test.put("JSESSIONID", "aaa8hmdZh0xe5bBB7felym6HjzEl6Va_6lmpHrPKYr_hNaPoUjjo1hAEWyHD");
+//		Map<String, String> test = new HashMap<String, String>();
+//		test.put("JSESSIONID", "aaa8hmdZh0xe5bBB7felym6HjzEl6Va_6lmpHrPKYr_hNaPoUjjo1hAEWyHD");
 		
 		//크롤링 정보 가져오기
-//		List<SubjectInfo> basicSubjectData = subjectUtil.crawlBasicSubjectInfo(userDTO.getInitialCookies());
-		List<SubjectInfo> basicSubjectData = subjectUtil.crawlBasicSubjectInfo(test);
+		List<SubjectInfo> basicSubjectData = subjectUtil.crawlBasicSubjectInfo(userDTO.getInitialCookies());
+//		List<SubjectInfo> basicSubjectData = subjectUtil.crawlBasicSubjectInfo(test);
 		
 		System.out.println("===========>ㅇㅇㅇ");
 		for (SubjectInfo subjectInfo : basicSubjectData) {

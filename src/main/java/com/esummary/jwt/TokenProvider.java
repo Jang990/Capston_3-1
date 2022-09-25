@@ -87,12 +87,15 @@ public class TokenProvider {
 				.parseClaimsJws(token)
 				.getBody();
 		
+		String authString = claims.get(AUTHORITIES_KEY).toString();
+		Map<String, String> loginCookies = (Map<String, String>) claims.get(ELEARNING_SESSION_ID);
+		
 		Collection<? extends GrantedAuthority> authorities = 
-				Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+				Arrays.stream(authString.split(","))
 				.map(SimpleGrantedAuthority::new)
 				.collect(Collectors.toList());
 		
-		User principal = new User(claims.getSubject(), "", authorities);
+		CustomUserDetails principal = new CustomUserDetails(claims.getSubject(), "", authString, loginCookies);
 		return new UsernamePasswordAuthenticationToken(principal, token, authorities);
 	}
 	

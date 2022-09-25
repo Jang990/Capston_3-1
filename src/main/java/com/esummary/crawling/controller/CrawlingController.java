@@ -50,8 +50,8 @@ public class CrawlingController {
 		testCode(testInitPageData.getSubjectCardData());
 		return testInitPageData;
 		*/
-//		CustomUserDetails principal = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		InhatcUserDTO userDto = new InhatcUserDTO(studentId, null);
+		CustomUserDetails principal = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		InhatcUserDTO userDto = new InhatcUserDTO(studentId, principal.getInhaTcSessionId());
 		
 		crawlingService.crawlLoginPage(userDto);
 		return true;
