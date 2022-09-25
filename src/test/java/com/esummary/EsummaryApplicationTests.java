@@ -64,7 +64,7 @@ class EsummaryApplicationTests {
 		String password = "..."; //비밀번호로 변경할 것
 		String subjectId = "202211141LLA104";
 		LoginDTO loginCheck = new LoginDTO();
-		loginCheck.setStudentNumber(studentNumber);
+		loginCheck.setStudentId(studentNumber);
 		loginCheck.setPassword(password);
 		
 		Map<String, String> loginCookies = elearningLoginService.getLoginCookies(loginCheck);

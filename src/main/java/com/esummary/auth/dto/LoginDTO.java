@@ -13,7 +13,7 @@ import lombok.*;
 public class LoginDTO {
 	@Size(min = 5, max = 15)
 	@NotNull
-	private String studentNumber;
+	private String studentId;
 	@Size(min = 5, max = 50)
 	@NotNull
 	private String password;

@@ -70,16 +70,30 @@ export default {
     async checkLog(){
       this.loading = true;
       let successLogin = false;
-      await api.post('/vueLoginCheck', null, {params: {
-        id: this.id,
-        password: this.password
-      }}).then((response) => {
-        successLogin = response.data;
+      // 로그인
+      await api.post('/api/authenticate', {
+          studentId: this.id,
+          password: this.password
+      }).then((response) => {
+        successLogin = response.data.token;
+        //전역에서 사용하도록 토큰 세팅이 필요함 - 나중에 vue 공부 다시 하고 진행
+        response.data.token;
+        console.log(`토큰 확인: ${successLogin}`)
+
         // this.$emit('checkUser', response.data);
       });
 
       if(successLogin) {
-        await api.get('/getInitSubject').then((response) => {
+        await api.post('api/inhatc/login-info', {}, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${successLogin}` //임시로 박아넣은 것이다. 수정해라
+          },
+          withCredentials: true,
+          crossDomain: true, 
+          credentials: "include",
+        }) // 토큰확인하면서 연결까지 되도록 해놨다. 하지만 response를 받아서 값을 세팅하는 부분은 안했다.
+        .then((response) => {
           //주의하라 (response) => {} 이렇게 화살표 함수를 사용해야 this를 사용할때 원하는 값이 나온다. 스코프를 이해해라.
           this.$store.commit(
             SET_INITIAL_DATA, 
@@ -93,6 +107,20 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
+        // await api.get('/getInitSubject').then((response) => {
+        //   //주의하라 (response) => {} 이렇게 화살표 함수를 사용해야 this를 사용할때 원하는 값이 나온다. 스코프를 이해해라.
+        //   this.$store.commit(
+        //     SET_INITIAL_DATA, 
+        //     {
+        //       studentName: response.data.name, 
+        //       studentNumber: response.data.studentNumber, 
+        //       subjectCardData: response.data.subjectCardData
+        //     }
+        //   );
+        // })
+        // .catch(function (error) {
+        //   console.log(error);
+        // });
         this.loading = false;
         this.$store.dispatch(LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER);
         

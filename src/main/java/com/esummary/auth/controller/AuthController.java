@@ -38,9 +38,8 @@ public class AuthController {
     // 로그인 API
     @PostMapping("/authenticate")
     public ResponseEntity<JwtTokenDTO> authorize(@Valid @RequestBody LoginDTO loginDto) {
-    	
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDto.getStudentNumber(), loginDto.getPassword());
+                new UsernamePasswordAuthenticationToken(loginDto.getStudentId(), loginDto.getPassword());
         
         //Authentication 객체 생성 -> CustomUserDetailsService에 loadUserByUsername 메서드 실행
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken); 

@@ -58,7 +58,8 @@ public class SecurityConfig{
                 .antMatchers("/api/authenticate").permitAll()
                 .antMatchers("/api/signup").permitAll() 
 
-                .anyRequest().authenticated()
+//                .anyRequest().authenticated()
+                .anyRequest().permitAll() //프론트엔드 테스트를 위한 코드 - 나중에 수정할 것
 
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider)); // JwtFilter 적용

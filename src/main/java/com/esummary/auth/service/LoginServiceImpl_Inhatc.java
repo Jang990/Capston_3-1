@@ -25,7 +25,7 @@ public class LoginServiceImpl_Inhatc implements ElearningLoginService {
 	@Override
 	public Map<String, String> getLoginCookies(LoginDTO loginCheck) {
 		Map<String, String> initialCookies = this.getInitialCookies("/MMain.do?cmd=viewIndexPage"); //초기 쿠키 가져오기
-		if(this.attemptToLogin(loginCheck.getStudentNumber(), loginCheck.getPassword(), initialCookies)) {
+		if(this.attemptToLogin(loginCheck.getStudentId(), loginCheck.getPassword(), initialCookies)) {
 			return initialCookies; //로그인 세션 쿠키 반환
 		}
 		
