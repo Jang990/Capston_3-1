@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.esummary.crawling.dto.TaskData;
 import com.esummary.crawling.dto.exInitalPageData;
 import com.esummary.crawling.dto.exSubjectCardData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
@@ -18,7 +19,6 @@ import com.esummary.elearning.exdto.subject.LectureWeekData;
 import com.esummary.elearning.exdto.subject.NoticeData;
 import com.esummary.elearning.exdto.subject.SubjectCountData;
 import com.esummary.elearning.exdto.subject.SubjectDetailDataWithCnt_DTO;
-import com.esummary.elearning.exdto.subject.TaskData;
 import com.esummary.elearning.exdto.user.UserData;
 import com.esummary.elearning.exservice.vue.VueService;
 

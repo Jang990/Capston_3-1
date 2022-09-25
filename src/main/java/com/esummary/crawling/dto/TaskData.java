@@ -1,4 +1,4 @@
-package com.esummary.elearning.exdto.subject;
+package com.esummary.crawling.dto;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -16,10 +16,12 @@ import com.esummary.elearning.entity.subject.TaskInfo;
 import com.esummary.elearning.entity.user.UserTask;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class TaskData {
@@ -33,7 +35,7 @@ public class TaskData {
 	private int totalNum;
 	private String submitYN;
 	
-	public static TaskData convertTaskData(TaskInfo subjectTaskInfo) {
+	public static TaskData exConvertTaskData(TaskInfo subjectTaskInfo) {
 		String startDate =makeDateString(subjectTaskInfo.getStartDate());
 		String endDate =makeDateString(subjectTaskInfo.getEndDate());
 		
@@ -48,6 +50,22 @@ public class TaskData {
 				subjectTaskInfo.getTotalNum(),
 				subjectTaskInfo.getSubmitYN()
 		);
+	}
+	
+	public static TaskData from(TaskInfo task) {
+		if(task == null) return null;
+		
+		String startDate = makeDateString(task.getStartDate());
+		String endDate = makeDateString(task.getEndDate());
+		
+		return TaskData.builder()
+				.taskId(task.getTaskId())
+				.title(task.getTitle())
+				.description(task.getDescription())
+				.startDate(startDate).endDate(endDate)
+				.submissionNum(task.getSubmissionNum()).notSubmittedNum(task.getNotSubmittedNum()).totalNum(task.getTotalNum())
+				.submitYN(task.getSubmitYN())
+				.build();
 	}
 	
 	public static TaskData convertTaskData(UserTask userTask) {

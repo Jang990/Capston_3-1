@@ -17,7 +17,7 @@ import com.esummary.elearning.exservice.crawling.user.UserCrawlingUtil;
 import com.esummary.elearning.exservice.login.LoginService;
 
 @RestController
-public class LoginController {
+public class exLoginController {
 
 	@Autowired
 	private UserService userService;

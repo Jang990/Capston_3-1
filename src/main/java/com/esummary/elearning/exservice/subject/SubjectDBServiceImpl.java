@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.esummary.crawling.dto.TaskData;
 import com.esummary.elearning.dao.DBUserSubjectUtil;
 import com.esummary.elearning.entity.subject.LectureInfo;
 import com.esummary.elearning.entity.subject.NoticeInfo;
@@ -18,7 +19,6 @@ import com.esummary.elearning.entity.user.UserTask;
 import com.esummary.elearning.exdto.subject.LectureWeekData;
 import com.esummary.elearning.exdto.subject.NoticeData;
 import com.esummary.elearning.exdto.subject.SubjectDetailDataWithCnt_DTO;
-import com.esummary.elearning.exdto.subject.TaskData;
 import com.esummary.elearning.exdto.user.UserData;
 import com.esummary.elearning.repository.UserSubjectRepository;
 import com.esummary.elearning.repository.subject.NoticeInfoRepository;

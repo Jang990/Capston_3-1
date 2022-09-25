@@ -2,6 +2,8 @@ package com.esummary.elearning.exdto.subject;
 
 import java.util.List;
 
+import com.esummary.crawling.dto.TaskData;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

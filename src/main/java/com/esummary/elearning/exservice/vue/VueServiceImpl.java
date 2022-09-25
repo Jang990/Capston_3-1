@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.esummary.crawling.dto.TaskData;
 import com.esummary.crawling.dto.exInitalPageData;
 import com.esummary.elearning.dao.DBSubjectUtil;
 import com.esummary.elearning.dao.DBUserSubjectUtil;
@@ -27,7 +28,6 @@ import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.entity.user.UserTask;
 import com.esummary.elearning.exdto.subject.LectureWeekData;
 import com.esummary.elearning.exdto.subject.NoticeData;
-import com.esummary.elearning.exdto.subject.TaskData;
 import com.esummary.elearning.exdto.user.UserData;
 import com.esummary.elearning.exservice.crawling.SubjectCrawlingService;
 import com.esummary.elearning.exservice.crawling.notice.NoticeCrawlingService;
@@ -140,7 +140,7 @@ public class VueServiceImpl implements VueService {
 		//DTO로 변환
 		List<TaskData> taskDTO = new ArrayList<TaskData>();
 		for (TaskInfo subjectTaskInfo : tasks) {
-			taskDTO.add(TaskData.convertTaskData(subjectTaskInfo));
+			taskDTO.add(TaskData.exConvertTaskData(subjectTaskInfo));
 		}
 		return taskDTO;
 	}

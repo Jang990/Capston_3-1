@@ -5,25 +5,36 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.esummary.auth.service.login.CustomUserDetails;
+import com.esummary.crawling.dto.InhatcUserDTO;
+import com.esummary.crawling.dto.TaskData;
+import com.esummary.crawling.service.CrawlingService;
+import com.esummary.crawling.service.InhatcCrawlingService;
 import com.esummary.elearning.exdto.subject.LectureWeekData;
 import com.esummary.elearning.exdto.subject.NoticeData;
 import com.esummary.elearning.exdto.subject.SubjectCountData;
 import com.esummary.elearning.exdto.subject.SubjectDetailDataWithCnt_DTO;
-import com.esummary.elearning.exdto.subject.TaskData;
 import com.esummary.elearning.exdto.user.UserData;
 import com.esummary.elearning.exservice.vue.VueService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
-@RequestMapping("/api/inhatc/subject/{subjectId}")
+@RequestMapping("/api/inhatc/{subjectId}/subject")
+@RequiredArgsConstructor
 public class CrawlingSubjectController {
 	@Autowired
 	private VueService vueService;
+	
+	private final CrawlingService crawlingService;
 	
 	/**
 	 * Subject와 관련된 모든 정보 크롤링
@@ -39,7 +50,7 @@ public class CrawlingSubjectController {
 //		/*
 		List<LectureWeekData> lectureDTO = this.crawlLecture(request, subjectId);
 		List<NoticeData> noticeDTO = this.crawlNotice(request, subjectId);
-		List<TaskData> taskDTO = this.crawlTask(request, subjectId);
+		List<TaskData> taskDTO = this.crawlTask(subjectId);
 		SubjectCountData cntDTO = new SubjectCountData(lectureDTO, taskDTO);
 		
 		SubjectDetailDataWithCnt_DTO subjectVO = new SubjectDetailDataWithCnt_DTO(lectureDTO, taskDTO, noticeDTO, cntDTO);
@@ -59,10 +70,13 @@ public class CrawlingSubjectController {
 		List<NoticeData> notice = vueService.crawlNotice(user, subjectId);
 		return notice;
 	}
-	@RequestMapping("/task")
-	public List<TaskData> crawlTask(HttpServletRequest request, @RequestParam String subjectId) {
-		UserData user = (UserData)request.getSession().getAttribute("userData");
-		List<TaskData> task = vueService.crawlTask(user, subjectId);
+	@PostMapping("/task")
+	public List<TaskData> crawlTask(@PathVariable String subjectId) {
+		CustomUserDetails principal = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		InhatcUserDTO userDto = new InhatcUserDTO(principal.getUsername(), principal.getInhaTcSessionId());
+		
+		List<TaskData> task = crawlingService.crawlTask(userDto, subjectId);
+		
 		return task;
 	}
 }
