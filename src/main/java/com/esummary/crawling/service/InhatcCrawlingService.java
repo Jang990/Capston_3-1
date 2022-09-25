@@ -16,15 +16,19 @@ import com.esummary.crawling.dto.exInitalPageData;
 import com.esummary.crawling.dto.exSubjectCardData;
 import com.esummary.elearning.dao.DBSubjectUtil;
 import com.esummary.elearning.dao.DBUserSubjectUtil;
+import com.esummary.elearning.dao.notice.DBNoticeUtil;
 import com.esummary.elearning.dao.task.DBTaskUtil;
 import com.esummary.elearning.dao.user.DBUserTaskUtil;
+import com.esummary.elearning.entity.subject.NoticeInfo;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.subject.TaskInfo;
 import com.esummary.elearning.entity.user.UserInfo;
 import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.entity.user.UserTask;
+import com.esummary.elearning.exdto.subject.NoticeData;
 import com.esummary.elearning.exdto.user.UserData;
 import com.esummary.elearning.exservice.crawling.SubjectCrawlingService;
+import com.esummary.elearning.exservice.crawling.notice.NoticeCrawlingService;
 import com.esummary.elearning.exservice.crawling.task.TaskCrawlingService;
 
 import lombok.RequiredArgsConstructor;
@@ -42,6 +46,10 @@ public class InhatcCrawlingService implements CrawlingService {
 	private final TaskCrawlingService taskUtil;
 	private final DBTaskUtil dbTaskUtil;
 	private final DBUserTaskUtil dbUserTaskUtil;
+	
+	// crawlNotice 사용
+	private final NoticeCrawlingService noticeUtil;
+	private final DBNoticeUtil dbNoticeUtil;
 	
 	@Override
 	public List<InhatcSubjectCardDTO> crawlLoginPage(InhatcUserDTO userDTO) {
@@ -94,6 +102,23 @@ public class InhatcCrawlingService implements CrawlingService {
 			taskDTO.add(TaskData.from(subjectTaskInfo));
 		}
 		return taskDTO;
+	}
+
+	@Override
+	public List<NoticeData> crawlNotice(InhatcUserDTO userDto, String subjectId) {
+		//크롤링
+		List<NoticeInfo> notices = noticeUtil.getSubjectNoticeInfo(subjectId, userDto.getInitialCookies());
+		
+		//저장
+		dbNoticeUtil.saveService(notices);
+		
+		//DTO로 변환
+		List<NoticeData> noticeDTO = new ArrayList<NoticeData>();
+		for (NoticeInfo subjectNoticeInfo : notices) {
+			noticeDTO.add(NoticeData.from(subjectNoticeInfo));
+		}
+		
+		return noticeDTO;
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.esummary.crawling.dto.InhatcSubjectCardDTO;
 import com.esummary.crawling.dto.InhatcUserDTO;
 import com.esummary.crawling.dto.TaskData;
+import com.esummary.elearning.exdto.subject.NoticeData;
 
 /**
  * 크롤링하고 db에 저장 이 두개를 나누기엔 너무 멀리옴
@@ -26,4 +27,12 @@ public interface CrawlingService {
 	 * @return
 	 */
 	List<TaskData> crawlTask(InhatcUserDTO userDTO, String subjectId);
+
+	/**
+	 * subjectId에 관한 공지정보를 크롤링해서 DB에 저장
+	 * @param userDto
+	 * @param subjectId
+	 * @return
+	 */
+	List<NoticeData> crawlNotice(InhatcUserDTO userDto, String subjectId);
 }

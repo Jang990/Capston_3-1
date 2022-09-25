@@ -3,10 +3,17 @@ package com.esummary.elearning.exdto.subject;
 import com.esummary.elearning.entity.subject.NoticeInfo;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@ToString
+@Setter
+@Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class NoticeData {
@@ -16,7 +23,7 @@ public class NoticeData {
 	private String author;
 	private String createDate;
 	
-	public static NoticeData convertNoticeData(NoticeInfo subjectNoticeInfo) {
+	public static NoticeData exConvertNoticeData(NoticeInfo subjectNoticeInfo) {
 		return new NoticeData(
 				subjectNoticeInfo.getNoticeId(), 
 				subjectNoticeInfo.getTitle(), 
@@ -24,5 +31,17 @@ public class NoticeData {
 				subjectNoticeInfo.getAuthor(), 
 				subjectNoticeInfo.getCreateDate()
 		);
+	}
+	
+	public static NoticeData from(NoticeInfo notice) {
+		if(notice == null) return null;
+		
+		return NoticeData.builder()
+				.noticeId(notice.getNoticeId())
+				.title(notice.getTitle())
+				.description(notice.getDescription())
+				.author(notice.getAuthor())
+				.createDate(notice.getCreateDate())
+				.build();
 	}
 }

@@ -66,18 +66,16 @@ public class CrawlingSubjectController {
 		List<LectureWeekData> lectures = vueService.crawlLecture(user, subjectId);
 		return lectures;
 	}
-	@RequestMapping("/notice")
-	public List<NoticeData> crawlNotice(HttpServletRequest request, @RequestParam String subjectId) {
-		UserData user = (UserData)request.getSession().getAttribute("userData");
-		List<NoticeData> notice = vueService.crawlNotice(user, subjectId);
+	@PostMapping("/notice")
+	public List<NoticeData> crawlNotice(@AuthenticationPrincipal CustomUserDetails customUser, @PathVariable String subjectId) {
+		InhatcUserDTO userDto = new InhatcUserDTO(customUser.getUsername(), customUser.getInhaTcSessionId());
+		List<NoticeData> notice = crawlingService.crawlNotice(userDto, subjectId);
 		return notice;
 	}
 	@PostMapping("/task")
 	public List<TaskData> crawlTask(@AuthenticationPrincipal CustomUserDetails customUser, @PathVariable String subjectId) {
 		InhatcUserDTO userDto = new InhatcUserDTO(customUser.getUsername(), customUser.getInhaTcSessionId());
-		
 		List<TaskData> task = crawlingService.crawlTask(userDto, subjectId);
-		
 		return task;
 	}
 }

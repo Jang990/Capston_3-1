@@ -119,7 +119,7 @@ public class VueServiceImpl implements VueService {
 		//DTO로 변환
 		List<NoticeData> noticeDTO = new ArrayList<NoticeData>();
 		for (NoticeInfo subjectNoticeInfo : notices) {
-			noticeDTO.add(NoticeData.convertNoticeData(subjectNoticeInfo));
+			noticeDTO.add(NoticeData.exConvertNoticeData(subjectNoticeInfo));
 		}
 		
 		return noticeDTO;
