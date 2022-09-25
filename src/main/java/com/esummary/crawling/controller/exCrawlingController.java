@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.esummary.crawling.dto.exInitalPageData;
+import com.esummary.crawling.dto.exSubjectCardData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.exdto.InitalPageData;
 import com.esummary.elearning.exdto.subject.LectureWeekData;
 import com.esummary.elearning.exdto.subject.NoticeData;
-import com.esummary.elearning.exdto.subject.SubjectCardData;
 import com.esummary.elearning.exdto.subject.SubjectCountData;
 import com.esummary.elearning.exdto.subject.SubjectDetailDataWithCnt_DTO;
 import com.esummary.elearning.exdto.subject.TaskData;
@@ -35,9 +35,9 @@ public class exCrawlingController {
 	 * 2. 크롤링정보(si)랑 사용자정보(us) 저장.
 	 */
 	@RequestMapping("/getInitSubject")   
-	public InitalPageData getInitData(HttpServletRequest request) {
+	public exInitalPageData getInitData(HttpServletRequest request) {
 		//이러닝이 안되서 추가한 테스트코드
-		InitalPageData testInitPageData = new InitalPageData(new ArrayList<SubjectInfo>(), "장현우", "201845096");
+		exInitalPageData testInitPageData = new exInitalPageData(new ArrayList<SubjectInfo>(), "장현우", "201845096");
 		testCode(testInitPageData.getSubjectCardData());
 		return testInitPageData;
 		
@@ -50,7 +50,7 @@ public class exCrawlingController {
 		*/
 	}
 	
-	private void testCode(List<SubjectCardData> subjectCardData) {
+	private void testCode(List<exSubjectCardData> subjectCardData) {
 		/*
 		만약 이러닝에 1학기 정보가 내려갔을때 테스트를 위한 코드
 		SubjectCardData(subjectId=CORS_1703071437557d610794, subjectName=서버프로그래밍, owner=조규철), 
@@ -64,14 +64,14 @@ public class exCrawlingController {
 		SubjectCardData(subjectId=202214043CMP743, subjectName=[3학년C반] 자율드론, owner=박병섭), 
 		SubjectCardData(subjectId=202214043DMP250, subjectName=[3학년D반] 캡스톤디자인, owner=황수철)])
 		*/
-		subjectCardData.add(new SubjectCardData("202214001LLA117", "[1학년L반] 발명과특허", "김영준"));
-		subjectCardData.add(new SubjectCardData("202214001LLA138", "[1학년L반] 빅데이터의이해", "용승림"));
-		subjectCardData.add(new SubjectCardData("202211141LLA104", "[1학년L반] 자기개발과직업윤리", "김성진"));
-		subjectCardData.add(new SubjectCardData("202214043CMP389", "[3학년C반] 빅데이터", "권두순"));
-		subjectCardData.add(new SubjectCardData("202214043C4846", "[3학년C반] 소프트웨어분석설계", "김철진"));
-		subjectCardData.add(new SubjectCardData("202214043C5019", "[3학년C반] 웹보안", "용승림"));
-		subjectCardData.add(new SubjectCardData("202214043CMP743", "[3학년C반] 자율드론", "박병섭"));
-		subjectCardData.add(new SubjectCardData("202214043DMP250", "[3학년D반] 캡스톤디자인", "황수철"));
+		subjectCardData.add(new exSubjectCardData("202214001LLA117", "[1학년L반] 발명과특허", "김영준"));
+		subjectCardData.add(new exSubjectCardData("202214001LLA138", "[1학년L반] 빅데이터의이해", "용승림"));
+		subjectCardData.add(new exSubjectCardData("202211141LLA104", "[1학년L반] 자기개발과직업윤리", "김성진"));
+		subjectCardData.add(new exSubjectCardData("202214043CMP389", "[3학년C반] 빅데이터", "권두순"));
+		subjectCardData.add(new exSubjectCardData("202214043C4846", "[3학년C반] 소프트웨어분석설계", "김철진"));
+		subjectCardData.add(new exSubjectCardData("202214043C5019", "[3학년C반] 웹보안", "용승림"));
+		subjectCardData.add(new exSubjectCardData("202214043CMP743", "[3학년C반] 자율드론", "박병섭"));
+		subjectCardData.add(new exSubjectCardData("202214043DMP250", "[3학년D반] 캡스톤디자인", "황수철"));
 	}
 	
 

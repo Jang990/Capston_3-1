@@ -1,20 +1,21 @@
-package com.esummary.elearning.exdto.subject;
+package com.esummary.crawling.dto;
 
 import com.esummary.elearning.entity.subject.SubjectInfo;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SubjectCardData {
+@Builder
+public class exSubjectCardData {
 	private String subjectId;
 	private String subjectName; 
 	private String owner;
 	
-	public SubjectCardData(SubjectInfo subject) {
+	public exSubjectCardData(SubjectInfo subject) {
 		this.subjectId = subject.getSubjectId();
 		this.subjectName = subject.getSubjectName();
 		this.owner = subject.getSubjectOwnerName();

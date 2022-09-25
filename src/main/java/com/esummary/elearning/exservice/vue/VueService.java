@@ -2,13 +2,13 @@ package com.esummary.elearning.exservice.vue;
 
 import java.util.List;
 
+import com.esummary.crawling.dto.exInitalPageData;
+import com.esummary.crawling.dto.exSubjectCardData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.user.UserSubject;
-import com.esummary.elearning.exdto.InitalPageData;
 import com.esummary.elearning.exdto.subject.LectureData;
 import com.esummary.elearning.exdto.subject.LectureWeekData;
 import com.esummary.elearning.exdto.subject.NoticeData;
-import com.esummary.elearning.exdto.subject.SubjectCardData;
 import com.esummary.elearning.exdto.subject.TaskData;
 import com.esummary.elearning.exdto.user.UserData;
 
@@ -20,7 +20,7 @@ public interface VueService {
 //	List<SubjectCardData> getInitCardData(String studentNumber);getInitCardDatagetInitCardData
 	
 	//크롤링
-	InitalPageData crawlInitDataService(UserData user);
+	exInitalPageData crawlInitDataService(UserData user);
 	List<NoticeData> crawlNotice(UserData user, String subjectId);
 	List<TaskData> crawlTask(UserData user, String subjectId);
 	List<LectureWeekData> crawlLecture(UserData user, String subjectId);

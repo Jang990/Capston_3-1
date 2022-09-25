@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.esummary.auth.entity.Authority;
+import com.esummary.auth.exception.DeniedElearningCookieException;
 import com.esummary.elearning.entity.user.UserInfo;
 
 public class CustomUserDetails implements UserDetails {
@@ -48,6 +49,7 @@ public class CustomUserDetails implements UserDetails {
 	}
 	
 	public Map<String, String> getInhaTcSessionId() {
+		if(loginCookie == null) throw new DeniedElearningCookieException("이러닝에 로그인할 수 없습니다. 이러닝 쿠키 만료 또는 이러닝 사이트 다운");
 		return this.loginCookie;
 	}
 	public void setInhaTcSessionId(Map<String, String> loginCookie) {

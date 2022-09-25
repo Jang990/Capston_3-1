@@ -7,7 +7,11 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.esummary.auth.exception.DeniedElearningCookieException;
+import com.esummary.crawling.dto.InhatcSubjectCardDTO;
 import com.esummary.crawling.dto.InhatcUserDTO;
+import com.esummary.crawling.dto.exInitalPageData;
+import com.esummary.crawling.dto.exSubjectCardData;
 import com.esummary.elearning.dao.DBSubjectUtil;
 import com.esummary.elearning.dao.DBUserSubjectUtil;
 import com.esummary.elearning.entity.subject.SubjectInfo;
@@ -26,20 +30,18 @@ public class InhatcCrawlingService implements CrawlingService {
 	private final DBUserSubjectUtil dbUserSubjectUtil;
 	
 	@Override
-	public boolean crawlLoginPage(InhatcUserDTO userDTO) {
-//		Map<String, String> test = new HashMap<String, String>();
-//		test.put("JSESSIONID", "aaa8hmdZh0xe5bBB7felym6HjzEl6Va_6lmpHrPKYr_hNaPoUjjo1hAEWyHD");
+	public List<InhatcSubjectCardDTO> crawlLoginPage(InhatcUserDTO userDTO) {
 		
 		//크롤링 정보 가져오기
 		List<SubjectInfo> basicSubjectData = subjectUtil.crawlBasicSubjectInfo(userDTO.getInitialCookies());
-//		List<SubjectInfo> basicSubjectData = subjectUtil.crawlBasicSubjectInfo(test);
 		
 		System.out.println("===========>ㅇㅇㅇ");
 		for (SubjectInfo subjectInfo : basicSubjectData) {
 			System.out.println(subjectInfo.getSubjectId() + "," + subjectInfo.getSubjectName());
 		}
 		
-		if(basicSubjectData.isEmpty() || basicSubjectData == null) return false; // 크롤링 실패
+		if(basicSubjectData.isEmpty() || basicSubjectData == null) 
+			throw new DeniedElearningCookieException("만료된 이러닝 로그인 쿠키"); // 크롤링 실패
 		
 		//UserSubject와 Subject 저장
 		UserInfo userEntity = InhatcUserDTO.toEntity(userDTO);
@@ -50,7 +52,12 @@ public class InhatcCrawlingService implements CrawlingService {
 		}
 		dbUserSubjectUtil.saveService(usList);
 		
-		return true;
+		List<InhatcSubjectCardDTO> subjectCards = new ArrayList<>();
+		for (SubjectInfo subject : basicSubjectData) {
+			subjectCards.add(InhatcSubjectCardDTO.from(subject));
+		}
+		
+		return subjectCards;
 	}
 
 }

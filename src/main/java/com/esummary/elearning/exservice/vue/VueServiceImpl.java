@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.esummary.crawling.dto.exInitalPageData;
 import com.esummary.elearning.dao.DBSubjectUtil;
 import com.esummary.elearning.dao.DBUserSubjectUtil;
 import com.esummary.elearning.dao.lectures.DBLectureWeekUtil;
@@ -24,7 +25,6 @@ import com.esummary.elearning.entity.user.UserInfo;
 import com.esummary.elearning.entity.user.UserLecture;
 import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.entity.user.UserTask;
-import com.esummary.elearning.exdto.InitalPageData;
 import com.esummary.elearning.exdto.subject.LectureWeekData;
 import com.esummary.elearning.exdto.subject.NoticeData;
 import com.esummary.elearning.exdto.subject.TaskData;
@@ -202,12 +202,12 @@ public class VueServiceImpl implements VueService {
 	}
 
 	@Override
-	public InitalPageData crawlInitDataService(UserData userDTO) {
+	public exInitalPageData crawlInitDataService(UserData userDTO) {
 		List<SubjectInfo> crawledBasicSubjectData = crawlInitData(userDTO); //크롤링
 		if(crawledBasicSubjectData == null) return null;
 		saveInitData(userDTO, crawledBasicSubjectData); //UserSubject와 Subject 저장
 		
-		InitalPageData initPageData = new InitalPageData(
+		exInitalPageData initPageData = new exInitalPageData(
 					crawledBasicSubjectData, userDTO.getUserName(), userDTO.getStudentNumber()
 				);
 		return initPageData;

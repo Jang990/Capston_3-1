@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.esummary.crawling.dto.exSubjectCardData;
 import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.user.UserInfo;
-import com.esummary.elearning.exdto.subject.SubjectCardData;
 import com.esummary.elearning.exdto.user.UserData;
 
 @Service
