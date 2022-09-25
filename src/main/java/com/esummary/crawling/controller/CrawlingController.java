@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,15 +48,14 @@ public class CrawlingController {
 	 * @return 크롤링한 정보들을 리턴
 	 */
 	@PostMapping("/login-info")
-	public List<InhatcSubjectCardDTO> getInitData() {
+	public List<InhatcSubjectCardDTO> getInitData(@AuthenticationPrincipal CustomUserDetails customUser) {
 		//이러닝이 안되서 추가한 테스트코드
 		/*
 		InitalPageData testInitPageData = new InitalPageData(new ArrayList<SubjectInfo>(), "장현우", "201845096");
 		testCode(testInitPageData.getSubjectCardData());
 		return testInitPageData;
 		*/
-		CustomUserDetails principal = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		InhatcUserDTO userDto = new InhatcUserDTO(principal.getUsername(), principal.getInhaTcSessionId());
+		InhatcUserDTO userDto = new InhatcUserDTO(customUser.getUsername(), customUser.getInhaTcSessionId());
 		
 		List<InhatcSubjectCardDTO> subjects =  crawlingService.crawlLoginPage(userDto);
 		return subjects;

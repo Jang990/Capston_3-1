@@ -5,6 +5,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -71,9 +73,8 @@ public class CrawlingSubjectController {
 		return notice;
 	}
 	@PostMapping("/task")
-	public List<TaskData> crawlTask(@PathVariable String subjectId) {
-		CustomUserDetails principal = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		InhatcUserDTO userDto = new InhatcUserDTO(principal.getUsername(), principal.getInhaTcSessionId());
+	public List<TaskData> crawlTask(@AuthenticationPrincipal CustomUserDetails customUser, @PathVariable String subjectId) {
+		InhatcUserDTO userDto = new InhatcUserDTO(customUser.getUsername(), customUser.getInhaTcSessionId());
 		
 		List<TaskData> task = crawlingService.crawlTask(userDto, subjectId);
 		
