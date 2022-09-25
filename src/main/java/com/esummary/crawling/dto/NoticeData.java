@@ -1,4 +1,4 @@
-package com.esummary.elearning.exdto.subject;
+package com.esummary.crawling.dto;
 
 import com.esummary.elearning.entity.subject.NoticeInfo;
 

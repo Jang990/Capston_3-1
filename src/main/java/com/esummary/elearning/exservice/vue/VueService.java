@@ -2,6 +2,7 @@ package com.esummary.elearning.exservice.vue;
 
 import java.util.List;
 
+import com.esummary.crawling.dto.NoticeData;
 import com.esummary.crawling.dto.TaskData;
 import com.esummary.crawling.dto.exInitalPageData;
 import com.esummary.crawling.dto.exSubjectCardData;
@@ -9,7 +10,6 @@ import com.esummary.elearning.entity.subject.SubjectInfo;
 import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.exdto.subject.LectureData;
 import com.esummary.elearning.exdto.subject.LectureWeekData;
-import com.esummary.elearning.exdto.subject.NoticeData;
 import com.esummary.elearning.exdto.user.UserData;
 
 public interface VueService {

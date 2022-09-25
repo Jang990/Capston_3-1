@@ -36,7 +36,7 @@ public class LectureWeekData {
 		
 		for (LectureInfo detail : lectureDetail) {
 			
-			LectureData lecture = new LectureData(detail);
+			LectureData lecture = LectureData.from(detail);
 			if(isCompletedLecture(lecture)) cntCompleted++;
 			else cntIncompleted++;
 			

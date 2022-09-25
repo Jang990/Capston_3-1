@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.esummary.auth.service.login.CustomUserDetails;
 import com.esummary.crawling.dto.InhatcUserDTO;
+import com.esummary.crawling.dto.NoticeData;
 import com.esummary.crawling.dto.TaskData;
 import com.esummary.crawling.service.CrawlingService;
 import com.esummary.crawling.service.InhatcCrawlingService;
 import com.esummary.elearning.exdto.subject.LectureWeekData;
-import com.esummary.elearning.exdto.subject.NoticeData;
 import com.esummary.elearning.exdto.subject.SubjectCountData;
 import com.esummary.elearning.exdto.subject.SubjectDetailDataWithCnt_DTO;
 import com.esummary.elearning.exdto.user.UserData;
@@ -61,9 +61,9 @@ public class CrawlingSubjectController {
 	}
 	
 	@RequestMapping("/lecture")
-	public List<LectureWeekData> crawlLecture(HttpServletRequest request, @RequestParam String subjectId) {
-		UserData user = (UserData)request.getSession().getAttribute("userData");
-		List<LectureWeekData> lectures = vueService.crawlLecture(user, subjectId);
+	public List<LectureWeekData> crawlLecture(@AuthenticationPrincipal CustomUserDetails customUser, @PathVariable String subjectId) {
+		InhatcUserDTO userDto = new InhatcUserDTO(customUser.getUsername(), customUser.getInhaTcSessionId());
+		List<LectureWeekData> lectures = crawlingService.crawlLecture(userDto, subjectId);
 		return lectures;
 	}
 	@PostMapping("/notice")

@@ -3,9 +3,9 @@ package com.esummary.elearning.exservice.subject;
 import java.util.List;
 import java.util.Map;
 
+import com.esummary.crawling.dto.NoticeData;
 import com.esummary.crawling.dto.TaskData;
 import com.esummary.elearning.exdto.subject.LectureWeekData;
-import com.esummary.elearning.exdto.subject.NoticeData;
 import com.esummary.elearning.exdto.subject.SubjectDetailDataWithCnt_DTO;
 import com.esummary.elearning.exdto.user.UserData;
 
