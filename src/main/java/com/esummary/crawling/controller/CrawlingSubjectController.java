@@ -1,18 +1,11 @@
 package com.esummary.crawling.controller;
 
-import java.util.List;
+import java.util.List; 
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.esummary.auth.service.login.CustomUserDetails;
@@ -20,44 +13,28 @@ import com.esummary.crawling.dto.InhatcUserDTO;
 import com.esummary.crawling.dto.NoticeData;
 import com.esummary.crawling.dto.TaskData;
 import com.esummary.crawling.service.CrawlingService;
-import com.esummary.crawling.service.InhatcCrawlingService;
 import com.esummary.elearning.exdto.subject.LectureWeekData;
 import com.esummary.elearning.exdto.subject.SubjectCountData;
 import com.esummary.elearning.exdto.subject.SubjectDetailDataWithCnt_DTO;
-import com.esummary.elearning.exdto.user.UserData;
-import com.esummary.elearning.exservice.vue.VueService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/inhatc/{subjectId}/subject")
+@RequestMapping("/api/inhatc/subject/{subjectId}/")
 @RequiredArgsConstructor
 public class CrawlingSubjectController {
-	@Autowired
-	private VueService vueService;
 	
 	private final CrawlingService crawlingService;
 	
-	/**
-	 * Subject와 관련된 모든 정보 크롤링
-	 * @param request
-	 * @param subjectId
-	 * @return
-	 */
-	@GetMapping("/all")
-	public SubjectDetailDataWithCnt_DTO crawlSubject(HttpServletRequest request, @PathVariable String subjectId) {
-		//테스트 코드
-//		return null;
-		
-//		/*
-		List<LectureWeekData> lectureDTO = this.crawlLecture(request, subjectId);
-		List<NoticeData> noticeDTO = this.crawlNotice(request, subjectId);
-		List<TaskData> taskDTO = this.crawlTask(subjectId);
+	@PostMapping("/all")
+	public SubjectDetailDataWithCnt_DTO crawlSubject(@AuthenticationPrincipal CustomUserDetails customUser, @PathVariable String subjectId) {
+		List<LectureWeekData> lectureDTO = this.crawlLecture(customUser, subjectId);
+		List<NoticeData> noticeDTO = this.crawlNotice(customUser, subjectId);
+		List<TaskData> taskDTO = this.crawlTask(customUser, subjectId);
 		SubjectCountData cntDTO = new SubjectCountData(lectureDTO, taskDTO);
 		
-		SubjectDetailDataWithCnt_DTO subjectVO = new SubjectDetailDataWithCnt_DTO(lectureDTO, taskDTO, noticeDTO, cntDTO);
-		return subjectVO;
-//		*/
+		SubjectDetailDataWithCnt_DTO subjectDTO = new SubjectDetailDataWithCnt_DTO(lectureDTO, taskDTO, noticeDTO, cntDTO);
+		return subjectDTO;
 	}
 	
 	@RequestMapping("/lecture")
