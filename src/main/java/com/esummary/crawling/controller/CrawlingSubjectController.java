@@ -1,6 +1,6 @@
 package com.esummary.crawling.controller;
 
-import java.util.List; 
+import java.util.List;  
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +19,12 @@ import com.esummary.crawling.service.CrawlingService;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 인하공전 이러닝에서 강의와 관련된 것들을 크롤링
+ * 크롤링한 정보들을 DB에 저장하고 반환
+ * @author User
+ *
+ */
 @RestController
 @RequestMapping("/api/inhatc/subject/{subjectId}/")
 @RequiredArgsConstructor

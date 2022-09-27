@@ -26,6 +26,12 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+
+/**
+ * 로그인 및 회원가입을 위한 컨트롤러
+ * @author User
+ *
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")

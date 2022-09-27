@@ -1,40 +1,26 @@
 package com.esummary.crawling.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.esummary.auth.dto.JwtTokenDTO;
 import com.esummary.auth.service.login.CustomUserDetails;
 import com.esummary.crawling.dto.InhatcSubjectCardDTO;
 import com.esummary.crawling.dto.InhatcUserDTO;
-import com.esummary.crawling.dto.LectureWeekData;
-import com.esummary.crawling.dto.NoticeData;
-import com.esummary.crawling.dto.SubjectCountData;
-import com.esummary.crawling.dto.SubjectDetailDataWithCnt_DTO;
-import com.esummary.crawling.dto.TaskData;
-import com.esummary.crawling.dto.exInitalPageData;
 import com.esummary.crawling.dto.exSubjectCardData;
 import com.esummary.crawling.service.CrawlingService;
-import com.esummary.crawling.service.exVueService;
-import com.esummary.elearning.exdto.user.UserData;
-import com.esummary.entity.subject.SubjectInfo;
 
 import lombok.RequiredArgsConstructor;
 
+
+/**
+ * 인하공전 이러닝에서 여러 정보를 크롤링
+ * @author User
+ *
+ */
 @RestController
 @RequestMapping("/api/inhatc")
 @RequiredArgsConstructor

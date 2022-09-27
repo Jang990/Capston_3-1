@@ -9,7 +9,7 @@ import com.esummary.crawling.dto.NoticeData;
 import com.esummary.crawling.dto.TaskData;
 
 /**
- * 크롤링하고 db에 저장 이 두개를 나누기엔 너무 멀리옴
+ * 크롤링하고 db에 저장. 이 두개를 나누기엔 너무 멀리옴
  * @author User
  *
  */
