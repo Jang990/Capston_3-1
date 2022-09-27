@@ -1,4 +1,4 @@
-package com.esummary.crawling.dto;
+package com.esummary.crawling.dto.tofront;
 
 import com.esummary.entity.subject.NoticeInfo;
 

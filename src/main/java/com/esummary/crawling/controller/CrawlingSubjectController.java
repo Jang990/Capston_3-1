@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.esummary.auth.service.login.CustomUserDetails;
 import com.esummary.crawling.dto.InhatcUserDTO;
-import com.esummary.crawling.dto.LectureWeekData;
-import com.esummary.crawling.dto.NoticeData;
 import com.esummary.crawling.dto.SubjectCountData;
-import com.esummary.crawling.dto.SubjectDetailDataWithCnt_DTO;
-import com.esummary.crawling.dto.TaskData;
+import com.esummary.crawling.dto.tofront.LectureWeekData;
+import com.esummary.crawling.dto.tofront.NoticeData;
+import com.esummary.crawling.dto.tofront.SubjectDetailDataWithCnt_DTO;
+import com.esummary.crawling.dto.tofront.TaskData;
 import com.esummary.crawling.service.CrawlingService;
 
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,8 @@
-package com.esummary.crawling.dto;
+package com.esummary.crawling.dto.tofront;
 
 import java.util.List;
+
+import com.esummary.crawling.dto.SubjectCountData;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

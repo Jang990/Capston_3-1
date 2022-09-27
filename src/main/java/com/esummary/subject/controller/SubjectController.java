@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.esummary.crawling.dto.SubjectDetailDataWithCnt_DTO;
+import com.esummary.crawling.dto.tofront.SubjectDetailDataWithCnt_DTO;
 import com.esummary.elearning.dto.subject.SubjectDTO;
 import com.esummary.subject.service.SubjectService;
 

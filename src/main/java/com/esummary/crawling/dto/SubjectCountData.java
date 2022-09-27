@@ -2,6 +2,9 @@ package com.esummary.crawling.dto;
 
 import java.util.List;
 
+import com.esummary.crawling.dto.tofront.LectureWeekData;
+import com.esummary.crawling.dto.tofront.TaskData;
+
 import lombok.Data;
 
 @Data

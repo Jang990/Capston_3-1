@@ -1,10 +1,11 @@
-package com.esummary.crawling.dto;
+package com.esummary.crawling.dto.tofront;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.esummary.crawling.dto.LectureData;
 import com.esummary.entity.subject.LectureInfo;
 import com.esummary.entity.subject.WeekInfo;
 

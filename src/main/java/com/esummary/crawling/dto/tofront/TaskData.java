@@ -1,4 +1,4 @@
-package com.esummary.crawling.dto;
+package com.esummary.crawling.dto.tofront;
 
 import java.util.Calendar;
 import java.util.Date;

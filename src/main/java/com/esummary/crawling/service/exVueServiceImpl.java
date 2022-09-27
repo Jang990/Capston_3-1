@@ -7,10 +7,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.esummary.crawling.dto.LectureWeekData;
-import com.esummary.crawling.dto.NoticeData;
-import com.esummary.crawling.dto.TaskData;
 import com.esummary.crawling.dto.exInitalPageData;
+import com.esummary.crawling.dto.tofront.LectureWeekData;
+import com.esummary.crawling.dto.tofront.NoticeData;
+import com.esummary.crawling.dto.tofront.TaskData;
 import com.esummary.crawling.service.crawling.SubjectCrawlingService;
 import com.esummary.crawling.service.crawling.notice.NoticeCrawlingService;
 import com.esummary.crawling.service.crawling.task.TaskCrawlingService;
