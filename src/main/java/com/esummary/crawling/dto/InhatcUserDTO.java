@@ -2,8 +2,8 @@ package com.esummary.crawling.dto;
 
 import java.util.Map;
 
-import com.esummary.elearning.entity.user.UserInfo;
 import com.esummary.elearning.exdto.user.UserData;
+import com.esummary.entity.user.UserInfo;
 
 import lombok.*;
 

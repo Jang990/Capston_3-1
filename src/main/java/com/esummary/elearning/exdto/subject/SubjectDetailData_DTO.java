@@ -2,9 +2,9 @@ package com.esummary.elearning.exdto.subject;
 
 import java.util.List;
 
-import com.esummary.elearning.entity.subject.WeekInfo;
-import com.esummary.elearning.entity.subject.NoticeInfo;
-import com.esummary.elearning.entity.subject.TaskInfo;
+import com.esummary.entity.subject.NoticeInfo;
+import com.esummary.entity.subject.TaskInfo;
+import com.esummary.entity.subject.WeekInfo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

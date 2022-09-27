@@ -7,8 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.esummary.elearning.entity.user.UserLecture;
-import com.esummary.elearning.repository.user.UserLectureRepository;
+import com.esummary.entity.user.UserLecture;
+import com.esummary.repository.user.UserLectureRepository;
 
 @Component
 public class UserLectureUtil_DB implements DBUserLectureUtil {

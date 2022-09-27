@@ -3,7 +3,7 @@ package com.esummary.elearning.dao.user;
 import java.util.List;
 import java.util.Optional;
 
-import com.esummary.elearning.entity.user.UserLecture; 
+import com.esummary.entity.user.UserLecture; 
 
 
 public interface DBUserLectureUtil {

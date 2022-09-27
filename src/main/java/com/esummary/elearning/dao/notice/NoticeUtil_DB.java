@@ -11,13 +11,13 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.subject.WeekInfo;
-import com.esummary.elearning.exservice.crawling.ELearningURL;
-import com.esummary.elearning.entity.subject.NoticeInfo;
-import com.esummary.elearning.entity.subject.TaskInfo;
-import com.esummary.elearning.repository.subject.NoticeInfoRepository;
-import com.esummary.elearning.repository.subject.TaskInfoRepository;
+import com.esummary.crawling.service.crawling.ELearningURL;
+import com.esummary.entity.subject.NoticeInfo;
+import com.esummary.entity.subject.SubjectInfo;
+import com.esummary.entity.subject.TaskInfo;
+import com.esummary.entity.subject.WeekInfo;
+import com.esummary.repository.subject.NoticeInfoRepository;
+import com.esummary.repository.subject.TaskInfoRepository;
 
 @Component
 public class NoticeUtil_DB implements DBNoticeUtil{

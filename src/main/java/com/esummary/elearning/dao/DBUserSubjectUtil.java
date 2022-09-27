@@ -6,10 +6,10 @@ import java.util.Optional;
 
 import org.jsoup.nodes.Document;
 
-import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.user.UserInfo;
-import com.esummary.elearning.entity.user.UserSubject;
 import com.esummary.elearning.exdto.user.UserData;
+import com.esummary.entity.subject.SubjectInfo;
+import com.esummary.entity.user.UserInfo;
+import com.esummary.entity.user.UserSubject;
 
 public interface DBUserSubjectUtil {
 	//저장 서비스 (중복 체크 + 저장)

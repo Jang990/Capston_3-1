@@ -1,6 +1,6 @@
 package com.esummary.elearning.dto.subject;
 
-import com.esummary.elearning.entity.subject.SubjectInfo;
+import com.esummary.entity.subject.SubjectInfo;
 
 import lombok.Builder;
 import lombok.Getter;

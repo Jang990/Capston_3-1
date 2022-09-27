@@ -21,17 +21,17 @@ import com.esummary.auth.dto.JwtTokenDTO;
 import com.esummary.auth.service.login.CustomUserDetails;
 import com.esummary.crawling.dto.InhatcSubjectCardDTO;
 import com.esummary.crawling.dto.InhatcUserDTO;
+import com.esummary.crawling.dto.LectureWeekData;
 import com.esummary.crawling.dto.NoticeData;
+import com.esummary.crawling.dto.SubjectCountData;
+import com.esummary.crawling.dto.SubjectDetailDataWithCnt_DTO;
 import com.esummary.crawling.dto.TaskData;
 import com.esummary.crawling.dto.exInitalPageData;
 import com.esummary.crawling.dto.exSubjectCardData;
 import com.esummary.crawling.service.CrawlingService;
-import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.exdto.subject.LectureWeekData;
-import com.esummary.elearning.exdto.subject.SubjectCountData;
-import com.esummary.elearning.exdto.subject.SubjectDetailDataWithCnt_DTO;
+import com.esummary.crawling.service.exVueService;
 import com.esummary.elearning.exdto.user.UserData;
-import com.esummary.elearning.exservice.vue.VueService;
+import com.esummary.entity.subject.SubjectInfo;
 
 import lombok.RequiredArgsConstructor;
 

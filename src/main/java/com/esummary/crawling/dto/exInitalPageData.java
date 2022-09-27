@@ -3,7 +3,7 @@ package com.esummary.crawling.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.esummary.elearning.entity.subject.SubjectInfo;
+import com.esummary.entity.subject.SubjectInfo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

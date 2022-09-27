@@ -4,7 +4,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.esummary.auth.entity.Authority;
-import com.esummary.elearning.entity.user.UserInfo;
+import com.esummary.entity.user.UserInfo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

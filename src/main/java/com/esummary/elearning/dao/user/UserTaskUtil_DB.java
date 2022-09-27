@@ -7,8 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.esummary.elearning.entity.user.UserTask;
-import com.esummary.elearning.repository.user.UserTaskRepository;
+import com.esummary.entity.user.UserTask;
+import com.esummary.repository.user.UserTaskRepository;
 
 @Component
 public class UserTaskUtil_DB implements DBUserTaskUtil {

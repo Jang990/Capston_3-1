@@ -1,6 +1,6 @@
 package com.esummary.crawling.dto;
 
-import com.esummary.elearning.entity.subject.SubjectInfo;
+import com.esummary.entity.subject.SubjectInfo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

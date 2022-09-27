@@ -3,8 +3,8 @@ package com.esummary.elearning.service;
 import org.springframework.stereotype.Service;
 
 import com.esummary.elearning.dto.subject.SubjectDTO;
-import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.repository.subject.SubjectInfoRepository;
+import com.esummary.entity.subject.SubjectInfo;
+import com.esummary.repository.subject.SubjectInfoRepository;
 
 import lombok.RequiredArgsConstructor;
 

@@ -11,9 +11,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.subject.TaskInfo;
-import com.esummary.elearning.entity.user.UserTask;
+import com.esummary.entity.subject.SubjectInfo;
+import com.esummary.entity.subject.TaskInfo;
+import com.esummary.entity.user.UserTask;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -7,9 +7,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.subject.WeekInfo;
-import com.esummary.elearning.repository.subject.SubjectInfoRepository;
+import com.esummary.entity.subject.SubjectInfo;
+import com.esummary.entity.subject.WeekInfo;
+import com.esummary.repository.subject.SubjectInfoRepository;
 
 @Component
 public class SubjectUtil_DB implements DBSubjectUtil {

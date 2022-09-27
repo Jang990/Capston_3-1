@@ -6,8 +6,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.esummary.elearning.entity.user.UserInfo;
-import com.esummary.elearning.repository.user.UserRepository;
+import com.esummary.entity.user.UserInfo;
+import com.esummary.repository.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 

@@ -9,13 +9,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.esummary.auth.dto.LoginDTO;
 import com.esummary.auth.service.ElearningLoginService;
-import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.exservice.crawling.SubjectCrawlingService;
-import com.esummary.elearning.exservice.crawling.user.UserCrawlingUtil;
-import com.esummary.elearning.exservice.login.LoginService;
+import com.esummary.auth.service.exLoginService;
+import com.esummary.crawling.service.exVueService;
+import com.esummary.crawling.service.crawling.SubjectCrawlingService;
+import com.esummary.crawling.service.crawling.user.UserCrawlingUtil;
 import com.esummary.elearning.exservice.subject.SubjectDBService;
-import com.esummary.elearning.exservice.vue.VueService;
-import com.esummary.elearning.repository.subject.SubjectInfoRepository;
+import com.esummary.entity.subject.SubjectInfo;
+import com.esummary.repository.subject.SubjectInfoRepository;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -28,7 +28,7 @@ class EsummaryApplicationTests {
 	@Autowired
 	private SubjectDBService subjectDBService;
 	@Autowired
-	private VueService vueService;
+	private exVueService vueService;
 	@Autowired
 	private ElearningLoginService elearningLoginService;
 	@Autowired

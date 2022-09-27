@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.subject.TaskInfo;
-import com.esummary.elearning.entity.user.UserTask;
+import com.esummary.entity.subject.SubjectInfo;
+import com.esummary.entity.subject.TaskInfo;
+import com.esummary.entity.user.UserTask;
 
 @Component
 public interface DBTaskUtil {

@@ -13,9 +13,9 @@ import com.esummary.auth.exception.DuplicateMemberException;
 import com.esummary.auth.exception.DuplicateNicknameException;
 import com.esummary.auth.exception.DeniedElearningCookieException;
 import com.esummary.auth.service.ElearningLoginService;
-import com.esummary.elearning.entity.user.UserInfo;
 import com.esummary.elearning.exdto.user.UserData;
-import com.esummary.elearning.repository.user.UserRepository;
+import com.esummary.entity.user.UserInfo;
+import com.esummary.repository.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 

@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.esummary.elearning.dao.user.UserLectureUtil_DB;
-import com.esummary.elearning.entity.subject.LectureInfo;
-import com.esummary.elearning.entity.subject.WeekInfo;
-import com.esummary.elearning.entity.user.UserLecture;
-import com.esummary.elearning.repository.subject.LectureInfoRepository;
-import com.esummary.elearning.repository.user.UserLectureRepository;
+import com.esummary.entity.subject.LectureInfo;
+import com.esummary.entity.subject.WeekInfo;
+import com.esummary.entity.user.UserLecture;
+import com.esummary.repository.subject.LectureInfoRepository;
+import com.esummary.repository.user.UserLectureRepository;
 
 @Component
 public class LectureUtil_DB implements DBLectureUtil {

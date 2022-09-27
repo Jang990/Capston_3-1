@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.esummary.auth.entity.Authority;
 import com.esummary.auth.exception.DeniedElearningCookieException;
-import com.esummary.elearning.entity.user.UserInfo;
+import com.esummary.entity.user.UserInfo;
 
 public class CustomUserDetails implements UserDetails {
 	private UserInfo user;

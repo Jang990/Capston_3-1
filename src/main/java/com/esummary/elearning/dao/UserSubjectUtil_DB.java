@@ -8,18 +8,18 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.subject.WeekInfo;
 import com.esummary.elearning.dao.lectures.DBLectureWeekUtil;
 import com.esummary.elearning.dao.notice.DBNoticeUtil;
 import com.esummary.elearning.dao.task.DBTaskUtil;
-import com.esummary.elearning.entity.subject.NoticeInfo;
-import com.esummary.elearning.entity.subject.TaskInfo;
-import com.esummary.elearning.entity.user.UserInfo;
-import com.esummary.elearning.entity.user.UserLecture;
-import com.esummary.elearning.entity.user.UserSubject;
-import com.esummary.elearning.entity.user.UserTask;
-import com.esummary.elearning.repository.UserSubjectRepository;
+import com.esummary.entity.subject.NoticeInfo;
+import com.esummary.entity.subject.SubjectInfo;
+import com.esummary.entity.subject.TaskInfo;
+import com.esummary.entity.subject.WeekInfo;
+import com.esummary.entity.user.UserInfo;
+import com.esummary.entity.user.UserLecture;
+import com.esummary.entity.user.UserSubject;
+import com.esummary.entity.user.UserTask;
+import com.esummary.repository.UserSubjectRepository;
 
 @Component("DB")
 public class UserSubjectUtil_DB implements DBUserSubjectUtil{

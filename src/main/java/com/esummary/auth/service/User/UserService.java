@@ -1,8 +1,8 @@
 package com.esummary.auth.service.User;
 
 import com.esummary.auth.dto.SignUpUserDTO;
-import com.esummary.elearning.entity.user.UserInfo;
 import com.esummary.elearning.exdto.user.UserData;
+import com.esummary.entity.user.UserInfo;
 
 public interface UserService {
 	/**

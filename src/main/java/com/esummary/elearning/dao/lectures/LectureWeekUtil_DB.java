@@ -16,21 +16,21 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.esummary.elearning.entity.subject.SubjectInfo;
+import com.esummary.crawling.service.crawling.ELearningURL;
+import com.esummary.crawling.service.crawling.SubjectCrawlingService_Inhatc;
 import com.esummary.elearning.dao.lectures.lecture.DBLectureUtil;
-import com.esummary.elearning.entity.subject.LectureInfo;
-import com.esummary.elearning.entity.subject.WeekInfo;
-import com.esummary.elearning.entity.subject.TaskInfo;
-import com.esummary.elearning.entity.user.UserLecture;
-import com.esummary.elearning.entity.user.UserSubject;
-import com.esummary.elearning.entity.user.UserTask;
-import com.esummary.elearning.exservice.crawling.ELearningURL;
-import com.esummary.elearning.exservice.crawling.SubjectCrawlingService_Inhatc;
-import com.esummary.elearning.repository.UserSubjectRepository;
-import com.esummary.elearning.repository.subject.LectureInfoRepository;
-import com.esummary.elearning.repository.subject.WeekInfoRepository;
-import com.esummary.elearning.repository.subject.TaskInfoRepository;
-import com.esummary.elearning.repository.user.UserLectureRepository;
+import com.esummary.entity.subject.LectureInfo;
+import com.esummary.entity.subject.SubjectInfo;
+import com.esummary.entity.subject.TaskInfo;
+import com.esummary.entity.subject.WeekInfo;
+import com.esummary.entity.user.UserLecture;
+import com.esummary.entity.user.UserSubject;
+import com.esummary.entity.user.UserTask;
+import com.esummary.repository.UserSubjectRepository;
+import com.esummary.repository.subject.LectureInfoRepository;
+import com.esummary.repository.subject.TaskInfoRepository;
+import com.esummary.repository.subject.WeekInfoRepository;
+import com.esummary.repository.user.UserLectureRepository;
 
 @Component
 public class LectureWeekUtil_DB implements DBLectureWeekUtil {

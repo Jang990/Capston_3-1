@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.esummary.crawling.dto.InhatcSubjectCardDTO;
 import com.esummary.crawling.dto.InhatcUserDTO;
+import com.esummary.crawling.dto.LectureWeekData;
 import com.esummary.crawling.dto.NoticeData;
 import com.esummary.crawling.dto.TaskData;
-import com.esummary.elearning.exdto.subject.LectureWeekData;
 
 /**
  * 크롤링하고 db에 저장 이 두개를 나누기엔 너무 멀리옴

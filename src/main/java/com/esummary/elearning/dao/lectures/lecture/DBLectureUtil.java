@@ -7,11 +7,11 @@ import java.util.Optional;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import com.esummary.elearning.entity.subject.SubjectInfo;
-import com.esummary.elearning.entity.subject.LectureInfo;
-import com.esummary.elearning.entity.subject.WeekInfo;
-import com.esummary.elearning.entity.user.UserLecture;
-import com.esummary.elearning.entity.user.UserSubject;
+import com.esummary.entity.subject.LectureInfo;
+import com.esummary.entity.subject.SubjectInfo;
+import com.esummary.entity.subject.WeekInfo;
+import com.esummary.entity.user.UserLecture;
+import com.esummary.entity.user.UserSubject;
 
 public interface DBLectureUtil {
 	List<LectureInfo> getLectureList(WeekInfo subjectLectureWeekInfo); //이것도 없애야할듯

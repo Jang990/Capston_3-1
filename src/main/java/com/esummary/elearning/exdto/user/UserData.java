@@ -2,7 +2,7 @@ package com.esummary.elearning.exdto.user;
 
 import java.util.Map;
 
-import com.esummary.elearning.entity.user.UserInfo;
+import com.esummary.entity.user.UserInfo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
