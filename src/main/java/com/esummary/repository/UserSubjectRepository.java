@@ -17,6 +17,10 @@ public interface UserSubjectRepository extends JpaRepository<UserSubject, String
 	
 	Optional<UserSubject> findBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(String subjectId, String studentNumber);
 	
+	/**
+	 * UserSubject, UserTask, TaskInfo 테이블을 조인해서 가져옴 <br>
+	 * |us_id |ut_id |task_id |subject_id|student_number |submityn |task_id |us_id |us_id |ut_id |description |end_date |not_submitted_num |start_date |subject_id |submission_num |title |total_num
+	 */
 	@EntityGraph(value = "user-own-task") 
 	Optional<UserSubject> findWithUserTaskBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(String subjectId, String studentNumber);
 	

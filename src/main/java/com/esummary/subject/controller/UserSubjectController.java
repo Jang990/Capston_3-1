@@ -45,7 +45,8 @@ public class UserSubjectController {
 	
 	@GetMapping("/task")
 	public List<TaskData> taskSearch(@PathVariable String studentId, @RequestParam String subjectId) {
-		return null;
+		userSubjectService.checkUserOwnSubject(studentId, subjectId);
+		return userSubjectService.getTaskData(studentId, subjectId);
 	}
 	
 	@GetMapping("/notice")

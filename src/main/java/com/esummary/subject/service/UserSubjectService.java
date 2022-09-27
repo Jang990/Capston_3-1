@@ -2,7 +2,9 @@ package com.esummary.subject.service;
 
 import java.util.List;
 
+import com.esummary.crawling.dto.tofront.LectureWeekData;
 import com.esummary.crawling.dto.tofront.NoticeData;
+import com.esummary.crawling.dto.tofront.TaskData;
 
 /**
  * 사용자 정보를 포함한 과목의 정보와 사용자 정보(강의 시청시간, 과제 제출 여부 등)를 제공하는 서비스 
@@ -27,5 +29,15 @@ public interface UserSubjectService {
 	 * 공지는 제출여부 같은게 없이 정보문이기 때문
 	 */
 	List<NoticeData> getNoticeData(String subjectId);
+	
+	/**
+	 * 과제정보 + 제출여부 등등의 사용자 정보 
+	 */
+	List<TaskData> getTaskData(String studentId, String subjectId);
+
+	/**
+	 * 수업 주차, 강의영상 정보 + 강의시청시간 등등 
+	 */
+	List<LectureWeekData> getLectureData(String studentId, String subjectId);
 	
 }
