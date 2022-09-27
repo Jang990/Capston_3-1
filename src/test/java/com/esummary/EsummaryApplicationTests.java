@@ -13,9 +13,9 @@ import com.esummary.auth.service.exLoginService;
 import com.esummary.crawling.service.exVueService;
 import com.esummary.crawling.service.crawling.SubjectCrawlingService;
 import com.esummary.crawling.service.crawling.user.UserCrawlingUtil;
-import com.esummary.elearning.exservice.subject.SubjectDBService;
 import com.esummary.entity.subject.SubjectInfo;
 import com.esummary.repository.subject.SubjectInfoRepository;
+import com.esummary.subject.service.exSubjectDBService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -26,7 +26,7 @@ import io.jsonwebtoken.security.Keys;
 class EsummaryApplicationTests {
 	
 	@Autowired
-	private SubjectDBService subjectDBService;
+	private exSubjectDBService subjectDBService;
 	@Autowired
 	private exVueService vueService;
 	@Autowired

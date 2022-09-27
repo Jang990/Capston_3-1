@@ -1,4 +1,4 @@
-package com.esummary.elearning.exservice.subject;
+package com.esummary.subject.service;
  
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ import com.esummary.repository.user.UserLectureRepository;
 
 
 @Service
-public class SubjectDBServiceImpl implements SubjectDBService {
+public class exSubjectDBServiceImpl implements exSubjectDBService {
 	@Autowired
 	private DBUserSubjectUtil dbUserSubjectUtil;
 	@Autowired

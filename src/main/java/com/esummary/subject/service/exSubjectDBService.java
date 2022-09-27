@@ -1,4 +1,4 @@
-package com.esummary.elearning.exservice.subject;
+package com.esummary.subject.service;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +10,7 @@ import com.esummary.crawling.dto.tofront.TaskData;
 import com.esummary.elearning.exdto.user.UserData;
 
 
-public interface SubjectDBService {
+public interface exSubjectDBService {
 	//데이터베이스 조회
 	List<SubjectDetailDataWithCnt_DTO> getSubjectDataWithAllDetail(UserData user, String studentNumber);
 	List<LectureWeekData> getLectureData(UserData user, String studentNumber);

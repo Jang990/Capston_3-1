@@ -1,4 +1,4 @@
-package com.esummary.elearning.excontroller;
+package com.esummary.subject.controller;
 
 import java.util.List;
 
@@ -15,13 +15,13 @@ import com.esummary.crawling.dto.tofront.NoticeData;
 import com.esummary.crawling.dto.tofront.SubjectDetailDataWithCnt_DTO;
 import com.esummary.crawling.dto.tofront.TaskData;
 import com.esummary.elearning.exdto.user.UserData;
-import com.esummary.elearning.exservice.subject.SubjectDBService;
+import com.esummary.subject.service.exSubjectDBService;
 
 @RestController
 public class exSubjectController {
 	
 	@Autowired
-	private SubjectDBService subjectDBService;
+	private exSubjectDBService subjectDBService;
 	
 	//DB에서 가져오기
 	@RequestMapping("/getSubjectInDB")
