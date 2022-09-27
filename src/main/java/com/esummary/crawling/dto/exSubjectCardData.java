@@ -5,11 +5,13 @@ import com.esummary.entity.subject.SubjectInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
 public class exSubjectCardData {
 	private String subjectId;
 	private String subjectName; 

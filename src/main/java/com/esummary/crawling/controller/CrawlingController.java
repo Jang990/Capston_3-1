@@ -2,6 +2,8 @@ package com.esummary.crawling.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +13,7 @@ import com.esummary.auth.service.login.CustomUserDetails;
 import com.esummary.crawling.dto.InhatcSubjectCardDTO;
 import com.esummary.crawling.dto.InhatcUserDTO;
 import com.esummary.crawling.dto.exSubjectCardData;
+import com.esummary.crawling.dto.tofront.SubjectCardDTO;
 import com.esummary.crawling.service.CrawlingService;
 
 import lombok.RequiredArgsConstructor;
@@ -34,7 +37,7 @@ public class CrawlingController {
 	 * @return 크롤링한 정보들을 리턴
 	 */
 	@PostMapping("/login-info")
-	public List<InhatcSubjectCardDTO> getInitData(@AuthenticationPrincipal CustomUserDetails customUser) {
+	public ResponseEntity<SubjectCardDTO> getInitData(@AuthenticationPrincipal CustomUserDetails customUser) {
 		//이러닝이 안되서 추가한 테스트코드
 		/*
 		InitalPageData testInitPageData = new InitalPageData(new ArrayList<SubjectInfo>(), "장현우", "201845096");
@@ -44,7 +47,8 @@ public class CrawlingController {
 		InhatcUserDTO userDto = new InhatcUserDTO(customUser.getUsername(), customUser.getInhaTcSessionId());
 		
 		List<InhatcSubjectCardDTO> subjects =  crawlingService.crawlLoginPage(userDto);
-		return subjects;
+		
+		return new ResponseEntity<SubjectCardDTO>(new SubjectCardDTO(subjects), HttpStatus.OK);
 	}
 	
 	private void testCode(List<exSubjectCardData> subjectCardData) {
