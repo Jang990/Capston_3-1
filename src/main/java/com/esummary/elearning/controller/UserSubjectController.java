@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.esummary.auth.service.User.UserService;
 import com.esummary.elearning.dto.subject.SubjectDTO;
-import com.esummary.elearning.service.UserSubjectService;
+import com.esummary.subject.service.UserSubjectService;
 
 import lombok.RequiredArgsConstructor;
 

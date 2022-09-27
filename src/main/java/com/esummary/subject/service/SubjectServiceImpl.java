@@ -1,4 +1,4 @@
-package com.esummary.elearning.service;
+package com.esummary.subject.service;
 
 import org.springframework.stereotype.Service;
 
