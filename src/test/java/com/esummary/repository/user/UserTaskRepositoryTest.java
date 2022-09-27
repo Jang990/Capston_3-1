@@ -7,16 +7,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.esummary.entity.subject.QLectureInfo;
+import com.esummary.entity.subject.QSubjectInfo;
+import com.esummary.entity.subject.QWeekInfo;
 import com.esummary.entity.subject.SubjectInfo;
 import com.esummary.entity.subject.WeekInfo;
+import com.esummary.entity.user.QUserSubject;
 import com.esummary.entity.user.UserSubject;
 import com.esummary.repository.UserSubjectRepository;
+import com.querydsl.core.Tuple;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @SpringBootTest
 class UserTaskRepositoryTest {
 
 	@Autowired
 	private UserSubjectRepository repository;
+	
+	@Autowired
+	private JPAQueryFactory query;
 	
 	@Test
 	void test() {
@@ -51,6 +60,32 @@ class UserTaskRepositoryTest {
 		//쿼리를 보면 list를 전부 가져와서 1차캐시에 저장하고 하나씩 빼주는 듯
 		WeekInfo week = us.getSubjectInfo().getLectureList().get(0);
 //		WeekInfo week2 = us.getSubjectInfo().getLectureList().get(1);
+	}
+	
+	@Transactional
+	@Test
+	void testQueryDSL1() {
+		System.out.println("=========테스트 시작1");
+		
+		QUserSubject us = QUserSubject.userSubject;
+		QSubjectInfo si =  QSubjectInfo.subjectInfo;
+		QWeekInfo wi = QWeekInfo.weekInfo;
+		QLectureInfo li = QLectureInfo.lectureInfo;
+		
+		List<UserSubject> usList = query.selectFrom(us)
+		  .join(us.subjectInfo, si).fetchJoin()
+		  .join(si.lectureList, wi).fetchJoin()
+//		  .join(wi.lectures, li).fetchJoin() // MultipleBagFetchException 발생
+		  .fetch();
+		
+		
+//		System.out.println(usList.get(0).getSubjectInfo().getSubjectOwnerName());
+		for (UserSubject userSubject : usList) {
+			System.out.println("======"+userSubject.getSubjectInfo().getSubjectName());
+			for (WeekInfo weekInfo : userSubject.getSubjectInfo().getLectureList()) {
+				System.out.println(weekInfo.getTitle());
+			}
+		}
 	}
 
 }
