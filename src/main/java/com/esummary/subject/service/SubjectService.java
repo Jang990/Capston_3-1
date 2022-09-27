@@ -1,5 +1,8 @@
 package com.esummary.subject.service;
 
+import java.util.List;
+
+import com.esummary.crawling.dto.tofront.NoticeData;
 import com.esummary.elearning.dto.subject.SubjectDTO;
 
 /**
@@ -9,4 +12,9 @@ import com.esummary.elearning.dto.subject.SubjectDTO;
  */
 public interface SubjectService {
 	SubjectDTO getSubject(String subjectId);
+	
+	/**
+	 * 공지사항 가져오기
+	 */
+	List<NoticeData> getNoticeData(String subjectId);
 }

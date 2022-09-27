@@ -87,7 +87,7 @@ public class exVueServiceImpl implements exVueService {
 //	}
 	
 	public List<NoticeData> getNoticeData(String subjectId) {
-		List<NoticeInfo> noticeInfo = subjectNoticeRepository.findBySubjectInfo_SubjectId(subjectId);
+		List<NoticeInfo> noticeInfo = subjectNoticeRepository.findBySubjectInfo_SubjectId(subjectId).get();
 		if(noticeInfo == null || noticeInfo.size() == 0) return null;
 		
 		List<NoticeData> noticeDTO = new ArrayList<>();

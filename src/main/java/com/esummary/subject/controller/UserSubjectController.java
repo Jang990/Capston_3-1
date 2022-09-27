@@ -12,6 +12,7 @@ import com.esummary.crawling.dto.tofront.LectureWeekData;
 import com.esummary.crawling.dto.tofront.NoticeData;
 import com.esummary.crawling.dto.tofront.SubjectDetailDataWithCnt_DTO;
 import com.esummary.crawling.dto.tofront.TaskData;
+import com.esummary.subject.service.UserSubjectService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,33 +22,36 @@ import lombok.RequiredArgsConstructor;
  *
  */
 @RestController
-@RequestMapping("api/users/{userId}/subject/{subjectId}")
+@RequestMapping("api/users/{studentId}/subject/{subjectId}")
 @RequiredArgsConstructor
 public class UserSubjectController {
-
+	
+	private final UserSubjectService userSubjectService;
+	
 	/**
 	 * 과목에 해당하는 공지, 과제, 수업을 통합해서 리턴
 	 * @param subjectId
 	 * @return
 	 */
 	@GetMapping("/all")
-	public SubjectDetailDataWithCnt_DTO getSubjectInfo(@PathVariable String userId, @PathVariable String subjectId) {
+	public SubjectDetailDataWithCnt_DTO getSubjectInfo(@PathVariable String studentId, @PathVariable String subjectId) {
 		return null;
 	}
 	
 	@GetMapping("/lecture")
-	public List<LectureWeekData> lectureSearch(@PathVariable String userId, @RequestParam String subjectId) {
+	public List<LectureWeekData> lectureSearch(@PathVariable String studentId, @RequestParam String subjectId) {
 		return null;
 	}
 	
 	@GetMapping("/task")
-	public List<TaskData> taskSearch(@PathVariable String userId, @RequestParam String subjectId) {
+	public List<TaskData> taskSearch(@PathVariable String studentId, @RequestParam String subjectId) {
 		return null;
 	}
 	
-	@GetMapping("notice")
-	public List<NoticeData> noticeSearch(@PathVariable String userId, @RequestParam String subjectId) {
-		return null;
+	@GetMapping("/notice")
+	public List<NoticeData> noticeSearch(@PathVariable String studentId, @RequestParam String subjectId) {
+		userSubjectService.checkUserOwnSubject(studentId, subjectId);
+		return userSubjectService.getNoticeData(subjectId);
 	}
 	
 }
