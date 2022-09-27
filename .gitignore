@@ -51,3 +51,6 @@ yarn-error.log*
 
 ### Service Properties ###
 application-service.properties
+
+### queryDSL ###
+**/src/main/generated
