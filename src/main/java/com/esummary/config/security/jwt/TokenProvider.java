@@ -1,4 +1,4 @@
-package com.esummary.jwt;
+package com.esummary.config.security.jwt;
 
 import java.security.Key; 
 import java.util.Arrays;

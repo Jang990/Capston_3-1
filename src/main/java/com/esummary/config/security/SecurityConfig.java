@@ -11,10 +11,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.CorsFilter;
 
-import com.esummary.jwt.JwtAccessDeniedHandler;
-import com.esummary.jwt.JwtAuthenticationEntryPoint;
-import com.esummary.jwt.JwtSecurityConfig;
-import com.esummary.jwt.TokenProvider;
+import com.esummary.config.security.jwt.JwtAccessDeniedHandler;
+import com.esummary.config.security.jwt.JwtAuthenticationEntryPoint;
+import com.esummary.config.security.jwt.JwtSecurityConfig;
+import com.esummary.config.security.jwt.TokenProvider;
 
 import lombok.RequiredArgsConstructor;
 

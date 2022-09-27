@@ -17,8 +17,8 @@ import com.esummary.auth.dto.SignUpUserDTO;
 import com.esummary.auth.service.ElearningLoginService;
 import com.esummary.auth.service.User.UserService;
 import com.esummary.auth.service.login.CustomUserDetails;
-import com.esummary.jwt.JwtFilter;
-import com.esummary.jwt.TokenProvider;
+import com.esummary.config.security.jwt.JwtFilter;
+import com.esummary.config.security.jwt.TokenProvider;
 
 import lombok.RequiredArgsConstructor;
 
