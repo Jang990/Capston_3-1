@@ -1,6 +1,6 @@
 package com.esummary.repository;
 
-import java.util.List; 
+import java.util.List;  
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -9,10 +9,11 @@ import org.springframework.stereotype.Repository;
 
 import com.esummary.entity.user.UserInfo;
 import com.esummary.entity.user.UserSubject;
+import com.esummary.repository.querydsl.UserSubjectRepositoryCustom;
 
 
 @Repository
-public interface UserSubjectRepository extends JpaRepository<UserSubject, String>{
+public interface UserSubjectRepository extends JpaRepository<UserSubject, String>, UserSubjectRepositoryCustom{
 	List<UserSubject> findByUserInfo(UserInfo user);
 	
 	Optional<UserSubject> findBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(String subjectId, String studentNumber);

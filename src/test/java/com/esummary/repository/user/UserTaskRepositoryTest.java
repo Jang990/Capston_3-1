@@ -1,21 +1,17 @@
 package com.esummary.repository.user;
 
-import java.util.List;
+import java.util.List; 
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.esummary.entity.subject.QLectureInfo;
-import com.esummary.entity.subject.QSubjectInfo;
-import com.esummary.entity.subject.QWeekInfo;
+import com.esummary.entity.subject.LectureInfo;
 import com.esummary.entity.subject.SubjectInfo;
 import com.esummary.entity.subject.WeekInfo;
-import com.esummary.entity.user.QUserSubject;
 import com.esummary.entity.user.UserSubject;
 import com.esummary.repository.UserSubjectRepository;
-import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @SpringBootTest
@@ -23,9 +19,6 @@ class UserTaskRepositoryTest {
 
 	@Autowired
 	private UserSubjectRepository repository;
-	
-	@Autowired
-	private JPAQueryFactory query;
 	
 	@Test
 	void test() {
@@ -67,25 +60,38 @@ class UserTaskRepositoryTest {
 	void testQueryDSL1() {
 		System.out.println("=========테스트 시작1");
 		
-		QUserSubject us = QUserSubject.userSubject;
-		QSubjectInfo si =  QSubjectInfo.subjectInfo;
-		QWeekInfo wi = QWeekInfo.weekInfo;
-		QLectureInfo li = QLectureInfo.lectureInfo;
-		
-		List<UserSubject> usList = query.selectFrom(us)
-		  .join(us.subjectInfo, si).fetchJoin()
-		  .join(si.lectureList, wi).fetchJoin()
-//		  .join(wi.lectures, li).fetchJoin() // MultipleBagFetchException 발생
-		  .fetch();
-		
+		String studentId = "201845096";
+		String subjectId = "202224001LLA103";
+//		String subjectId = "202224043DMP636";
+		System.out.println("====>시작");
+		List<UserSubject> usList = repository.findLectureInfo(studentId, subjectId);
+		System.out.println("====>끝");
 		
 //		System.out.println(usList.get(0).getSubjectInfo().getSubjectOwnerName());
+		/*
 		for (UserSubject userSubject : usList) {
 			System.out.println("======"+userSubject.getSubjectInfo().getSubjectName());
 			for (WeekInfo weekInfo : userSubject.getSubjectInfo().getLectureList()) {
-				System.out.println(weekInfo.getTitle());
+				for (LectureInfo lecture : weekInfo.getLectures()) {
+					System.out.println(lecture.getTitle());
+				}
 			}
 		}
+		*/
+	}
+	
+	@Transactional
+	@Test
+	void testQueryDSL2() {
+		System.out.println("=========테스트 시작1");
+		
+		String studentId = "201845096";
+		String subjectId = "202224001LLA103";
+//		String subjectId = "202224043DMP636";
+		System.out.println("====>시작");
+//		List<WeekInfo> weList = repository.test();
+		System.out.println("====>끝");
+		
 	}
 
 }
