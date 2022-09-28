@@ -5,6 +5,7 @@ import java.util.List;
 import com.esummary.entity.subject.QLectureInfo;
 import com.esummary.entity.subject.QSubjectInfo;
 import com.esummary.entity.subject.QWeekInfo;
+import com.esummary.entity.subject.SubjectInfo;
 import com.esummary.entity.subject.WeekInfo;
 //import static com.esummary.entity.user.QUserSubject.userSubject;
 import com.esummary.entity.user.QUserSubject;
@@ -30,9 +31,17 @@ public class UserSubjectRepositoryImpl implements UserSubjectRepositoryCustom{
 				.where(us.userInfo.studentNumber.eq(studentId), us.subjectInfo.subjectId.eq(subjectId))
 				.join(us.subjectInfo, si).fetchJoin()
 				.join(si.lectureList, wi).fetchJoin()
-				.join(wi.lectures, li).fetchJoin() // MultipleBagFetchException 발생
+//				.join(wi.lectures, li).fetchJoin() // MultipleBagFetchException 발생
 //				.distinct()
 				.fetch(); // 리스트로 결과를 반환
 		
 	}
+	
+	public List<WeekInfo> test(String studentId, String subjectId) {
+		return query.selectFrom(wi)
+				.join(wi.lectures, li).fetchJoin()
+				.where(wi.subjectInfo.subjectId.eq(subjectId))
+				.fetch();
+	}
+	
 }

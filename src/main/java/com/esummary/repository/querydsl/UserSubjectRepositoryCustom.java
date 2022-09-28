@@ -7,4 +7,5 @@ import com.esummary.entity.user.UserSubject;
 
 public interface UserSubjectRepositoryCustom {
 	List<UserSubject> findLectureInfo(String studentId,String subjectId);
+	List<WeekInfo> test(String studentId, String subjectId);
 }

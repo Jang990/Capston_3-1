@@ -1,12 +1,16 @@
 package com.esummary.repository.user;
 
-import java.util.List; 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Transient;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.esummary.crawling.dto.tofront.LectureWeekData;
 import com.esummary.entity.subject.LectureInfo;
 import com.esummary.entity.subject.SubjectInfo;
 import com.esummary.entity.subject.WeekInfo;
@@ -80,17 +84,23 @@ class UserTaskRepositoryTest {
 		*/
 	}
 	
-	@Transactional
+//	@Transactional
 	@Test
 	void testQueryDSL2() {
-		System.out.println("=========테스트 시작1");
-		
-		String studentId = "201845096";
 		String subjectId = "202224001LLA103";
-//		String subjectId = "202224043DMP636";
-		System.out.println("====>시작");
-//		List<WeekInfo> weList = repository.test();
-		System.out.println("====>끝");
+		String studentId = "201845096";
+		
+		/*
+		 * LectureWeekData - 이 DTO로 변환하고 SubjectDetailDataWithCnt_DTO에 setter로 붙혀서 클라이언트로 보내면 되겠다.
+		 * 하지만 LectureWeekData에서 UserLecture 테이블을 자동적으로 넣는 코드가 있다. 
+		 * 아무래도 크롤링하고 바로 넣을때 쓰는 DTO이기 때문에 문제가 있다. - 근본적으로 엔티티의 @Transient 문제이다.
+		 * QueryDSL로 조인해서 UserLecture의 내용을 가져오고 LectureWeekData에 넣는 부분이 추가되어야 한다. 
+		 */
+		List<WeekInfo> weList1 = repository.test(studentId, subjectId);
+//		List<LectureWeekData> lecDtoList = new ArrayList<>();
+//		for (int i = 0; i < weList1.size(); i++) {
+//			lecDtoList.add(new LectureWeekData(weList1.get(i)));
+//		}
 		
 	}
 
