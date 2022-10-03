@@ -11,6 +11,7 @@ export const Subject_setSubjectInitData = 'subject/setSubjectInitData'; // subje
 
 export const SET_INITIAL_DATA = 'SET_INITIAL_DATA'; // subjectCard 형식 초기화 및 교수, 과목이름 데이터 삽입
 export const SET_LOGIN_CHECK = 'SET_LOGIN_CHECK'; // 로그인 완료 true 로그인->메인페이지 전환할 때 해야함
+export const SET_LOGIN_FLAG = 'SET_LOGIN_FLAG'; // 로그인 - 회원가입 화면 전환을 위한 플레그 설정  true: 로그인 false: 회원가입
 
 export const SET_WINNER = 'SET_WINNER';
 export const SET_SUBJECT_COUNT = 'SET_SUBJECT_COUNT';
@@ -39,6 +40,9 @@ export default new Vuex.Store({
         subject
     },
     state: {
+        //로그인 - 회원가입 전환을 위한 플레그 true:로그인페이지 false: 회원가입페이지
+        loginFlag: true,
+
         loginCheck: false,
         loginLoading: false,
         studentName: '',
@@ -66,6 +70,9 @@ export default new Vuex.Store({
     },//Vue의 computed와 비슷 
     //완전히 같은게 아니라 비슷하다는 것 명심
     mutations: {
+        [SET_LOGIN_FLAG](state, flag) {
+            state.loginFlag = flag;
+        },
         [SET_WINNER](state, winner) {
             state.winner = winner;
         },

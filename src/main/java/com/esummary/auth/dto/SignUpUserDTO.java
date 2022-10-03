@@ -19,12 +19,14 @@ import lombok.Setter;
 @AllArgsConstructor
 public class SignUpUserDTO {
 	@NotNull
+	@Size(min = 5)
 	private String studentId;
 	@NotNull
+	@Size(min = 5)
 	private String password;
 	
 	@NotNull
-	@Size(min = 3, max = 20) // 3글자이상 20글자 미만
+	@Size(min = 3, max = 10) // 3글자이상 10글자 미만
 	private String nickname;
 	
 	private String authorityDto;

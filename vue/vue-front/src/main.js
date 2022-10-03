@@ -22,6 +22,9 @@ Vue.use(Chartkick.use(Chart));
 
 Vue.config.productionTip = false
 
+// vue-devtools 확장프로그램 허용 코드배포시에는 삭제하기
+Vue.config.devtools = true; 
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

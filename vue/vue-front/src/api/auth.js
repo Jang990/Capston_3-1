@@ -21,3 +21,15 @@ export async function login(studentId, password) {
 
     return response;
 }
+
+export async function signup(studentId, password, nickname) {
+    const response = await http.post('/signup', {
+        studentId: studentId,
+        password: password,
+        nickname: nickname
+    }).catch((error) => {
+        console.log("잘못된 요청");
+    });
+
+    return response;
+}
