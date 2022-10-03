@@ -4,7 +4,9 @@ export default {
         token: null,
     },
     mutations: {
-
+        setToken(state, token) {
+            state.token = token;
+        },
     },
     actions: {
 

@@ -73,27 +73,23 @@ export default {
       /*
       로그인 과정
       1. 로그인 버튼 클릭
-      2. 이러닝에서 기본 수업정보 가져오기 (여기까지 동기)
-      3. DB에서 수업정보 가져오기 (여기부터 비동기)
-      3. 전체 수업정보 크롤링 
+      2. 이러닝에서 기본 수업정보 가져오기 
+      3. 메인페이지로 화면 전환 (여기까지 동기)
+      4. DB에서 수업정보 가져오기 (여기부터 비동기)
+      5. 전체 수업정보 크롤링 
       */
       this.loading = true; // 로딩바 동작
-      let token = null; // 서버로부터 발급 받은 토큰
 
       // 로그인
-      await authApi.login(this.id, this.password)
-      .then((response) => {
-        //전역에서 사용하도록 토큰 세팅이 필요함 - 나중에 vue 공부 다시 하고 진행
-        token = response.data.token;
-        console.log(`토큰 확인: ${token}`);
-        
+      const response = await authApi.login(this.id, this.password);
+      if(response.status !== 200) {
+        // 서버로부터 200을 받지 못함
+        this.loading = false;
+        return;
+      }
 
-        // this.$emit('checkUser', response.data);
-      })
-      .catch((error) => {
-          // 로그인 실패 시
-          //주의하라 (response) => {} 이렇게 화살표 함수를 사용해야 this를 사용할때 원하는 값이 나온다. 스코프를 이해해라.
-      });
+      const token = this.$store.state.auth.token; // 토큰 가져오기 테스트를 위한 변수 - 삭제할 것
+      // console.log(`토큰 확인법 : ${this.$store.state.auth.token}`);
       
       if(token === null) {
         // 서버로부터 받은 토큰이 없음
@@ -102,7 +98,7 @@ export default {
         return; 
       }
       
-      //크롤링
+      // 크롤링
       await api.post('api/inhatc/login-info', {}, {
         headers: {
           "Content-Type": "application/json",

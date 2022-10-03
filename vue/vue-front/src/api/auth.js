@@ -1,9 +1,20 @@
 import http from './http';
+import store from '@/store/store';
 
 // 로그인 api
 export async function login(studentId, password) {
-    return http.post('/authenticate', {
+    const response = await http.post('/authenticate', {
         studentId: studentId,
         password: password
     });
+
+    console.log(`발급받은 토큰: ${response.data.token}`);
+
+    if(response.status === 200) { // 200일 경우에만 토큰 저장
+        // auth에 setToken을 실행한다.
+        store.commit('auth/setToken', response.data.token);
+        console.log("완료");
+    }
+
+    return response;
 }
