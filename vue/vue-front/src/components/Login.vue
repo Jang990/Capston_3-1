@@ -74,8 +74,8 @@ export default {
       /*
       로그인 과정
       1. 로그인 버튼 클릭 - 토큰 발급받기
-      2. 이러닝에서 기본 수업정보 가져오기  
-      3. 메인페이지로 화면 전환 (여기까지 동기)
+      2. 메인페이지로 화면 전환 
+      3. 이러닝에서 기본 수업정보 가져오기 (여기까지 동기)
       4. 사용자 정보 가져오기 - 닉네임 등등
       4. DB에서 수업 세부 정보 가져오기 (여기부터 비동기)
       5. 전체 수업정보 크롤링 
@@ -101,14 +101,13 @@ export default {
       
       // 2. 기본 수업정보 크롤링
       await crawlingApi.basicSubjectList().status;
-      
+
       this.loading = false;
-      this.$store.dispatch(LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER);
+      // this.$store.dispatch(LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER);
       
-      this.$store.dispatch(LOAD_DB_SUBJECT); //주석해제 함
+      // this.$store.dispatch(LOAD_DB_SUBJECT); //주석해제 함
       // this.$store.commit(SET_LOGIN_CHECK, true); //LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER 여기서 설정해서 사라져도 됨
-      this.$store.dispatch(CRAWL_SUBJECT);
-      this.loading = false;
+      // this.$store.dispatch(CRAWL_SUBJECT);
     }
   },
 };

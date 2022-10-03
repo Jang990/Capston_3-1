@@ -2,7 +2,7 @@ import http from './http';
 import store from '@/store/store';
 import { SET_INITIAL_DATA, Subject_setSubjectInitData } from '../store/store';
 
-// 로그인 api
+// 이러닝 기본 수업 정보(과목명, 교수명, 타입) 크롤링
 export async function basicSubjectList() {
     const response = await http.post('/inhatc/login-info');
 
