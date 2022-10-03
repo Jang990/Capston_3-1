@@ -5,13 +5,14 @@ Vue.use(Vuex);
 
 export const Auth_setToken = 'auth/setToken';
 
+export const User_setUserInfo = 'user/setUserInfo';
+
 export const Subject_setSubjectInitData = 'subject/setSubjectInitData'; // subjectCard 형식 초기화 및 교수, 과목이름 데이터 삽입
 
-
 export const SET_INITIAL_DATA = 'SET_INITIAL_DATA'; // subjectCard 형식 초기화 및 교수, 과목이름 데이터 삽입
+export const SET_LOGIN_CHECK = 'SET_LOGIN_CHECK'; // 로그인 완료 true 로그인->메인페이지 전환할 때 해야함
 
 export const SET_WINNER = 'SET_WINNER';
-export const SET_LOGIN_CHECK = 'SET_LOGIN_CHECK';
 export const SET_SUBJECT_COUNT = 'SET_SUBJECT_COUNT';
 export const SET_CRAWL_NOTICE_DATA = 'SET_CRAWL_NOTICE_DATA';
 export const SET_CRAWL_TASK_DATA = 'SET_CRAWL_TASK_DATA';
@@ -28,10 +29,14 @@ export const LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER = 'LoginCheckANDcalculateToD
 const api = axios.create({baseURL: 'http://localhost:8080'});
 
 import auth from './auth';
+import user from './user';
+import subject from './subject';
 
 export default new Vuex.Store({
     modules: {
-        auth
+        auth,
+        user,
+        subject
     },
     state: {
         loginCheck: false,
@@ -67,6 +72,7 @@ export default new Vuex.Store({
         [SET_LOGIN_CHECK](state, loginCheck) {
             state.loginCheck = loginCheck;
         },
+        //subject.js로 이전 준비 완료
         [SET_INITIAL_DATA](state, {subjectCardData: cardData /*studentName: name, studentNumber: number*/}) {
             // state.studentName = name;
             // state.studentNumber = number;

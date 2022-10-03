@@ -4,10 +4,10 @@
     max-width="374"
   >
     <v-card-text class="text-center">
-      <h2><v-icon class="ml-1">mdi-face-man</v-icon> {{this.$store.state.studentName}}</h2>
+      <h2><v-icon class="ml-1">mdi-face-man</v-icon> {{this.$store.state.user.nickname}}</h2>
     </v-card-text>
     <v-card-text class="text-center">
-      <h2>{{this.$store.state.studentNumber}}</h2>
+      <h2>{{this.$store.state.user.studentNumber}}</h2>
     </v-card-text>
 
     <v-divider class="mx-4"></v-divider>
@@ -34,6 +34,9 @@
 import { mapState } from 'vuex';
 import LectureSummaryComponent from './LectureSummaryComponent'
 import TaskSummaryComponent from './TaskSummaryComponent';
+
+import * as userApi from '@/api/user';
+
 export default {
   name: 'ProfileComponent',
   components: {TaskSummaryComponent, LectureSummaryComponent},
@@ -54,6 +57,9 @@ export default {
       showCompleted: 'showCompleted', 
       showIncompleted: 'showIncompleted',
     }),
+  },
+  mounted() {
+    userApi.getUserInfo();
   }
 }
 </script>

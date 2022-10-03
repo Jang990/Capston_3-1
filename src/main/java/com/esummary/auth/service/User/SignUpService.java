@@ -4,7 +4,7 @@ import com.esummary.auth.dto.SignUpUserDTO;
 import com.esummary.elearning.exdto.user.UserData;
 import com.esummary.entity.user.UserInfo;
 
-public interface UserService {
+public interface SignUpService {
 	/**
 	 * 이전 회원가입 로직. - 삭제될 예정
 	 * @param user

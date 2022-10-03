@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.esummary.auth.service.exLoginService;
-import com.esummary.auth.service.User.UserService;
+import com.esummary.auth.service.User.SignUpService;
 import com.esummary.crawling.service.crawling.user.UserCrawlingUtil;
 import com.esummary.elearning.exdto.user.UserData;
 
@@ -21,7 +21,7 @@ import com.esummary.elearning.exdto.user.UserData;
 public class exLoginController {
 
 	@Autowired
-	private UserService userService;
+	private SignUpService userService;
 	
 	@Autowired
 	private exLoginService eLearningLoginService;

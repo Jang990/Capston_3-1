@@ -15,7 +15,7 @@ import com.esummary.auth.dto.JwtTokenDTO;
 import com.esummary.auth.dto.LoginDTO;
 import com.esummary.auth.dto.SignUpUserDTO;
 import com.esummary.auth.service.ElearningLoginService;
-import com.esummary.auth.service.User.UserService;
+import com.esummary.auth.service.User.SignUpService;
 import com.esummary.auth.service.login.CustomUserDetails;
 import com.esummary.config.security.jwt.JwtFilter;
 import com.esummary.config.security.jwt.TokenProvider;
@@ -38,7 +38,7 @@ import javax.validation.Valid;
 public class AuthController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final UserService userService;
+    private final SignUpService userService;
     private final ElearningLoginService loginService;
 
     // 로그인 API
