@@ -50,6 +50,7 @@ import {SET_INITIAL_DATA, CRAWL_SUBJECT, LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER,
 import { mapState } from 'vuex';
 import axios from "axios"
 import * as authApi from '@/api/auth';
+import * as crawlingApi from '@/api/crawling';
 
 const api = axios.create({baseURL: 'http://localhost:8080'});
 
@@ -72,15 +73,16 @@ export default {
     async checkLog(){
       /*
       로그인 과정
-      1. 로그인 버튼 클릭
-      2. 이러닝에서 기본 수업정보 가져오기 
+      1. 로그인 버튼 클릭 - 토큰 발급받기
+      2. 이러닝에서 기본 수업정보 가져오기  
       3. 메인페이지로 화면 전환 (여기까지 동기)
-      4. DB에서 수업정보 가져오기 (여기부터 비동기)
+      4. 사용자 정보 가져오기 - 닉네임 등등
+      4. DB에서 수업 세부 정보 가져오기 (여기부터 비동기)
       5. 전체 수업정보 크롤링 
       */
       this.loading = true; // 로딩바 동작
 
-      // 로그인
+      // 1. 로그인
       const response = await authApi.login(this.id, this.password);
       if(response.status !== 200) {
         // 서버로부터 200을 받지 못함
@@ -89,7 +91,6 @@ export default {
       }
 
       const token = this.$store.state.auth.token; // 토큰 가져오기 테스트를 위한 변수 - 삭제할 것
-      // console.log(`토큰 확인법 : ${this.$store.state.auth.token}`);
       
       if(token === null) {
         // 서버로부터 받은 토큰이 없음
@@ -98,46 +99,9 @@ export default {
         return; 
       }
       
-      // 크롤링
-      await api.post('api/inhatc/login-info', {}, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}` //임시로 박아넣은 것이다. 수정해라
-        },
-        withCredentials: true,
-        crossDomain: true, 
-        credentials: "include",
-      }) // 토큰확인하면서 연결까지 되도록 해놨다.
-      .then((response) => {
-        // 하지만 여기 response를 받아서 값을 세팅하는 부분은 안했다.
-        this.$store.commit(
-          SET_INITIAL_DATA, 
-          {
-            studentName: response.data.name, 
-            studentNumber: response.data.studentNumber, 
-            subjectCardData: response.data.subjectCardData
-          }
-        );
-      })
-      .catch(function (error) {
-        // 로그인 실패시
-        console.log("여기가 실행된다.");
-        console.log(error);
-      });
-      // await api.get('/getInitSubject').then((response) => {
-      //   //주의하라 (response) => {} 이렇게 화살표 함수를 사용해야 this를 사용할때 원하는 값이 나온다. 스코프를 이해해라.
-      //   this.$store.commit(
-      //     SET_INITIAL_DATA, 
-      //     {
-      //       studentName: response.data.name, 
-      //       studentNumber: response.data.studentNumber, 
-      //       subjectCardData: response.data.subjectCardData
-      //     }
-      //   );
-      // })
-      // .catch(function (error) {
-      //   console.log(error);
-      // });
+      // 2. 기본 수업정보 크롤링
+      await crawlingApi.basicSubjectList().status;
+      
       this.loading = false;
       this.$store.dispatch(LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER);
       

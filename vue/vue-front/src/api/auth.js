@@ -1,5 +1,6 @@
 import http from './http';
 import store from '@/store/store';
+import { Auth_setToken } from '../store/store';
 
 // 로그인 api
 export async function login(studentId, password) {
@@ -12,7 +13,7 @@ export async function login(studentId, password) {
 
     if(response.status === 200) { // 200일 경우에만 토큰 저장
         // auth에 setToken을 실행한다.
-        store.commit('auth/setToken', response.data.token);
+        store.commit(Auth_setToken, response.data.token);
         console.log("완료");
     }
 

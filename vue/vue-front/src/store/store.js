@@ -3,9 +3,15 @@ import Vuex from 'vuex';
 import axios from "axios"
 Vue.use(Vuex);
 
+export const Auth_setToken = 'auth/setToken';
+
+export const Subject_setSubjectInitData = 'subject/setSubjectInitData'; // subjectCard 형식 초기화 및 교수, 과목이름 데이터 삽입
+
+
+export const SET_INITIAL_DATA = 'SET_INITIAL_DATA'; // subjectCard 형식 초기화 및 교수, 과목이름 데이터 삽입
+
 export const SET_WINNER = 'SET_WINNER';
 export const SET_LOGIN_CHECK = 'SET_LOGIN_CHECK';
-export const SET_INITIAL_DATA = 'SET_INITIAL_DATA'; // 사용자의 이러닝 과목 기본정보(과목ID, 교수, 타입) 가져오기 + subjectCardData 형식 초기화
 export const SET_SUBJECT_COUNT = 'SET_SUBJECT_COUNT';
 export const SET_CRAWL_NOTICE_DATA = 'SET_CRAWL_NOTICE_DATA';
 export const SET_CRAWL_TASK_DATA = 'SET_CRAWL_TASK_DATA';
@@ -61,9 +67,9 @@ export default new Vuex.Store({
         [SET_LOGIN_CHECK](state, loginCheck) {
             state.loginCheck = loginCheck;
         },
-        [SET_INITIAL_DATA](state, {studentName: name, studentNumber: number, subjectCardData: cardData}) {
-            state.studentName = name;
-            state.studentNumber = number;
+        [SET_INITIAL_DATA](state, {subjectCardData: cardData /*studentName: name, studentNumber: number*/}) {
+            // state.studentName = name;
+            // state.studentNumber = number;
             // state.subjectCardData = cardData;
             let objs = cardData;
             for (let i = 0; i < objs.length; i++) {
