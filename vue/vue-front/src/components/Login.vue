@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import {SET_INITIAL_DATA, CRAWL_SUBJECT, LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER, LOAD_DB_SUBJECT} from '../store'
+import {SET_INITIAL_DATA, CRAWL_SUBJECT, LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER, LOAD_DB_SUBJECT} from '@/store/store'
 import { mapState } from 'vuex';
 import axios from "axios"
 import * as authApi from '@/api/auth';
@@ -86,6 +86,8 @@ export default {
         //전역에서 사용하도록 토큰 세팅이 필요함 - 나중에 vue 공부 다시 하고 진행
         token = response.data.token;
         console.log(`토큰 확인: ${token}`);
+        
+
         // this.$emit('checkUser', response.data);
       })
       .catch((error) => {

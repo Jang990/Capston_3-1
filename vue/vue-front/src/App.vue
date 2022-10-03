@@ -114,7 +114,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import store from './store';
+import store from '@/store/store';
 import axios from "axios";
 import SubjectCard from "./components/subjectCards/SubjectCard";
 import LoginComponent from "./components/Login";
