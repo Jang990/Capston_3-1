@@ -9,6 +9,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class InhatcSubjectCardDTO {
 	private String subjectId;
 	private String subjectName; 
