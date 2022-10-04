@@ -41,8 +41,8 @@ public class SignUpServiceImpl implements SignUpService{
 	@Override
     @Transactional
     public SignUpUserDTO signup(SignUpUserDTO signupUserDto) {
-    	checkIdDuplicate(signupUserDto.getStudentId());
-    	checkNicknameDuplicate(signupUserDto.getNickname());
+    	checkIdDuplicate(signupUserDto.getStudentId()); // 사용자 ID 중복 확인
+    	checkNicknameDuplicate(signupUserDto.getNickname()); // 사용자 닉네임 중복 확인
     	
     	// 회원가입을 하기 위해서는 이러닝 계정이 꼭 있어야한다. 꼭!
     	checkElearningLoginCookie(signupUserDto.getStudentId(), signupUserDto.getPassword());

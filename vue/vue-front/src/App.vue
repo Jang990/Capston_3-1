@@ -117,7 +117,7 @@ import { mapState } from 'vuex';
 import store from '@/store/store';
 import axios from "axios";
 import SubjectCard from "./components/subjectCards/SubjectCard";
-import LoginComponent from "./components/Login";
+import LoginComponent from "./components/auth/Login";
 import ProfileComponent from './components/profile/ProfileComponent';
 import MainStatisticsComponent from './components/statisticsComponents/MainStatisticsComponent';
 

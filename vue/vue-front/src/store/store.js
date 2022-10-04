@@ -7,6 +7,9 @@ export const Auth_setToken = 'auth/setToken';
 
 export const User_setUserInfo = 'user/setUserInfo';
 
+export const Popup_showSignUpSuccess = 'popup/showSuccess'; // signup 성공 팝업 띄우기
+export const Popup_closedSignup = 'popup/closedSignup'; // signup 성공 팝업 닫기
+
 export const Subject_setSubjectInitData = 'subject/setSubjectInitData'; // subjectCard 형식 초기화 및 교수, 과목이름 데이터 삽입
 
 export const SET_INITIAL_DATA = 'SET_INITIAL_DATA'; // subjectCard 형식 초기화 및 교수, 과목이름 데이터 삽입
@@ -32,12 +35,14 @@ const api = axios.create({baseURL: 'http://localhost:8080'});
 import auth from './auth';
 import user from './user';
 import subject from './subject';
+import popup from './popup';
 
 export default new Vuex.Store({
     modules: {
         auth,
         user,
-        subject
+        subject,
+        popup,
     },
     state: {
         //로그인 - 회원가입 전환을 위한 플레그 true:로그인페이지 false: 회원가입페이지

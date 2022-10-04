@@ -25,7 +25,7 @@ import { mapState } from 'vuex';
 import axios from "axios"
 import * as authApi from '@/api/auth';
 import * as crawlingApi from '@/api/crawling';
-import { SET_LOGIN_FLAG } from '../../store/store';
+import { SET_LOGIN_FLAG } from '../../../store/store';
 
 const api = axios.create({baseURL: 'http://localhost:8080'});
 

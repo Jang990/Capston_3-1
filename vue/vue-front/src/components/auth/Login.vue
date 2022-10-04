@@ -13,19 +13,22 @@
               </v-flex>
             </v-layout>
         </v-container>
+        <!-- 회원가입 성공 팝업 -->
+        <success-popup></success-popup>
       </v-content>
   </v-app>
 </template>
 
 <script>
-import { login } from '../api/auth';
-import LoginCard from './auth/LoginCard.vue';
-import SignUpCard from './auth/SignUpCard.vue';
+import { login } from '../../api/auth';
+import LoginCard from './card/LoginCard.vue';
+import SignUpCard from './card/SignUpCard.vue';
 import { mapState } from 'vuex';
+import SuccessPopup from '../popup/SuccessPopup';
 
 export default {
   name: 'Login',
-  components: {LoginCard,SignUpCard},
+  components: {LoginCard,SignUpCard, SuccessPopup},
   data() {
     return {
       signUp: false,
