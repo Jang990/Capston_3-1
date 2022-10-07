@@ -74,15 +74,17 @@ export default {
                 return;
             }
 
-            // 2. 기본 수업정보 크롤링
-            await crawlingApi.basicSubjectList().status;
+            // 기본 수업정보 크롤링
+            await crawlingApi.basicSubjectList();
 
+            // 수업 세부 정보 크롤링 - 비동기
+            this.$store.dispatch(CRAWL_SUBJECT);
+            
             this.loading = false;
             // this.$store.dispatch(LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER);
-
+            
             // this.$store.dispatch(LOAD_DB_SUBJECT); //주석해제 함
-            // this.$store.commit(SET_LOGIN_CHECK, true); //LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER 여기서 설정해서 사라져도 됨
-            // this.$store.dispatch(CRAWL_SUBJECT);
+            // await this.$store.dispatch(CRAWL_SUBJECT);
         },
         clickSignUp() {
             this.$store.commit(SET_LOGIN_FLAG, false);

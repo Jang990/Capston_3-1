@@ -33,6 +33,9 @@ public class CrawlingController {
 	
 	/**
 	 * 로그인화면에서 학번, 이름, 수강리스트 기본정보 크롤링
+	 * 
+	 * 이전 /getInitSubject과 같은 기능
+	 * 
 	 * @param studentId
 	 * @return 크롤링한 정보들을 리턴
 	 */

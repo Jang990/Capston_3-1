@@ -32,6 +32,7 @@ public class CrawlingSubjectController {
 	
 	private final CrawlingService crawlingService;
 	
+	// 이전 /crawlSubject과 같은 기능
 	@PostMapping("/all")
 	public SubjectDetailDataWithCnt_DTO crawlSubject(@AuthenticationPrincipal CustomUserDetails customUser, @PathVariable String subjectId) {
 		List<LectureWeekData> lectureDTO = this.crawlLecture(customUser, subjectId);

@@ -12,25 +12,28 @@ export const Popup_closedSignup = 'popup/closedSignup'; // signup 성공 팝업 
 
 export const Subject_setSubjectInitData = 'subject/setSubjectInitData'; // subjectCard 형식 초기화 및 교수, 과목이름 데이터 삽입
 
-export const SET_INITIAL_DATA = 'SET_INITIAL_DATA'; // subjectCard 형식 초기화 및 교수, 과목이름 데이터 삽입
 export const SET_LOGIN_CHECK = 'SET_LOGIN_CHECK'; // 로그인 완료 true 로그인->메인페이지 전환할 때 해야함
 export const SET_LOGIN_FLAG = 'SET_LOGIN_FLAG'; // 로그인 - 회원가입 화면 전환을 위한 플레그 설정  true: 로그인 false: 회원가입
 
+export const LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER = 'LoginCheckANDcalculateToDoNumber'; // 사용자 프로필 정보 최신화(미제출 과제, 제출한 과제 개수 등등) - 프로필 mounted에서 진행
+
+export const SET_INITIAL_DATA = 'SET_INITIAL_DATA'; // subjectCard 형식 초기화 및 교수, 과목이름 데이터 삽입
+export const CRAWL_SUBJECT = 'crawlSubject'; // 사용자 과목 크롤링
+export const SET_CRAWL_NOTICE_DATA = 'SET_CRAWL_NOTICE_DATA'; // 크롤링한 공지 데이터 세팅
+export const SET_CRAWL_TASK_DATA = 'SET_CRAWL_TASK_DATA'; // 크롤링한 과제 데이터 세팅
+export const SET_CRAWL_LECTURES_DATA = 'SET_CRAWL_LECTURES_DATA'; // 크롤링한 데이터 세팅
+
 export const SET_WINNER = 'SET_WINNER';
 export const SET_SUBJECT_COUNT = 'SET_SUBJECT_COUNT';
-export const SET_CRAWL_NOTICE_DATA = 'SET_CRAWL_NOTICE_DATA';
-export const SET_CRAWL_TASK_DATA = 'SET_CRAWL_TASK_DATA';
-export const SET_CRAWL_LECTURES_DATA = 'SET_CRAWL_LECTURES_DATA';
 export const SET_DB_NOTICE_DATA = 'SET_DB_NOTICE_DATA';
 export const SET_DB_TASK_DATA = 'SET_DB_TASK_DATA';
 export const SET_DB_LECTURES_DATA = 'SET_DB_LECTURES_DATA';
 export const INCREASE_COMPLETED_TASK = 'INCREASE_COMPLETED_TASK';
 export const INCREASE_INCOMPLETED_TASK = 'INCREASE_INCOMPLETED_TASK';
-export const CRAWL_SUBJECT = 'crawlSubject';
 export const LOAD_DB_SUBJECT = 'loadDBSubject';
-export const LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER = 'LoginCheckANDcalculateToDoNumber';
 
-const api = axios.create({baseURL: 'http://localhost:8080'});
+const api = axios.create({baseURL: 'http://localhost:8080'}); // 이거는 api에 js로 대체하고 지워버릴것이다
+import * as crawlingApi from '@/api/crawling';
 
 import auth from './auth';
 import user from './user';
@@ -152,7 +155,7 @@ export default new Vuex.Store({
                 state.subjectCardData[index].lectures = null;
             }
             Vue.set(state.subjectCardData[index].isCrawling, 0, false);
-            console.log(state.subjectCardData[index].lectures);
+            // console.log(state.subjectCardData[index].lectures);
         },
         [SET_CRAWL_NOTICE_DATA](state, {cardIndex: index, noticeData: data}) {
             if(data == null) {
@@ -321,21 +324,12 @@ export default new Vuex.Store({
         async [CRAWL_SUBJECT](context) {
             //각 과목들에 대한 크롤링 진행
             for(let i = 0; i < this.state.subjectCardData.length; i++) {
-                await api.post('/crawlSubject', null, {params: {
-                    subjectId: this.state.subjectCardData[i].subjectId,
-                }}).then((response) => {
-                    console.log(response.data);
-                    context.commit([SET_CRAWL_LECTURES_DATA], {cardIndex: i, lecturesData: response.data.lecture});
-                    context.commit([SET_CRAWL_NOTICE_DATA], {cardIndex: i, noticeData: response.data.notice});
-                    context.commit([SET_CRAWL_TASK_DATA], {cardIndex: i, taskData: response.data.task});
-                    context.commit([SET_SUBJECT_COUNT], {cardIndex: i, counts: response.data.subjectCounts});
-                    
-                });
+                crawlingApi.getAllSubjectInfoList({subjectId: this.state.subjectCardData[i].subjectId, cardIdx: i}); 
             }
         },
         [LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER](context) {
             //로그인 후 프로필에 해야할 일 최신화.
-            context.commit(SET_LOGIN_CHECK, true);
+            // context.commit(SET_LOGIN_CHECK, true);
             let timer = setInterval(()=>{
                 if(this.state.completedTask != this.state.showCompleted) this.state.showCompleted += 1;
                 if(this.state.incompletedTask != this.state.showIncompleted) this.state.showIncompleted += 1;
@@ -344,7 +338,8 @@ export default new Vuex.Store({
                 if(this.state.incompletedLecture != this.state.showIncompletedLecture) this.state.showIncompletedLecture += 1;
                 
                 // console.log('완료과제 : ' + this.state.completedTask+' == '+ this.state.showCompleted + ', 미완료과제: ' + this.state.incompletedTask+' == '+ this.state.showIncompleted + ', ' + this.state.subjectCardData[this.state.subjectCardData.length-1].isCrawling[2]);
-                if(!this.state.subjectCardData[this.state.subjectCardData.length-1].isCrawling[2] && 
+                if(this.state.subjectCardData[this.state.subjectCardData.length-1] !== undefined &&
+                    !this.state.subjectCardData[this.state.subjectCardData.length-1].isCrawling[2] && 
                     this.state.completedTask == this.state.showCompleted && 
                     this.state.incompletedTask == this.state.showIncompleted &&
                     this.state.completedLecture == this.state.showCompletedLecture && 

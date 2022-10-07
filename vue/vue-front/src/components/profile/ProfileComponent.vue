@@ -36,6 +36,7 @@ import LectureSummaryComponent from './LectureSummaryComponent'
 import TaskSummaryComponent from './TaskSummaryComponent';
 
 import * as userApi from '@/api/user';
+import { LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER } from '../../store/store';
 
 export default {
   name: 'ProfileComponent',
@@ -59,7 +60,8 @@ export default {
     }),
   },
   mounted() {
-    userApi.getUserInfo();
+    userApi.getUserInfo(); // 현재 로그인한 사용자의 기본정보 가져오기
+    this.$store.dispatch(LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER); // 프로필 최신화
   }
 }
 </script>
