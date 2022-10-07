@@ -21,10 +21,9 @@ export const SET_INITIAL_DATA = 'SET_INITIAL_DATA'; // subjectCard 형식 초기
 export const CRAWL_SUBJECT = 'crawlSubject'; // 사용자 과목 크롤링
 export const SET_CRAWL_NOTICE_DATA = 'SET_CRAWL_NOTICE_DATA'; // 크롤링한 공지 데이터 세팅
 export const SET_CRAWL_TASK_DATA = 'SET_CRAWL_TASK_DATA'; // 크롤링한 과제 데이터 세팅
-export const SET_CRAWL_LECTURES_DATA = 'SET_CRAWL_LECTURES_DATA'; // 크롤링한 데이터 세팅
+export const SET_CRAWL_LECTURES_DATA = 'SET_CRAWL_LECTURES_DATA'; // 크롤링한 수업 데이터 세팅
+export const SET_SUBJECT_COUNT = 'SET_SUBJECT_COUNT'; // 크롤링한 데이터 카운트 매기기
 
-export const SET_WINNER = 'SET_WINNER';
-export const SET_SUBJECT_COUNT = 'SET_SUBJECT_COUNT';
 export const SET_DB_NOTICE_DATA = 'SET_DB_NOTICE_DATA';
 export const SET_DB_TASK_DATA = 'SET_DB_TASK_DATA';
 export const SET_DB_LECTURES_DATA = 'SET_DB_LECTURES_DATA';
@@ -80,9 +79,6 @@ export default new Vuex.Store({
     mutations: {
         [SET_LOGIN_FLAG](state, flag) {
             state.loginFlag = flag;
-        },
-        [SET_WINNER](state, winner) {
-            state.winner = winner;
         },
         [SET_LOGIN_CHECK](state, loginCheck) {
             state.loginCheck = loginCheck;
