@@ -16,7 +16,9 @@ class AuthControllerTest {
 	
 	@Test
 	void testAuthorize() {
-		LoginDTO login = new LoginDTO("201845096", "!gusdn0908");
+		String id = "201845096";
+		String pw = "...";
+		LoginDTO login = new LoginDTO(id, pw);
 		authController.authorize(login);
 	}
 

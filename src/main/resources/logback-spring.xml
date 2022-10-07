@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration deboug="true">
+	<!-- DEBUG 용 -->
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<!-- 시간 정보까지 나타남 모르겠으면 인터넷으로 검색해서 알아봐라 디버그 정보가 어떻게 나올 것인가 pattern을 정의하는 것이다. -->
+			<!-- <Pattern>%d %5p [%c] %m%n</Pattern> -->
+			<!-- 시간 정보는 안나타남 -->
+			<Pattern>[%5p] [%c] %m%n</Pattern>
+		</encoder>
+	</appender>
+
+	<!-- INFO 용 -->
+	<appender name="console-infolog" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<Pattern>%d %5p  %m%n</Pattern>
+		</encoder>
+	</appender>
+
+	<!-- 로거 -->
+	<logger name="board" level="DEBUG" appender-ref="console"/>
+	<!-- SQL 보여주기 -->
+	<logger name="jdbc.sqlonly" level="INFO" appender-ref="console-infolog"/>
+	<!-- 조회 결과를 테이블로 보여주기 -->
+	<logger name="jdbc.resultsettable" level="INFO" appender-ref="console-infolog"/>
+
+	<!--  -->
+	<root level="DEBUG">
+		<appender-ref ref="console"/>
+	</root>
+</configuration>
