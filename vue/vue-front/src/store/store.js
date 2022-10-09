@@ -6,6 +6,7 @@ Vue.use(Vuex);
 export const Auth_setToken = 'auth/setToken';
 
 export const User_setUserInfo = 'user/setUserInfo';
+export const User_setStudentId = 'user/setStudentId';
 
 export const Popup_showSignUpSuccess = 'popup/showSuccess'; // signup 성공 팝업 띄우기
 export const Popup_closedSignup = 'popup/closedSignup'; // signup 성공 팝업 닫기

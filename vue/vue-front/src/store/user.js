@@ -11,6 +11,9 @@ export default {
             state.studentId = studentId;
             state.createdDate = createdDate;
         },
+        setStudentId(state, studentId) {
+            state.studentId = studentId;
+        }
     },
     actions: {
 

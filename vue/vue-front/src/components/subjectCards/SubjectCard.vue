@@ -214,6 +214,9 @@ import NoticeTable from "./noticeTable/NoticeTable"
 import TaskTable from "./taskTable/TaskTable"
 import LectureTable from "./lectureTable/LectureTable"
 import { mapState } from 'vuex';
+
+import * as subjectApi from '@/api/subject';
+
 const mainAxios = axios.create({baseURL: 'http://localhost:8080'});
 const delayTime = 350;
 let timeouts = [];
@@ -357,10 +360,14 @@ export default {
   destoryed() {
     clearTimeout(timeouts);
   },
-  created() {
-    // this.searchNotice();
-    // this.searchLecture();
-    // this.searchTask();
+  mounted() {
+    subjectApi.getUserSubjectInfo(
+        {
+          cardIdx: this.index,
+          studentId: this.$store.state.user.studentId, 
+          subjectId: this.$store.state.subjectCardData[this.index].subjectId
+        }
+      );
   }
 }
 </script>
