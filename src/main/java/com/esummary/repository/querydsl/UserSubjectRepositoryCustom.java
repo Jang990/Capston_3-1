@@ -2,10 +2,10 @@ package com.esummary.repository.querydsl;
 
 import java.util.List;
 
-import com.esummary.entity.subject.WeekInfo;
+import com.esummary.crawling.dto.tofront.LectureWeekData;
 import com.esummary.entity.user.UserSubject;
 
 public interface UserSubjectRepositoryCustom {
 	List<UserSubject> findLectureInfo(String studentId,String subjectId);
-	List<WeekInfo> test(String studentId, String subjectId);
+	List<LectureWeekData> findUserLectureList(String studentId, String subjectId);
 }

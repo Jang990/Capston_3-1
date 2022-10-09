@@ -2,9 +2,7 @@ package com.esummary.crawling.dto;
 
 import com.esummary.entity.subject.LectureInfo;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +13,6 @@ import lombok.ToString;
 @Setter
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class LectureData {
 	//과목정보
 	Long lectureId;
@@ -41,5 +38,26 @@ public class LectureData {
 				.learningTime(lecture.getFullTime())
 				.build();
 	}
+	
+	public LectureData(Long lectureId, String lectureVideoId, String type, String idx, String title, String fullTime,
+			String status, String learningTime) {
+		super();
+		this.lectureId = lectureId;
+		this.lectureVideoId = lectureVideoId;
+		this.type = type;
+		this.idx = idx;
+		this.title = title;
+		this.fullTime = fullTime;
+		this.status = status;
+		this.learningTime = learningTime;
+	}
+
+	public LectureData(String title, String learningTime) {
+		this.title = title;
+		this.learningTime = learningTime;
+	}
+	
+	
+	
 	
 }

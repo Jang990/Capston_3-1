@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.esummary.crawling.dto.SubjectCountData;
 import com.esummary.crawling.dto.tofront.LectureWeekData;
 import com.esummary.crawling.dto.tofront.NoticeData;
 import com.esummary.crawling.dto.tofront.SubjectDetailDataWithCnt_DTO;
@@ -22,7 +23,7 @@ import lombok.RequiredArgsConstructor;
  *
  */
 @RestController
-@RequestMapping("api/users/{studentId}/subject/{subjectId}")
+@RequestMapping("/api/users/{studentId}/subject/{subjectId}")
 @RequiredArgsConstructor
 public class UserSubjectController {
 	
@@ -35,12 +36,20 @@ public class UserSubjectController {
 	 */
 	@GetMapping("/all")
 	public SubjectDetailDataWithCnt_DTO getSubjectInfo(@PathVariable String studentId, @PathVariable String subjectId) {
-		return null;
+		// 일단 시간 부족하니까 이렇게 만든다 - 원래는 쿼리를 한번만 보내도록 따로 로직처리를 하는게 좋다.
+		List<LectureWeekData> lectureDTO = this.lectureSearch(studentId, subjectId);
+		List<NoticeData> noticeDTO = this.noticeSearch(studentId, subjectId);
+		List<TaskData> taskDTO = this.taskSearch(studentId, subjectId);
+		SubjectCountData cntDTO = new SubjectCountData(lectureDTO, taskDTO);
+		
+		SubjectDetailDataWithCnt_DTO subjectDTO = new SubjectDetailDataWithCnt_DTO(lectureDTO, taskDTO, noticeDTO, cntDTO);
+		return subjectDTO;
 	}
 	
 	@GetMapping("/lecture")
 	public List<LectureWeekData> lectureSearch(@PathVariable String studentId, @RequestParam String subjectId) {
-		return null;
+		List<LectureWeekData> lectureWeekList = userSubjectService.getLectureData(studentId, subjectId); 
+		return lectureWeekList;
 	}
 	
 	@GetMapping("/task")

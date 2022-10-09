@@ -8,6 +8,7 @@ import java.util.List;
 import com.esummary.crawling.dto.LectureData;
 import com.esummary.entity.subject.LectureInfo;
 import com.esummary.entity.subject.WeekInfo;
+import com.querydsl.core.annotations.QueryProjection;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -59,7 +60,27 @@ public class LectureWeekData {
 		this.studyingState = studyingState;
 	}
 	
-	
+	/**
+	 * 프론트엔드에서 처리하기 쉽게 백엔드에서 수업 시청 여부를 종합해서 cnt로 계산 처리
+	 */
+	public void calcCnt() {
+		int cntCompleted = 0;
+		int cntIncompleted = 0;
+		
+		for (LectureData lectureData : lectures) {
+			if(isCompletedLecture(lectureData)) cntCompleted++;
+			else cntIncompleted++;
+		}
+		
+		int studyingState = 0;
+		if(cntCompleted != 0 || cntIncompleted != 0) {
+			studyingState = (int)((float)cntCompleted / (cntCompleted + cntIncompleted) * 100); 
+		}
+		
+		this.cntCompleted = cntCompleted;
+		this.cntIncompleted = cntIncompleted;
+		this.studyingState = studyingState;
+	}
 	
 	private String makeDateString(Date startDate) {
 		Calendar calendar = Calendar.getInstance();

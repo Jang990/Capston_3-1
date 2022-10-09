@@ -39,7 +39,7 @@ public class DataBaseConfiguration {
 		return dataSource;
 	}
 
-	@Bean
+//	@Bean
 	public SqlSessionFactory sqlSessionFactory(DataSource datasource) throws Exception {
 		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 		sqlSessionFactoryBean.setDataSource(datasource);
@@ -53,13 +53,13 @@ public class DataBaseConfiguration {
 	}
 
 
-	@Bean
-	@ConfigurationProperties(prefix = "mybatis.configuration")
+//	@Bean
+//	@ConfigurationProperties(prefix = "mybatis.configuration")
 	public org.apache.ibatis.session.Configuration mybatisConfig() {
 		return new org.apache.ibatis.session.Configuration();
 	}
 
-	@Bean
+//	@Bean
 	public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
 		return new SqlSessionTemplate(sqlSessionFactory);
 	}
