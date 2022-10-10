@@ -42,17 +42,8 @@ public class UserSubjectServiceImpl implements UserSubjectService {
 	
 	@Override
 	public List<TaskData> getTaskData(String studentId, String subjectId) {
-		Optional<UserSubject> us = userSubjectRepository.
-				findWithUserTaskBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, studentId);
-		if(us.isEmpty()|| us.get().getUserTask().size() == 0) return null;
-		
-		List<TaskData> taskDTO = new ArrayList<TaskData>(); 
-		List<UserTask> ut = us.get().getUserTask();  
-		for (UserTask userTask : ut) {           
-			taskDTO.add(TaskData.from(userTask.getTaskInfo()));
-		}
-		
-		return taskDTO;
+		checkUserOwnSubject(studentId, subjectId);
+		return userSubjectRepository.findUserTaskList(studentId, subjectId);
 	}
 	
 	@Override
@@ -61,12 +52,7 @@ public class UserSubjectServiceImpl implements UserSubjectService {
 				.findWithSubjectInfoBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(subjectId, studentId)
 				.orElseThrow(() -> new IllegalArgumentException("해당 과목이 존재하지 않음. 학번: "+studentId+", 과목ID: "+subjectId));		
 		
-		if(us.getSubjectInfo().getLectureList().size() == 0) {
-			throw new IllegalArgumentException("해당 과목의 수업이 존재하지 않음. 과목ID: "+subjectId); // 다른 오류를 정의하는게 좋을까?
-		}
-		
 		List<LectureWeekData> weekDTO = userSubjectRepository.findUserLectureList(studentId, subjectId);
-		
 		for (LectureWeekData lectureWeekData : weekDTO) {
 			lectureWeekData.calcCnt();
 		}

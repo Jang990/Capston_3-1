@@ -12,11 +12,17 @@ import com.esummary.entity.subject.SubjectInfo;
 import com.esummary.entity.subject.TaskInfo;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
-@Data
+@Setter
+@Getter
+@ToString(exclude = {"userSubject", "taskInfo"})
 public class UserTask {
 	@Setter(AccessLevel.NONE)
 	@Id

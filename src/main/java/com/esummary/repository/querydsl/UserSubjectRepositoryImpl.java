@@ -1,17 +1,19 @@
 package com.esummary.repository.querydsl;
 
+import static com.esummary.entity.subject.QTaskInfo.taskInfo;
+import static com.esummary.entity.user.QUserTask.userTask;
 import static com.querydsl.core.group.GroupBy.list;
 
 import java.util.List;
 
 import com.esummary.crawling.dto.LectureData;
 import com.esummary.crawling.dto.tofront.LectureWeekData;
+import com.esummary.crawling.dto.tofront.TaskData;
 import com.esummary.entity.subject.QLectureInfo;
 import com.esummary.entity.subject.QSubjectInfo;
 import com.esummary.entity.subject.QWeekInfo;
 import com.esummary.entity.user.QUserLecture;
 import com.esummary.entity.user.QUserSubject;
-
 import com.esummary.entity.user.UserSubject;
 import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.Projections;
@@ -90,5 +92,37 @@ public class UserSubjectRepositoryImpl implements UserSubjectRepositoryCustom{
 			);
 		
 		return lectures;
+	}
+	
+	@Override
+	public List<TaskData> findUserTaskList(String studentId, String subjectId) {
+		List<TaskData> tasks = query
+			.from(taskInfo)
+			.innerJoin(userTask).on(userTask.taskInfo.eq(taskInfo))
+			.where(
+				userTask.userSubject.eq(
+						JPAExpressions.select(us)
+							.from(us)
+							.where(us.userInfo.studentNumber.eq(studentId), 
+									us.subjectInfo.subjectId.eq(subjectId))
+				)
+			)
+			.transform(
+					GroupBy.groupBy(taskInfo.taskId).list( 						
+						Projections.fields(TaskData.class,
+								taskInfo.taskId,
+								taskInfo.title,
+								taskInfo.description,
+								taskInfo.startDate.stringValue().as("startDate"),
+								taskInfo.endDate.stringValue().as("endDate"),
+								taskInfo.submissionNum,
+								taskInfo.notSubmittedNum,
+								taskInfo.totalNum,
+								userTask.submitYN
+					)
+				)
+			);
+		
+		return tasks;
 	}
 }
