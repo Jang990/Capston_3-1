@@ -1,6 +1,10 @@
 package com.esummary.repository.querydsl;
 
+import static com.esummary.entity.subject.QLectureInfo.lectureInfo;
 import static com.esummary.entity.subject.QTaskInfo.taskInfo;
+import static com.esummary.entity.subject.QWeekInfo.weekInfo;
+import static com.esummary.entity.user.QUserLecture.userLecture;
+import static com.esummary.entity.user.QUserSubject.userSubject;
 import static com.esummary.entity.user.QUserTask.userTask;
 import static com.querydsl.core.group.GroupBy.list;
 
@@ -9,15 +13,11 @@ import java.util.List;
 import com.esummary.crawling.dto.LectureData;
 import com.esummary.crawling.dto.tofront.LectureWeekData;
 import com.esummary.crawling.dto.tofront.TaskData;
-import com.esummary.entity.subject.QLectureInfo;
-import com.esummary.entity.subject.QSubjectInfo;
-import com.esummary.entity.subject.QWeekInfo;
-import com.esummary.entity.user.QUserLecture;
-import com.esummary.entity.user.QUserSubject;
 import com.esummary.entity.user.UserSubject;
 import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -25,24 +25,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserSubjectRepositoryImpl implements UserSubjectRepositoryCustom{
 	private final JPAQueryFactory query;
-	
-	private final QUserSubject us = QUserSubject.userSubject;
-	private final QUserLecture ul = QUserLecture.userLecture;
-	private final QSubjectInfo si = QSubjectInfo.subjectInfo;
-	private final QWeekInfo wi = QWeekInfo.weekInfo;
-	private final QLectureInfo li = QLectureInfo.lectureInfo;
-	
-	@Override
-	public List<UserSubject> findLectureInfo(String studentId,String subjectId) {
-		return query.selectFrom(us) // dto로 반환하는 것이 훨씬 좋다. db에 변경이 있어도 오류가 어
-				.where(us.userInfo.studentNumber.eq(studentId), us.subjectInfo.subjectId.eq(subjectId))
-				.join(us.subjectInfo, si).fetchJoin()
-				.join(si.lectureList, wi).fetchJoin()
-//				.join(wi.lectures, li).fetchJoin() // MultipleBagFetchException 발생
-//				.distinct()
-				.fetch(); // 리스트로 결과를 반환
-		
-	}
 	
 	public List<LectureWeekData> findUserLectureList(String studentId, String subjectId) {
 		/*
@@ -57,34 +39,31 @@ public class UserSubjectRepositoryImpl implements UserSubjectRepositoryCustom{
 								and us.subject_id = '202224001LLA149') ;
 		 */
 		List<LectureWeekData> lectures = query
-			.from(wi)
-			.innerJoin(wi.lectures, li)
-			.innerJoin(ul).on(ul.subjectLecture.eq(li))
+			.from(weekInfo)
+			.innerJoin(weekInfo.lectures, lectureInfo)
+			.innerJoin(userLecture).on(userLecture.subjectLecture.eq(lectureInfo))
 			.where(
-				ul.userSubject.eq(
-						JPAExpressions.select(us)
-							.from(us)
-							.where(us.userInfo.studentNumber.eq(studentId), 
-									us.subjectInfo.subjectId.eq(subjectId))
+				userLecture.userSubject.eq(
+						getUserSubjectSubQuery(studentId, subjectId)
 				)
 			)
 			.transform(
-					GroupBy.groupBy(wi.weekId).list( 						
+					GroupBy.groupBy(weekInfo.weekId).list( 						
 						Projections.fields(LectureWeekData.class, 
-							wi.weekId.as("lectureWeekId"),
-							wi.title,
-							wi.startDate.stringValue().as("startDate"),
-							wi.endDate.stringValue().as("endDate"),
+							weekInfo.weekId.as("lectureWeekId"),
+							weekInfo.title,
+							weekInfo.startDate.stringValue().as("startDate"),
+							weekInfo.endDate.stringValue().as("endDate"),
 							list(
 								Projections.fields(LectureData.class,
-									li.lectureId.longValue(),
-									li.lectureVideoId,
-									li.type,
-									li.idx,
-									li.title,
-									li.fullTime,
-									ul.status,
-									ul.learningTime
+									lectureInfo.lectureId.longValue(),
+									lectureInfo.lectureVideoId,
+									lectureInfo.type,
+									lectureInfo.idx,
+									lectureInfo.title,
+									lectureInfo.fullTime,
+									userLecture.status,
+									userLecture.learningTime
 								)
 							).as("lectures")
 					)
@@ -101,10 +80,7 @@ public class UserSubjectRepositoryImpl implements UserSubjectRepositoryCustom{
 			.innerJoin(userTask).on(userTask.taskInfo.eq(taskInfo))
 			.where(
 				userTask.userSubject.eq(
-						JPAExpressions.select(us)
-							.from(us)
-							.where(us.userInfo.studentNumber.eq(studentId), 
-									us.subjectInfo.subjectId.eq(subjectId))
+						getUserSubjectSubQuery(studentId, subjectId)
 				)
 			)
 			.transform(
@@ -124,5 +100,12 @@ public class UserSubjectRepositoryImpl implements UserSubjectRepositoryCustom{
 			);
 		
 		return tasks;
+	}
+	
+	private JPQLQuery<UserSubject> getUserSubjectSubQuery(String studentId, String subjectId) {
+		return JPAExpressions.select(userSubject)
+				.from(userSubject)
+				.where(userSubject.userInfo.studentNumber.eq(studentId), 
+						userSubject.subjectInfo.subjectId.eq(subjectId));
 	}
 }

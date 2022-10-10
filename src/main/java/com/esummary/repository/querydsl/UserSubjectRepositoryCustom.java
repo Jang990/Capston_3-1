@@ -7,8 +7,6 @@ import com.esummary.crawling.dto.tofront.TaskData;
 import com.esummary.entity.user.UserSubject;
 
 public interface UserSubjectRepositoryCustom {
-	List<UserSubject> findLectureInfo(String studentId,String subjectId);
-	
 	List<LectureWeekData> findUserLectureList(String studentId, String subjectId);
 	List<TaskData> findUserTaskList(String studentId, String subjectId);
 }
