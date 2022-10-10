@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <template v-if="!loginCheck">
+        <test-component></test-component>
         <login-component></login-component>
     </template>
     <!-- 라우터 공부후 템플릿 ifelse를 대체하기. -->
@@ -121,10 +122,12 @@ import LoginComponent from "./components/auth/Login";
 import ProfileComponent from './components/profile/ProfileComponent';
 import MainStatisticsComponent from './components/statisticsComponents/MainStatisticsComponent';
 
+import TestComponent from './components/comment/CommentComponent';
+
 export default {
   name: 'App',
   store,
-  components: {SubjectCard, LoginComponent,ProfileComponent, MainStatisticsComponent},
+  components: {SubjectCard, LoginComponent,ProfileComponent, MainStatisticsComponent, TestComponent},
   computed: {
     ...mapState(['loginCheck', 'subjectCardData']),
   },
