@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <template v-if="!loginCheck">
-        <test-component></test-component>
+        <!-- <test-component></test-component> -->
         <login-component></login-component>
     </template>
     <!-- 라우터 공부후 템플릿 ifelse를 대체하기. -->
@@ -77,7 +77,6 @@
                   ></v-progress-circular>
 
                   <v-divider class="mx-4"></v-divider>
-                  <v-btn @click="test()">TEST</v-btn>
                   <v-container>
                     <v-row dense>
                       <v-col
@@ -142,17 +141,7 @@ export default {
     }
   },
   methods: {
-    async test() {
-      const api = axios.create({baseURL: 'http://localhost:8080'});
-      await api.post('/test', null, {params: {
-        
-      }}).then((response) => {
-        console.log(response);
-      }).catch((err) => {
-        console.log("오류발생");
-        console.log(err);
-      });
-    }
+    
   },
 }
 </script>

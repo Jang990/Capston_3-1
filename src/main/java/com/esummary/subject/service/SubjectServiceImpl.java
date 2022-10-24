@@ -40,8 +40,7 @@ public class SubjectServiceImpl implements SubjectService {
 			noticeDTO.add(notice); 
 		}
 		
-		if(noticeDTO.size() > 0) return noticeDTO;
-		else return null;
+		return noticeDTO;
 	}
 	
 }

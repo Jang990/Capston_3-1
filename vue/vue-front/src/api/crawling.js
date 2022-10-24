@@ -19,6 +19,5 @@ export async function getAllSubjectInfoList({subjectId, cardIdx}) {
         store.commit([SET_CRAWL_TASK_DATA], {cardIndex: cardIdx, taskData: response.data.task});
         store.commit([SET_SUBJECT_COUNT], {cardIndex: cardIdx, counts: response.data.subjectCounts});
     });
-
     return response;
 }

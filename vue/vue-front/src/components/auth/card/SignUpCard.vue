@@ -103,7 +103,7 @@ export default {
             console.log('회원가입 성공');
             this.$store.commit(SET_LOGIN_FLAG, true); // 로그인 창으로 이동
             // this.$store.commit(Popup_showSignUpSuccess, {text: '회원가입을 축하합니다.'});
-            loading = false;
+            this.loading = false;
         },
         reset() {
             // 전부 지우기

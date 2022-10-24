@@ -51,6 +51,7 @@ import json from "./test/data/data.json";
 import parseComments, { getUser, commentTemplate, prepareForWrite } from "./test/utils/parse-json";
 import { parseDate, jsonFilter } from "./test/utils/util.js";
 import ChatComponent from "./components/ChatComponent.vue";
+// import "./styles/tailwind.sass";
 
 export default {
   name: "ChatApp",

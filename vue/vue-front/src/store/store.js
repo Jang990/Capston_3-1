@@ -149,7 +149,7 @@ export default new Vuex.Store({
                 
             }
             else {
-                state.subjectCardData[index].lectures = null;
+                state.subjectCardData[index].lectures = [];
             }
             Vue.set(state.subjectCardData[index].isCrawling, 0, false);
             // console.log(state.subjectCardData[index].lectures);
@@ -171,7 +171,7 @@ export default new Vuex.Store({
                 }
             }
             else {
-                state.subjectCardData[index].notice = null;
+                state.subjectCardData[index].notice = [];
             }
             Vue.set(state.subjectCardData[index].isCrawling, 1, false);
         },
@@ -183,7 +183,6 @@ export default new Vuex.Store({
 
             if(data.length != 0) {
                 for(let i = 0; i < data.length; i++) {
-                    // console.log(data[i]);
                     state.subjectCardData[index].task[i] = { 
                         taskId: data[i].taskId, 
                         title: data[i].title, 
@@ -207,29 +206,26 @@ export default new Vuex.Store({
                 }
             }
             else {
-                state.subjectCardData[index].task = null;
+                state.subjectCardData[index].task = [];
             }
             Vue.set(state.subjectCardData[index].isCrawling, 2, false);
             // console.log(state.subjectCardData[index].task);
         },
-        //여기부터 다시짓는중
         [SET_DB_LECTURES_DATA](state, {cardIndex: index, lecturesData: data}) {
             if(data.length != 0) {
                 for(let i = 0; i < data.length; i++) {
-                    state.subjectCardData[index].lectures[i] = { 
-                        lectureWeekId: data[i].lectureWeekId, 
+                    state.subjectCardData[index].notice[i] = { 
+                        noticeId: data[i].noticeId, 
                         title: data[i].title, 
-                        endDate: data[i].endDate, 
-                        startDate: data[i].startDate, 
-                        lectures: data[i].lectures, 
+                        description: data[i].description, 
+                        author: data[i].author, 
+                        createDate: data[i].createDate
                     };
                 }
             }
             else {
-                state.subjectCardData[index].lectures = null;
+                state.subjectCardData[index].notice = [];
             }
-            Vue.set(state.subjectCardData[index].isCrawling, 0, false);
-            // console.log(state.subjectCardData[index].lectures);
         },
         [SET_DB_NOTICE_DATA](state, {cardIndex: index, noticeData: data}) {
             if(data.length != 0) {
@@ -244,20 +240,18 @@ export default new Vuex.Store({
                 }
             }
             else {
-                state.subjectCardData[index].notice = null;
+                state.subjectCardData[index].notice = [];
             }
-            Vue.set(state.subjectCardData[index].isCrawling, 1, false);
         },
         [SET_DB_TASK_DATA](state, {cardIndex: index, taskData: data}) {
             if(data.length != 0) {
                 for(let i = 0; i < data.length; i++) {
-                    console.log(data[i]);
                     state.subjectCardData[index].task[i] = { 
                         taskId: data[i].taskId, 
                         title: data[i].title, 
                         description: data[i].description, 
                         startDate: data[i].startDate, 
-                        endDate: data[i].endDate, 
+                        endDate: data[i].endDate.toString(), 
                         notSubmittedNum: data[i].notSubmittedNum, 
                         submissionNum: data[i].submissionNum, 
                         totalNum: data[i].totalNum, 
@@ -266,18 +260,11 @@ export default new Vuex.Store({
                         //여기는 TaskTable에 제출현황을 보여주기위해 추가함
                         submittedState: data[i].submissionNum / data[i].totalNum* 100,
                     };
-                    // if(state.subjectCardData[index].task[i].submitYN == 'Y') {
-                    //     state.incompletedTask += 1;
-                    // } else if(state.subjectCardData[index].task[i].submitYN == 'N') {
-                    //     state.completedTask += 1;
-                    // }
                 }
             }
             else {
-                state.subjectCardData[index].task = null;
+                state.subjectCardData[index].task = [];
             }
-            Vue.set(state.subjectCardData[index].isCrawling, 2, false);
-            // console.log(state.subjectCardData[index].task);
         },
     }, //state를 동기적으로 수정할 때 사용
     //state를 바꿀때 바로 바꾸지말고 mutations를 통해 바꾸길 권장
