@@ -1,5 +1,6 @@
 package com.esummary.crawling.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.esummary.auth.exception.DeniedElearningCookieException;
 import com.esummary.auth.service.login.CustomUserDetails;
 import com.esummary.crawling.dto.InhatcSubjectCardDTO;
 import com.esummary.crawling.dto.InhatcUserDTO;
@@ -49,9 +51,16 @@ public class CrawlingController {
 		*/
 		InhatcUserDTO userDto = new InhatcUserDTO(customUser.getUsername(), customUser.getInhaTcSessionId());
 		
-		List<InhatcSubjectCardDTO> subjects =  crawlingService.crawlLoginPage(userDto);
+		List<InhatcSubjectCardDTO> subjects;
+		try {
+			subjects=  crawlingService.crawlLoginPage(userDto);
+			return new ResponseEntity<SubjectCardDTO>(new SubjectCardDTO(subjects), HttpStatus.OK);
+		} catch(DeniedElearningCookieException e) {
+			subjects = new ArrayList<>();
+			// 일단 OK로 해놓음
+			return new ResponseEntity<SubjectCardDTO>(new SubjectCardDTO(subjects), HttpStatus.OK);
+		}
 		
-		return new ResponseEntity<SubjectCardDTO>(new SubjectCardDTO(subjects), HttpStatus.OK);
 	}
 	
 	private void testCode(List<exSubjectCardData> subjectCardData) {

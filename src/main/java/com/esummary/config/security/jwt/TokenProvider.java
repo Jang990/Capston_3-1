@@ -4,6 +4,7 @@ import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -19,6 +20,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
+import com.esummary.auth.exception.DeniedElearningCookieException;
 import com.esummary.auth.service.ElearningLoginService;
 import com.esummary.auth.service.login.CustomUserDetails;
 
@@ -66,11 +68,21 @@ public class TokenProvider {
 		long now = (new Date()).getTime();
 		Date validity = new Date(now + this.tokenValidityInMilliseconds);
 		
+		Map<String, String> inhatcSID;
+		try {
+			inhatcSID = user.getInhaTcSessionId();
+		}
+		catch (DeniedElearningCookieException e) {
+			// 회원가입시에만 빡빡하게 검사 
+			// 로그인 시에는 인하공전 이러닝 사이트가 맛이가도 로그인이 되어야 한다.
+			inhatcSID = new HashMap<String, String>();
+			inhatcSID.put("JSESSIONID", "");
+		}
 		
 		return Jwts.builder()
 				.setSubject(user.getUsername())
 				.claim(AUTHORITIES_KEY, authorities)
-				.claim(ELEARNING_SESSION_ID, user.getInhaTcSessionId()) //이러닝 로그인 세션 삽입
+				.claim(ELEARNING_SESSION_ID, inhatcSID) //이러닝 로그인 세션 삽입
 				.signWith(key, SignatureAlgorithm.HS512)
 				.setExpiration(validity)
 				.compact();

@@ -1,23 +1,17 @@
 package com.esummary.subject.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.esummary.crawling.dto.InhatcSubjectCardDTO;
 import com.esummary.crawling.dto.tofront.LectureWeekData;
 import com.esummary.crawling.dto.tofront.NoticeData;
+import com.esummary.crawling.dto.tofront.SubjectCardDTO;
 import com.esummary.crawling.dto.tofront.TaskData;
-import com.esummary.elearning.exdto.user.UserData;
-import com.esummary.entity.subject.LectureInfo;
-import com.esummary.entity.subject.NoticeInfo;
-import com.esummary.entity.subject.WeekInfo;
-import com.esummary.entity.user.UserLecture;
 import com.esummary.entity.user.UserSubject;
-import com.esummary.entity.user.UserTask;
 import com.esummary.repository.UserSubjectRepository;
-import com.esummary.repository.subject.NoticeInfoRepository;
+import com.esummary.repository.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +21,8 @@ public class UserSubjectServiceImpl implements UserSubjectService {
 	
 	private final UserSubjectRepository userSubjectRepository;
 	private final SubjectService subjectService;
+	
+	private final UserRepository userRepository;
 	
 	@Override
 	public void checkUserOwnSubject(String studentId, String subjectId) {
@@ -58,5 +54,13 @@ public class UserSubjectServiceImpl implements UserSubjectService {
 		}
 		
 		return weekDTO;
+	}
+	
+	/** 사용자가 가지고 있는 과목정보(subject_Info 테이블 정보만) 반환 */
+	public List<InhatcSubjectCardDTO> getUserOwnSubjectInfo(String studentId) {
+		userRepository.findByStudentNumber(studentId)
+				.orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다. -> 학번: " + studentId)
+						);
+		return userSubjectRepository.findUserOwnSubjectInfo(studentId);
 	}
 }

@@ -25,6 +25,7 @@ import { mapState } from 'vuex';
 import axios from "axios"
 import * as authApi from '@/api/auth';
 import * as crawlingApi from '@/api/crawling';
+import * as subjectApi from '@/api/subject';
 import { SET_LOGIN_FLAG } from '../../../store/store';
 
 const api = axios.create({baseURL: 'http://localhost:8080'});
@@ -75,7 +76,14 @@ export default {
             }
 
             // 기본 수업정보 크롤링
-            await crawlingApi.basicSubjectList();
+            const crawlResponse = await crawlingApi.basicSubjectList();
+            
+            // 만약 크롤링 정보가 없다면 DB에서 가져오기
+            // 수정이 필요하다. Error코드를 받아서 처리하는게 좋을 것 같다.
+            // 지금은 일단 테스트를 위해 데이터 길이가 0이면 DB에 데이터를 가져온다.
+            if(crawlResponse.data.subjectCardData.length === 0) {
+                await subjectApi.basicSubjectList({studentId: this.id});
+            }
 
             // 수업 세부 정보 크롤링 - 비동기
             this.$store.dispatch(CRAWL_SUBJECT);

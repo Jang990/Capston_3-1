@@ -4,12 +4,14 @@ import { SET_CRAWL_LECTURES_DATA, SET_CRAWL_NOTICE_DATA, SET_CRAWL_TASK_DATA, SE
 
 // 이러닝 기본 수업 정보(과목명, 교수명, 타입) 크롤링
 export async function basicSubjectList() {
-    const response = await http.post('/inhatc/login-info').then((response)=>{
+    let returnResponse;
+    await http.post('/inhatc/login-info').then((response)=>{
         // 크롤링을 한 뒤에 기본 틀을 만들어줌
+        returnResponse = response;
         store.commit(SET_INITIAL_DATA, {subjectCardData: response.data.subjectCardData}); 
     });
 
-    return response;
+    return returnResponse;
 }
 
 export async function getAllSubjectInfoList({subjectId, cardIdx}) {

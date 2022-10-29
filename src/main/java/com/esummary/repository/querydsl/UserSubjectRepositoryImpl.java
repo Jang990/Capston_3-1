@@ -1,6 +1,7 @@
 package com.esummary.repository.querydsl;
 
 import static com.esummary.entity.subject.QLectureInfo.lectureInfo;
+import static com.esummary.entity.subject.QSubjectInfo.subjectInfo;
 import static com.esummary.entity.subject.QTaskInfo.taskInfo;
 import static com.esummary.entity.subject.QWeekInfo.weekInfo;
 import static com.esummary.entity.user.QUserLecture.userLecture;
@@ -10,6 +11,7 @@ import static com.querydsl.core.group.GroupBy.list;
 
 import java.util.List;
 
+import com.esummary.crawling.dto.InhatcSubjectCardDTO;
 import com.esummary.crawling.dto.LectureData;
 import com.esummary.crawling.dto.tofront.LectureWeekData;
 import com.esummary.crawling.dto.tofront.TaskData;
@@ -107,5 +109,27 @@ public class UserSubjectRepositoryImpl implements UserSubjectRepositoryCustom{
 				.from(userSubject)
 				.where(userSubject.userInfo.studentNumber.eq(studentId), 
 						userSubject.subjectInfo.subjectId.eq(subjectId));
+	}
+	
+	@Override
+	public List<InhatcSubjectCardDTO> findUserOwnSubjectInfo(String studentId) {
+		List<InhatcSubjectCardDTO> subjects = query
+				.select(
+						Projections.fields(InhatcSubjectCardDTO.class, 
+							subjectInfo.subjectId,
+							subjectInfo.subjectOwnerName.stringValue().as("owner"),
+							subjectInfo.subjectName
+						)
+				)
+				.from(subjectInfo)
+				.where(subjectInfo.subjectId.in(
+						JPAExpressions.select(userSubject.subjectInfo.subjectId)
+						.from(userSubject)
+						.where(userSubject.userInfo.studentNumber.eq(studentId))
+					)
+				)
+				.fetch();
+		
+		return subjects;
 	}
 }

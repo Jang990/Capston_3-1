@@ -2,8 +2,10 @@ package com.esummary.subject.service;
 
 import java.util.List;
 
+import com.esummary.crawling.dto.InhatcSubjectCardDTO;
 import com.esummary.crawling.dto.tofront.LectureWeekData;
 import com.esummary.crawling.dto.tofront.NoticeData;
+import com.esummary.crawling.dto.tofront.SubjectCardDTO;
 import com.esummary.crawling.dto.tofront.TaskData;
 
 /**
@@ -40,4 +42,6 @@ public interface UserSubjectService {
 	 */
 	List<LectureWeekData> getLectureData(String studentId, String subjectId);
 	
+	/** 사용자가 가지고 있는 과목정보(subject_Info 테이블 정보만) 반환 */
+	List<InhatcSubjectCardDTO> getUserOwnSubjectInfo(String studentId);
 }
