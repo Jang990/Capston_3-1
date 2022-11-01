@@ -1,6 +1,6 @@
 package com.esummary.crawling.service;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import com.esummary.auth.exception.DeniedElearningCookieException;
 import com.esummary.crawling.dto.InhatcSubjectCardDTO;
 import com.esummary.crawling.dto.InhatcUserDTO;
-import com.esummary.crawling.dto.exInitalPageData;
-import com.esummary.crawling.dto.exSubjectCardData;
 import com.esummary.crawling.dto.tofront.LectureWeekData;
 import com.esummary.crawling.dto.tofront.NoticeData;
 import com.esummary.crawling.dto.tofront.TaskData;

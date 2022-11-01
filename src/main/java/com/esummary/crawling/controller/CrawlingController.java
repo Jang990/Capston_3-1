@@ -1,6 +1,6 @@
 package com.esummary.crawling.controller;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,6 @@ import com.esummary.auth.exception.DeniedElearningCookieException;
 import com.esummary.auth.service.login.CustomUserDetails;
 import com.esummary.crawling.dto.InhatcSubjectCardDTO;
 import com.esummary.crawling.dto.InhatcUserDTO;
-import com.esummary.crawling.dto.exSubjectCardData;
 import com.esummary.crawling.dto.tofront.SubjectCardDTO;
 import com.esummary.crawling.service.CrawlingService;
 
@@ -63,7 +62,7 @@ public class CrawlingController {
 		
 	}
 	
-	private void testCode(List<exSubjectCardData> subjectCardData) {
+	private void testCode(List<InhatcSubjectCardDTO> subjectCardData) {
 		/*
 		만약 이러닝에 1학기 정보가 내려갔을때 테스트를 위한 코드
 		SubjectCardData(subjectId=CORS_1703071437557d610794, subjectName=서버프로그래밍, owner=조규철), 
@@ -77,14 +76,14 @@ public class CrawlingController {
 		SubjectCardData(subjectId=202214043CMP743, subjectName=[3학년C반] 자율드론, owner=박병섭), 
 		SubjectCardData(subjectId=202214043DMP250, subjectName=[3학년D반] 캡스톤디자인, owner=황수철)])
 		*/
-		subjectCardData.add(new exSubjectCardData("202214001LLA117", "[1학년L반] 발명과특허", "김영준"));
-		subjectCardData.add(new exSubjectCardData("202214001LLA138", "[1학년L반] 빅데이터의이해", "용승림"));
-		subjectCardData.add(new exSubjectCardData("202211141LLA104", "[1학년L반] 자기개발과직업윤리", "김성진"));
-		subjectCardData.add(new exSubjectCardData("202214043CMP389", "[3학년C반] 빅데이터", "권두순"));
-		subjectCardData.add(new exSubjectCardData("202214043C4846", "[3학년C반] 소프트웨어분석설계", "김철진"));
-		subjectCardData.add(new exSubjectCardData("202214043C5019", "[3학년C반] 웹보안", "용승림"));
-		subjectCardData.add(new exSubjectCardData("202214043CMP743", "[3학년C반] 자율드론", "박병섭"));
-		subjectCardData.add(new exSubjectCardData("202214043DMP250", "[3학년D반] 캡스톤디자인", "황수철"));
+		subjectCardData.add(new InhatcSubjectCardDTO("202214001LLA117", "[1학년L반] 발명과특허", "김영준"));
+		subjectCardData.add(new InhatcSubjectCardDTO("202214001LLA138", "[1학년L반] 빅데이터의이해", "용승림"));
+		subjectCardData.add(new InhatcSubjectCardDTO("202211141LLA104", "[1학년L반] 자기개발과직업윤리", "김성진"));
+		subjectCardData.add(new InhatcSubjectCardDTO("202214043CMP389", "[3학년C반] 빅데이터", "권두순"));
+		subjectCardData.add(new InhatcSubjectCardDTO("202214043C4846", "[3학년C반] 소프트웨어분석설계", "김철진"));
+		subjectCardData.add(new InhatcSubjectCardDTO("202214043C5019", "[3학년C반] 웹보안", "용승림"));
+		subjectCardData.add(new InhatcSubjectCardDTO("202214043CMP743", "[3학년C반] 자율드론", "박병섭"));
+		subjectCardData.add(new InhatcSubjectCardDTO("202214043DMP250", "[3학년D반] 캡스톤디자인", "황수철"));
 	}
 
 }

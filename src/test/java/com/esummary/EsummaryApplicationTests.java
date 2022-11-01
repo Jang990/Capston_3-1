@@ -1,6 +1,6 @@
 package com.esummary;
 
-import java.security.Key;
+import java.security.Key; 
 import java.util.Map; 
 
 import org.junit.jupiter.api.Test;
@@ -10,12 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.esummary.auth.dto.LoginDTO;
 import com.esummary.auth.service.ElearningLoginService;
 import com.esummary.auth.service.exLoginService;
-import com.esummary.crawling.service.exVueService;
 import com.esummary.crawling.service.crawling.SubjectCrawlingService;
 import com.esummary.crawling.service.crawling.user.UserCrawlingUtil;
 import com.esummary.entity.subject.SubjectInfo;
 import com.esummary.repository.subject.SubjectInfoRepository;
-import com.esummary.subject.service.exSubjectDBService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -25,10 +23,6 @@ import io.jsonwebtoken.security.Keys;
 @SpringBootTest
 class EsummaryApplicationTests {
 	
-	@Autowired
-	private exSubjectDBService subjectDBService;
-	@Autowired
-	private exVueService vueService;
 	@Autowired
 	private ElearningLoginService elearningLoginService;
 	@Autowired

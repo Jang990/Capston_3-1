@@ -1,6 +1,6 @@
 package com.esummary.crawling.service.crawling;
  
-import java.io.IOException;
+import java.io.IOException; 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.esummary.crawling.dto.exSubjectCardData;
 import com.esummary.elearning.exdto.user.UserData;
 import com.esummary.entity.subject.SubjectInfo;
 import com.esummary.entity.user.UserInfo;
