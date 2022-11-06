@@ -43,7 +43,7 @@ public class ChatRoom {
 		ChatRoom room = new ChatRoom();
 		room.setRoomId(UUID.randomUUID().toString());
 		room.setSubject(subject);
-//		subject.setChatRoom(room);
+		subject.setChatRoom(room);
 		
 		return room;
 	}

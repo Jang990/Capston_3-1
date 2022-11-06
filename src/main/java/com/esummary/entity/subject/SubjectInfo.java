@@ -2,6 +2,7 @@ package com.esummary.entity.subject;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -53,7 +54,7 @@ public class SubjectInfo {
 	@OneToMany(mappedBy = "subjectInfo")
 	private List<NoticeInfo> noticeList; //공지사항에 관한 정보
 	
-	@OneToOne(mappedBy = "subject")
+	@OneToOne(mappedBy = "subject", cascade = CascadeType.ALL)
 	private ChatRoom chatRoom;
 	
 	public SubjectInfo(String subjectId, String subjectName, String subjectOwnerName, String openType) {

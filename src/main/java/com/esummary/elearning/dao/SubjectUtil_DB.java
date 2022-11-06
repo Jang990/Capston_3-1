@@ -21,8 +21,6 @@ import lombok.RequiredArgsConstructor;
 public class SubjectUtil_DB implements DBSubjectUtil {
 	
 	private final SubjectInfoRepository subjectRepository;
-	private final ChatRoomRepository chatRoomRepository;
-	
 	
 	@Override
 	public boolean saveService(SubjectInfo subject) {
@@ -51,7 +49,6 @@ public class SubjectUtil_DB implements DBSubjectUtil {
 		if(savedSubjects.size() == 0) return false;
 		
 		subjectRepository.saveAll(savedSubjects);
-		chatRoomRepository.saveAll(savedChatRoom);
 		return true;
 	}
 
