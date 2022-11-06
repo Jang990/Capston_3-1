@@ -14,6 +14,7 @@ public class InhatcSubjectCardDTO {
 	private String subjectId;
 	private String subjectName; 
 	private String owner;
+	private String chatRoomID;
 	
 	public static InhatcSubjectCardDTO from(SubjectInfo subject) {
 		if(subject == null) return null;
@@ -22,6 +23,7 @@ public class InhatcSubjectCardDTO {
 				.subjectId(subject.getSubjectId())
 				.subjectName(subject.getSubjectName())
 				.owner(subject.getSubjectOwnerName())
+				.chatRoomID(subject.getChatRoom().getRoomId())
 				.build();
 	}
 	

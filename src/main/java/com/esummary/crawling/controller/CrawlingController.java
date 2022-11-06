@@ -76,14 +76,14 @@ public class CrawlingController {
 		SubjectCardData(subjectId=202214043CMP743, subjectName=[3학년C반] 자율드론, owner=박병섭), 
 		SubjectCardData(subjectId=202214043DMP250, subjectName=[3학년D반] 캡스톤디자인, owner=황수철)])
 		*/
-		subjectCardData.add(new InhatcSubjectCardDTO("202214001LLA117", "[1학년L반] 발명과특허", "김영준"));
-		subjectCardData.add(new InhatcSubjectCardDTO("202214001LLA138", "[1학년L반] 빅데이터의이해", "용승림"));
-		subjectCardData.add(new InhatcSubjectCardDTO("202211141LLA104", "[1학년L반] 자기개발과직업윤리", "김성진"));
-		subjectCardData.add(new InhatcSubjectCardDTO("202214043CMP389", "[3학년C반] 빅데이터", "권두순"));
-		subjectCardData.add(new InhatcSubjectCardDTO("202214043C4846", "[3학년C반] 소프트웨어분석설계", "김철진"));
-		subjectCardData.add(new InhatcSubjectCardDTO("202214043C5019", "[3학년C반] 웹보안", "용승림"));
-		subjectCardData.add(new InhatcSubjectCardDTO("202214043CMP743", "[3학년C반] 자율드론", "박병섭"));
-		subjectCardData.add(new InhatcSubjectCardDTO("202214043DMP250", "[3학년D반] 캡스톤디자인", "황수철"));
+		subjectCardData.add(new InhatcSubjectCardDTO("202214001LLA117", "[1학년L반] 발명과특허", "김영준", ""));
+		subjectCardData.add(new InhatcSubjectCardDTO("202214001LLA138", "[1학년L반] 빅데이터의이해", "용승림", ""));
+		subjectCardData.add(new InhatcSubjectCardDTO("202211141LLA104", "[1학년L반] 자기개발과직업윤리", "김성진", ""));
+		subjectCardData.add(new InhatcSubjectCardDTO("202214043CMP389", "[3학년C반] 빅데이터", "권두순", ""));
+		subjectCardData.add(new InhatcSubjectCardDTO("202214043C4846", "[3학년C반] 소프트웨어분석설계", "김철진", ""));
+		subjectCardData.add(new InhatcSubjectCardDTO("202214043C5019", "[3학년C반] 웹보안", "용승림", ""));
+		subjectCardData.add(new InhatcSubjectCardDTO("202214043CMP743", "[3학년C반] 자율드론", "박병섭", ""));
+		subjectCardData.add(new InhatcSubjectCardDTO("202214043DMP250", "[3학년D반] 캡스톤디자인", "황수철", ""));
 	}
 
 }

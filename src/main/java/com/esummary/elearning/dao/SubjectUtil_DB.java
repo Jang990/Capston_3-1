@@ -34,14 +34,13 @@ public class SubjectUtil_DB implements DBSubjectUtil {
 	@Override
 	public boolean saveService(List<SubjectInfo> subjects) {
 		List<SubjectInfo> savedSubjects = new ArrayList<SubjectInfo>();
-		List<ChatRoom> savedChatRoom = new ArrayList<ChatRoom>();
 		
 		for (SubjectInfo subject : subjects) {
 			if(validateDuplicate(subject)) // 중복 확인, 중복일시 예외발생
 				continue;
 			else {
 				//채팅방도 추가
-				savedChatRoom.add(ChatRoom.createRoom(subject));
+				subject.setChatRoom(ChatRoom.createRoom(subject));
 				savedSubjects.add(subject);
 			}
 		}
@@ -57,7 +56,11 @@ public class SubjectUtil_DB implements DBSubjectUtil {
 		Optional<SubjectInfo> subjectCheck = subjectRepository.findSingleSubject(subject.getSubjectId());
 		
 		if(subjectCheck.isEmpty()) return false;
-		else return true; //중복 맞음
+		else {
+			// 중복시 DB에 저장된 채팅방 연결
+			subject.setChatRoom(subjectCheck.get().getChatRoom());
+			return true; //중복 맞음
+		}
 	}
 
 	@Override

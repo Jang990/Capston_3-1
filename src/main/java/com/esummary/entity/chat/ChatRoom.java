@@ -18,10 +18,12 @@ import com.esummary.entity.subject.SubjectInfo;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
+@ToString(exclude = {"subject", "messages"})
 public class ChatRoom {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,8 +45,6 @@ public class ChatRoom {
 		ChatRoom room = new ChatRoom();
 		room.setRoomId(UUID.randomUUID().toString());
 		room.setSubject(subject);
-		subject.setChatRoom(room);
-		
 		return room;
 	}
 	

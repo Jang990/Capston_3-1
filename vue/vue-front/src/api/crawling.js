@@ -8,6 +8,7 @@ export async function basicSubjectList() {
     await http.post('/inhatc/login-info').then((response)=>{
         // 크롤링을 한 뒤에 기본 틀을 만들어줌
         returnResponse = response;
+        // console.log(response.data.subjectCardData);
         store.commit(SET_INITIAL_DATA, {subjectCardData: response.data.subjectCardData}); 
     });
 
