@@ -6,16 +6,23 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.esummary.entity.chat.ChatRoom;
 import com.esummary.entity.subject.SubjectInfo;
 import com.esummary.entity.subject.WeekInfo;
+import com.esummary.repository.chat.ChatRoomRepository;
 import com.esummary.repository.subject.SubjectInfoRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class SubjectUtil_DB implements DBSubjectUtil {
 	
-	@Autowired
-	private SubjectInfoRepository subjectRepository;
+	private final SubjectInfoRepository subjectRepository;
+	private final ChatRoomRepository chatRoomRepository;
+	
 	
 	@Override
 	public boolean saveService(SubjectInfo subject) {
@@ -29,16 +36,22 @@ public class SubjectUtil_DB implements DBSubjectUtil {
 	@Override
 	public boolean saveService(List<SubjectInfo> subjects) {
 		List<SubjectInfo> savedSubjects = new ArrayList<SubjectInfo>();
+		List<ChatRoom> savedChatRoom = new ArrayList<ChatRoom>();
 		
 		for (SubjectInfo subject : subjects) {
 			if(validateDuplicate(subject)) // 중복 확인, 중복일시 예외발생
 				continue;
-			else savedSubjects.add(subject);
+			else {
+				//채팅방도 추가
+				savedChatRoom.add(ChatRoom.createRoom(subject));
+				savedSubjects.add(subject);
+			}
 		}
 		
 		if(savedSubjects.size() == 0) return false;
 		
 		subjectRepository.saveAll(savedSubjects);
+		chatRoomRepository.saveAll(savedChatRoom);
 		return true;
 	}
 

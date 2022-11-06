@@ -53,8 +53,7 @@ public class SubjectInfo {
 	@OneToMany(mappedBy = "subjectInfo")
 	private List<NoticeInfo> noticeList; //공지사항에 관한 정보
 	
-	@OneToOne
-	@JoinColumn(name = "CHAT_ROOM_ID")
+	@OneToOne(mappedBy = "subject")
 	private ChatRoom chatRoom;
 	
 	public SubjectInfo(String subjectId, String subjectName, String subjectOwnerName, String openType) {
