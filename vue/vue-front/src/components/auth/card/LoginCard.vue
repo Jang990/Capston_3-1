@@ -13,6 +13,7 @@
         </v-card-text>
         <v-card-actions>
             <v-spacer></v-spacer>
+            <v-btn color="primary" to="/" @click="clickTest">Test</v-btn>
             <v-btn color="warning" to="/" @click="clickSignUp">Sign Up</v-btn>
             <v-btn color="primary" to="/" @click="checkLog">Login</v-btn>
         </v-card-actions>
@@ -27,6 +28,9 @@ import * as authApi from '@/api/auth';
 import * as crawlingApi from '@/api/crawling';
 import * as subjectApi from '@/api/subject';
 import { SET_LOGIN_FLAG } from '../../../store/store';
+
+import Stomp from 'webstomp-client'
+import SockJS from 'sockjs-client'
 
 const api = axios.create({baseURL: 'http://localhost:8080'});
 
@@ -96,6 +100,34 @@ export default {
         },
         clickSignUp() {
             this.$store.commit(SET_LOGIN_FLAG, false);
+        },
+        clickTest() {
+            console.log("테스트");
+            const serverURL = "http://localhost:8080/ws/chat"
+            let socket = new SockJS(serverURL);
+            this.stompClient = Stomp.over(socket);
+            console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`)
+            this.stompClient.connect(
+                {},
+                frame => {
+                // 소켓 연결 성공
+                this.connected = true;
+                console.log('소켓 연결 성공', frame);
+                // 서버의 메시지 전송 endpoint를 구독합니다.
+                // 이런형태를 pub sub 구조라고 합니다.
+                this.stompClient.subscribe("/send", res => {
+                    console.log('구독으로 받은 메시지 입니다.', res.body);
+
+                    // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
+                    this.recvList.push(JSON.parse(res.body))
+                });
+                },
+                error => {
+                // 소켓 연결 실패
+                console.log('소켓 연결 실패', error);
+                this.connected = false;
+                }
+            );      
         },
     },
 };

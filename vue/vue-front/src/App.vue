@@ -2,7 +2,8 @@
   <div id="app">
     <template v-if="!loginCheck">
         <!-- <test-component></test-component> -->
-        <login-component></login-component>
+        <!-- <login-component></login-component> -->
+        <test-chat></test-chat>
     </template>
     <!-- 라우터 공부후 템플릿 ifelse를 대체하기. -->
     <v-app id="inspire" v-else>
@@ -122,11 +123,12 @@ import ProfileComponent from './components/profile/ProfileComponent';
 import MainStatisticsComponent from './components/statisticsComponents/MainStatisticsComponent';
 
 import TestComponent from './components/comment/CommentComponent';
+import TestChat from './components/auth/card/TestChat.vue';
 
 export default {
   name: 'App',
   store,
-  components: {SubjectCard, LoginComponent,ProfileComponent, MainStatisticsComponent, TestComponent},
+  components: {SubjectCard, LoginComponent,ProfileComponent, MainStatisticsComponent, TestComponent, TestChat},
   computed: {
     ...mapState(['loginCheck', 'subjectCardData']),
   },

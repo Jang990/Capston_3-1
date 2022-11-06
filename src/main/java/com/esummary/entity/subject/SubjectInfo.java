@@ -12,8 +12,10 @@ import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedEntityGraphs;
 import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
+import com.esummary.entity.chat.ChatRoom;
 import com.esummary.entity.user.UserInfo;
 
 import lombok.Data;
@@ -50,6 +52,10 @@ public class SubjectInfo {
 	private List<TaskInfo> taskList; //과제에 관한 정보
 	@OneToMany(mappedBy = "subjectInfo")
 	private List<NoticeInfo> noticeList; //공지사항에 관한 정보
+	
+	@OneToOne
+	@JoinColumn(name = "CHAT_ROOM_ID")
+	private ChatRoom chatRoom;
 	
 	public SubjectInfo(String subjectId, String subjectName, String subjectOwnerName, String openType) {
 		this.subjectId = subjectId;
