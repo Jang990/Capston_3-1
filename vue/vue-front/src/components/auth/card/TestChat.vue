@@ -26,6 +26,9 @@ import SockJS from 'sockjs-client'
 
 export default {
   name: 'App',
+  props:{
+    roomId: String,
+  },
   data() {
     return {
       userName: "",
@@ -48,6 +51,7 @@ export default {
       console.log("Send message:" + this.message);
       if (this.stompClient && this.stompClient.connected) {
         const msg = { 
+          roomId: this.roomId,
           sender: this.userName,
           message: this.message 
         };
@@ -68,7 +72,7 @@ export default {
           console.log('소켓 연결 성공', frame);
           // 서버의 메시지 전송 endpoint를 구독합니다.
           // /topic/chat을 구독하려면 /app/topic/chat
-          this.stompClient.subscribe("/topic/chat", res => {
+          this.stompClient.subscribe("/topic/chat/room/" + this.roomId, res => {
             console.log('구독으로 받은 메시지 입니다.', res.body);
 
             // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.

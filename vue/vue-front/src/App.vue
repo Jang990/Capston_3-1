@@ -2,8 +2,13 @@
   <div id="app">
     <template v-if="!loginCheck">
         <!-- <test-component></test-component> -->
-        <login-component></login-component>
-        <!-- <test-chat></test-chat> -->
+        <!-- <login-component></login-component> -->
+
+        <!-- 독립 채팅방 2개 테스트 코드 -->
+        <!-- 
+          <test-chat roomId="vvvv"></test-chat>
+          <test-chat roomId="aaaa"></test-chat> 
+        -->
     </template>
     <!-- 라우터 공부후 템플릿 ifelse를 대체하기. -->
     <v-app id="inspire" v-else>
