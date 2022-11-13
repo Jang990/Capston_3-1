@@ -4,10 +4,12 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.esummary.chat.model.ChatMessageDTO;
-import com.esummary.chat.model.ChatMsgForTestDTO;
+import com.esummary.chat.dto.ChatMessageDTO;
+import com.esummary.chat.dto.ChatMsgForTestDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,5 +30,19 @@ public class ChatRoomController {
 				"/topic/chat/room/" + message.getRoomId(), 
 				new ChatMsgForTestDTO(message.getSender(), message.getMessage())
 			);
+		
+		// 채팅 내용 저장
 	}
+	
+	@GetMapping("/api/chat/{subjectId}")
+	/** 채팅방 입장.(채팅 불러오기) */
+	public void enterChatRoom(ChatMessageDTO message) {
+		// 채팅 불러오기
+	}
+	
+	// 채팅방 DB 저장 및 불러오기 구현
+	// 
+	// 채팅방 입장 구현 - 끝
+	// 
+	// 퇴장 구현 - 끝
 }

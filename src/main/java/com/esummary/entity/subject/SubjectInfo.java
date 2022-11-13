@@ -1,6 +1,6 @@
 package com.esummary.entity.subject;
 
-import java.util.List;
+import java.util.List; 
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -16,7 +16,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
-import com.esummary.entity.chat.ChatRoom;
 import com.esummary.entity.user.UserInfo;
 
 import lombok.Data;
@@ -53,9 +52,6 @@ public class SubjectInfo {
 	private List<TaskInfo> taskList; //과제에 관한 정보
 	@OneToMany(mappedBy = "subjectInfo")
 	private List<NoticeInfo> noticeList; //공지사항에 관한 정보
-	
-	@OneToOne(mappedBy = "subject", cascade = CascadeType.ALL)
-	private ChatRoom chatRoom;
 	
 	public SubjectInfo(String subjectId, String subjectName, String subjectOwnerName, String openType) {
 		this.subjectId = subjectId;

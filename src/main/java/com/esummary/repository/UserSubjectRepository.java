@@ -32,4 +32,5 @@ public interface UserSubjectRepository extends JpaRepository<UserSubject, String
 	
 	boolean existsByUserInfo_StudentNumberAndSubjectInfo_SubjectId(String studentNumber, String subjectId);
 	
+	boolean deleteByUserInfo_StudentNumberAndSubjectInfo_SubjectId(String studentNumber, String subjectId);
 }

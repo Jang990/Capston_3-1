@@ -5,7 +5,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.esummary.chat.model.ChatMessageDTO;
+import com.esummary.chat.dto.ChatMessageDTO;
 
 import lombok.RequiredArgsConstructor;
 

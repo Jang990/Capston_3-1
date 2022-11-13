@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.esummary.entity.subject.SubjectInfo;
 import com.esummary.entity.user.UserInfo;
 
 @Entity
@@ -33,5 +34,5 @@ public class ChatMessage {
 	
 	@ManyToOne
 	@JoinColumn(name = "CHAT_ROOM_ID")
-	private ChatRoom chatRoom;
+	private SubjectInfo chatRoomSubject;
 }

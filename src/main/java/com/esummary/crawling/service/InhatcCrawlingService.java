@@ -1,15 +1,16 @@
 package com.esummary.crawling.service;
 
-import java.util.ArrayList; 
-import java.util.HashMap;
+import java.util.ArrayList;  
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 
 import com.esummary.auth.exception.DeniedElearningCookieException;
+import com.esummary.auth.exception.NotFoundMemberException;
+import com.esummary.chat.dto.ChatMsgForTestDTO;
+import com.esummary.chat.service.StompChatService;
 import com.esummary.crawling.dto.InhatcSubjectCardDTO;
 import com.esummary.crawling.dto.InhatcUserDTO;
 import com.esummary.crawling.dto.tofront.LectureWeekData;
@@ -27,7 +28,6 @@ import com.esummary.elearning.dao.notice.DBNoticeUtil;
 import com.esummary.elearning.dao.task.DBTaskUtil;
 import com.esummary.elearning.dao.user.DBUserLectureUtil;
 import com.esummary.elearning.dao.user.DBUserTaskUtil;
-import com.esummary.elearning.exdto.user.UserData;
 import com.esummary.entity.subject.LectureInfo;
 import com.esummary.entity.subject.NoticeInfo;
 import com.esummary.entity.subject.SubjectInfo;
@@ -37,12 +37,18 @@ import com.esummary.entity.user.UserInfo;
 import com.esummary.entity.user.UserLecture;
 import com.esummary.entity.user.UserSubject;
 import com.esummary.entity.user.UserTask;
+import com.esummary.repository.UserSubjectRepository;
+import com.esummary.repository.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class InhatcCrawlingService implements CrawlingService {
+	
+	private final UserSubjectRepository userSubjectRepository;
+	private final UserRepository userRepository;
+	private final StompChatService chatService;
 	
 	// crawlLoginPage 사용
 	private final SubjectCrawlingService subjectUtil;
@@ -75,8 +81,37 @@ public class InhatcCrawlingService implements CrawlingService {
 			 throw new DeniedElearningCookieException("만료된 이러닝 로그인 쿠키 or 이러닝 사이트 다운"); // 크롤링 실패
 		}
 		
+		// 채팅방 입장, 퇴장 구현
+		UserInfo userEntity = userRepository.findByStudentNumber(userDTO.getStudentId())
+				.orElseThrow(() -> new NotFoundMemberException("존재하는 사용자가 없습니다. ID: " + userDTO.getStudentId()));
+		
+		List<UserSubject> existUserSubject = userSubjectRepository.findByUserInfo_StudentNumber(userDTO.getStudentId());
+		
+		/*
+		1. 크롤링한게 없으나 DB에 있을 때 - Exit
+		2. 크롤링한게 있으나 DB에 없을 때 - Enter
+		3. 크롤링한게 있고 DB에도 있을 때 - Used - 놔두기
+		 */
+		List<String> crawlingList = basicSubjectData.stream().map(SubjectInfo::getSubjectId).toList(), 
+				dbList = existUserSubject.stream().map(UserSubject::getSubjectId).toList();
+		
+		// Enter 처리
+		crawlingList.forEach((subjectId) -> {
+			if(!dbList.contains(subjectId)) {
+				chatService.enterChatRoom(subjectId, userEntity.getNickname());
+			}
+		});
+		
+		
+		// Exit 처리 및 db에서 삭제
+		dbList.forEach((subjectId) -> {
+			if(!crawlingList.contains(subjectId)) {
+				chatService.exitChatRoom(subjectId, userEntity.getNickname());
+				userSubjectRepository.deleteByUserInfo_StudentNumberAndSubjectInfo_SubjectId(userEntity.getStudentNumber(), subjectId);
+			}
+		});
+
 		//UserSubject와 Subject 저장
-		UserInfo userEntity = InhatcUserDTO.toEntity(userDTO);
 		dbSubjectUtil.saveService(basicSubjectData);
 		List<UserSubject> usList = new ArrayList<UserSubject>();
 		for (SubjectInfo subjectInfo : basicSubjectData) {
@@ -84,6 +119,8 @@ public class InhatcCrawlingService implements CrawlingService {
 		}
 		dbUserSubjectUtil.saveService(usList);
 		
+		
+		//DTO로 변환
 		List<InhatcSubjectCardDTO> subjectCards = new ArrayList<>();
 		for (SubjectInfo subject : basicSubjectData) {
 			subjectCards.add(InhatcSubjectCardDTO.from(subject));
@@ -91,7 +128,7 @@ public class InhatcCrawlingService implements CrawlingService {
 		
 		return subjectCards;
 	}
-	
+
 	@Override
 	public List<TaskData> crawlTask(InhatcUserDTO user, String subjectId) {
 		//크롤링

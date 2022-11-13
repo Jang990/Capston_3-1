@@ -61,6 +61,7 @@ import lombok.ToString;
 })
 @Data
 @Entity
+/** 사용자가 가지고 있는 subject 확인 및 채팅방 입장여부 확인 */
 public class UserSubject {
 	
 	@Setter(AccessLevel.NONE)
