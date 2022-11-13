@@ -19,7 +19,7 @@ public class UserData {
 	public static UserInfo toEntity(UserData userData) {
 		return UserInfo.builder()
 				.studentNumber(userData.getStudentNumber())
-				.name(userData.getUserName())
+				.nickname(userData.getUserName())
 				.build();
 	}
 }

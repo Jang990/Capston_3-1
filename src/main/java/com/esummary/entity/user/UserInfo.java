@@ -70,7 +70,7 @@ public class UserInfo {
 	private List<SubjectInfo> subjectList;
 	
 	@Builder
-	protected UserInfo(String studentNumber, String password, String name, String nickname, Authority roles, List<SubjectInfo> subjectList, List<UserSubject> userSubjects) {
+	protected UserInfo(String studentNumber, String password, String nickname, Authority roles, List<SubjectInfo> subjectList, List<UserSubject> userSubjects) {
 		this.studentNumber = studentNumber;
 		this.password = password;
 		this.nickname = nickname;
