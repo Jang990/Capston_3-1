@@ -6,6 +6,10 @@ INSERT INTO inhatces.user_info
 (student_number, created_date, nickname, password, roles)
 VALUES('test2', '2022-10-25', 'Test사용자_2', '$2a$10$PweWceAD0RR6irQ3lnTP5.qwkyq46iCZqBCAE/owD6DUBbSV4k52S', 'USER');
 
+INSERT INTO inhatces.user_info
+(student_number, created_date, nickname, password, roles)
+VALUES('System', '2022-10-25', 'System', '$2a$10$PweWceAD0RR6irQ3lnTP5.qwkyq46iCZqBCAE/owD6DUBbSV4k52S', 'ADMIN');
+
 INSERT INTO inhatces.subject_info
 (subject_id, open_type, subject_name, subject_owner_name)
 VALUES('202224001LLA103', 'normal', '[1학년L반] 의사소통과대인관계능력', '전수진'),

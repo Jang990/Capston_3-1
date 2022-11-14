@@ -10,8 +10,18 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.esummary.auth.exception.NotFoundMemberException;
+import com.esummary.chat.dto.ChatMessageDTO;
 import com.esummary.chat.dto.ChatMsgForTestDTO;
+import com.esummary.entity.chat.ChatMessage;
+import com.esummary.entity.subject.SubjectInfo;
+import com.esummary.entity.user.UserInfo;
+import com.esummary.repository.UserSubjectRepository;
+import com.esummary.repository.chat.ChatMessageRepository;
+import com.esummary.repository.subject.SubjectInfoRepository;
+import com.esummary.repository.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +29,14 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class StompChatService {
 
 	private final SimpMessageSendingOperations sendingOperations;
+	private final ChatMessageRepository chatMessageRepository;
+	private final UserRepository userRepository;
+	private final SubjectInfoRepository subjectRepository;
+	private final UserSubjectRepository userSubjectRepository;
 	
     //채팅방 불러오기
     public List<ChatMsgForTestDTO> findAllRoom() {
@@ -43,31 +58,61 @@ public class StompChatService {
     }
     
     // 메시지 저장
-    public ChatMsgForTestDTO saveMessage() {
-    	return null;
+    public ChatMsgForTestDTO saveMessage(ChatMsgForTestDTO chatDTO) {
+    	UserInfo user = userRepository.findByStudentNumber(chatDTO.getUserName()).orElseThrow(
+    				() -> new NotFoundMemberException("학생을 찾을 수 없습니다. StudentNumber: " + chatDTO.getUserName())
+    			);
+    	SubjectInfo subject = subjectRepository.findBySubjectId(chatDTO.getSubjectId()).orElseThrow(
+    				() -> new IllegalArgumentException("과목을 찾을 수 없습니다. SubjectID: " + chatDTO.getSubjectId())
+    			);
+    	
+    	ChatMessage chat = ChatMessage.builder()
+    			.chatRoomSubject(subject).user(user).message(chatDTO.getContent()).build();
+    	
+    	chat = chatMessageRepository.save(chat);
+    	
+    	return ChatMsgForTestDTO.builder()
+    			.subjectId(subject.getSubjectId())
+    			.userName(user.getStudentNumber())
+    			.content(chat.getMessage())
+    			.build();
     }
     
     /** 
      * 채팅방 입장 메시지<br> 
      * 채팅방 입장은 크롤링했을 때 UserSubject 테이블에 사용자의 데이터가 없으면 입장 
      */
-    public boolean enterChatRoom(String roomId, String userNickname) {
+    public ChatMsgForTestDTO enterChatRoom(String roomId, String studentNumber) {
+    	UserInfo user = userRepository.findByStudentNumber(studentNumber).get();
+    	String message = user.getNickname() + "님이 입장하셨습니다.";
+    	ChatMsgForTestDTO msg = ChatMsgForTestDTO.builder()
+    			.userName("System").subjectId(roomId).content(message).build();
     	sendingOperations.convertAndSend(
 				"/topic/chat/room/" + roomId, 
-				new ChatMsgForTestDTO("System", userNickname + "님이 입장하셨습니다.")
+				msg
 			);
-    	return true;
+    	
+    	return saveMessage(msg);
     }
     
     /** 
      * 채팅방 퇴장 메시지<br> 
      * 채팅방 입장은 크롤링했을 때 UserSubject 테이블에 사용자 데이터가 있으나 크롤링 데이터가 없으면 퇴장 
      */
-    public boolean exitChatRoom(String roomId, String userNickname) {
+    public ChatMsgForTestDTO exitChatRoom(String roomId, String studentNumber) {
+    	UserInfo user = userRepository.findByStudentNumber(studentNumber).get();
+    	String message = user.getNickname() + "님이 퇴장하셨습니다.";
+    	ChatMsgForTestDTO msg = ChatMsgForTestDTO.builder()
+    			.userName("System").subjectId(roomId).content(message).build();
+    	
     	sendingOperations.convertAndSend(
 				"/topic/chat/room/" + roomId, 
-				new ChatMsgForTestDTO("System", userNickname + "님이 퇴장하셨습니다.")
+				msg
 			);
-    	return true;
+    	
+    	// 채팅방 나가기
+    	userSubjectRepository.deleteByUserInfo_StudentNumberAndSubjectInfo_SubjectId(studentNumber, roomId);
+    	
+    	return saveMessage(msg);
     }
 }

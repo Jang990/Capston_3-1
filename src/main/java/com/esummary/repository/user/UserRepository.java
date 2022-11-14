@@ -20,6 +20,8 @@ import net.bytebuddy.asm.Advice.This;
 public interface UserRepository extends CrudRepository<UserInfo, String>{
 	Optional<UserInfo> findByStudentNumber(String studentNumber);
 	Optional<UserInfo> findByStudentNumberAndNickname(String studentNumber, String nickname);
+	Optional<UserInfo> findByNickname(String nickname);
+	
 	boolean existsByStudentNumber(String studentNumber);
 	boolean existsByNickname(String nickname);
 

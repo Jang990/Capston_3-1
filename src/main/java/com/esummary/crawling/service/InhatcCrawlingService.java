@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.esummary.auth.exception.DeniedElearningCookieException;
 import com.esummary.auth.exception.NotFoundMemberException;
@@ -70,8 +71,8 @@ public class InhatcCrawlingService implements CrawlingService {
 	private final DBUserLectureUtil dbUserLectureUtil;
 	private final WeekCrawlingService weekUtil;
 	
-	
 	@Override
+	@Transactional
 	public List<InhatcSubjectCardDTO> crawlLoginPage(InhatcUserDTO userDTO) {
 		
 		//크롤링 정보 가져오기
@@ -96,18 +97,19 @@ public class InhatcCrawlingService implements CrawlingService {
 				dbList = existUserSubject.stream().map(UserSubject::getSubjectId).toList();
 		
 		// Enter 처리
+		List<String> enterList = new ArrayList<>();
 		crawlingList.forEach((subjectId) -> {
 			if(!dbList.contains(subjectId)) {
-				chatService.enterChatRoom(subjectId, userEntity.getNickname());
+				enterList.add(subjectId);
 			}
 		});
 		
 		
 		// Exit 처리 및 db에서 삭제
+		List<String> exitList = new ArrayList<>();
 		dbList.forEach((subjectId) -> {
 			if(!crawlingList.contains(subjectId)) {
-				chatService.exitChatRoom(subjectId, userEntity.getNickname());
-				userSubjectRepository.deleteByUserInfo_StudentNumberAndSubjectInfo_SubjectId(userEntity.getStudentNumber(), subjectId);
+				exitList.add(subjectId);
 			}
 		});
 
@@ -118,6 +120,17 @@ public class InhatcCrawlingService implements CrawlingService {
 			usList.add(new UserSubject(userEntity, subjectInfo));
 		}
 		dbUserSubjectUtil.saveService(usList);
+		
+		
+		// 입장처리
+		for (String subjectId : enterList) {
+			chatService.enterChatRoom(subjectId, userEntity.getStudentNumber());
+		}
+		
+		// 퇴장 처리
+		for (String subjectId : exitList) {
+			chatService.exitChatRoom(subjectId, userEntity.getStudentNumber());
+		}
 		
 		
 		//DTO로 변환
