@@ -2,7 +2,7 @@
   <div id="app">
     유저이름: 
     <input
-      v-model="userName"
+      v-model="sender"
       type="text"
     >
     내용: <input
@@ -14,8 +14,8 @@
       v-for="(item, idx) in recvList"
       :key="idx"
     >
-      <h3>유저이름: {{ item.userName }}</h3>
-      <h3>내용: {{ item.content }}</h3>
+      <h3>유저이름: {{ item.senderId }}</h3>
+      <h3>내용: {{ item.message }}</h3>
     </div>
   </div>
 </template>
@@ -31,7 +31,7 @@ export default {
   },
   data() {
     return {
-      userName: "",
+      sender: "",
       message: "",
       recvList: []
     }
@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     sendMessage (e) {
-      if(e.keyCode === 13 && this.userName !== '' && this.message !== ''){
+      if(e.keyCode === 13 && this.sender !== '' && this.message !== ''){
         this.send()
         this.message = ''
       }
@@ -51,9 +51,10 @@ export default {
       console.log("Send message:" + this.message);
       if (this.stompClient && this.stompClient.connected) {
         const msg = { 
-          roomId: this.roomId,
-          sender: this.userName,
-          message: this.message 
+          subjectId: this.roomId,
+          senderId: this.sender,
+          message: this.message,
+          createdTime: null
         };
         this.stompClient.send("/receive", JSON.stringify(msg), {});
       }

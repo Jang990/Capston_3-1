@@ -1,15 +1,14 @@
 package com.esummary.chat.controller;
 
-import org.springframework.messaging.handler.annotation.MessageMapping; 
-import org.springframework.messaging.handler.annotation.SendTo;
+import java.sql.Timestamp;
+
+import org.springframework.messaging.handler.annotation.MessageMapping;  
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.esummary.chat.dto.ChatMessageDTO;
-import com.esummary.chat.dto.ChatMsgForTestDTO;
+import com.esummary.chat.service.StompChatService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ChatRoomController {
 	private final SimpMessageSendingOperations sendingOperations;
+	private final StompChatService chatService;
 	
 	/*
 	 	/receive로 메시지가 들어오면
@@ -25,13 +25,14 @@ public class ChatRoomController {
 	 */
 	@MessageMapping("/receive")
 //	@SendTo("/topic/chat")
-	public void test(ChatMessageDTO message) { 
+	public void test(ChatMessageDTO message) {
 		sendingOperations.convertAndSend(
-				"/topic/chat/room/" + message.getRoomId(), 
-				new ChatMsgForTestDTO(message.getSender(), message.getMessage())
+				"/topic/chat/room/" + message.getSubjectId(), 
+				new ChatMessageDTO(message.getSenderId(), message.getMessage(), new Timestamp(System.currentTimeMillis()))
 			);
 		
 		// 채팅 내용 저장
+		chatService.saveMessage(message);
 	}
 	
 	@GetMapping("/api/chat/{subjectId}")

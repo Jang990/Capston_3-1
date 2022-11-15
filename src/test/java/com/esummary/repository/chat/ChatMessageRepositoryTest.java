@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.esummary.auth.entity.Authority;
-import com.esummary.chat.dto.ChatMsgForTestDTO;
+import com.esummary.chat.dto.ChatMessageDTO;
 import com.esummary.chat.service.StompChatService;
 import com.esummary.entity.chat.ChatMessage;
 import com.esummary.entity.subject.SubjectInfo;
@@ -101,7 +101,7 @@ class ChatMessageRepositoryTest {
 		chatService.exitChatRoom(subjectId, user1.getStudentNumber());
 		
 		Pageable pageable = PageRequest.of(0, 30);
-		List<ChatMsgForTestDTO> chats = chatMessageRepository.findChatMessage(subjectId, pageable);
+		List<ChatMessageDTO> chats = chatMessageRepository.findChatMessage(subjectId, pageable);
 		/*
 		for (ChatMsgForTestDTO chatMsgForTestDTO : chats) {
 			System.out.println("닉네임:"+ chatMsgForTestDTO.getUserName() + "\t내용: "+chatMsgForTestDTO.getContent() + "\t\t입력시간: " + chatMsgForTestDTO.getCreatedTime());

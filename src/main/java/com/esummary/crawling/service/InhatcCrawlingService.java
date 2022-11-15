@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.esummary.auth.exception.DeniedElearningCookieException;
 import com.esummary.auth.exception.NotFoundMemberException;
-import com.esummary.chat.dto.ChatMsgForTestDTO;
+import com.esummary.chat.dto.ChatMessageDTO;
 import com.esummary.chat.service.StompChatService;
 import com.esummary.crawling.dto.InhatcSubjectCardDTO;
 import com.esummary.crawling.dto.InhatcUserDTO;

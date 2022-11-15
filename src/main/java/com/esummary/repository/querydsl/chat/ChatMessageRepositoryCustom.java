@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 
-import com.esummary.chat.dto.ChatMsgForTestDTO;
+import com.esummary.chat.dto.ChatMessageDTO;
 
 public interface ChatMessageRepositoryCustom {
-	List<ChatMsgForTestDTO> findChatMessage(String subjectId, Pageable pageable);
+	List<ChatMessageDTO> findChatMessage(String subjectId, Pageable pageable);
 }
