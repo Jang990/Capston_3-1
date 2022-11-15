@@ -2,6 +2,8 @@ package com.esummary.chat.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,22 +35,10 @@ public class StompChatService {
 	private final UserSubjectRepository userSubjectRepository;
 	
     //채팅방 불러오기
-    public List<ChatMessageDTO> findAllRoom() {
-        //채팅방 최근 생성 순으로 반환
-//        List<ChatRoomDTO> result = new ArrayList<>(chatRooms.values());
-//        Collections.reverse(result);
-
-        return null;
-    }
-
-    //채팅방 하나 불러오기
-    public ChatMessageDTO findById(String roomId) {
-    	return null;
-    }
-
-    //채팅방 생성
-    public ChatMessageDTO createRoom(String name) {
-        return null;
+    public List<ChatMessageDTO> loadAllChatMessage(String subjectId) {
+    	List<ChatMessageDTO> chatList = chatMessageRepository.findChatMessage(subjectId, PageRequest.of(0, 30));
+    	System.out.println(chatList.size());
+        return chatList;
     }
     
     // 메시지 저장

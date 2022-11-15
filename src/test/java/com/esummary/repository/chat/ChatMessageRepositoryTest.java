@@ -96,15 +96,16 @@ class ChatMessageRepositoryTest {
 		chatService.enterChatRoom(subjectId, user1.getStudentNumber());
 		chatService.enterChatRoom(subjectId, user2.getStudentNumber());
 		
-//		createMsg(user1, user2, subject);
+		createMsg(user1, user2, subject);
 		
 		chatService.exitChatRoom(subjectId, user1.getStudentNumber());
 		
 		Pageable pageable = PageRequest.of(0, 30);
 		List<ChatMessageDTO> chats = chatMessageRepository.findChatMessage(subjectId, pageable);
+		
 		/*
-		for (ChatMsgForTestDTO chatMsgForTestDTO : chats) {
-			System.out.println("닉네임:"+ chatMsgForTestDTO.getUserName() + "\t내용: "+chatMsgForTestDTO.getContent() + "\t\t입력시간: " + chatMsgForTestDTO.getCreatedTime());
+		for (ChatMessageDTO chatMessageDTO : chats) {
+			System.out.println("닉네임:"+ chatMessageDTO.getSenderId() + "\t내용: "+chatMessageDTO.getMessage() + "\t\t입력시간: " + chatMessageDTO.getCreatedTime());
 		}
 		*/
 	}

@@ -1,10 +1,14 @@
 package com.esummary.chat.controller;
 
 import java.sql.Timestamp;
+import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;  
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.esummary.chat.dto.ChatMessageDTO;
@@ -37,13 +41,19 @@ public class ChatRoomController {
 	
 	@GetMapping("/api/chat/{subjectId}")
 	/** 채팅방 입장.(채팅 불러오기) */
-	public void enterChatRoom(ChatMessageDTO message) {
+	public ResponseEntity<List<ChatMessageDTO>> enterChatRoom(@PathVariable String subjectId) {
 		// 채팅 불러오기
+		List<ChatMessageDTO> chatList = chatService.loadAllChatMessage(subjectId);
+		
+		ResponseEntity<List<ChatMessageDTO>> response;
+		if(chatList.size() == 0) {
+			response = new ResponseEntity<>(chatList, HttpStatus.NO_CONTENT); 
+		}
+		else {
+			response = new ResponseEntity<>(chatList, HttpStatus.OK);
+		}
+		
+		return response;
 	}
 	
-	// 채팅방 DB 저장 및 불러오기 구현
-	// 
-	// 채팅방 입장 구현 - 끝
-	// 
-	// 퇴장 구현 - 끝
 }

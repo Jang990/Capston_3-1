@@ -23,6 +23,7 @@
 <script>
 import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
+import * as chatApi from '@/api/chat';
 
 export default {
   name: 'App',
@@ -37,10 +38,23 @@ export default {
     }
   },
   created() {
+    // 이전 채팅 내역을 불러옵니다.
+    this.loadPrevMessage();
+
     // App.vue가 생성되면 소켓 연결을 시도합니다.
     this.connect()
   },
   methods: {
+    async loadPrevMessage() {
+      const res = await chatApi.loadPrevMessage(this.roomId);
+      
+      console.log("여기");
+      console.log(res);
+      const objs = res.data;
+      for (let i = 0; i < objs.length; i++) {
+        this.recvList.push(objs[i]);
+      }
+    },
     sendMessage (e) {
       if(e.keyCode === 13 && this.sender !== '' && this.message !== ''){
         this.send()
