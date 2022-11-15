@@ -9,10 +9,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.esummary.auth.entity.Authority;
 import com.esummary.chat.dto.ChatMsgForTestDTO;
+import com.esummary.chat.service.StompChatService;
 import com.esummary.entity.chat.ChatMessage;
 import com.esummary.entity.subject.SubjectInfo;
 import com.esummary.entity.user.UserInfo;
+import com.esummary.entity.user.UserSubject;
+import com.esummary.repository.UserSubjectRepository;
 import com.esummary.repository.subject.SubjectInfoRepository;
 import com.esummary.repository.user.UserRepository;
 
@@ -25,6 +29,8 @@ class ChatMessageRepositoryTest {
 	private ChatMessageRepository chatMessageRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private StompChatService chatService;
 	
 	String subjectId = "CORS_220607110428f3327333";
 	
@@ -34,17 +40,22 @@ class ChatMessageRepositoryTest {
 	}
 	
 	UserInfo createUser1() {
-		UserInfo user = UserInfo.builder().nickname("테스트계정1").password("test").studentNumber("test001").build();
+		UserInfo user = UserInfo.builder().nickname("테스트계정1").password("test").studentNumber("test001").roles(Authority.USER).build();
 		return userRepository.save(user);
 	}
 	
 	UserInfo createUser2() {
-		UserInfo user = UserInfo.builder().nickname("계정테스트2").password("test").studentNumber("test002").build();
+		UserInfo user = UserInfo.builder().nickname("계정테스트2").password("test").studentNumber("test002").roles(Authority.USER).build();
 		return userRepository.save(user);
 	}
 	
+	UserInfo createAdmin() {
+		UserInfo admin = UserInfo.builder().nickname("System").password("test").studentNumber("System").roles(Authority.ADMIN).build();
+		return userRepository.save(admin);
+	}
+	
 	void createMsg(UserInfo user1, UserInfo user2, SubjectInfo subject) {
-		for(int i = 0; i < 100; i++) {
+		for(int i = 0; i < 10; i++) {
 			ChatMessage msg = ChatMessage.builder()
 					.user(user1)
 					.chatRoomSubject(subject)
@@ -72,23 +83,32 @@ class ChatMessageRepositoryTest {
 		}
 	}
 	
-	void craeteAll() {
-		SubjectInfo subject = createSubject();
-		UserInfo user1 = createUser1();
-		UserInfo user2 = createUser2();
-		createMsg(user1, user2, subject);
-	}
-	
 	@Test
 	@Transactional
 	void test() {
-		craeteAll();
+		// given
+		SubjectInfo subject = createSubject();
+		UserInfo user1 = createUser1();
+		UserInfo user2 = createUser2();
+		createAdmin();
+		
+		// when
+		chatService.enterChatRoom(subjectId, user1.getStudentNumber());
+		chatService.enterChatRoom(subjectId, user2.getStudentNumber());
+		
+//		createMsg(user1, user2, subject);
+		
+		chatService.exitChatRoom(subjectId, user1.getStudentNumber());
+		
 		Pageable pageable = PageRequest.of(0, 30);
 		List<ChatMsgForTestDTO> chats = chatMessageRepository.findChatMessage(subjectId, pageable);
-		
+		/*
 		for (ChatMsgForTestDTO chatMsgForTestDTO : chats) {
 			System.out.println("닉네임:"+ chatMsgForTestDTO.getUserName() + "\t내용: "+chatMsgForTestDTO.getContent() + "\t\t입력시간: " + chatMsgForTestDTO.getCreatedTime());
 		}
+		*/
 	}
+
+	
 	
 }

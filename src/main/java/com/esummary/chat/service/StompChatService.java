@@ -18,6 +18,7 @@ import com.esummary.chat.dto.ChatMsgForTestDTO;
 import com.esummary.entity.chat.ChatMessage;
 import com.esummary.entity.subject.SubjectInfo;
 import com.esummary.entity.user.UserInfo;
+import com.esummary.entity.user.UserSubject;
 import com.esummary.repository.UserSubjectRepository;
 import com.esummary.repository.chat.ChatMessageRepository;
 import com.esummary.repository.subject.SubjectInfoRepository;
@@ -84,13 +85,22 @@ public class StompChatService {
      */
     public ChatMsgForTestDTO enterChatRoom(String roomId, String studentNumber) {
     	UserInfo user = userRepository.findByStudentNumber(studentNumber).get();
+    	SubjectInfo subject = subjectRepository.findBySubjectId(roomId).orElseThrow(
+				() -> new IllegalArgumentException("과목을 찾을 수 없습니다. SubjectID: " + roomId)
+			);
+    	
     	String message = user.getNickname() + "님이 입장하셨습니다.";
     	ChatMsgForTestDTO msg = ChatMsgForTestDTO.builder()
     			.userName("System").subjectId(roomId).content(message).build();
-    	sendingOperations.convertAndSend(
-				"/topic/chat/room/" + roomId, 
-				msg
-			);
+    	sendingOperations.convertAndSend("/topic/chat/room/" + roomId, msg);
+    	
+    	// 채팅방 입장
+    	if(userSubjectRepository.findBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(roomId, studentNumber).isPresent()) {
+    		throw new IllegalArgumentException("이미 채팅방에 입장해있습니다. \n"
+    											+ "SubjectId: " + roomId + "\t StudentId: " + studentNumber);
+    	}
+    	UserSubject us = new UserSubject(user, subject);
+    	us = userSubjectRepository.save(us);
     	
     	return saveMessage(msg);
     }
@@ -105,13 +115,15 @@ public class StompChatService {
     	ChatMsgForTestDTO msg = ChatMsgForTestDTO.builder()
     			.userName("System").subjectId(roomId).content(message).build();
     	
-    	sendingOperations.convertAndSend(
-				"/topic/chat/room/" + roomId, 
-				msg
-			);
+    	sendingOperations.convertAndSend("/topic/chat/room/" + roomId, msg);
     	
     	// 채팅방 나가기
-    	userSubjectRepository.deleteByUserInfo_StudentNumberAndSubjectInfo_SubjectId(studentNumber, roomId);
+    	UserSubject exitRoom = userSubjectRepository.findBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(roomId, studentNumber)
+    			.orElseThrow(() -> new IllegalArgumentException("채팅방에 입장해있지 않습니다. \n"
+    															+ "SubjectId: " + roomId + "\t StudentId: " + studentNumber));
+    	userSubjectRepository.delete(exitRoom);
+//    	userSubjectRepository.deleteByUserInfo_StudentNumberAndSubjectInfo_SubjectId(studentNumber, roomId); // 오류남
+    	
     	
     	return saveMessage(msg);
     }
