@@ -16,7 +16,7 @@
     <v-divider class="mx-4"></v-divider>
     <lecture-summary-component></lecture-summary-component>
     
-    <v-divider class="mx-4"></v-divider>
+    <!-- <v-divider class="mx-4"></v-divider>
 
     <v-card-actions>
       <v-btn
@@ -26,7 +26,7 @@
       >
         세부사항
       </v-btn>
-    </v-card-actions>
+    </v-card-actions> -->
   </v-card>
 </template>
 

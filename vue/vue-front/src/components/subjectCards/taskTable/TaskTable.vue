@@ -83,7 +83,7 @@ export default {
             class: "blue lighten-5",
             //primary
           },
-          { text: '잔여일', value: 'endDate', width: '20%', class: "blue lighten-5"},
+          { text: '마감일', value: 'endDate', width: '20%', class: "blue lighten-5"},
           { text: '제출/총원', value: 'submittedState', width: '25%', class: "blue lighten-5"},
           { text: '', value: 'data-table-expand', width:'5%', class: "blue lighten-5" },
           // { text: '내용', value: 'description' },

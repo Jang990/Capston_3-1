@@ -55,7 +55,7 @@
         <v-icon v-if="item.status == '1'"  color="green accent-3">mdi-check-bold</v-icon>
         <v-icon v-else color="red darken-1">mdi-video-off-outline</v-icon>
       </template>
-      <template v-slot:[`item.lectureVideoId`]="{ item }">
+      <!-- <template v-slot:[`item.lectureVideoId`]="{ item }">
           <v-btn
             color="primary"
             dark
@@ -64,8 +64,7 @@
           >
             학습하기{{item.status}}
           </v-btn>
-          <!--  -->
-      </template>
+      </template> -->
     </v-data-table>
 </template>
 
@@ -90,7 +89,7 @@ export default {
             //primary
           },
           { text: '잔여시간', value: 'learningState', width: '35%', class: "blue lighten-5"},
-          { text: '학습하기', value: 'lectureVideoId', width:'15%', class: "blue lighten-5" },
+          // { text: '학습하기', value: 'lectureVideoId', width:'15%', class: "blue lighten-5" },
           
           // { text: '내용', value: 'description' },
       ],

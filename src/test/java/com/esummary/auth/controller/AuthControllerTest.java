@@ -22,8 +22,4 @@ class AuthControllerTest {
 		authController.authorize(login);
 	}
 
-//	@Test
-	void testSignup() {
-	}
-
 }

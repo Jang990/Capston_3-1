@@ -115,11 +115,11 @@ public class InhatcCrawlingService implements CrawlingService {
 
 		//UserSubject와 Subject 저장
 		dbSubjectUtil.saveService(basicSubjectData);
-		List<UserSubject> usList = new ArrayList<UserSubject>();
-		for (SubjectInfo subjectInfo : basicSubjectData) {
-			usList.add(new UserSubject(userEntity, subjectInfo));
-		}
-		dbUserSubjectUtil.saveService(usList);
+//		List<UserSubject> usList = new ArrayList<UserSubject>();
+//		for (SubjectInfo subjectInfo : basicSubjectData) {
+//			usList.add(new UserSubject(userEntity, subjectInfo));
+//		}
+//		dbUserSubjectUtil.saveService(usList);
 		
 		
 		// 입장처리

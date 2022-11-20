@@ -72,16 +72,17 @@ public class StompChatService {
 				() -> new IllegalArgumentException("과목을 찾을 수 없습니다. SubjectID: " + roomId)
 			);
     	
-    	String message = user.getNickname() + "님이 입장하셨습니다.";
-    	ChatMessageDTO msg = ChatMessageDTO.builder()
-    			.senderId("System").subjectId(roomId).message(message).build();
-    	sendingOperations.convertAndSend("/topic/chat/room/" + roomId, msg);
-    	
     	// 채팅방 입장
     	if(userSubjectRepository.findBySubjectInfo_SubjectIdAndUserInfo_StudentNumber(roomId, studentNumber).isPresent()) {
     		throw new IllegalArgumentException("이미 채팅방에 입장해있습니다. \n"
     											+ "SubjectId: " + roomId + "\t StudentId: " + studentNumber);
     	}
+    	
+    	String message = user.getNickname() + "님이 입장하셨습니다.";
+    	ChatMessageDTO msg = ChatMessageDTO.builder()
+    			.senderId("System").subjectId(roomId).message(message).build();
+    	sendingOperations.convertAndSend("/topic/chat/room/" + roomId, msg);
+    	
     	UserSubject us = new UserSubject(user, subject);
     	us = userSubjectRepository.save(us);
     	

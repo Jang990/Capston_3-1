@@ -13,7 +13,7 @@
         {{showDescription()}}
       </div>
     </v-card-text>
-    <v-card-actions>
+    <!-- <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn
         color="primary"
@@ -23,7 +23,7 @@
       >
         과제 페이지로 이동
       </v-btn>
-    </v-card-actions>
+    </v-card-actions> -->
 
   </v-card>
 </template>

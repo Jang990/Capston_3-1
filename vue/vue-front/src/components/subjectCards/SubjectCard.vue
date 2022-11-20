@@ -125,7 +125,7 @@
             text
             @click="show = !show"
           >
-            요약 조회<v-icon> {{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+            채팅방
           </v-btn>
         </v-card-actions>
 

@@ -6,14 +6,14 @@
         <v-progress-linear color="deep-purple" height="10" :indeterminate="loading" :active="loading"></v-progress-linear>
         <v-card-text>
             <v-form>
-                <v-text-field v-model="id" prepend-icon="mdi-account" name="login" label="Login" type="text"></v-text-field>
+                <v-text-field v-model="id" prepend-icon="mdi-account" name="login" label="ID" type="text"></v-text-field>
                 <v-text-field v-model="password" id="password" prepend-icon="mdi-lock" name="password" label="Password"
                     type="password"></v-text-field>
             </v-form>
         </v-card-text>
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" to="/" @click="clickTest">Test</v-btn>
+            <!-- <v-btn color="primary" to="/" @click="clickTest">Test</v-btn> -->
             <v-btn color="warning" to="/" @click="clickSignUp">Sign Up</v-btn>
             <v-btn color="primary" to="/" @click="checkLog">Login</v-btn>
         </v-card-actions>
