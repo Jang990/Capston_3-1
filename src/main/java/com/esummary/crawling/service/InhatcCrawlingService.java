@@ -3,6 +3,7 @@ package com.esummary.crawling.service;
 import java.util.ArrayList;  
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
@@ -93,8 +94,8 @@ public class InhatcCrawlingService implements CrawlingService {
 		2. 크롤링한게 있으나 DB에 없을 때 - Enter
 		3. 크롤링한게 있고 DB에도 있을 때 - Used - 놔두기
 		 */
-		List<String> crawlingList = basicSubjectData.stream().map(SubjectInfo::getSubjectId).toList(), 
-				dbList = existUserSubject.stream().map(UserSubject::getSubjectId).toList();
+		List<String> crawlingList = basicSubjectData.stream().map(SubjectInfo::getSubjectId).collect(Collectors.toList()), 
+				dbList = existUserSubject.stream().map(UserSubject::getSubjectId).collect(Collectors.toList());
 		
 		// Enter 처리
 		List<String> enterList = new ArrayList<>();

@@ -1,17 +1,17 @@
 -- 비밀번호: testtest
-INSERT INTO inhatces.user_info
+INSERT INTO InhaTcES.user_info
 (student_number, created_date, nickname, password, roles)
 VALUES('test1', '2022-10-25', 'T사용자', '$2a$10$osYVSBZxrlGbUkuO5QnlCuauRfw0psizBZDjzoml67sEGP1kA7xoy', 'USER');
 
-INSERT INTO inhatces.user_info
+INSERT INTO InhaTcES.user_info
 (student_number, created_date, nickname, password, roles)
 VALUES('test2', '2022-10-25', 'T사용자_2', '$2a$10$osYVSBZxrlGbUkuO5QnlCuauRfw0psizBZDjzoml67sEGP1kA7xoy', 'USER'); 
 
-INSERT INTO inhatces.user_info
+INSERT INTO InhaTcES.user_info
 (student_number, created_date, nickname, password, roles)
 VALUES('System', '2022-10-25', 'System', '$2a$10$Qc6yykzChy8MtRrOujvNxe2t0wz5g9LrlBvp2CwnFZVE948YDtKvy', 'ADMIN');
 
-INSERT INTO inhatces.subject_info
+INSERT INTO InhaTcES.subject_info
 (subject_id, open_type, subject_name, subject_owner_name)
 VALUES('202224001LLA103', 'normal', '[1학년L반] 의사소통과대인관계능력', '전수진'),
 ('202224001LLA106', 'normal', '[1학년L반] 문제해결과기술능력', '김동식'),
@@ -25,7 +25,7 @@ VALUES('202224001LLA103', 'normal', '[1학년L반] 의사소통과대인관계�
 ('CORS_220607110428f3327333', 'normal', '재학생폭력예방교육(필수)', '류정선');
 
 
-INSERT INTO inhatces.user_subject
+INSERT INTO InhaTcES.user_subject
 (subject_id, student_number)
 VALUES
 ('CORS_1703071437557d610794', 'test1'),
