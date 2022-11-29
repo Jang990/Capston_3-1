@@ -84,7 +84,7 @@ class ChatMessageRepositoryTest {
 	}
 	
 //	@Test
-	@Transactional
+//	@Transactional
 	void test() {
 		// given
 		SubjectInfo subject = createSubject();

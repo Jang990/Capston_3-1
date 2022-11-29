@@ -108,7 +108,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #app {
   padding: 15px;
   margin-top: 15px;

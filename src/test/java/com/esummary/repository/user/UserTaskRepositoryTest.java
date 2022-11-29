@@ -25,11 +25,11 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 //@SpringBootTest
 class UserTaskRepositoryTest {
 
-	@Autowired
+//	@Autowired
 	private UserSubjectRepository repository;
 	
 //	@Test
-	@DisplayName("lecture 정보 가져오기 테스트")
+//	@DisplayName("lecture 정보 가져오기 테스트")
 	void testQueryDSL1() {
 		//	weekInfo테이블에서 subjectId에 해당하는 정보를 뽑아내고 그 정보에서 lectureInfo테이블 정보를 가져오기
 		String subjectId = "202224001LLA103";
@@ -43,7 +43,7 @@ class UserTaskRepositoryTest {
 		
 	}
 //	@Test
-	@DisplayName("exists 테스트")
+//	@DisplayName("exists 테스트")
 	void test() {
 		//	weekInfo테이블에서 subjectId에 해당하는 정보를 뽑아내고 그 정보에서 lectureInfo테이블 정보를 가져오기
 		String subjectId = "202224001LLA103";
@@ -54,7 +54,7 @@ class UserTaskRepositoryTest {
 	}
 	
 //	@Test
-	@DisplayName("이전 Task 정보 가져오기")
+//	@DisplayName("이전 Task 정보 가져오기")
 	void task() {
 		String subjectId = "202224043QMP910";
 		String studentId = "201845096";
@@ -78,7 +78,7 @@ class UserTaskRepositoryTest {
 	}
 	
 //	@Test
-	@DisplayName("Task 정보 가져오기")
+//	@DisplayName("Task 정보 가져오기")
 	void taskNow() {
 		String subjectId = "202224043QMP910";
 		String studentId = "201845096";

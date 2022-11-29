@@ -20,7 +20,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
-@SpringBootTest
+//@SpringBootTest
 class EsummaryApplicationTests {
 	
 	@Autowired
@@ -52,7 +52,7 @@ class EsummaryApplicationTests {
 	}
 	
 	
-	@Test
+//	@Test
 	public void CrawlWeekAndLecture() {
 		String studentNumber = "201845096";
 		String password = "..."; //비밀번호로 변경할 것
@@ -68,7 +68,7 @@ class EsummaryApplicationTests {
 	}
 	
 	
-	@Test
+//	@Test
 	public void testToken() {
 		String secret = "c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK";
     	Key key;

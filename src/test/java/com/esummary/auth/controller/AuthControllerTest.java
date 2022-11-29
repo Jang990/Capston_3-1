@@ -27,7 +27,7 @@ class AuthControllerTest {
 	@Autowired
 	BCryptPasswordEncoder password;
 	
-	@Test
+//	@Test
 	void testAuthorize() {
 //		String id = "201845096";
 //		String pw = "...";
@@ -35,7 +35,7 @@ class AuthControllerTest {
 //		authController.authorize(login);
 	}
 	
-	@Test
+//	@Test
 	void test() {
 		System.out.println(password.encode("testtest"));
 	}
