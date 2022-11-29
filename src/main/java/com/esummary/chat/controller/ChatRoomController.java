@@ -30,9 +30,10 @@ public class ChatRoomController {
 	@MessageMapping("/receive")
 //	@SendTo("/topic/chat")
 	public void test(ChatMessageDTO message) {
+		System.out.println("여기"+message);
 		sendingOperations.convertAndSend(
 				"/topic/chat/room/" + message.getSubjectId(), 
-				new ChatMessageDTO(message.getSenderId(), message.getMessage(), new Timestamp(System.currentTimeMillis()))
+				new ChatMessageDTO(message.getNickname(), message.getMessage(), new Timestamp(System.currentTimeMillis()))
 			);
 		
 		// 채팅 내용 저장

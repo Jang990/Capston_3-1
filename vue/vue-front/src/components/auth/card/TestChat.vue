@@ -1,10 +1,5 @@
 <template>
   <div id="app">
-    유저이름: 
-    <input
-      v-model="sender"
-      type="text"
-    >
     내용: <input
       v-model="message"
       type="text"
@@ -14,8 +9,10 @@
       v-for="(item, idx) in recvList"
       :key="idx"
     >
-      <h3>유저이름: {{ item.senderId }}</h3>
-      <h3>내용: {{ item.message }}</h3>
+      <div class="message">
+        <h3>유저이름: {{ item.senderId }}</h3>
+        <h3>내용: {{ item.message }}</h3>
+      </div>
     </div>
   </div>
 </template>
@@ -24,15 +21,21 @@
 import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
 import * as chatApi from '@/api/chat';
+import { mapState } from 'vuex';
+import {User_getStudentId, User_showNickname} from '@/store/store'
 
 export default {
   name: 'App',
   props:{
     roomId: String,
   },
+  computed: {
+    ...mapState({
+      studentNumber: User_getStudentId,
+    }),
+  },
   data() {
     return {
-      sender: "",
       message: "",
       recvList: []
     }
@@ -47,16 +50,15 @@ export default {
   methods: {
     async loadPrevMessage() {
       const res = await chatApi.loadPrevMessage(this.roomId);
-      
-      console.log("여기");
-      console.log(res);
+      //여기에 닉네임 넣어야함
       const objs = res.data;
+      console.log(objs);
       for (let i = 0; i < objs.length; i++) {
         this.recvList.push(objs[i]);
       }
     },
     sendMessage (e) {
-      if(e.keyCode === 13 && this.sender !== '' && this.message !== ''){
+      if(e.keyCode === 13 && this.message !== ''){
         this.send()
         this.message = ''
       }
@@ -66,7 +68,8 @@ export default {
       if (this.stompClient && this.stompClient.connected) {
         const msg = { 
           subjectId: this.roomId,
-          senderId: this.sender,
+          nickname: this.$store.state.user.nickname,
+          senderId: this.$store.state.user.studentId,
           message: this.message,
           createdTime: null
         };
@@ -106,4 +109,13 @@ export default {
 </script>
 
 <style>
+#app {
+  padding: 15px;
+  margin-top: 15px;
+  margin-bottom: 0;
+}
+.message{
+  margin-top: 7px;
+  margin-bottom: 7px;
+}
 </style>

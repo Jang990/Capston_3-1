@@ -122,8 +122,9 @@
           <v-spacer></v-spacer> 
           <!-- spacer뒤에 btn을 하면 오른쪽아래 아이콘처럼 작게 붙힌다. -->
           <v-btn
+            :value="4"
             text
-            @click="show = !show"
+            @click="clickChat"
           >
             채팅방
           </v-btn>
@@ -203,6 +204,10 @@
             >
             </task-table>
           </div>
+          <div v-else-if="showChat">
+            <v-divider></v-divider>
+            <test-chat :roomId="subjectCardData[index].subjectId"></test-chat>
+          </div>
         </v-expand-transition>
       </v-card>
   </v-container>
@@ -216,6 +221,7 @@ import LectureTable from "./lectureTable/LectureTable"
 import { mapState } from 'vuex';
 
 import * as subjectApi from '@/api/subject';
+import TestChat from '@/components/auth/card/TestChat.vue';
 
 const mainAxios = axios.create({baseURL: 'http://localhost:8080'});
 const delayTime = 350;
@@ -223,10 +229,11 @@ let timeouts = [];
 const lectureNum = 0;
 const noticeNum = 1;
 const taskNum = 2;
+const chatNum = 3;
 
 export default {
   name: 'SubjectCard',
-  components: {LectureTable, NoticeTable, TaskTable},
+  components: {LectureTable, NoticeTable, TaskTable, TestChat},
   computed: {
     ...mapState({
       subjectCardData: state=> state.subjectCardData,
@@ -242,6 +249,7 @@ export default {
       showLectureWeek: false,
       showNotice: false,
       showTask: false,
+      showChat: false,
       isLectureSearch: true,
       isNoticeSearch: true,
       isTaskSearch: true,
@@ -321,39 +329,55 @@ export default {
       
     },
     clickLecture() {
-      if(this.showNotice || this.showTask) {
+      if(this.showNotice || this.showTask || this.showChat) {
           timeouts[lectureNum] = setTimeout(()=>{
               this.showLectureWeek = !this.showLectureWeek; //일단 하나만 보여주고 나중에 과제랑 학습을 같이보여주거나 이렇게 만들자.
           }, delayTime);
           this.showNotice = false;
           this.showTask = false;
+          this.showChat = false;
         }
         else {
           this.showLectureWeek = !this.showLectureWeek;
         }
     },
     clickNotice() {
-      if(this.showLectureWeek || this.showTask) {
+      if(this.showLectureWeek || this.showTask || this.showChat) {
         timeouts[noticeNum] = setTimeout(()=>{
           this.showNotice = !this.showNotice;
         }, delayTime);
         this.showLectureWeek = false;
         this.showTask = false;
+        this.showChat = false;
       }
       else {
         this.showNotice = !this.showNotice;
       }
     },
     clickTask() {
-      if(this.showNotice || this.showLectureWeek) {
+      if(this.showNotice || this.showLectureWeek || this.showChat) {
           timeouts[taskNum] = setTimeout(()=>{
             this.showTask = !this.showTask;
           }, delayTime);
           this.showNotice = false;
           this.showLectureWeek = false; 
+          this.showChat = false;
       }
       else {
         this.showTask = !this.showTask;
+      }
+    },
+    clickChat() {
+      if(this.showNotice || this.showLectureWeek || this.showTask) {
+          timeouts[chatNum] = setTimeout(()=>{
+            this.showChat = !this.showChat;
+          }, delayTime);
+          this.showNotice = false;
+          this.showLectureWeek = false; 
+          this.showTask = false;
+      }
+      else {
+        this.showChat = !this.showChat;
       }
     },
   },

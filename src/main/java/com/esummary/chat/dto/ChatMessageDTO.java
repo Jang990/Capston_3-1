@@ -12,6 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 public class ChatMessageDTO {
 	private String senderId;
+	private String nickname;
 	private String message;
 	private String subjectId;
 	private Timestamp createdTime;
@@ -22,10 +23,11 @@ public class ChatMessageDTO {
 	}
 	
 	@Builder
-	public ChatMessageDTO(String subjectId, String senderId, String message) {
+	public ChatMessageDTO(String subjectId, String senderId, String message, String nickname) {
 		this.subjectId = subjectId;
 		this.senderId = senderId;
 		this.message = message;
+		this.nickname = nickname;
 	}
 	
 	@QueryProjection

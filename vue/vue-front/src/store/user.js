@@ -16,7 +16,12 @@ export default {
         }
     },
     actions: {
-
+        showStudentId(state) {
+            return state.studentId;
+        },
+        showNickname(state) {
+            return state.nickname;
+        },
     },
     getters: {
 

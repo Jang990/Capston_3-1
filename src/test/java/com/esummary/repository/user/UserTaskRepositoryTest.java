@@ -22,13 +22,13 @@ import com.esummary.entity.user.UserTask;
 import com.esummary.repository.UserSubjectRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
-@SpringBootTest
+//@SpringBootTest
 class UserTaskRepositoryTest {
 
 	@Autowired
 	private UserSubjectRepository repository;
 	
-	@Test
+//	@Test
 	@DisplayName("lecture 정보 가져오기 테스트")
 	void testQueryDSL1() {
 		//	weekInfo테이블에서 subjectId에 해당하는 정보를 뽑아내고 그 정보에서 lectureInfo테이블 정보를 가져오기
@@ -42,7 +42,7 @@ class UserTaskRepositoryTest {
 		System.out.println("안녕");
 		
 	}
-	@Test
+//	@Test
 	@DisplayName("exists 테스트")
 	void test() {
 		//	weekInfo테이블에서 subjectId에 해당하는 정보를 뽑아내고 그 정보에서 lectureInfo테이블 정보를 가져오기
@@ -53,7 +53,7 @@ class UserTaskRepositoryTest {
 		
 	}
 	
-	@Test
+//	@Test
 	@DisplayName("이전 Task 정보 가져오기")
 	void task() {
 		String subjectId = "202224043QMP910";
@@ -77,7 +77,7 @@ class UserTaskRepositoryTest {
 		System.out.println("끝");
 	}
 	
-	@Test
+//	@Test
 	@DisplayName("Task 정보 가져오기")
 	void taskNow() {
 		String subjectId = "202224043QMP910";

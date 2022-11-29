@@ -44,6 +44,7 @@ public class AuthController {
     // 로그인 API
     @PostMapping("/authenticate")
     public ResponseEntity<JwtTokenDTO> authorize(@Valid @RequestBody LoginDTO loginDto) {
+    	System.out.println(loginDto);
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getStudentId(), loginDto.getPassword());
         

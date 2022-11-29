@@ -1,14 +1,15 @@
+-- 비밀번호: testtest
 INSERT INTO inhatces.user_info
 (student_number, created_date, nickname, password, roles)
-VALUES('test1', '2022-10-25', 'Test사용자_1', '$2a$10$PweWceAD0RR6irQ3lnTP5.qwkyq46iCZqBCAE/owD6DUBbSV4k52S', 'USER');
+VALUES('test1', '2022-10-25', 'T사용자', '$2a$10$osYVSBZxrlGbUkuO5QnlCuauRfw0psizBZDjzoml67sEGP1kA7xoy', 'USER');
 
 INSERT INTO inhatces.user_info
 (student_number, created_date, nickname, password, roles)
-VALUES('test2', '2022-10-25', 'Test사용자_2', '$2a$10$PweWceAD0RR6irQ3lnTP5.qwkyq46iCZqBCAE/owD6DUBbSV4k52S', 'USER');
+VALUES('test2', '2022-10-25', 'T사용자_2', '$2a$10$osYVSBZxrlGbUkuO5QnlCuauRfw0psizBZDjzoml67sEGP1kA7xoy', 'USER'); 
 
 INSERT INTO inhatces.user_info
 (student_number, created_date, nickname, password, roles)
-VALUES('System', '2022-10-25', 'System', '$2a$10$PweWceAD0RR6irQ3lnTP5.qwkyq46iCZqBCAE/owD6DUBbSV4k52S', 'ADMIN');
+VALUES('System', '2022-10-25', 'System', '$2a$10$Qc6yykzChy8MtRrOujvNxe2t0wz5g9LrlBvp2CwnFZVE948YDtKvy', 'ADMIN');
 
 INSERT INTO inhatces.subject_info
 (subject_id, open_type, subject_name, subject_owner_name)

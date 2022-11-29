@@ -7,6 +7,9 @@ export const Auth_setToken = 'auth/setToken';
 
 export const User_setUserInfo = 'user/setUserInfo';
 export const User_setStudentId = 'user/setStudentId';
+export const User_getStudentId = 'user/showStudentId';
+export const User_showNickname = 'user/showNickname';
+
 
 export const Popup_showSignUpSuccess = 'popup/showSuccess'; // signup 성공 팝업 띄우기
 export const Popup_closedSignup = 'popup/closedSignup'; // signup 성공 팝업 닫기
@@ -19,6 +22,7 @@ export const SET_LOGIN_FLAG = 'SET_LOGIN_FLAG'; // 로그인 - 회원가입 화�
 export const LOGIN_CHECK_AND_CALCULATE_TO_DO_NUMBER = 'LoginCheckANDcalculateToDoNumber'; // 사용자 프로필 정보 최신화(미제출 과제, 제출한 과제 개수 등등) - 프로필 mounted에서 진행
 
 export const SET_INITIAL_DATA = 'SET_INITIAL_DATA'; // subjectCard 형식 초기화 및 교수, 과목이름 데이터 삽입
+export const SET_STUDENT_ID = 'SET_STUDENT_ID'; // 사용자 ID 설정
 export const CRAWL_SUBJECT = 'crawlSubject'; // 사용자 과목 크롤링
 export const SET_CRAWL_NOTICE_DATA = 'SET_CRAWL_NOTICE_DATA'; // 크롤링한 공지 데이터 세팅
 export const SET_CRAWL_TASK_DATA = 'SET_CRAWL_TASK_DATA'; // 크롤링한 과제 데이터 세팅
@@ -83,6 +87,9 @@ export default new Vuex.Store({
         },
         [SET_LOGIN_CHECK](state, loginCheck) {
             state.loginCheck = loginCheck;
+        },
+        [SET_STUDENT_ID](state, studentId) {
+            state.studentNumber = studentId;
         },
         //subject.js로 이전 준비 완료
         [SET_INITIAL_DATA](state, {subjectCardData: cardData /*studentName: name, studentNumber: number*/}) {

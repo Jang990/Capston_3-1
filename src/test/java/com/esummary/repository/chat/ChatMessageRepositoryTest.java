@@ -20,7 +20,7 @@ import com.esummary.repository.UserSubjectRepository;
 import com.esummary.repository.subject.SubjectInfoRepository;
 import com.esummary.repository.user.UserRepository;
 
-@SpringBootTest
+//@SpringBootTest
 class ChatMessageRepositoryTest {
 	
 	@Autowired
@@ -83,7 +83,7 @@ class ChatMessageRepositoryTest {
 		}
 	}
 	
-	@Test
+//	@Test
 	@Transactional
 	void test() {
 		// given

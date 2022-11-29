@@ -1,6 +1,6 @@
 import http from './http';
 import store from '@/store/store';
-import { Auth_setToken, SET_LOGIN_CHECK, User_setStudentId } from '../store/store';
+import { Auth_setToken, SET_LOGIN_CHECK, User_setStudentId, SET_STUDENT_ID } from '../store/store';
 
 // 로그인 api
 export async function login(studentId, password) {
@@ -15,6 +15,7 @@ export async function login(studentId, password) {
         // auth에 setToken을 실행한다.
         store.commit(Auth_setToken, response.data.token);
         store.commit(User_setStudentId, studentId);
+        store.commit(SET_STUDENT_ID, studentId);
 
         // 로그인 체크 flag를 true로 바꿈 -> 메인페이지로 이동
         store.commit(SET_LOGIN_CHECK, true);
