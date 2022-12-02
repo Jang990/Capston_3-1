@@ -206,7 +206,8 @@
           </div>
           <div v-else-if="showChat">
             <v-divider></v-divider>
-            <test-chat :roomId="subjectCardData[index].subjectId"></test-chat>
+            <!-- <test-chat :roomId="subjectCardData[index].subjectId"></test-chat> -->
+            <chat :roomId="subjectCardData[index].subjectId"></chat>
           </div>
         </v-expand-transition>
       </v-card>
@@ -222,6 +223,7 @@ import { mapState } from 'vuex';
 
 import * as subjectApi from '@/api/subject';
 import TestChat from '@/components/auth/card/TestChat.vue';
+import Chat from '../Chat/Chat.vue'
 
 const mainAxios = axios.create({baseURL: 'http://localhost:8080'});
 const delayTime = 350;
@@ -233,7 +235,7 @@ const chatNum = 3;
 
 export default {
   name: 'SubjectCard',
-  components: {LectureTable, NoticeTable, TaskTable, TestChat},
+  components: {LectureTable, NoticeTable, TaskTable, TestChat, Chat},
   computed: {
     ...mapState({
       subjectCardData: state=> state.subjectCardData,

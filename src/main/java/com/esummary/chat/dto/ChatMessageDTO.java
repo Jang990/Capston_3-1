@@ -31,8 +31,8 @@ public class ChatMessageDTO {
 	}
 	
 	@QueryProjection
-	public ChatMessageDTO(String userName, String content, Timestamp createdTime) {
-		this.senderId = userName;
+	public ChatMessageDTO(String nickname, String content, Timestamp createdTime) {
+		this.nickname = nickname;
 		this.message = content;
 		this.createdTime = createdTime;
 	}

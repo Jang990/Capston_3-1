@@ -24,6 +24,8 @@ export default {
         },
     },
     getters: {
-
+        getNickname(state) {
+            return state.nickname;
+        }
     },
 }

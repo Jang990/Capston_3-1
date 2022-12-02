@@ -80,7 +80,7 @@ public class StompChatService {
     	
     	String message = user.getNickname() + "님이 입장하셨습니다.";
     	ChatMessageDTO msg = ChatMessageDTO.builder()
-    			.senderId("System").subjectId(roomId).message(message).build();
+    			.senderId("System").nickname("System").subjectId(roomId).message(message).build();
     	sendingOperations.convertAndSend("/topic/chat/room/" + roomId, msg);
     	
     	UserSubject us = new UserSubject(user, subject);
@@ -106,7 +106,7 @@ public class StompChatService {
     			.orElseThrow(() -> new IllegalArgumentException("채팅방에 입장해있지 않습니다. \n"
     															+ "SubjectId: " + roomId + "\t StudentId: " + studentNumber));
     	userSubjectRepository.delete(exitRoom);
-//    	userSubjectRepository.deleteByUserInfo_StudentNumberAndSubjectInfo_SubjectId(studentNumber, roomId); // 오류남 
+//    	userSubjectRepository.deleteByUserInfo_StudentNumberAndSubjectInfo_SubjectId(studentNumber, roomId); // 오류남  
     	
     	
     	return saveMessage(msg);

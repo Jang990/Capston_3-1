@@ -32,8 +32,9 @@ public class ChatRoomController {
 	public void test(ChatMessageDTO message) {
 		System.out.println("여기"+message);
 		sendingOperations.convertAndSend(
-				"/topic/chat/room/" + message.getSubjectId(), 
-				new ChatMessageDTO(message.getNickname(), message.getMessage(), new Timestamp(System.currentTimeMillis()))
+				"/topic/chat/room/" + message.getSubjectId(),
+				ChatMessageDTO.builder().nickname(message.getNickname()).message(message.getMessage()).build()
+//				new ChatMessageDTO(message.getNickname(), message.getMessage(), new Timestamp(System.currentTimeMillis()))
 			);
 		
 		// 채팅 내용 저장

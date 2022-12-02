@@ -38,3 +38,14 @@ VALUES
 ('202224043DMP636', 'test1'),
 ('202224043QMP910', 'test1'),
 ('CORS_220607110428f3327333', 'test1');
+
+INSERT INTO InhaTcES.user_subject
+(subject_id, student_number)
+VALUES
+('202224001LLA103', 'test2');
+
+INSERT INTO inhatces.chat_message
+(created_time, message, chat_room_id, user_id)
+VALUES('2022-12-02 20:20:05.277000000', 'T사용자님이 입장하셨습니다.', '202224001LLA103', 'System'),
+('2022-12-02 20:20:05.278000000', 'T사용자2님이 입장하셨습니다.', '202224001LLA103', 'System');
+
