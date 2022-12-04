@@ -7,11 +7,11 @@ INSERT INTO InhaTcES.user_info
 (student_number, created_date, nickname, password, roles)
 VALUES('test2', '2022-10-25', 'T사용자_2', '$2a$10$osYVSBZxrlGbUkuO5QnlCuauRfw0psizBZDjzoml67sEGP1kA7xoy', 'USER'); 
 
-INSERT INTO InhaTcES.user_info
+INSERT INTO user_info
 (student_number, created_date, nickname, password, roles)
 VALUES('System', '2022-10-25', 'System', '$2a$10$Qc6yykzChy8MtRrOujvNxe2t0wz5g9LrlBvp2CwnFZVE948YDtKvy', 'ADMIN');
 
-INSERT INTO InhaTcES.subject_info
+INSERT INTO subject_info
 (subject_id, open_type, subject_name, subject_owner_name)
 VALUES('202224001LLA103', 'normal', '[1학년L반] 의사소통과대인관계능력', '전수진'),
 ('202224001LLA106', 'normal', '[1학년L반] 문제해결과기술능력', '김동식'),
@@ -25,7 +25,7 @@ VALUES('202224001LLA103', 'normal', '[1학년L반] 의사소통과대인관계�
 ('CORS_220607110428f3327333', 'normal', '재학생폭력예방교육(필수)', '류정선');
 
 
-INSERT INTO InhaTcES.user_subject
+INSERT INTO user_subject
 (subject_id, student_number)
 VALUES
 ('CORS_1703071437557d610794', 'test1'),
@@ -39,12 +39,12 @@ VALUES
 ('202224043QMP910', 'test1'),
 ('CORS_220607110428f3327333', 'test1');
 
-INSERT INTO InhaTcES.user_subject
+INSERT INTO user_subject
 (subject_id, student_number)
 VALUES
 ('202224001LLA103', 'test2');
 
-INSERT INTO inhatces.chat_message
+INSERT INTO chat_message
 (created_time, message, chat_room_id, user_id)
 VALUES('2022-12-02 20:20:05.277000000', 'T사용자님이 입장하셨습니다.', '202224001LLA103', 'System'),
 ('2022-12-02 20:20:05.278000000', 'T사용자2님이 입장하셨습니다.', '202224001LLA103', 'System');

@@ -126,12 +126,11 @@ import ProfileComponent from './components/profile/ProfileComponent';
 import MainStatisticsComponent from './components/statisticsComponents/MainStatisticsComponent';
 
 import TestComponent from './components/comment/CommentComponent';
-import TestChat from './components/auth/card/TestChat.vue';
 
 export default {
   name: 'App',
   store,
-  components: {SubjectCard, LoginComponent,ProfileComponent, MainStatisticsComponent, TestComponent, TestChat},
+  components: {SubjectCard, LoginComponent,ProfileComponent, MainStatisticsComponent, TestComponent},
   computed: {
     ...mapState(['loginCheck', 'subjectCardData']),
   },

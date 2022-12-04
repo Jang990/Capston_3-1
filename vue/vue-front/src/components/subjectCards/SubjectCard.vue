@@ -222,7 +222,6 @@ import LectureTable from "./lectureTable/LectureTable"
 import { mapState } from 'vuex';
 
 import * as subjectApi from '@/api/subject';
-import TestChat from '@/components/auth/card/TestChat.vue';
 import Chat from '../Chat/Chat.vue'
 
 const mainAxios = axios.create({baseURL: 'http://localhost:8080'});
@@ -235,7 +234,7 @@ const chatNum = 3;
 
 export default {
   name: 'SubjectCard',
-  components: {LectureTable, NoticeTable, TaskTable, TestChat, Chat},
+  components: {LectureTable, NoticeTable, TaskTable, Chat},
   computed: {
     ...mapState({
       subjectCardData: state=> state.subjectCardData,
