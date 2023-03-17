@@ -4,16 +4,12 @@ import com.esummary.crawler.logincrawler.InhatcLoginCrawler;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class InhaTcCrawlerTest {
-    private Crawler crawler = new InhaTcCrawler(new InhatcLoginCrawler());
+class InhatcCrawlerTest {
+    private Crawler crawler = new InhatcCrawler(new InhatcLoginCrawler());
 
     /*
     @Autowired

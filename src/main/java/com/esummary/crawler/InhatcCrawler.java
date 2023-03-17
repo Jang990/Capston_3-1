@@ -6,20 +6,15 @@ import com.esummary.crawler.dto.CourseDTO;
 import com.esummary.crawler.dto.WeekDTO;
 import com.esummary.crawler.logincrawler.LoginCrawler;
 import lombok.RequiredArgsConstructor;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class InhaTcCrawler implements Crawler {
+public class InhatcCrawler implements Crawler {
 //    public final String MAIN_URL = "https://cyber.inhatc.ac.kr";
 
     private final LoginCrawler inhatcLoginCrawler;
