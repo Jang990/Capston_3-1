@@ -7,6 +7,7 @@ import com.esummary.crawler.dto.WeekDTO;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * 이러닝의 정보를 크롤링하는 크롤러.
@@ -26,9 +27,9 @@ public interface Crawler {
     특정 수업 과제 정보 크롤링
      */
 
-    Map<String, String> crawlLoginSession(String id, String password);
-    List<CourseDTO> crawlOwnCourse(Map<String,String> loginSession);
-    List<WeekDTO> crawlLectureByWeek(Map<String,String> loginSession);
-    List<AnnouncementDTO> crawlAnnouncement(Map<String,String> loginSession);
-    List<AssignmentDTO> crawlAssignment(Map<String,String> loginSession);
+    Optional<Map<String, String>> crawlLoginSession(String id, String password);
+    List<CourseDTO> crawlOwnCourse(Map<String,String> loginSessionCookie);
+    List<WeekDTO> crawlLectureByWeek(Map<String,String> loginSessionCookie);
+    List<AnnouncementDTO> crawlAnnouncement(Map<String,String> loginSessionCookie);
+    List<AssignmentDTO> crawlAssignment(Map<String,String> loginSessionCookie);
 }
