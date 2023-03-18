@@ -13,6 +13,6 @@ public class CrawlingService {
 
     // 임시 서비스 구조
     public void crawlingService(String code) {
-        Crawler crawler = crawlerList.get(code);
+        Crawler crawler = crawlerList.get(code.concat("Crawler"));
     }
 }
