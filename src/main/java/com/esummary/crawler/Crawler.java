@@ -28,8 +28,8 @@ public interface Crawler {
      */
 
     Optional<Map<String, String>> crawlLoginSession(String id, String password);
-    List<CourseDTO> crawlOwnCourse(Map<String,String> loginSessionCookie);
-    List<WeekDTO> crawlLectureByWeek(Map<String,String> loginSessionCookie);
-    List<AnnouncementDTO> crawlAnnouncement(Map<String,String> loginSessionCookie);
-    List<AssignmentDTO> crawlAssignment(Map<String,String> loginSessionCookie);
+    List<CourseDTO> crawlOwnCourse(String courseId,Map<String,String> loginSessionCookie);
+    List<WeekDTO> crawlLectureByWeek(String courseId, Map<String,String> loginSessionCookie);
+    List<AnnouncementDTO> crawlAnnouncement(String courseId ,Map<String,String> loginSessionCookie);
+    List<AssignmentDTO> crawlAssignment(String courseId, Map<String,String> loginSessionCookie);
 }
