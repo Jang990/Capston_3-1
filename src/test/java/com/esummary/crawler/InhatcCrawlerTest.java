@@ -1,5 +1,6 @@
 package com.esummary.crawler;
 
+import com.esummary.crawler.announcementcrawler.InhatcAnnouncementCrawler;
 import com.esummary.crawler.logincrawler.InhatcLoginCrawler;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -9,7 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 
 class InhatcCrawlerTest {
-    private Crawler crawler = new InhatcCrawler(new InhatcLoginCrawler());
+    private Crawler crawler = new InhatcCrawler(new InhatcLoginCrawler(), new InhatcAnnouncementCrawler());
 
     /*
     @Autowired
