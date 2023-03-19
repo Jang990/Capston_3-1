@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class InhatccrawlAnnouncementCrawler implements AnnouncementCrawler {
+public class InhatcAnnouncementCrawler implements AnnouncementCrawler {
     @Override
     public List<AnnouncementDTO> crawlAnnouncement(String courseId, Map<String, String> loginSessionCookie) {
         List<AnnouncementDTO> announcementList = new ArrayList<AnnouncementDTO>();

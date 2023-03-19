@@ -1,5 +1,6 @@
 package com.esummary.crawler;
 
+import com.esummary.crawler.announcementcrawler.AnnouncementCrawler;
 import com.esummary.crawler.dto.AnnouncementDTO;
 import com.esummary.crawler.dto.AssignmentDTO;
 import com.esummary.crawler.dto.CourseDTO;
@@ -18,6 +19,7 @@ public class InhatcCrawler implements Crawler {
 //    public final String MAIN_URL = "https://cyber.inhatc.ac.kr";
 
     private final LoginCrawler inhatcLoginCrawler;
+    private final AnnouncementCrawler inhatcAnnouncementCrawler;
 
     @Override
     public Optional<Map<String, String>> crawlLoginSession(String id, String password) {
@@ -41,6 +43,7 @@ public class InhatcCrawler implements Crawler {
 
     @Override
     public List<AnnouncementDTO> crawlAnnouncement(String courseId, Map<String, String> loginSessionCookie) {
+        inhatcAnnouncementCrawler.crawlAnnouncement(courseId, loginSessionCookie);
         return null;
     }
 
