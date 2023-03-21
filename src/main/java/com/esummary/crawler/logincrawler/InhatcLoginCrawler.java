@@ -19,6 +19,9 @@ public class InhatcLoginCrawler implements LoginCrawler {
 
     @Override
     public Optional<Map<String, String>> getLoginSession(String id, String password) throws Exception {
+        if(id == null || password == null)
+            throw new IllegalArgumentException();
+
         Optional<Map<String, String>> loginSessionCookie = attemptToLogin(id, password, this.getInitCookie());
 
         if(loginSessionCookie.isEmpty())
