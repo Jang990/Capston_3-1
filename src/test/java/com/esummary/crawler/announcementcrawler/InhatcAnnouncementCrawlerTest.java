@@ -1,24 +1,37 @@
 package com.esummary.crawler.announcementcrawler;
 
+import com.esummary.crawler.InhatcCrawlerConfig;
 import com.esummary.crawler.dto.AnnouncementDTO;
 import com.esummary.crawler.logincrawler.InhatcLoginCrawler;
 import com.esummary.crawler.logincrawler.LoginCrawler;
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+@Slf4j
 class InhatcAnnouncementCrawlerTest {
+
     private final LoginCrawler loginCrawler = new InhatcLoginCrawler();
     private InhatcAnnouncementCrawler crawler = new InhatcAnnouncementCrawler();
 
-    private String id = "201845096";
-    private String password = ".";
-    private String courseId = "202224043DMP636";
+    private String id = InhatcCrawlerConfig.id;
+    private String password = InhatcCrawlerConfig.password;
+    private String courseId = InhatcCrawlerConfig.courseId;
+
+    @BeforeAll
+    static void beforeAll() {
+        if(InhatcCrawlerConfig.password.equals(InhatcCrawlerConfig.state.EMPTY.toString())) {
+            throw new IllegalArgumentException("InhatcLoginCrawlerTest 설정 정보가 모두 필요합니다.");
+        }
+    }
 
     @Test
     public void announcementCrawlerTest() throws Exception {

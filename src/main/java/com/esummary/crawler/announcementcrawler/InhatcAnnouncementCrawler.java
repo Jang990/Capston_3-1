@@ -6,11 +6,13 @@ import com.esummary.crawling.service.crawling.SubjectCrawlingService_Inhatc;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class InhatcAnnouncementCrawler implements AnnouncementCrawler {
     @Override
     public List<AnnouncementDTO> crawlAnnouncement(String courseId, Map<String, String> loginSessionCookie) {

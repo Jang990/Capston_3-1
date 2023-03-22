@@ -1,6 +1,8 @@
 package com.esummary.crawler.logincrawler;
 
+import com.esummary.crawler.InhatcCrawlerConfig;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,9 +16,16 @@ import static org.junit.jupiter.api.Assertions.*;
 class InhatcLoginCrawlerTest {
 
     private final LoginCrawler loginCrawler = new InhatcLoginCrawler();
-    private String id = "201845096";
-    private String password = ".";
+    private String id = InhatcCrawlerConfig.id;
+    private String password = InhatcCrawlerConfig.password;
     private String failPassword = "1111";
+
+    @BeforeAll
+    static void beforeAll() {
+        if(InhatcCrawlerConfig.password.equals(InhatcCrawlerConfig.state.EMPTY.toString())) {
+            throw new IllegalArgumentException("InhatcLoginCrawlerTest 설정 정보가 모두 필요합니다.");
+        }
+    }
 
     @Test
     @DisplayName("로그인 세션ID 가져오기")
