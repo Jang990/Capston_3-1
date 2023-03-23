@@ -16,7 +16,7 @@ import java.util.Map;
 public class InhatcAnnouncementCrawler implements AnnouncementCrawler {
     @Override
     public List<AnnouncementDTO> crawlAnnouncement(String courseId, Map<String, String> loginSessionCookie) {
-        List<AnnouncementDTO> announcementList = new ArrayList<AnnouncementDTO>();
+        List<AnnouncementDTO> announcementList = new ArrayList<>();
         Elements notices = crawlNoticeBox(courseId, loginSessionCookie);
 
         for (Element element : notices) {
