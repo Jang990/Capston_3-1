@@ -14,8 +14,8 @@ public interface LoginCrawler {
 
     /**
      * 해당 세션이 로그인에 성공했는지 확인
-     * @param id 로그인 계정 ID
-     * @param loginSession loginSession 로그인을 시도한 값
+     * @param loginId 로그인 계정 ID
+     * @param loginSessionCookie loginSession 로그인을 시도한 값
      * @return 성공 여부
      * @throws Exception 이러닝 오류 or 확인 ID와 로그인 ID 불일치
      */
