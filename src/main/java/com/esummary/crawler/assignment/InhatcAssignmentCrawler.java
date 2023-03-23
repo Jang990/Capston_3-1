@@ -1,7 +1,6 @@
 package com.esummary.crawler.assignment;
 
 import com.esummary.crawler.dto.AssignmentDTO;
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,43 +14,39 @@ import java.util.*;
 public class InhatcAssignmentCrawler implements AssignmentCrawler {
 
 //    private final String STUDY_HOME_URL = "https://cyber.inhatc.ac.kr/Course.do?cmd=viewStudyHome&courseDTO.courseId=";
-    private final String TASK_HOME_URL = "https://cyber.inhatc.ac.kr/Report.do?cmd=viewReportInfoPageList&boardInfoDTO.boardInfoGubun=report&courseDTO.courseId=";
+    private final String ASSIGNMENT_HOME_URL = "https://cyber.inhatc.ac.kr/Report.do?cmd=viewReportInfoPageList&boardInfoDTO.boardInfoGubun=report&courseDTO.courseId=";
 
 
     @Override
     public List<AssignmentDTO> crawlAssignment(String courseId, Map<String, String> loginSessionCookie) {
-        List<AssignmentDTO> taskList = new ArrayList<>();
-        Elements tasks = crawlTaskBox(courseId, loginSessionCookie);
+        List<AssignmentDTO> assignmentList = new ArrayList<>();
+        Elements assignments = crawlAssignmentBox(courseId, loginSessionCookie);
 
-        for (Element element : tasks) {
-            System.out.println("element = " + element);
-            AssignmentDTO task = crawlTaskDetail(element, courseId);
-//            if(task != null) {
-//                taskList.add(task);
-//				UserTask ut = new UserTask(seq_UserTask++, task.getSubmitYN(), userSubject, task);
-//				userTaskRepository.save(ut);
-//            }
+        for (Element element : assignments) {
+//            System.out.println("element = " + element);
+            AssignmentDTO assignment = crawlAssignmentDetail(element);
+            assignmentList.add(assignment);
         }
 
-        return taskList;
+        return assignmentList;
     }
 
-    private Elements crawlTaskBox(String courseId, Map<String, String> loginCookies) {
+    private Elements crawlAssignmentBox(String courseId, Map<String, String> loginCookies) {
         //StudyHome에서 과제 내용이 적혀있는 섹션에 css Selector
-        final String taskBoxSelector = "#listBox > div:not(.paginator_pages):not(.paginator)";
-        Document taskPage = null;
+        final String assignmentBoxSelector = "#listBox > div:not(.paginator_pages):not(.paginator)";
+        Document assignmentPage = null;
         try {
-            taskPage = Jsoup.connect(TASK_HOME_URL+courseId)
+            assignmentPage = Jsoup.connect(ASSIGNMENT_HOME_URL +courseId)
                     .data("cmd", "viewIndexPage")
                     .cookies(loginCookies).get();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return taskPage.select(taskBoxSelector);
+        return assignmentPage.select(assignmentBoxSelector);
     }
 
-    private AssignmentDTO crawlTaskDetail(Element element, String subjectId) {
+    private AssignmentDTO crawlAssignmentDetail(Element element) {
         String[] idAndStatus = crawlIdAndStatus(element);
         /*
          * 여기 조건부는 상황에 따라 달라질 수 있다.
@@ -70,14 +65,13 @@ public class InhatcAssignmentCrawler implements AssignmentCrawler {
 //        Map<String, Date> rangeDate = splitDataInRangeString(deadline);
         Map<String, Integer> submissionData = splitSubmissionData(submissionInfo);
 
-        AssignmentDTO task = new AssignmentDTO(
+        AssignmentDTO assignment = new AssignmentDTO(
         /*        id, title, description,
                 rangeDate.get("startDate"), rangeDate.get("endDate"),
                 submissionData.get("submissionNum"), submissionData.get("notSubmittedNum"), submissionData.get("totalNum"),
                 status, subjectId*/
         );
-//		subjectTaskRepository.save(task);
-        return task;
+        return assignment;
     }
 
     private String[] crawlIdAndStatus(Element element) {
