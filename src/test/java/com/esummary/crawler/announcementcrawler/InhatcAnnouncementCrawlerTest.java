@@ -7,11 +7,8 @@ import com.esummary.crawler.logincrawler.LoginCrawler;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.List;
 import java.util.Map;
@@ -25,6 +22,7 @@ class InhatcAnnouncementCrawlerTest {
     private String id = InhatcCrawlerConfig.id;
     private String password = InhatcCrawlerConfig.password;
     private String courseId = InhatcCrawlerConfig.courseId;
+    private Map<String, String> failSessionCookie = InhatcCrawlerConfig.failSessionCookie;
 
     @BeforeAll
     static void beforeAll() {
@@ -34,7 +32,8 @@ class InhatcAnnouncementCrawlerTest {
     }
 
     @Test
-    public void announcementCrawlerTest() throws Exception {
+    @DisplayName("공지 크롤링 정상 작동")
+    void announcementCrawlerTest() throws Exception {
         //given
         Map<String, String> loginSessionCookie =
                 loginCrawler.getLoginSession(id, password).orElseThrow(() -> new Exception());
@@ -47,5 +46,15 @@ class InhatcAnnouncementCrawlerTest {
         for (AnnouncementDTO announcementDTO : announcementList) {
             System.out.println("announcementDTO = " + announcementDTO);
         }
+    }
+
+    @Test
+    @DisplayName("잘못된 SessionID가 들어온 경우")
+    public void announcementCrawlerTestFail() throws Exception {
+        //when
+        List<AnnouncementDTO> announcementDTOList = crawler.crawlAnnouncement(courseId, failSessionCookie);
+
+        //then
+        Assertions.assertThat(announcementDTOList.size()).isEqualTo(0);
     }
 }
