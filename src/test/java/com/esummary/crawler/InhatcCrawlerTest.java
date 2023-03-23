@@ -1,6 +1,6 @@
 package com.esummary.crawler;
 
-import com.esummary.crawler.announcementcrawler.InhatcAnnouncementCrawler;
+import com.esummary.crawler.announcement.InhatcAnnouncementCrawler;
 import com.esummary.crawler.logincrawler.InhatcLoginCrawler;
 import com.esummary.crawler.logincrawler.LoginCrawler;
 import org.assertj.core.api.Assertions;

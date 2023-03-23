@@ -1,6 +1,6 @@
 package com.esummary.crawler;
 
-import com.esummary.crawler.announcementcrawler.AnnouncementCrawler;
+import com.esummary.crawler.announcement.AnnouncementCrawler;
 import com.esummary.crawler.dto.AnnouncementDTO;
 import com.esummary.crawler.dto.AssignmentDTO;
 import com.esummary.crawler.dto.CourseDTO;
@@ -48,6 +48,7 @@ public class InhatcCrawler implements Crawler {
 
     @Override
     public List<AssignmentDTO> crawlAssignment(String courseId, Map<String, String> loginSessionCookie) {
+
         return null;
     }
 }

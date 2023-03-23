@@ -1,4 +1,4 @@
-package com.esummary.crawler.announcementcrawler;
+package com.esummary.crawler.announcement;
 
 import com.esummary.crawler.dto.AnnouncementDTO;
 import com.esummary.crawling.service.crawling.ELearningURL;
