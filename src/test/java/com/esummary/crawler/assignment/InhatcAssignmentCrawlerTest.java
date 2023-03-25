@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class InhatcAssignmentCrawlerTest {
 
     private final LoginCrawler loginCrawler = new InhatcLoginCrawler();
-    private InhatcAssignmentCrawler crawler = new InhatcAssignmentCrawler();
+    private InhatcAssignmentCrawler crawler = new InhatcAssignmentCrawler(loginCrawler);
 
     private String id = InhatcCrawlerConfig.id;
     private String password = InhatcCrawlerConfig.password;
