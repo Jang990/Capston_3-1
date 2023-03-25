@@ -3,6 +3,7 @@ package com.esummary.crawler.assignment;
 import com.esummary.crawler.dto.AnnouncementDTO;
 import com.esummary.crawler.dto.AssignmentDTO;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -11,5 +12,5 @@ import java.util.Map;
  * 그냥 과제 크롤링만을 시도한다.
  */
 public interface AssignmentCrawler {
-    List<AssignmentDTO> crawlAssignment(String courseId, Map<String, String> loginSessionCookie);
+    List<AssignmentDTO> crawlAssignment(String courseId, Map<String, String> loginSessionCookie) throws IOException;
 }

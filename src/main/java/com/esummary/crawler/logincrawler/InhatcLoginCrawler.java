@@ -1,5 +1,6 @@
 package com.esummary.crawler.logincrawler;
 
+import com.esummary.crawler.exception.MismatchedELearningSessionAndID;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -18,7 +19,7 @@ public class InhatcLoginCrawler implements LoginCrawler {
     private final String LOGIN_URL = "https://cyber.inhatc.ac.kr/MUser.do";
 
     @Override
-    public Optional<Map<String, String>> getLoginSession(String id, String password) throws Exception {
+    public Optional<Map<String, String>> getLoginSession(String id, String password) throws IOException {
         if(id == null || password == null)
             throw new IllegalArgumentException();
 
@@ -37,15 +38,14 @@ public class InhatcLoginCrawler implements LoginCrawler {
     }
 
     @Override
-    public boolean validateLoginInfo(String loginId, Map<String, String> loginSessionCookie) throws Exception {
+    public boolean validateLoginInfo(String loginId, Map<String, String> loginSessionCookie) throws IOException {
         Document loginPage = connLoginPage(loginSessionCookie);
 
         if(!validateExpiredSession(loginSessionCookie)) {
             return false;
         }
-        Element str = loginPage.getElementsByClass("login_info").select("ul li").last(); //정보를 찾을 수 없음. 즉 로그인이 되지 않은 쿠키라는 것(또는 만료된 로그인 쿠키라는 것)
-        if(str == null) {
-        }
+
+        Element str = loginPage.getElementsByClass("login_info").select("ul li").last();
 
         String[] nameAndWStudentNumber = str.text().split(" ");
         if(nameAndWStudentNumber.length < 2) {
@@ -56,15 +56,14 @@ public class InhatcLoginCrawler implements LoginCrawler {
         String studentName = nameAndWStudentNumber[1].substring(1, nameAndWStudentNumber[1].length()-1);
         if(!studentName.equals(loginId)) {
             // 시도한 학생 ID와 로그인 세션의 ID가 다름 - 가장 심각한 문제
-            log.warn(loginId+"정보와 로그인에 성공한 세션 정보가 일치하지 않음");
-            throw new Exception();
+            return false;
         }
 
         return true;
     }
 
     @Override
-    public boolean validateExpiredSession(Map<String, String> loginSessionCookie) throws Exception {
+    public boolean validateExpiredSession(Map<String, String> loginSessionCookie) throws IOException {
         Document loginPage = connLoginPage(loginSessionCookie);
         Element str = loginPage.getElementsByClass("login_info").select("ul li").last();
 
@@ -102,7 +101,7 @@ public class InhatcLoginCrawler implements LoginCrawler {
     }
 
     // 로그인 시도 후 로그인 성공 쿠키 반환
-    private Optional<Map<String, String>> attemptToLogin(String id, String password, Map<String, String> initialCookies) throws Exception {
+    private Optional<Map<String, String>> attemptToLogin(String id, String password, Map<String, String> initialCookies) throws IOException {
         Connection con = Jsoup.connect(LOGIN_URL)
                 .data("cmd", "loginUser")
                 .data("userDTO.userId", id)

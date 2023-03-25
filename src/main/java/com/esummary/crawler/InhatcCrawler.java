@@ -43,6 +43,7 @@ public class InhatcCrawler implements Crawler {
 
     @Override
     public List<AnnouncementDTO> crawlAnnouncement(String courseId, Map<String, String> loginSessionCookie) {
+
         return inhatcAnnouncementCrawler.crawlAnnouncement(courseId, loginSessionCookie);
     }
 

@@ -1,6 +1,8 @@
 package com.esummary.crawler.assignment;
 
 import com.esummary.crawler.dto.AssignmentDTO;
+import com.esummary.crawler.logincrawler.LoginCrawler;
+import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -11,14 +13,14 @@ import java.io.IOException;
 import java.util.*;
 
 @Component
+@RequiredArgsConstructor
 public class InhatcAssignmentCrawler implements AssignmentCrawler {
 
 //    private final String STUDY_HOME_URL = "https://cyber.inhatc.ac.kr/Course.do?cmd=viewStudyHome&courseDTO.courseId=";
     private final String ASSIGNMENT_HOME_URL = "https://cyber.inhatc.ac.kr/Report.do?cmd=viewReportInfoPageList&boardInfoDTO.boardInfoGubun=report&courseDTO.courseId=";
 
-
     @Override
-    public List<AssignmentDTO> crawlAssignment(String courseId, Map<String, String> loginSessionCookie) {
+    public List<AssignmentDTO> crawlAssignment(String courseId, Map<String, String> loginSessionCookie) throws IOException {
         List<AssignmentDTO> assignmentList = new ArrayList<>();
         Elements assignments = crawlAssignmentBox(courseId, loginSessionCookie);
 
@@ -31,17 +33,14 @@ public class InhatcAssignmentCrawler implements AssignmentCrawler {
         return assignmentList;
     }
 
-    private Elements crawlAssignmentBox(String courseId, Map<String, String> loginCookies) {
+    private Elements crawlAssignmentBox(String courseId, Map<String, String> loginCookies) throws IOException {
         //StudyHome에서 과제 내용이 적혀있는 섹션에 css Selector
         final String assignmentBoxSelector = "#listBox > div:not(.paginator_pages):not(.paginator)";
         Document assignmentPage = null;
-        try {
-            assignmentPage = Jsoup.connect(ASSIGNMENT_HOME_URL +courseId)
-                    .data("cmd", "viewIndexPage")
-                    .cookies(loginCookies).get();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        assignmentPage = Jsoup.connect(ASSIGNMENT_HOME_URL +courseId)
+                .data("cmd", "viewIndexPage")
+                .cookies(loginCookies).get();
+
 
         return assignmentPage.select(assignmentBoxSelector);
     }
