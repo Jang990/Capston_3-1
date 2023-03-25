@@ -27,21 +27,21 @@ public class InhatcLoginCrawler implements LoginCrawler {
         if(loginSessionCookie.isEmpty())
             return Optional.empty();
 
-        if(isSuccessLogin(id, loginSessionCookie.get()))
+        if(validateLoginInfo(id, loginSessionCookie.get()))
             return loginSessionCookie;
         else
             return Optional.empty();
     }
 
     @Override
-    public boolean isSuccessLogin(String loginId, Map<String, String> loginSessionCookie) throws Exception {
+    public boolean validateLoginInfo(String loginId, Map<String, String> loginSessionCookie) throws Exception {
         Document loginPage = connLoginPage(loginSessionCookie);
 
-        // 로그인을 해서 이름이 나오는지 체크
+        if(validateExpiredSession(loginSessionCookie)) {
+            return false;
+        }
         Element str = loginPage.getElementsByClass("login_info").select("ul li").last(); //정보를 찾을 수 없음. 즉 로그인이 되지 않은 쿠키라는 것(또는 만료된 로그인 쿠키라는 것)
         if(str == null) {
-            log.info("세션 쿠키 정보가 만료되었거나 올바르지 않음 - {}", loginSessionCookie);
-            return false; // 로그인 실패
         }
 
         String[] nameAndWStudentNumber = str.text().split(" ");
@@ -55,6 +55,21 @@ public class InhatcLoginCrawler implements LoginCrawler {
             // 시도한 학생 ID와 로그인 세션의 ID가 다름 - 가장 심각한 문제
             log.warn(loginId+"정보와 로그인에 성공한 세션 정보가 일치하지 않음");
             throw new Exception();
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean validateExpiredSession(Map<String, String> loginSessionCookie) throws Exception {
+        Document loginPage = connLoginPage(loginSessionCookie);
+        System.out.println("loginPage = " + loginPage);
+        Element str = loginPage.getElementsByClass("login_info").select("ul li").last();
+
+        //정보를 찾을 수 없음. 즉 로그인이 되지 않은 쿠키라는 것(또는 만료된 로그인 쿠키라는 것)
+        if(str == null) {
+            log.info("세션 쿠키 정보가 만료되었거나 올바르지 않음 - {}", loginSessionCookie);
+            return false;
         }
 
         return true;
