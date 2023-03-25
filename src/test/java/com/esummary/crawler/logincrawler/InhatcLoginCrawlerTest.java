@@ -91,11 +91,10 @@ class InhatcLoginCrawlerTest {
     @DisplayName("세션 유효성 검사 실패")
     public void validateSessionFailTest() throws Exception {
         //given
-        Map<String, String> loginSession = loginCrawler.getLoginSession(id, failPassword)
-                .orElseThrow(() -> new IllegalArgumentException());
+        Map<String, String> failSession = Map.of("SessionId", "something-wrong");
 
         //when
-        boolean validation = loginCrawler.validateExpiredSession(loginSession);
+        boolean validation = loginCrawler.validateExpiredSession(failSession);
 
         //then
         assertThat(validation).isEqualTo(false);
