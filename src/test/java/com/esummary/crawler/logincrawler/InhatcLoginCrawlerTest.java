@@ -1,7 +1,6 @@
 package com.esummary.crawler.logincrawler;
 
 import com.esummary.crawler.InhatcCrawlerConfig;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -56,7 +55,7 @@ class InhatcLoginCrawlerTest {
         loginCookie.put("JSESSIONID", "something-wrong");
 
         // when
-        boolean successLogin = loginCrawler.isSuccessLogin(id, loginCookie);
+        boolean successLogin = loginCrawler.validateLoginInfo(id, loginCookie);
 
         //then
         assertThat(successLogin).isEqualTo(false);
@@ -71,6 +70,34 @@ class InhatcLoginCrawlerTest {
         String modifiedId = "wrongId";
 
         // when, then
-        assertThrows(Exception.class, () -> loginCrawler.isSuccessLogin(modifiedId, loginCookie));
+        assertThrows(Exception.class, () -> loginCrawler.validateLoginInfo(modifiedId, loginCookie));
+    }
+
+    @Test
+    @DisplayName("세션 유효성 검사 성공")
+    public void validateSessionTest() throws Exception {
+        //given
+        Map<String, String> loginSession = loginCrawler.getLoginSession(id, password)
+                .orElseThrow(() -> new IllegalArgumentException());
+
+        //when
+        boolean validation = loginCrawler.validateExpiredSession(loginSession);
+
+        //then
+        assertThat(validation).isEqualTo(true);
+    }
+
+    @Test
+    @DisplayName("세션 유효성 검사 실패")
+    public void validateSessionFailTest() throws Exception {
+        //given
+        Map<String, String> loginSession = loginCrawler.getLoginSession(id, failPassword)
+                .orElseThrow(() -> new IllegalArgumentException());
+
+        //when
+        boolean validation = loginCrawler.validateExpiredSession(loginSession);
+
+        //then
+        assertThat(validation).isEqualTo(false);
     }
 }
