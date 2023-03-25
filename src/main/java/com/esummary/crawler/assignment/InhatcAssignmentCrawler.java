@@ -19,8 +19,12 @@ public class InhatcAssignmentCrawler implements AssignmentCrawler {
 //    private final String STUDY_HOME_URL = "https://cyber.inhatc.ac.kr/Course.do?cmd=viewStudyHome&courseDTO.courseId=";
     private final String ASSIGNMENT_HOME_URL = "https://cyber.inhatc.ac.kr/Report.do?cmd=viewReportInfoPageList&boardInfoDTO.boardInfoGubun=report&courseDTO.courseId=";
 
+    private final LoginCrawler inhatcLoginCrawler;
+
     @Override
     public List<AssignmentDTO> crawlAssignment(String courseId, Map<String, String> loginSessionCookie) throws IOException {
+        inhatcLoginCrawler.validateExpiredSession(loginSessionCookie);
+
         List<AssignmentDTO> assignmentList = new ArrayList<>();
         Elements assignments = crawlAssignmentBox(courseId, loginSessionCookie);
 
