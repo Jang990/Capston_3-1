@@ -2,6 +2,7 @@ package com.esummary.crawler.assignment;
 
 import com.esummary.crawler.InhatcCrawlerConfig;
 import com.esummary.crawler.dto.AssignmentDTO;
+import com.esummary.crawler.exception.ExpiredELearningSession;
 import com.esummary.crawler.logincrawler.InhatcLoginCrawler;
 import com.esummary.crawler.logincrawler.LoginCrawler;
 import org.assertj.core.api.Assertions;
@@ -35,13 +36,20 @@ class InhatcAssignmentCrawlerTest {
     public void crawlAssignment() throws Exception {
         //given
         Map<String, String> loginSession =
-                loginCrawler.getLoginSession(id, password)
-                        .orElseThrow(() -> new IllegalArgumentException());
+                loginCrawler.getLoginSession(id, password);
 
         //when
         List<AssignmentDTO> assignmentDTOList = crawler.crawlAssignment(courseId, loginSession);
 
         //then
         Assertions.assertThat(assignmentDTOList.size()).isEqualTo(14);
+    }
+
+    @Test
+    @DisplayName("잘못된 세션으로 과제 크롤링 시도")
+    public void crawlAssignmentFail() throws Exception {
+        //when then
+        assertThrows(ExpiredELearningSession.class,
+                () -> crawler.crawlAssignment(courseId, failSessionCookie));
     }
 }

@@ -35,8 +35,7 @@ class InhatcAnnouncementCrawlerTest {
     @DisplayName("공지 크롤링 정상 작동")
     void announcementCrawlerTest() throws Exception {
         //given
-        Map<String, String> loginSessionCookie =
-                loginCrawler.getLoginSession(id, password).orElseThrow(() -> new Exception());
+        Map<String, String> loginSessionCookie = loginCrawler.getLoginSession(id, password);
 
         //when
         List<AnnouncementDTO> announcementList = crawler.crawlAnnouncement(courseId, loginSessionCookie);
