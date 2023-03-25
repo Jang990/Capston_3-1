@@ -24,20 +24,23 @@ public class InhatcLoginCrawler implements LoginCrawler {
 
         Optional<Map<String, String>> loginSessionCookie = attemptToLogin(id, password, this.getInitCookie());
 
-        if(loginSessionCookie.isEmpty())
+        if(loginSessionCookie.isEmpty()) {
             return Optional.empty();
+        }
 
-        if(validateLoginInfo(id, loginSessionCookie.get()))
+        if(validateLoginInfo(id, loginSessionCookie.get())) {
             return loginSessionCookie;
-        else
+        }
+        else {
             return Optional.empty();
+        }
     }
 
     @Override
     public boolean validateLoginInfo(String loginId, Map<String, String> loginSessionCookie) throws Exception {
         Document loginPage = connLoginPage(loginSessionCookie);
 
-        if(validateExpiredSession(loginSessionCookie)) {
+        if(!validateExpiredSession(loginSessionCookie)) {
             return false;
         }
         Element str = loginPage.getElementsByClass("login_info").select("ul li").last(); //정보를 찾을 수 없음. 즉 로그인이 되지 않은 쿠키라는 것(또는 만료된 로그인 쿠키라는 것)
