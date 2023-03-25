@@ -66,7 +66,6 @@ public class InhatcLoginCrawler implements LoginCrawler {
     @Override
     public boolean validateExpiredSession(Map<String, String> loginSessionCookie) throws Exception {
         Document loginPage = connLoginPage(loginSessionCookie);
-        System.out.println("loginPage = " + loginPage);
         Element str = loginPage.getElementsByClass("login_info").select("ul li").last();
 
         //정보를 찾을 수 없음. 즉 로그인이 되지 않은 쿠키라는 것(또는 만료된 로그인 쿠키라는 것)
