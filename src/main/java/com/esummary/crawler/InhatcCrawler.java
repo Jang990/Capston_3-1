@@ -9,9 +9,9 @@ import com.esummary.crawler.logincrawler.LoginCrawler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -22,13 +22,8 @@ public class InhatcCrawler implements Crawler {
     private final AnnouncementCrawler inhatcAnnouncementCrawler;
 
     @Override
-    public Optional<Map<String, String>> crawlLoginSession(String id, String password) {
-        try {
-            return inhatcLoginCrawler.getLoginSession(id, password);
-        } catch (Exception e) {
-            // JWT를 제거하는 등의 작업 필요?
-            throw new RuntimeException(e);
-        }
+    public Map<String, String> crawlLoginSession(String id, String password) throws IOException {
+        return inhatcLoginCrawler.getLoginSession(id, password);
     }
 
     @Override

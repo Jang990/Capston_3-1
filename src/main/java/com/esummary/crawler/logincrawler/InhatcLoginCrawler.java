@@ -1,5 +1,6 @@
 package com.esummary.crawler.logincrawler;
 
+import com.esummary.crawler.exception.ExpiredELearningSession;
 import com.esummary.crawler.exception.MismatchedELearningSessionAndID;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;
@@ -19,44 +20,28 @@ public class InhatcLoginCrawler implements LoginCrawler {
     private final String LOGIN_URL = "https://cyber.inhatc.ac.kr/MUser.do";
 
     @Override
-    public Optional<Map<String, String>> getLoginSession(String id, String password) throws IOException {
-        if(id == null || password == null)
-            throw new IllegalArgumentException();
-
-        Optional<Map<String, String>> loginSessionCookie = attemptToLogin(id, password, this.getInitCookie());
-
-        if(loginSessionCookie.isEmpty()) {
-            return Optional.empty();
-        }
-
-        if(validateLoginInfo(id, loginSessionCookie.get())) {
-            return loginSessionCookie;
-        }
-        else {
-            return Optional.empty();
-        }
+    public Map<String, String> getLoginSession(String id, String password) throws IOException {
+        Map<String, String> loginSessionCookie = attemptToLogin(id, password, this.getInitCookie());
+        validateExpiredSession(loginSessionCookie);
+        return loginSessionCookie;
     }
 
     @Override
     public boolean validateLoginInfo(String loginId, Map<String, String> loginSessionCookie) throws IOException {
         Document loginPage = connLoginPage(loginSessionCookie);
-
-        if(!validateExpiredSession(loginSessionCookie)) {
-            return false;
-        }
+        validateExpiredSession(loginSessionCookie);
 
         Element str = loginPage.getElementsByClass("login_info").select("ul li").last();
 
         String[] nameAndWStudentNumber = str.text().split(" ");
         if(nameAndWStudentNumber.length < 2) {
-            log.warn("로그인한 사용자 ID를 HTML 문서상에서 찾을 수 없음");
-            return false;
+            throw new IOException("InhatcLoginCrawler.validateLoginInfo 의도한 크롤링 로직 실패");
         }
 
         String studentName = nameAndWStudentNumber[1].substring(1, nameAndWStudentNumber[1].length()-1);
         if(!studentName.equals(loginId)) {
             // 시도한 학생 ID와 로그인 세션의 ID가 다름 - 가장 심각한 문제
-            return false;
+            throw new MismatchedELearningSessionAndID("시도한 학생 ID와 로그인 세션의 ID가 다름 { Session = "+loginSessionCookie);
         }
 
         return true;
@@ -69,8 +54,12 @@ public class InhatcLoginCrawler implements LoginCrawler {
 
         //정보를 찾을 수 없음. 즉 로그인이 되지 않은 쿠키라는 것(또는 만료된 로그인 쿠키라는 것)
         if(str == null) {
-            log.info("세션 쿠키 정보가 만료되었거나 올바르지 않음 - {}", loginSessionCookie);
-            return false;
+            throw new ExpiredELearningSession("세션 쿠키 정보가 만료되었거나 올바르지 않음 - Session = "+loginSessionCookie);
+        }
+
+        String[] nameAndWStudentNumber = str.text().split(" ");
+        if(nameAndWStudentNumber.length < 2) {
+            throw new ExpiredELearningSession("세션 쿠키 정보가 만료되었거나 올바르지 않음 - Session = "+loginSessionCookie);
         }
 
         return true;
@@ -101,7 +90,7 @@ public class InhatcLoginCrawler implements LoginCrawler {
     }
 
     // 로그인 시도 후 로그인 성공 쿠키 반환
-    private Optional<Map<String, String>> attemptToLogin(String id, String password, Map<String, String> initialCookies) throws IOException {
+    private Map<String, String> attemptToLogin(String id, String password, Map<String, String> initialCookies) throws IOException {
         Connection con = Jsoup.connect(LOGIN_URL)
                 .data("cmd", "loginUser")
                 .data("userDTO.userId", id)
@@ -109,13 +98,7 @@ public class InhatcLoginCrawler implements LoginCrawler {
                 .data("userDTO.localeKey", "ko")
                 .cookies(initialCookies);
 
-        Connection.Response resp = con.execute();
-        if(resp.statusCode() != 200) {
-            return Optional.empty();
-        }
-        else {
-            con.post();
-            return Optional.ofNullable(initialCookies);
-        }
+        con.post();
+        return initialCookies;
     }
 }
