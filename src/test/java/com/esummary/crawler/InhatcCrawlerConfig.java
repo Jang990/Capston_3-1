@@ -9,7 +9,7 @@ public class InhatcCrawlerConfig {
 
     public static final String failPassword = "abcde12345";
 
-    public static final Map<String, String> failSessionCookie = Map.of("SessionId" , "failSessionID");
+    public static final Map<String, String> failSessionCookie = Map.of("JSESSIONID" , "failSessionID");
     public static final String courseId = "202224043DMP636";
 
 
