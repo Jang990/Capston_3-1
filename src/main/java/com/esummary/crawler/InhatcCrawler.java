@@ -27,24 +27,22 @@ public class InhatcCrawler implements Crawler {
     }
 
     @Override
-    public List<CourseDTO> crawlOwnCourse(String courseId, Map<String, String> loginSessionCookie) {
+    public List<CourseDTO> crawlOwnCourse(String courseId, Map<String, String> loginSessionCookie) throws IOException {
         return null;
     }
 
     @Override
-    public List<WeekDTO> crawlLectureByWeek(String courseId, Map<String, String> loginSessionCookie) {
+    public List<WeekDTO> crawlLectureByWeek(String courseId, Map<String, String> loginSessionCookie) throws IOException {
         return null;
     }
 
     @Override
-    public List<AnnouncementDTO> crawlAnnouncement(String courseId, Map<String, String> loginSessionCookie) {
-
+    public List<AnnouncementDTO> crawlAnnouncement(String courseId, Map<String, String> loginSessionCookie) throws IOException{
         return inhatcAnnouncementCrawler.crawlAnnouncement(courseId, loginSessionCookie);
     }
 
     @Override
-    public List<AssignmentDTO> crawlAssignment(String courseId, Map<String, String> loginSessionCookie) {
-
+    public List<AssignmentDTO> crawlAssignment(String courseId, Map<String, String> loginSessionCookie) throws IOException {
         return null;
     }
 }

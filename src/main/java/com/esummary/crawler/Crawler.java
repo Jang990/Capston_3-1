@@ -28,8 +28,8 @@ public interface Crawler {
      */
 
     Map<String, String> crawlLoginSession(String id, String password) throws IOException;
-    List<CourseDTO> crawlOwnCourse(String courseId,Map<String,String> loginSessionCookie);
-    List<WeekDTO> crawlLectureByWeek(String courseId, Map<String,String> loginSessionCookie);
-    List<AnnouncementDTO> crawlAnnouncement(String courseId ,Map<String,String> loginSessionCookie);
-    List<AssignmentDTO> crawlAssignment(String courseId, Map<String,String> loginSessionCookie);
+    List<CourseDTO> crawlOwnCourse(String courseId,Map<String,String> loginSessionCookie) throws IOException;
+    List<WeekDTO> crawlLectureByWeek(String courseId, Map<String,String> loginSessionCookie) throws IOException;
+    List<AnnouncementDTO> crawlAnnouncement(String courseId ,Map<String,String> loginSessionCookie) throws IOException;
+    List<AssignmentDTO> crawlAssignment(String courseId, Map<String,String> loginSessionCookie) throws IOException;
 }
