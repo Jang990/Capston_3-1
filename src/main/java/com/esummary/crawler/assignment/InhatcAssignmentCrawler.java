@@ -28,21 +28,14 @@ public class InhatcAssignmentCrawler implements AssignmentCrawler {
         Elements assignments = crawlAssignmentBox(courseId, loginSessionCookie);
 
         for (Element element : assignments) {
-            if(!isAssignment(element))
+            if(!InhatcUtil.isContent(element))
                 continue;
 
             AssignmentDTO assignment = crawlAssignmentDetail(element);
             assignmentList.add(assignment);
-            System.out.println();
-            System.out.println();
         }
 
         return assignmentList;
-    }
-
-    private boolean isAssignment(Element element) {
-        String elementClassName = element.getElementsByTag("div").get(0).className();
-        return elementClassName.contains("listContent");
     }
 
     private Elements crawlAssignmentBox(String courseId, Map<String, String> loginCookies) throws IOException {

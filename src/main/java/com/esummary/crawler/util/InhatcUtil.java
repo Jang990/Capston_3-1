@@ -14,7 +14,6 @@ public class InhatcUtil {
 
     public static LocalDateTime parseDate(String dateString) {
         DateTimeFormatter dtf;
-        System.out.println("dateString = " + dateString);
         if(dateString.contains(":")) {
             dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"); //과제
             return LocalDateTime.parse(dateString, dtf);
