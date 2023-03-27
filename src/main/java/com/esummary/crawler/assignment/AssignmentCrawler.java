@@ -1,7 +1,6 @@
 package com.esummary.crawler.assignment;
 
-import com.esummary.crawler.dto.AnnouncementDTO;
-import com.esummary.crawler.dto.AssignmentDTO;
+import com.esummary.crawler.assignment.dto.AssignmentDTO;
 
 import java.io.IOException;
 import java.util.List;

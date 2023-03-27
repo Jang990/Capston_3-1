@@ -1,7 +1,7 @@
 package com.esummary.crawler.assignment;
 
 import com.esummary.crawler.InhatcCrawlerConfig;
-import com.esummary.crawler.dto.AssignmentDTO;
+import com.esummary.crawler.assignment.dto.AssignmentDTO;
 import com.esummary.crawler.exception.ExpiredELearningSession;
 import com.esummary.crawler.logincrawler.InhatcLoginCrawler;
 import com.esummary.crawler.logincrawler.LoginCrawler;

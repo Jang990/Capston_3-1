@@ -2,7 +2,7 @@ package com.esummary.crawler;
 
 import com.esummary.crawler.announcement.AnnouncementCrawler;
 import com.esummary.crawler.dto.AnnouncementDTO;
-import com.esummary.crawler.dto.AssignmentDTO;
+import com.esummary.crawler.assignment.dto.AssignmentDTO;
 import com.esummary.crawler.dto.CourseDTO;
 import com.esummary.crawler.dto.WeekDTO;
 import com.esummary.crawler.logincrawler.LoginCrawler;
