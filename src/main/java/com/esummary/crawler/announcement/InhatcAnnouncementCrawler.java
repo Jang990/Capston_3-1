@@ -21,12 +21,8 @@ public class InhatcAnnouncementCrawler implements AnnouncementCrawler {
     private final String AnnouncementPageURLFormat = "https://cyber.inhatc.ac.kr/Course.do?cmd=viewBoardContentsList&boardInfoDTO.boardInfoGubun=notice&boardInfoDTO.boardInfoId=%s-N&boardInfoDTO.boardClass=notice&boardInfoDTO.boardType=course&courseDTO.courseId=%s&mainDTO.parentMenuId=menu_00048&mainDTO.menuId=menu_00056";
     private final String announcementBoxSelector = "#listBox > div:not(.paginator_pages):not(.paginator)";
 
-    private final LoginCrawler inhatcLoginCrawler;
-
     @Override
     public List<AnnouncementDTO> crawlAnnouncement(String courseId, Map<String, String> loginSessionCookie) throws IOException {
-        inhatcLoginCrawler.validateExpiredSession(loginSessionCookie);
-
         List<AnnouncementDTO> announcementList = new ArrayList<>();
         Elements announcements = crawlAnnouncementBox(courseId, loginSessionCookie);
 
