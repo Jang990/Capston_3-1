@@ -1,8 +1,19 @@
 package com.esummary.crawler.lecture.dto;
 
-import java.util.Optional;
+import com.esummary.crawler.dto.ContentDetail;
+import com.esummary.crawler.dto.ContentPeriod;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 
+import java.util.List;
+
+@Getter
+@ToString
+@AllArgsConstructor
 // 주차 정보
 public class WeekDTO {
-    Optional<LectureDTO> lectureList;
+    ContentDetail contentDetail;
+    ContentPeriod contentPeriod;
+    List<LectureDTO> lectureList;
 }
