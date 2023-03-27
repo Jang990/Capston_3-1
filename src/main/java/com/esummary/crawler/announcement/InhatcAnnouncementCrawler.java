@@ -1,6 +1,6 @@
 package com.esummary.crawler.announcement;
 
-import com.esummary.crawler.dto.AnnouncementDTO;
+import com.esummary.crawler.announcement.dto.AnnouncementDTO;
 import com.esummary.crawler.dto.ContentDetail;
 import com.esummary.crawler.util.InhatcUtil;
 import lombok.RequiredArgsConstructor;

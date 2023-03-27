@@ -1,6 +1,6 @@
 package com.esummary.crawler.announcement;
 
-import com.esummary.crawler.dto.AnnouncementDTO;
+import com.esummary.crawler.announcement.dto.AnnouncementDTO;
 
 import java.io.IOException;
 import java.util.List;

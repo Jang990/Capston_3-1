@@ -1,12 +1,10 @@
 package com.esummary.crawler.announcement;
 
 import com.esummary.crawler.InhatcCrawlerConfig;
-import com.esummary.crawler.dto.AnnouncementDTO;
-import com.esummary.crawler.exception.ExpiredELearningSession;
+import com.esummary.crawler.announcement.dto.AnnouncementDTO;
 import com.esummary.crawler.logincrawler.InhatcLoginCrawler;
 import com.esummary.crawler.logincrawler.LoginCrawler;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

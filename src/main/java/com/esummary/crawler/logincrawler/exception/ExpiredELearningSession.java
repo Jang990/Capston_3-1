@@ -1,4 +1,4 @@
-package com.esummary.crawler.exception;
+package com.esummary.crawler.logincrawler.exception;
 
 /**
  * 만료된 이러닝 세션

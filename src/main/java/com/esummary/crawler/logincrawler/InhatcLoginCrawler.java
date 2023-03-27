@@ -1,7 +1,7 @@
 package com.esummary.crawler.logincrawler;
 
-import com.esummary.crawler.exception.ExpiredELearningSession;
-import com.esummary.crawler.exception.MismatchedELearningSessionAndID;
+import com.esummary.crawler.logincrawler.exception.ExpiredELearningSession;
+import com.esummary.crawler.logincrawler.exception.MismatchedELearningSessionAndID;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.Optional;
 
 @Component
 @Slf4j

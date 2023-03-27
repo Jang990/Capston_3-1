@@ -1,5 +1,6 @@
-package com.esummary.crawler.dto;
+package com.esummary.crawler.announcement.dto;
 
+import com.esummary.crawler.dto.ContentDetail;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
