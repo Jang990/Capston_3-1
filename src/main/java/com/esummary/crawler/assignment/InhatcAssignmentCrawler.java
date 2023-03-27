@@ -22,12 +22,19 @@ public class InhatcAssignmentCrawler implements AssignmentCrawler {
         Elements assignments = crawlAssignmentBox(courseId, loginSessionCookie);
 
         for (Element element : assignments) {
-//            System.out.println("element = " + element);
+            if(!isAssignment(element))
+                continue;
+
             AssignmentDTO assignment = crawlAssignmentDetail(element);
             assignmentList.add(assignment);
         }
 
         return assignmentList;
+    }
+
+    private boolean isAssignment(Element element) {
+        String elementClassName = element.getElementsByTag("div").get(0).className();
+        return elementClassName.contains("listContent");
     }
 
     private Elements crawlAssignmentBox(String courseId, Map<String, String> loginCookies) throws IOException {
@@ -38,8 +45,8 @@ public class InhatcAssignmentCrawler implements AssignmentCrawler {
                 .data("cmd", "viewIndexPage")
                 .cookies(loginCookies).get();
 
-
-        return assignmentPage.select(assignmentBoxSelector);
+        Elements select = assignmentPage.select(assignmentBoxSelector);
+        return select;
     }
 
     private AssignmentDTO crawlAssignmentDetail(Element element) {
