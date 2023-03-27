@@ -2,10 +2,8 @@ package com.esummary.crawler.assignment;
 
 import com.esummary.crawler.InhatcCrawlerConfig;
 import com.esummary.crawler.assignment.dto.AssignmentDTO;
-import com.esummary.crawler.exception.ExpiredELearningSession;
 import com.esummary.crawler.logincrawler.InhatcLoginCrawler;
 import com.esummary.crawler.logincrawler.LoginCrawler;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,6 +39,9 @@ class InhatcAssignmentCrawlerTest {
 
         //when
         List<AssignmentDTO> assignmentDTOList = crawler.crawlAssignment(courseId, loginSession);
+        for (AssignmentDTO assignmentDTO : assignmentDTOList) {
+            System.out.println("assignmentDTO = " + assignmentDTO);
+        }
 
         //then
         assertThat(assignmentDTOList.size()).isEqualTo(14);

@@ -12,7 +12,7 @@ public class ContentPeriod {
     private LocalDateTime to; // 종료 날짜
 
     public ContentPeriod(LocalDateTime from, LocalDateTime to) {
-        if(to.isAfter(from)) {
+        if(from.isAfter(to)) {
             throw new IllegalArgumentException("종료날짜는 시작날짜보다 빠를 수 없습니다.");
         }
 

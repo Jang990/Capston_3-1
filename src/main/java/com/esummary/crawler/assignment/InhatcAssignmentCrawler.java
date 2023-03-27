@@ -1,9 +1,11 @@
 package com.esummary.crawler.assignment;
 
 import com.esummary.crawler.assignment.dto.AssignmentDTO;
+import com.esummary.crawler.assignment.dto.AssignmentSubmissionStatus;
 import com.esummary.crawler.dto.ContentCompletionStatus;
 import com.esummary.crawler.dto.ContentDetail;
-import com.esummary.crawling.service.crawling.SubjectCrawlingService_Inhatc;
+import com.esummary.crawler.dto.ContentPeriod;
+import com.esummary.crawler.util.InhatcUtil;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,6 +14,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Component
@@ -55,6 +58,41 @@ public class InhatcAssignmentCrawler implements AssignmentCrawler {
     }
 
     private AssignmentDTO crawlAssignmentDetail(Element element) {
+        ContentDetail contentDetail = getContentDetail(element);
+        ContentCompletionStatus status = getStatus(element);
+        ContentPeriod contentPeriod = getAssignmentPeriod(element);
+        AssignmentSubmissionStatus submissionStatus = getAssignmentSubmissionStatus(element);
+
+        AssignmentDTO assignment = new AssignmentDTO(
+                contentDetail,
+                contentPeriod,
+                submissionStatus,
+                status
+        );
+
+        return assignment;
+    }
+
+    private ContentPeriod getAssignmentPeriod(Element element) {
+        String deadline = crawlDeadline(element);
+
+//        System.out.println("deadline = " + deadline);
+
+        String[] splitData = deadline.split(" ");
+        int tildeIdx = InhatcUtil.findTildeIdx(splitData);
+
+        if(tildeIdx == 0) return null;
+
+        String startDateString = splitData[tildeIdx - 2].trim() + " " + splitData[tildeIdx - 1].trim();
+        String endDateString = splitData[tildeIdx + 1].trim() + " " + splitData[tildeIdx + 2].trim();
+
+        LocalDateTime startDate = InhatcUtil.parseDate(startDateString);
+        LocalDateTime endDate = InhatcUtil.parseDate(endDateString);
+
+        return new ContentPeriod(startDate, endDate);
+    }
+
+    private ContentDetail getContentDetail(Element element) {
         String assignmentIdAndStatus = crawlAssignmentId(element);
         /*
          * 여기 조건부는 상황에 따라 달라질 수 있다.
@@ -67,35 +105,25 @@ public class InhatcAssignmentCrawler implements AssignmentCrawler {
         String id = assignmentIdAndStatus;
         String title = crawlTitle(element);
         String content = crawlDescription(element);
-        ContentDetail contentDetail = new ContentDetail(id,title, content);
-        ContentCompletionStatus status = crawlStatus(element);
-        System.out.println("status = " + status);
 
-        String deadline = crawlDeadline(element);
-        Map<String, Date> rangeDate = splitDataInRangeString(deadline);
-        System.out.println("deadline = " + deadline);
-        System.out.println("rangeDate = " + rangeDate);
-
-        String submissionInfo = crawlSubmissionInfo(element);
-        Map<String, Integer> submissionData = splitSubmissionData(submissionInfo);
-        System.out.println("submissionInfo = " + submissionInfo);
-        System.out.println("submissionData = " + submissionData);
-
-
-        AssignmentDTO assignment = new AssignmentDTO(
-        /*        id, title, description,
-                rangeDate.get("startDate"), rangeDate.get("endDate"),
-                submissionData.get("submissionNum"), submissionData.get("notSubmittedNum"), submissionData.get("totalNum"),
-                status, subjectId*/
-        );
-        return assignment;
+        return new ContentDetail(id,title, content);
     }
 
-    private ContentCompletionStatus crawlStatus(Element element) {
-        final String statusSelector =  "div > dl > dt > ul > li:nth-child(2) > a";
-        System.out.println("test = "+element.select(statusSelector));
-        String status = element.select(statusSelector).text();
+    private AssignmentSubmissionStatus getAssignmentSubmissionStatus(Element element) {
+        String submissionInfo = crawlSubmissionInfo(element);
 
+        String[] submissionString = submissionInfo.split("/");
+        int[] submissionInteger = new int[submissionString.length];
+        for (int i = 0; i < submissionString.length; i++) {
+            submissionString[i] = submissionString[i].replace("명", "");
+            submissionInteger[i] = Integer.parseInt(submissionString[i].trim());
+        }
+
+        return new AssignmentSubmissionStatus(submissionInteger[0], submissionInteger[1],submissionInteger[3]);
+    }
+
+    private ContentCompletionStatus getStatus(Element element) {
+        String status = crawlStatus(element);
         if (status.equals("제출정보보기")) {
             return ContentCompletionStatus.Completed;
         }
@@ -103,10 +131,15 @@ public class InhatcAssignmentCrawler implements AssignmentCrawler {
         return ContentCompletionStatus.Insufficient;
     }
 
+    private String crawlStatus(Element element) {
+        final String statusSelector =  "div > dl > dt > ul > li:nth-child(2) > a";
+        return element.select(statusSelector).text();
+    }
+
     private String crawlAssignmentId(Element element) {
         final String idSelector = ".btnBox > li:nth-child(2) > a";
         String idAndStatus_JS = element.select(idSelector).attr("onclick");
-        String[] IdAndStatus = SubjectCrawlingService_Inhatc.extractDataFromJsCode(idAndStatus_JS);
+        String[] IdAndStatus = InhatcUtil.extractDataFromJsCode(idAndStatus_JS);
         return IdAndStatus[0];
     }
 
@@ -128,50 +161,5 @@ public class InhatcAssignmentCrawler implements AssignmentCrawler {
     private String crawlTitle(Element element) {
         final String titleSelector = "div > dl > dt > h4";
         return element.select(titleSelector).text().trim();
-    }
-
-    private Map<String, Integer> splitSubmissionData(String submissionInfo) {
-        String[] submissionString = submissionInfo.split("/");
-        int[] submissionInteger = new int[submissionString.length];
-        for (int i = 0; i < submissionString.length; i++) {
-            submissionString[i] = submissionString[i].replace("명", "");
-            submissionInteger[i] = Integer.parseInt(submissionString[i].trim());
-        }
-
-        Map<String, Integer> submissionData = new HashMap<String, Integer>();
-        submissionData.put("submissionNum", submissionInteger[0]);
-        submissionData.put("notSubmittedNum", submissionInteger[1]);
-        submissionData.put("totalNum", submissionInteger[3]);
-
-        return submissionData;
-    }
-
-    private Map<String, Date> splitDataInRangeString(String deadLineString) {
-		/*
-		2022-02-27 ~ 2022-06-17
-		이 데이터를
-		StartDate / EndDate로 나눈다.
-		2022-02-27 / 2022-06-17
-		*/
-
-        /*
-        String[] splitData = deadLineString.split(" ");
-        int tildeIdx = SubjectCrawlingService_Inhatc.findTildeIdx(splitData);
-
-        if(tildeIdx == 0) return null;
-
-        String startDateString = splitData[tildeIdx - 2].trim() + " " + splitData[tildeIdx - 1].trim();
-        String endDateString = splitData[tildeIdx + 1].trim() + " " + splitData[tildeIdx + 2].trim();
-
-        Map<String, Date> submitRange = new HashMap<String, Date>();
-
-        Date startDate = SubjectCrawlingService_Inhatc.parseDate(startDateString);
-        Date endDate = SubjectCrawlingService_Inhatc.parseDate(endDateString);
-        submitRange.put("startDate", startDate);
-        submitRange.put("endDate", endDate);
-
-        return submitRange;
-        */
-        return null;
     }
 }
