@@ -1,4 +1,4 @@
-package com.esummary.crawler.dto;
+package com.esummary.crawler.lecture.dto;
 
 import java.util.Optional;
 
