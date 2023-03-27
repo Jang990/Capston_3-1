@@ -1,6 +1,9 @@
 package com.esummary.crawler.assignment;
 
 import com.esummary.crawler.assignment.dto.AssignmentDTO;
+import com.esummary.crawler.dto.ContentCompletionStatus;
+import com.esummary.crawler.dto.ContentDetail;
+import com.esummary.crawling.service.crawling.SubjectCrawlingService_Inhatc;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -27,6 +30,8 @@ public class InhatcAssignmentCrawler implements AssignmentCrawler {
 
             AssignmentDTO assignment = crawlAssignmentDetail(element);
             assignmentList.add(assignment);
+            System.out.println();
+            System.out.println();
         }
 
         return assignmentList;
@@ -50,23 +55,32 @@ public class InhatcAssignmentCrawler implements AssignmentCrawler {
     }
 
     private AssignmentDTO crawlAssignmentDetail(Element element) {
-        String[] idAndStatus = crawlIdAndStatus(element);
+        String assignmentIdAndStatus = crawlAssignmentId(element);
         /*
          * 여기 조건부는 상황에 따라 달라질 수 있다.
          * 과제 시작 기간이 아직 안되서 이러닝에는 있고 제출버튼이 없을 경우...
          * 제출버튼이 없어도 과제 내용을 보고 싶은 경우가 있다. 그럴때는 null도 받아서 보여줘야 할 것이다.
          */
-        if(idAndStatus == null || idAndStatus[0].equals(""))
+        if(assignmentIdAndStatus == null || assignmentIdAndStatus.equals(""))
             return null;
-        String id = idAndStatus[0];
-        String status =
-                (idAndStatus.length == 2) ? idAndStatus[1] : "Y";
+
+        String id = assignmentIdAndStatus;
         String title = crawlTitle(element);
+        String content = crawlDescription(element);
+        ContentDetail contentDetail = new ContentDetail(id,title, content);
+        ContentCompletionStatus status = crawlStatus(element);
+        System.out.println("status = " + status);
+
         String deadline = crawlDeadline(element);
+        Map<String, Date> rangeDate = splitDataInRangeString(deadline);
+        System.out.println("deadline = " + deadline);
+        System.out.println("rangeDate = " + rangeDate);
+
         String submissionInfo = crawlSubmissionInfo(element);
-        String description = crawlDescription(element);
-//        Map<String, Date> rangeDate = splitDataInRangeString(deadline);
         Map<String, Integer> submissionData = splitSubmissionData(submissionInfo);
+        System.out.println("submissionInfo = " + submissionInfo);
+        System.out.println("submissionData = " + submissionData);
+
 
         AssignmentDTO assignment = new AssignmentDTO(
         /*        id, title, description,
@@ -77,11 +91,23 @@ public class InhatcAssignmentCrawler implements AssignmentCrawler {
         return assignment;
     }
 
-    private String[] crawlIdAndStatus(Element element) {
+    private ContentCompletionStatus crawlStatus(Element element) {
+        final String statusSelector =  "div > dl > dt > ul > li:nth-child(2) > a";
+        System.out.println("test = "+element.select(statusSelector));
+        String status = element.select(statusSelector).text();
+
+        if (status.equals("제출정보보기")) {
+            return ContentCompletionStatus.Completed;
+        }
+
+        return ContentCompletionStatus.Insufficient;
+    }
+
+    private String crawlAssignmentId(Element element) {
         final String idSelector = ".btnBox > li:nth-child(2) > a";
         String idAndStatus_JS = element.select(idSelector).attr("onclick");
-        return null;
-//        return SubjectCrawlingService_Inhatc.extractDataFromJsCode(idAndStatus_JS);
+        String[] IdAndStatus = SubjectCrawlingService_Inhatc.extractDataFromJsCode(idAndStatus_JS);
+        return IdAndStatus[0];
     }
 
     private String crawlDescription(Element element) {
