@@ -1,4 +1,4 @@
-package com.esummary.crawler.lecture.dto;
+package com.esummary.crawler.week.dto;
 
 import com.esummary.crawler.dto.ContentDetail;
 import com.esummary.crawler.dto.ContentPeriod;

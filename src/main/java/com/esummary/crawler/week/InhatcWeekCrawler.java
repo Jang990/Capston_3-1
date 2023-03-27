@@ -1,8 +1,8 @@
-package com.esummary.crawler.lecture;
+package com.esummary.crawler.week;
 
 import com.esummary.crawler.dto.ContentDetail;
 import com.esummary.crawler.dto.ContentPeriod;
-import com.esummary.crawler.lecture.dto.WeekDTO;
+import com.esummary.crawler.week.dto.WeekDTO;
 import com.esummary.crawler.util.InhatcUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class InhatcLectureCrawler implements LectureCrawler {
+public class InhatcWeekCrawler implements WeekCrawler {
     private final String Lecture_Page_Url_Format = "https://cyber.inhatc.ac.kr/Lesson.do?cmd=viewLessonContentsList&boardInfoDTO.boardInfoGubun=kyoanle&type=U&courseDTO.courseId=%s&mainDTO.parentMenuId=menu_00091&mainDTO.menuId=menu_00099";
 
     @Override

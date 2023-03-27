@@ -1,11 +1,11 @@
-package com.esummary.crawler.lecture;
+package com.esummary.crawler.week;
 
-import com.esummary.crawler.lecture.dto.WeekDTO;
+import com.esummary.crawler.week.dto.WeekDTO;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public interface LectureCrawler {
+public interface WeekCrawler {
     List<WeekDTO> crawlLecture(String courseId, Map<String, String> loginSessionCookie) throws IOException;
 }

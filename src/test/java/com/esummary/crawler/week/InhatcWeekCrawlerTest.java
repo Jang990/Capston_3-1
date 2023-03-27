@@ -1,7 +1,7 @@
-package com.esummary.crawler.lecture;
+package com.esummary.crawler.week;
 
 import com.esummary.crawler.InhatcCrawlerConfig;
-import com.esummary.crawler.lecture.dto.WeekDTO;
+import com.esummary.crawler.week.dto.WeekDTO;
 import com.esummary.crawler.login.InhatcLoginCrawler;
 import com.esummary.crawler.login.LoginCrawler;
 import org.junit.jupiter.api.DisplayName;
@@ -10,10 +10,8 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class InhatcLectureCrawlerTest {
-    LectureCrawler crawler = new InhatcLectureCrawler();
+class InhatcWeekCrawlerTest {
+    WeekCrawler crawler = new InhatcWeekCrawler();
     LoginCrawler loginCrawler = new InhatcLoginCrawler();
 
     String courseId = InhatcCrawlerConfig.courseId;
