@@ -1,8 +1,8 @@
-package com.esummary.crawler.logincrawler;
+package com.esummary.crawler.login;
 
 import com.esummary.crawler.InhatcCrawlerConfig;
-import com.esummary.crawler.logincrawler.exception.ExpiredELearningSession;
-import com.esummary.crawler.logincrawler.exception.MismatchedELearningSessionAndID;
+import com.esummary.crawler.login.exception.ExpiredELearningSession;
+import com.esummary.crawler.login.exception.MismatchedELearningSessionAndID;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

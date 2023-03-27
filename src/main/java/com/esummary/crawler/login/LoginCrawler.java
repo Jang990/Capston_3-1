@@ -1,8 +1,7 @@
-package com.esummary.crawler.logincrawler;
+package com.esummary.crawler.login;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.Optional;
 
 public interface LoginCrawler {
     /**

@@ -1,9 +1,9 @@
 package com.esummary.crawler;
 
 import com.esummary.crawler.announcement.InhatcAnnouncementCrawler;
-import com.esummary.crawler.logincrawler.exception.ExpiredELearningSession;
-import com.esummary.crawler.logincrawler.InhatcLoginCrawler;
-import com.esummary.crawler.logincrawler.LoginCrawler;
+import com.esummary.crawler.login.exception.ExpiredELearningSession;
+import com.esummary.crawler.login.InhatcLoginCrawler;
+import com.esummary.crawler.login.LoginCrawler;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

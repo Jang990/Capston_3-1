@@ -2,8 +2,8 @@ package com.esummary.crawler.announcement;
 
 import com.esummary.crawler.InhatcCrawlerConfig;
 import com.esummary.crawler.announcement.dto.AnnouncementDTO;
-import com.esummary.crawler.logincrawler.InhatcLoginCrawler;
-import com.esummary.crawler.logincrawler.LoginCrawler;
+import com.esummary.crawler.login.InhatcLoginCrawler;
+import com.esummary.crawler.login.LoginCrawler;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;

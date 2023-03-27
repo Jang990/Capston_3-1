@@ -1,7 +1,7 @@
-package com.esummary.crawler.logincrawler;
+package com.esummary.crawler.login;
 
-import com.esummary.crawler.logincrawler.exception.ExpiredELearningSession;
-import com.esummary.crawler.logincrawler.exception.MismatchedELearningSessionAndID;
+import com.esummary.crawler.login.exception.ExpiredELearningSession;
+import com.esummary.crawler.login.exception.MismatchedELearningSessionAndID;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;

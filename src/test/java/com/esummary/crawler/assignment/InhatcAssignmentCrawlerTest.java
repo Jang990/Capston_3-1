@@ -2,8 +2,8 @@ package com.esummary.crawler.assignment;
 
 import com.esummary.crawler.InhatcCrawlerConfig;
 import com.esummary.crawler.assignment.dto.AssignmentDTO;
-import com.esummary.crawler.logincrawler.InhatcLoginCrawler;
-import com.esummary.crawler.logincrawler.LoginCrawler;
+import com.esummary.crawler.login.InhatcLoginCrawler;
+import com.esummary.crawler.login.LoginCrawler;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class InhatcAssignmentCrawlerTest {
 

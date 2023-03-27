@@ -1,4 +1,4 @@
-package com.esummary.crawler.logincrawler.exception;
+package com.esummary.crawler.login.exception;
 
 /**
  * 이러닝 세션과 ID가 일치하지 않음
