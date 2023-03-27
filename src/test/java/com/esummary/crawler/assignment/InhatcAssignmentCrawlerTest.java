@@ -13,12 +13,13 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InhatcAssignmentCrawlerTest {
 
     private final LoginCrawler loginCrawler = new InhatcLoginCrawler();
-    private InhatcAssignmentCrawler crawler = new InhatcAssignmentCrawler(loginCrawler);
+    private InhatcAssignmentCrawler crawler = new InhatcAssignmentCrawler();
 
     private String id = InhatcCrawlerConfig.id;
     private String password = InhatcCrawlerConfig.password;
@@ -42,14 +43,17 @@ class InhatcAssignmentCrawlerTest {
         List<AssignmentDTO> assignmentDTOList = crawler.crawlAssignment(courseId, loginSession);
 
         //then
-        Assertions.assertThat(assignmentDTOList.size()).isEqualTo(14);
+        assertThat(assignmentDTOList.size()).isEqualTo(14);
     }
 
     @Test
     @DisplayName("잘못된 세션으로 과제 크롤링 시도")
     public void crawlAssignmentFail() throws Exception {
-        //when then
-        assertThrows(ExpiredELearningSession.class,
-                () -> crawler.crawlAssignment(courseId, failSessionCookie));
+        //when
+        List<AssignmentDTO> assignmentList = crawler.crawlAssignment(courseId, failSessionCookie);
+
+        //then
+        assertThat(assignmentList.size()).isEqualTo(0);
+
     }
 }

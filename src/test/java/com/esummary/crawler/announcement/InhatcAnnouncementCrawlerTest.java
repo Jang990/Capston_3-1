@@ -14,13 +14,14 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Slf4j
 class InhatcAnnouncementCrawlerTest {
 
     private final LoginCrawler loginCrawler = new InhatcLoginCrawler();
-    private InhatcAnnouncementCrawler crawler = new InhatcAnnouncementCrawler(loginCrawler);
+    private InhatcAnnouncementCrawler crawler = new InhatcAnnouncementCrawler();
 
     private String id = InhatcCrawlerConfig.id;
     private String password = InhatcCrawlerConfig.password;
@@ -44,7 +45,7 @@ class InhatcAnnouncementCrawlerTest {
         List<AnnouncementDTO> announcementList = crawler.crawlAnnouncement(courseId, loginSessionCookie);
 
         //then
-        Assertions.assertThat(announcementList.size()).isEqualTo(3);
+        assertThat(announcementList.size()).isEqualTo(3);
         for (AnnouncementDTO announcementDTO : announcementList) {
             System.out.println("announcementDTO = " + announcementDTO);
         }
@@ -54,7 +55,8 @@ class InhatcAnnouncementCrawlerTest {
     @DisplayName("잘못된 SessionID가 들어온 경우")
     public void announcementCrawlerTestFail() throws Exception {
         //when, then
-        assertThrows(ExpiredELearningSession.class,
-                () -> crawler.crawlAnnouncement(courseId, failSessionCookie));
+        List<AnnouncementDTO> announcementList = crawler.crawlAnnouncement(courseId, failSessionCookie);
+
+        assertThat(announcementList.size()).isEqualTo(0);
     }
 }
