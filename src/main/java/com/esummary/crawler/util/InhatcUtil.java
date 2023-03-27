@@ -1,17 +1,27 @@
 package com.esummary.crawler.util;
 
+import org.jsoup.nodes.Element;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class InhatcUtil {
+    public static boolean isContent(Element element) {
+        String elementClassName = element.getElementsByTag("div").get(0).className();
+        return elementClassName.contains("listContent");
+    }
+
     public static LocalDateTime parseDate(String dateString) {
         DateTimeFormatter dtf;
-        if(dateString.contains(":"))
+        System.out.println("dateString = " + dateString);
+        if(dateString.contains(":")) {
             dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"); //과제
-        else
-            dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //주차
+            return LocalDateTime.parse(dateString, dtf);
+        }
 
-        return LocalDateTime.parse(dateString, dtf);
+        dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //주차
+        return LocalDate.parse(dateString, dtf).atStartOfDay();
     }
 
     public static String[] extractDataFromJsCode(String attr) {

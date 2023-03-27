@@ -1,18 +1,18 @@
 package com.esummary.crawler.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 // 공지 정보
-@Builder
 @Getter
 @ToString
+@AllArgsConstructor
 public class AnnouncementDTO {
-    private String announcementId;
-    private String title;
-    private String author;
-    private String announcementDate;
-    private String content;
+    private ContentDetail contentDetail;
+    private LocalDateTime announcementDate;
 }
 

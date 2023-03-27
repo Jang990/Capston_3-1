@@ -1,8 +1,8 @@
 package com.esummary.crawler.announcement;
 
 import com.esummary.crawler.dto.AnnouncementDTO;
-import com.esummary.crawler.logincrawler.LoginCrawler;
-import com.esummary.crawling.service.crawling.SubjectCrawlingService_Inhatc;
+import com.esummary.crawler.dto.ContentDetail;
+import com.esummary.crawler.util.InhatcUtil;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -11,6 +11,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,16 +28,15 @@ public class InhatcAnnouncementCrawler implements AnnouncementCrawler {
         Elements announcements = crawlAnnouncementBox(courseId, loginSessionCookie);
 
         for (Element element : announcements) {
+            if(!InhatcUtil.isContent(element))
+                continue;
+
             AnnouncementDTO announcement = createAnnouncement(element, courseId);
-            if(announcement != null) {
-                announcementList.add(announcement);
-            }
+            announcementList.add(announcement);
         }
 
         return announcementList;
     }
-
-
 
     private Elements crawlAnnouncementBox(String courseId, Map<String, String> loginCookies) throws IOException {
         Document announcementPage = getAnnouncementPage(courseId, loginCookies);
@@ -49,23 +49,29 @@ public class InhatcAnnouncementCrawler implements AnnouncementCrawler {
     }
 
     private AnnouncementDTO createAnnouncement(Element element, String subjectId) {
+
+        ContentDetail contentDetail = getContentDetail(element);
+        LocalDateTime date = getAnnouncementDate(element);
+//        String author = crawlAuthor(element);
+        AnnouncementDTO createdAnnouncement = new AnnouncementDTO(contentDetail, date);
+
+
+        return createdAnnouncement;
+    }
+
+    private LocalDateTime getAnnouncementDate(Element element) {
+        String date = crawlCreateDate(element);
+        return InhatcUtil.parseDate(date);
+    }
+
+    private ContentDetail getContentDetail(Element element) {
         String id = crawlAnnouncementId(element);
         String title = crawlTitle(element);
         if(title.equals("") || title == null)
             return null; //크롤링오류임
         String content = crawlContent(element);
-        String author = crawlAuthor(element);
-        String date = crawlCreateDate(element);
 
-        AnnouncementDTO createdAnnouncement =
-                AnnouncementDTO.builder()
-                        .announcementId(id)
-                        .author(author).title(title)
-                        .announcementDate(date)
-                        .content(content).build();
-
-
-        return createdAnnouncement;
+        return new ContentDetail(id,title,content);
     }
 
     private String crawlCreateDate(Element element) {
@@ -95,7 +101,7 @@ public class InhatcAnnouncementCrawler implements AnnouncementCrawler {
     private String crawlAnnouncementId(Element element) {
         final String idSelector = "div > dl > dt > ul > li > button";
         String idJSCode = element.select(idSelector).attr("onclick");
-        String id = SubjectCrawlingService_Inhatc.extractDataFromJsCode(idJSCode)[0];
+        String id = InhatcUtil.extractDataFromJsCode(idJSCode)[0];
         return id;
     }
 }
