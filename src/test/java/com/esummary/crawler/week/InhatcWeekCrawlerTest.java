@@ -4,6 +4,7 @@ import com.esummary.crawler.InhatcCrawlerConfig;
 import com.esummary.crawler.week.dto.WeekDTO;
 import com.esummary.crawler.login.InhatcLoginCrawler;
 import com.esummary.crawler.login.LoginCrawler;
+import com.esummary.crawler.week.lecture.InhatcLectureCrawler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 class InhatcWeekCrawlerTest {
-    WeekCrawler crawler = new InhatcWeekCrawler();
+    WeekCrawler crawler = new InhatcWeekCrawler(new InhatcLectureCrawler());
     LoginCrawler loginCrawler = new InhatcLoginCrawler();
 
     String courseId = InhatcCrawlerConfig.courseId;
