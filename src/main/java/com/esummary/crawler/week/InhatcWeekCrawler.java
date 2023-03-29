@@ -2,19 +2,26 @@ package com.esummary.crawler.week;
 
 import com.esummary.crawler.dto.ContentDetail;
 import com.esummary.crawler.dto.ContentPeriod;
+import com.esummary.crawler.week.dto.LectureDTO;
 import com.esummary.crawler.week.dto.WeekDTO;
 import com.esummary.crawler.util.InhatcUtil;
+import com.esummary.crawler.week.lecture.InhatcLectureCrawler;
+import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 
+@Component
+@RequiredArgsConstructor
 public class InhatcWeekCrawler implements WeekCrawler {
     private final String Lecture_Page_Url_Format = "https://cyber.inhatc.ac.kr/Lesson.do?cmd=viewLessonContentsList&boardInfoDTO.boardInfoGubun=kyoanle&type=U&courseDTO.courseId=%s&mainDTO.parentMenuId=menu_00091&mainDTO.menuId=menu_00099";
+    private final InhatcLectureCrawler lectureCrawler;
 
     @Override
     public List<WeekDTO> crawlLecture(String courseId, Map<String, String> loginSessionCookie) throws IOException {
@@ -55,12 +62,9 @@ public class InhatcWeekCrawler implements WeekCrawler {
         LocalDateTime endDate = InhatcUtil.parseDate(splitData.get("endDate"));
         ContentPeriod contentPeriod = new ContentPeriod(startDate, endDate);
 
-//        WeekInfo weekInfo = new WeekInfo(weekId, title, startDate, endDate, subjectId, lectureList);
-//        return weekInfo;
+        List<LectureDTO> lectureList = lectureCrawler.getLectureList(lectureElements);
 
-//        List<LectureDTO> lectureList = lectureUtil.crawlLectureList(lectureElements, weekId);
-
-        WeekDTO week = new WeekDTO(contentDetail, contentPeriod, null);
+        WeekDTO week = new WeekDTO(contentDetail, contentPeriod, lectureList);
 
         return week;
     }
@@ -126,4 +130,9 @@ public class InhatcWeekCrawler implements WeekCrawler {
         final String lectureBoxSelector = ".listContent";
         return docLecturePage.select(lectureBoxSelector);
     }
+
+
+
+
+
 }
