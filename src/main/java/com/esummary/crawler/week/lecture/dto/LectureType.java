@@ -1,4 +1,4 @@
-package com.esummary.crawler.week.dto;
+package com.esummary.crawler.week.lecture.dto;
 
 public enum LectureType {
     VIDEO, // 영상강의

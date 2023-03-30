@@ -1,9 +1,9 @@
 package com.esummary.crawler.week.lecture;
 
 import com.esummary.crawler.dto.ContentCompletionStatus;
-import com.esummary.crawler.week.dto.LectureDTO;
-import com.esummary.crawler.week.dto.LectureTime;
-import com.esummary.crawler.week.dto.LectureType;
+import com.esummary.crawler.week.lecture.dto.LectureDTO;
+import com.esummary.crawler.week.lecture.dto.LectureTime;
+import com.esummary.crawler.week.lecture.dto.LectureType;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;

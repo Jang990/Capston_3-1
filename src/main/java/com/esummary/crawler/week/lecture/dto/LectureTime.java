@@ -1,4 +1,4 @@
-package com.esummary.crawler.week.dto;
+package com.esummary.crawler.week.lecture.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

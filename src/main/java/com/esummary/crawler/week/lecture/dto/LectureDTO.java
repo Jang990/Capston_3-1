@@ -1,4 +1,4 @@
-package com.esummary.crawler.week.dto;
+package com.esummary.crawler.week.lecture.dto;
 
 import com.esummary.crawler.dto.ContentCompletionStatus;
 import lombok.AllArgsConstructor;

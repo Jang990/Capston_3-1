@@ -2,7 +2,7 @@ package com.esummary.crawler.week;
 
 import com.esummary.crawler.dto.ContentDetail;
 import com.esummary.crawler.dto.ContentPeriod;
-import com.esummary.crawler.week.dto.LectureDTO;
+import com.esummary.crawler.week.lecture.dto.LectureDTO;
 import com.esummary.crawler.week.dto.WeekDTO;
 import com.esummary.crawler.util.InhatcUtil;
 import com.esummary.crawler.week.lecture.InhatcLectureCrawler;
