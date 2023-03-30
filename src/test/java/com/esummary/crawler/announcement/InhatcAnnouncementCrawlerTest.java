@@ -44,9 +44,6 @@ class InhatcAnnouncementCrawlerTest {
 
         //then
         assertThat(announcementList.size()).isEqualTo(3);
-        for (AnnouncementDTO announcementDTO : announcementList) {
-            System.out.println("announcementDTO = " + announcementDTO);
-        }
     }
 
     @Test

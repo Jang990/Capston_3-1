@@ -38,9 +38,6 @@ class InhatcAssignmentCrawlerTest {
 
         //when
         List<AssignmentDTO> assignmentDTOList = crawler.crawlAssignment(courseId, loginSession);
-        for (AssignmentDTO assignmentDTO : assignmentDTOList) {
-            System.out.println("assignmentDTO = " + assignmentDTO);
-        }
 
         //then
         assertThat(assignmentDTOList.size()).isEqualTo(14);
