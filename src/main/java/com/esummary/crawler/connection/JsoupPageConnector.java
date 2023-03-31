@@ -37,8 +37,10 @@ public class JsoupPageConnector implements PageConnector {
         }
 
         Map<String, String> data = connectionData.getData();
-        for (Map.Entry<String, String> entry : data.entrySet()) {
-            conn.data(entry.getKey(), entry.getValue());
+        if(data != null) {
+            for (Map.Entry<String, String> entry : data.entrySet()) {
+                conn.data(entry.getKey(), entry.getValue());
+            }
         }
 
         return conn;
