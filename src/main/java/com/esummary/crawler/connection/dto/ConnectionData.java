@@ -9,7 +9,6 @@ import java.util.Map;
 
 @Getter
 @ToString
-@AllArgsConstructor
 public class ConnectionData {
     private String url;
     private Map<String, String> data;
