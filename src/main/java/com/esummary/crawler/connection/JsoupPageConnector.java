@@ -30,8 +30,11 @@ public class JsoupPageConnector implements PageConnector {
     }
 
     private Connection createConnection(ConnectionData connectionData) {
-        Connection conn = Jsoup.connect("https://cyber.inhatc.ac.kr/MUser.do")
-                .cookies(connectionData.getCookies());
+        Connection conn = Jsoup.connect(connectionData.getUrl());
+
+        if(connectionData.getCookies() != null) {
+            conn.cookies(connectionData.getCookies());
+        }
 
         Map<String, String> data = connectionData.getData();
         for (Map.Entry<String, String> entry : data.entrySet()) {
