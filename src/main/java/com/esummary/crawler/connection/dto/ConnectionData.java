@@ -16,7 +16,21 @@ public class ConnectionData {
     private Map<String, String> cookies;
 
     public ConnectionData(String url, Map<String, String> cookies) {
+        if(url == null || url.equals("")) {
+            throw new IllegalArgumentException("url은 필수 입력 사항입니다. url=" + url);
+        }
+
         this.url = url;
+        this.cookies = cookies;
+    }
+
+    public ConnectionData(String url, Map<String, String> data, Map<String, String> cookies) {
+        if(url == null || url.equals("")) {
+            throw new IllegalArgumentException("url은 필수 입력 사항입니다. url=" + url);
+        }
+
+        this.url = url;
+        this.data = data;
         this.cookies = cookies;
     }
 }
