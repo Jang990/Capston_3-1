@@ -4,10 +4,12 @@ import com.esummary.crawler.connection.dto.ConnectionData;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Map;
 
+@Component
 public class JsoupPageConnector implements PageConnector {
 
     @Override

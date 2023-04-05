@@ -1,5 +1,7 @@
 package com.esummary.crawler.elearning.assignment;
 
+import com.esummary.crawler.connection.PageConnector;
+import com.esummary.crawler.connection.dto.ConnectionData;
 import com.esummary.crawler.elearning.assignment.dto.AssignmentDTO;
 import com.esummary.crawler.elearning.assignment.dto.AssignmentSubmissionStatus;
 import com.esummary.crawler.elearning.dto.ContentCompletionStatus;
@@ -22,11 +24,12 @@ import java.util.*;
 public class InhatcAssignmentCrawler implements AssignmentCrawler {
     private final String ASSIGNMENT_HOME_URL = "https://cyber.inhatc.ac.kr/Report.do?cmd=viewReportInfoPageList&boardInfoDTO.boardInfoGubun=report&courseDTO.courseId=";
 
+    private final PageConnector connector;
+
     @Override
     public List<AssignmentDTO> crawlAssignment(String courseId, Map<String, String> loginSessionCookie) throws IOException {
         List<AssignmentDTO> assignmentList = new ArrayList<>();
         Elements assignments = crawlAssignmentBox(courseId, loginSessionCookie);
-
         for (Element element : assignments) {
             if(!InhatcUtil.isContent(element))
                 continue;
@@ -41,10 +44,8 @@ public class InhatcAssignmentCrawler implements AssignmentCrawler {
     private Elements crawlAssignmentBox(String courseId, Map<String, String> loginCookies) throws IOException {
         //StudyHome에서 과제 내용이 적혀있는 섹션에 css Selector
         final String assignmentBoxSelector = "#listBox > div:not(.paginator_pages):not(.paginator)";
-        Document assignmentPage = null;
-        assignmentPage = Jsoup.connect(ASSIGNMENT_HOME_URL +courseId)
-                .data("cmd", "viewIndexPage")
-                .cookies(loginCookies).get();
+        ConnectionData connectionData = new ConnectionData(ASSIGNMENT_HOME_URL + courseId, loginCookies);
+        Document assignmentPage = connector.getContent(connectionData);
 
         Elements select = assignmentPage.select(assignmentBoxSelector);
         return select;
