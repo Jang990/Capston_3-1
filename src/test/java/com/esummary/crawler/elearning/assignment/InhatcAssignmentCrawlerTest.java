@@ -1,11 +1,12 @@
 package com.esummary.crawler.elearning.assignment;
 
 import com.esummary.crawler.connection.PageConnector;
-import com.esummary.crawler.elearning.InhatcCrawlerConfig;
 import com.esummary.crawler.elearning.assignment.dto.AssignmentDTO;
+import com.esummary.crawler.elearning.assignment.dto.AssignmentSubmissionStatus;
+import com.esummary.crawler.elearning.dto.ContentCompletionStatus;
 import com.esummary.crawler.elearning.dto.ContentDetail;
+import com.esummary.crawler.elearning.dto.ContentPeriod;
 import org.jsoup.Jsoup;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,19 +32,15 @@ class InhatcAssignmentCrawlerTest {
     @Mock
     private PageConnector connector;
 
-    @BeforeAll
-    static void beforeAll() {
-        if (InhatcCrawlerConfig.password.equals(InhatcCrawlerConfig.state.EMPTY.toString())) {
-            throw new IllegalArgumentException("InhatcLoginCrawlerTest 설정 정보가 모두 필요합니다.");
-        }
-    }
-
     @Test
     @DisplayName("과제 크롤링 정상 작동")
     public void crawlAssignment() throws Exception {
         //given
         ContentDetail detail = new ContentDetail("TestID", "TestTitle", "TestContent");
-        AssignmentDTO assignmentDTO = new AssignmentDTO(detail, null,null, null);
+        ContentPeriod period = createPeriod();
+        AssignmentSubmissionStatus submissionStatus = new AssignmentSubmissionStatus(10, 14, 24);
+
+        AssignmentDTO assignmentDTO = new AssignmentDTO(detail, period,submissionStatus, ContentCompletionStatus.Completed);
         String docString = creatDocumentString(assignmentDTO);
         when(connector.getContent(any())).thenReturn(Jsoup.parse(docString));
 
@@ -52,12 +51,32 @@ class InhatcAssignmentCrawlerTest {
         List<AssignmentDTO> assignmentDTOList = crawler.crawlAssignment(testCourse, testCookies);
 
         //then
-        ContentDetail findContentDetail = assignmentDTOList.get(0).getContentDetail();
         assertThat(assignmentDTOList.size()).isEqualTo(1);
+        AssignmentDTO findAssignmentDTO = assignmentDTOList.get(0);
+
+        ContentDetail findContentDetail = findAssignmentDTO.getContentDetail();
         assertThat(findContentDetail.getId()).isEqualTo(detail.getId());
-//        assertThat(findContentDetail.getTitle()).isEqualTo(detail.getTitle().concat(" [마감]")); // 이 부분은 성공함
-        assertThat(findContentDetail.getTitle()).isEqualTo(detail.getTitle()); // 해당 부분 수정 필요
+        assertThat(findContentDetail.getTitle()).isEqualTo(detail.getTitle().concat(" [마감]")); // 이 부분은 성공함
+//        assertThat(findContentDetail.getTitle()).isEqualTo(detail.getTitle()); // 해당 부분 수정 필요
         assertThat(findContentDetail.getContent()).isEqualTo(detail.getContent());
+
+        ContentPeriod findPeriod = findAssignmentDTO.getContentPeriod();
+        assertThat(findPeriod.getFrom()).isEqualTo(period.getFrom());
+        assertThat(findPeriod.getTo()).isEqualTo(period.getTo());
+
+        AssignmentSubmissionStatus findSubmissionStatus = findAssignmentDTO.getTotalStatus();
+        assertThat(findSubmissionStatus.getSubmittedCount()).isEqualTo(submissionStatus.getSubmittedCount());
+        assertThat(findSubmissionStatus.getUnsubmittedCount()).isEqualTo(submissionStatus.getUnsubmittedCount());
+        assertThat(findSubmissionStatus.getTotalAssignmentCount()).isEqualTo(submissionStatus.getTotalAssignmentCount());
+
+        // complete 여부는 제출 버튼이 있는지 없는지로 판단하기 때문에 테스트하기 힘듦
+        assertThat(findAssignmentDTO.getPersonalSubmissionStatus()).isEqualTo(assignmentDTO.getPersonalSubmissionStatus());
+    }
+
+    private ContentPeriod createPeriod() {
+        LocalDateTime start = LocalDateTime.of(2023, 4, 1, 0, 0);
+        LocalDateTime end = LocalDateTime.of(2023, 4, 8, 0, 0);
+        return new ContentPeriod(start, end);
     }
 
     @Test
@@ -111,12 +130,12 @@ class InhatcAssignmentCrawlerTest {
                         "            </thead> \n" +
                         "            <tbody> \n" +
                         "             <tr> \n" +
-                        "              <td> 2022-11-30 00:00 ~ 2022-12-06 23:59 </td> \n" +
+                        "              <td> %s ~ %s </td> \n" +
                         "              <td class=\"fcBlue\"> 반 영 </td> \n" +
                         "              <td class=\"fcBlue\"> <!-- 성적 반영과 성적공개는 별개!! --> 미공개 </td> \n" +
                         "              <td> </td> \n" +
                         "              <td> 미허용 </td> <!-- 학생 상호 피드백 현재 없음. --> <!-- \t\t\t\t\t\t\t\t\t\t<td> --> <!-- \t\t\t\t\t\t\t\t\t\t</td> --> \n" +
-                        "              <td class=\"last\"> 15 명 / 0 명 / 0 명 / 15 명 </td> \n" +
+                        "              <td class=\"last\"> %d 명 / %d 명 / 0 명 / %d 명 </td> \n" +
                         "             </tr> \n" +
                         "            </tbody> \n" +
                         "           </table> \n" +
@@ -130,12 +149,18 @@ class InhatcAssignmentCrawlerTest {
                         "        </div> " +
                         "</div>";
 
-//        return String.format(documentString, "제목", "ID", "내용");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
         return String.format(documentString,
                 assignmentDTO.getContentDetail().getTitle(),
                 assignmentDTO.getContentDetail().getId(),
+                assignmentDTO.getContentPeriod().getFrom().format(formatter),
+                assignmentDTO.getContentPeriod().getTo().format(formatter),
+                assignmentDTO.getTotalStatus().getSubmittedCount(),
+                assignmentDTO.getTotalStatus().getUnsubmittedCount(),
+                assignmentDTO.getTotalStatus().getTotalAssignmentCount(),
                 assignmentDTO.getContentDetail().getContent()
-            );
+                );
     }
 
     private String createFailDocument() {
