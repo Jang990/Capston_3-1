@@ -1,10 +1,11 @@
 package com.esummary.crawler.elearning.announcement;
 
+import com.esummary.crawler.connection.PageConnector;
+import com.esummary.crawler.connection.dto.ConnectionData;
 import com.esummary.crawler.elearning.announcement.dto.AnnouncementDTO;
 import com.esummary.crawler.elearning.dto.ContentDetail;
 import com.esummary.crawler.elearning.util.InhatcUtil;
 import lombok.RequiredArgsConstructor;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -19,8 +20,8 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 public class InhatcAnnouncementCrawler implements AnnouncementCrawler {
-    private final String AnnouncementPageURLFormat = "https://cyber.inhatc.ac.kr/Course.do?cmd=viewBoardContentsList&boardInfoDTO.boardInfoGubun=notice&boardInfoDTO.boardInfoId=%s-N&boardInfoDTO.boardClass=notice&boardInfoDTO.boardType=course&courseDTO.courseId=%s&mainDTO.parentMenuId=menu_00048&mainDTO.menuId=menu_00056";
-    private final String announcementBoxSelector = "#listBox > div:not(.paginator_pages):not(.paginator)";
+
+    private final PageConnector pageConnector;
 
     @Override
     public List<AnnouncementDTO> crawlAnnouncement(String courseId, Map<String, String> loginSessionCookie) throws IOException {
@@ -39,13 +40,16 @@ public class InhatcAnnouncementCrawler implements AnnouncementCrawler {
     }
 
     private Elements crawlAnnouncementBox(String courseId, Map<String, String> loginCookies) throws IOException {
+        final String announcementBoxSelector = "#listBox > div:not(.paginator_pages):not(.paginator)";
         Document announcementPage = getAnnouncementPage(courseId, loginCookies);
         return announcementPage.select(announcementBoxSelector);
     }
 
     private Document getAnnouncementPage(String courseId, Map<String, String> loginCookies) throws IOException {
-        String AnnouncementPageURL = String.format(AnnouncementPageURLFormat, courseId, courseId);
-        return Jsoup.connect(AnnouncementPageURL).cookies(loginCookies).get();
+        final String AnnouncementPageURLFormat = "https://cyber.inhatc.ac.kr/Course.do?cmd=viewBoardContentsList&boardInfoDTO.boardInfoGubun=notice&boardInfoDTO.boardInfoId=%s-N&boardInfoDTO.boardClass=notice&boardInfoDTO.boardType=course&courseDTO.courseId=%s&mainDTO.parentMenuId=menu_00048&mainDTO.menuId=menu_00056";
+        String announcementPageURL = String.format(AnnouncementPageURLFormat, courseId, courseId);
+        ConnectionData connectionData = new ConnectionData(announcementPageURL,loginCookies);
+        return pageConnector.getContent(connectionData);
     }
 
     private AnnouncementDTO createAnnouncement(Element element, String subjectId) {
