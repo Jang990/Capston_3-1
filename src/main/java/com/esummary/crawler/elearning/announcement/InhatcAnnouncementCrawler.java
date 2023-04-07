@@ -21,7 +21,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class InhatcAnnouncementCrawler implements AnnouncementCrawler {
 
-    private final PageConnector pageConnector;
+    private final PageConnector connector;
 
     @Override
     public List<AnnouncementDTO> crawlAnnouncement(String courseId, Map<String, String> loginSessionCookie) throws IOException {
@@ -29,8 +29,9 @@ public class InhatcAnnouncementCrawler implements AnnouncementCrawler {
         Elements announcements = crawlAnnouncementBox(courseId, loginSessionCookie);
 
         for (Element element : announcements) {
-            if(!InhatcUtil.isContent(element))
+            if(!InhatcUtil.isContent(element)) {
                 continue;
+            }
 
             AnnouncementDTO announcement = createAnnouncement(element, courseId);
             announcementList.add(announcement);
@@ -49,7 +50,7 @@ public class InhatcAnnouncementCrawler implements AnnouncementCrawler {
         final String AnnouncementPageURLFormat = "https://cyber.inhatc.ac.kr/Course.do?cmd=viewBoardContentsList&boardInfoDTO.boardInfoGubun=notice&boardInfoDTO.boardInfoId=%s-N&boardInfoDTO.boardClass=notice&boardInfoDTO.boardType=course&courseDTO.courseId=%s&mainDTO.parentMenuId=menu_00048&mainDTO.menuId=menu_00056";
         String announcementPageURL = String.format(AnnouncementPageURLFormat, courseId, courseId);
         ConnectionData connectionData = new ConnectionData(announcementPageURL,loginCookies);
-        return pageConnector.getContent(connectionData);
+        return connector.getContent(connectionData);
     }
 
     private AnnouncementDTO createAnnouncement(Element element, String subjectId) {
