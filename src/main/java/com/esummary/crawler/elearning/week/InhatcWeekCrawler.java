@@ -1,5 +1,7 @@
 package com.esummary.crawler.elearning.week;
 
+import com.esummary.crawler.connection.PageConnector;
+import com.esummary.crawler.connection.dto.ConnectionData;
 import com.esummary.crawler.elearning.dto.ContentDetail;
 import com.esummary.crawler.elearning.dto.ContentPeriod;
 import com.esummary.crawler.elearning.week.lecture.dto.LectureDTO;
@@ -22,6 +24,7 @@ import java.util.*;
 public class InhatcWeekCrawler implements WeekCrawler {
     private final String Lecture_Page_Url_Format = "https://cyber.inhatc.ac.kr/Lesson.do?cmd=viewLessonContentsList&boardInfoDTO.boardInfoGubun=kyoanle&type=U&courseDTO.courseId=%s&mainDTO.parentMenuId=menu_00091&mainDTO.menuId=menu_00099";
     private final InhatcLectureCrawler lectureCrawler;
+    private final PageConnector connector;
 
     @Override
     public List<WeekDTO> crawlLecture(String courseId, Map<String, String> loginSessionCookie) throws IOException {
@@ -44,8 +47,9 @@ public class InhatcWeekCrawler implements WeekCrawler {
 
     private Document getLecturePage(String courseId, Map<String, String> loginSessionCookie) throws IOException {
         String lecturePageUrl = String.format(Lecture_Page_Url_Format, courseId);
-        Document lecturePage = Jsoup.connect(lecturePageUrl).cookies(loginSessionCookie).get();
-        return lecturePage;
+        ConnectionData connectionData = new ConnectionData(lecturePageUrl, loginSessionCookie);
+        return connector.getContent(connectionData);
+//        System.out.println("lecturePage = " + lecturePage);
     }
 
     private WeekDTO crawlWeekDetailInfo(Element element) {
